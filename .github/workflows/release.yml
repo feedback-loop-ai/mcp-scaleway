@@ -36,9 +36,7 @@ jobs:
       - run: bun run lint
       - run: bun x tsc --noEmit
       - name: Run tests with coverage
-        run: |
-          bun x vitest run --config tests/vitest.config.ts --dir tests/unit --coverage.enabled
-          bun x vitest run --config tests/vitest.config.ts --dir tests/contract --coverage.enabled
+        run: bun run test -- --coverage.enabled
 
   build:
     name: Build
@@ -99,7 +97,10 @@ jobs:
           name: dist
           path: dist/
 
-      - run: npm ci
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
 
       - name: Extract version and dist-tag
         id: version
@@ -148,6 +149,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          if gh release view "${{ steps.version.outputs.tag }}" > /dev/null 2>&1; then
+            echo "Release ${{ steps.version.outputs.tag }} already exists, skipping"
+            exit 0
+          fi
           FLAGS="--generate-notes"
           if [ "${{ steps.version.outputs.prerelease }}" = "true" ]; then
             FLAGS="$FLAGS --prerelease"
