@@ -1,4 +1,4 @@
-import { SnsAPI } from "@scaleway/sdk-mnq/v1beta1";
+import { Mnqv1beta1 } from "@scaleway/sdk-mnq";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
@@ -14,10 +14,10 @@ import type {
 	UpdateSnsCredentialsInput,
 } from "./types.js";
 
-function getSnsApi(): SnsAPI {
+function getSnsApi(): Mnqv1beta1.SnsAPI {
 	const config = loadAuthConfig();
 	const client = createScalewayClient(config);
-	return new SnsAPI(client);
+	return new Mnqv1beta1.SnsAPI(client);
 }
 
 function formatDate(date: Date | undefined): string | undefined {
