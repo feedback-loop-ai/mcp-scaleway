@@ -1,0 +1,65 @@
+{
+	"feature": "010-serverless-sqldb",
+	"pipeline_version": "1.1.0",
+	"steps": {
+		"specify": {
+			"status": "done",
+			"user_stories": [
+				{
+					"id": "P1",
+					"title": "Database CRUD",
+					"priority": 1,
+					"tools": [
+						"list_databases",
+						"get_database",
+						"create_database",
+						"update_database",
+						"delete_database"
+					]
+				},
+				{
+					"id": "P2",
+					"title": "Database backup/restore",
+					"priority": 2,
+					"tools": [
+						"list_database_backups",
+						"get_database_backup",
+						"export_database_backup",
+						"restore_database"
+					]
+				},
+				{ "id": "P3", "title": "Monitor database usage", "priority": 3, "tools": ["get_database"] }
+			]
+		},
+		"blueprint": {
+			"status": "done",
+			"files": [
+				"src/tools/serverless-sqldb/types.ts",
+				"src/tools/serverless-sqldb/handlers.ts",
+				"src/tools/serverless-sqldb/index.ts"
+			]
+		},
+		"contract_tests": {
+			"status": "done",
+			"test_file": "tests/contract/serverless-sqldb.contract.test.ts",
+			"test_count": 54
+		},
+		"unit_tests": {
+			"status": "done",
+			"test_file": "tests/unit/tools/serverless-sqldb.test.ts",
+			"test_count": 25
+		},
+		"implement": {
+			"status": "done",
+			"tools_registered": 9,
+			"coverage": { "lines": 100, "branches": 100 }
+		},
+		"analyze": {
+			"status": "done",
+			"lint": "pass",
+			"typecheck": "pass",
+			"tests": "162 pass (79 new)",
+			"coverage": "100%"
+		}
+	}
+}
