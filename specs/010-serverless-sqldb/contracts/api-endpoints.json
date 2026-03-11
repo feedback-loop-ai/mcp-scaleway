@@ -1,0 +1,123 @@
+{
+	"product": "serverless-sqldb",
+	"api_version": "v1alpha1",
+	"locality": "regional",
+	"base_url": "https://api.scaleway.com/serverless-sqldb/v1alpha1/regions/{region}",
+	"endpoints": [
+		{
+			"name": "ListDatabases",
+			"method": "GET",
+			"path": "/databases",
+			"query_params": ["page", "page_size", "project_id", "organization_id", "name", "order_by"],
+			"response": { "databases": "Database[]", "total_count": "number" }
+		},
+		{
+			"name": "GetDatabase",
+			"method": "GET",
+			"path": "/databases/{database_id}",
+			"response": "Database"
+		},
+		{
+			"name": "CreateDatabase",
+			"method": "POST",
+			"path": "/databases",
+			"body": {
+				"project_id": "string?",
+				"name": "string",
+				"cpu_min": "number",
+				"cpu_max": "number",
+				"from_backup_id": "string?"
+			},
+			"response": "Database"
+		},
+		{
+			"name": "UpdateDatabase",
+			"method": "PATCH",
+			"path": "/databases/{database_id}",
+			"body": { "cpu_min": "number?", "cpu_max": "number?" },
+			"response": "Database"
+		},
+		{
+			"name": "DeleteDatabase",
+			"method": "DELETE",
+			"path": "/databases/{database_id}",
+			"response": "Database"
+		},
+		{
+			"name": "ListDatabaseBackups",
+			"method": "GET",
+			"path": "/backups",
+			"query_params": [
+				"page",
+				"page_size",
+				"database_id",
+				"project_id",
+				"organization_id",
+				"order_by"
+			],
+			"response": { "backups": "DatabaseBackup[]", "total_count": "number" }
+		},
+		{
+			"name": "GetDatabaseBackup",
+			"method": "GET",
+			"path": "/backups/{backup_id}",
+			"response": "DatabaseBackup"
+		},
+		{
+			"name": "ExportDatabaseBackup",
+			"method": "POST",
+			"path": "/backups/{backup_id}/export",
+			"response": "DatabaseBackup"
+		},
+		{
+			"name": "RestoreDatabaseFromBackup",
+			"method": "POST",
+			"path": "/databases/{database_id}/restore",
+			"body": { "backup_id": "string" },
+			"response": "Database"
+		}
+	],
+	"entities": {
+		"Database": {
+			"id": "uuid",
+			"name": "string",
+			"status": "DatabaseStatus",
+			"endpoint": "string",
+			"organization_id": "uuid",
+			"project_id": "uuid",
+			"region": "string",
+			"created_at": "datetime",
+			"cpu_min": "uint32",
+			"cpu_max": "uint32",
+			"cpu_current": "uint32",
+			"started": "boolean",
+			"engine_major_version": "uint32"
+		},
+		"DatabaseBackup": {
+			"id": "uuid",
+			"status": "DatabaseBackupStatus",
+			"organization_id": "uuid",
+			"project_id": "uuid",
+			"database_id": "uuid",
+			"created_at": "datetime",
+			"expires_at": "datetime?",
+			"size": "uint64?",
+			"db_size": "uint64?",
+			"download_url": "string?",
+			"download_url_expires_at": "datetime?",
+			"region": "string"
+		}
+	},
+	"enums": {
+		"DatabaseStatus": [
+			"unknown_status",
+			"error",
+			"creating",
+			"ready",
+			"deleting",
+			"restoring",
+			"locked"
+		],
+		"DatabaseBackupStatus": ["unknown_status", "error", "ready", "locked"]
+	}
+}
