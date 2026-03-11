@@ -1,0 +1,203 @@
+product: sns
+api_version: v1beta1
+locality: regional
+sdk_package: "@scaleway/sdk-mnq"
+sdk_class: SnsAPI
+
+entities:
+  SnsInfo:
+    fields:
+      - name: projectId
+        type: string
+        required: true
+      - name: region
+        type: string
+        required: true
+      - name: createdAt
+        type: Date
+        required: false
+      - name: updatedAt
+        type: Date
+        required: false
+      - name: status
+        type: SnsInfoStatus
+        required: true
+        enum: [unknown_status, enabled, disabled]
+      - name: snsEndpointUrl
+        type: string
+        required: true
+
+  SnsCredentials:
+    fields:
+      - name: id
+        type: string
+        required: true
+      - name: name
+        type: string
+        required: true
+      - name: projectId
+        type: string
+        required: true
+      - name: region
+        type: string
+        required: true
+      - name: createdAt
+        type: Date
+        required: false
+      - name: updatedAt
+        type: Date
+        required: false
+      - name: accessKey
+        type: string
+        required: true
+      - name: secretKey
+        type: string
+        required: true
+        note: "Only returned by Create call"
+      - name: secretChecksum
+        type: string
+        required: true
+      - name: permissions
+        type: SnsPermissions
+        required: false
+
+  SnsPermissions:
+    fields:
+      - name: canPublish
+        type: boolean
+        required: false
+      - name: canReceive
+        type: boolean
+        required: false
+      - name: canManage
+        type: boolean
+        required: false
+
+operations:
+  activateSns:
+    method: POST
+    path: /mnq/v1beta1/regions/{region}/activate-sns
+    request:
+      - name: region
+        type: string
+        required: false
+      - name: projectId
+        type: string
+        required: false
+    response: SnsInfo
+
+  deactivateSns:
+    method: POST
+    path: /mnq/v1beta1/regions/{region}/deactivate-sns
+    request:
+      - name: region
+        type: string
+        required: false
+      - name: projectId
+        type: string
+        required: false
+    response: SnsInfo
+
+  getSnsInfo:
+    method: GET
+    path: /mnq/v1beta1/regions/{region}/sns-info
+    request:
+      - name: region
+        type: string
+        required: false
+      - name: projectId
+        type: string
+        required: false
+    response: SnsInfo
+
+  listSnsCredentials:
+    method: GET
+    path: /mnq/v1beta1/regions/{region}/sns-credentials
+    request:
+      - name: region
+        type: string
+        required: false
+      - name: projectId
+        type: string
+        required: false
+      - name: page
+        type: number
+        required: false
+      - name: pageSize
+        type: number
+        required: false
+      - name: orderBy
+        type: ListSnsCredentialsRequestOrderBy
+        required: false
+        enum: [created_at_asc, created_at_desc, updated_at_asc, updated_at_desc, name_asc, name_desc]
+    response:
+      totalCount: number
+      snsCredentials: SnsCredentials[]
+    pagination: true
+
+  getSnsCredentials:
+    method: GET
+    path: /mnq/v1beta1/regions/{region}/sns-credentials/{id}
+    request:
+      - name: region
+        type: string
+        required: false
+      - name: snsCredentialsId
+        type: string
+        required: true
+    response: SnsCredentials
+
+  createSnsCredentials:
+    method: POST
+    path: /mnq/v1beta1/regions/{region}/sns-credentials
+    request:
+      - name: region
+        type: string
+        required: false
+      - name: projectId
+        type: string
+        required: false
+      - name: name
+        type: string
+        required: false
+      - name: permissions
+        type: SnsPermissions
+        required: false
+    response: SnsCredentials
+
+  updateSnsCredentials:
+    method: PATCH
+    path: /mnq/v1beta1/regions/{region}/sns-credentials/{id}
+    request:
+      - name: region
+        type: string
+        required: false
+      - name: snsCredentialsId
+        type: string
+        required: true
+      - name: name
+        type: string
+        required: false
+      - name: permissions
+        type: SnsPermissions
+        required: false
+    response: SnsCredentials
+
+  deleteSnsCredentials:
+    method: DELETE
+    path: /mnq/v1beta1/regions/{region}/sns-credentials/{id}
+    request:
+      - name: region
+        type: string
+        required: false
+      - name: snsCredentialsId
+        type: string
+        required: true
+    response: void
+
+error_codes:
+  400: invalid_input
+  401: permission_denied
+  403: permission_denied
+  404: not_found
+  429: rate_limited
