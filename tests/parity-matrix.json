@@ -1,104 +1,104 @@
 {
-  "instances": {
-    "list_servers": {
-      "api": "GET /instance/v1/zones/{zone}/servers",
-      "tool": "scaleway_instances_list_servers",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "get_server": {
-      "api": "GET /instance/v1/zones/{zone}/servers/{server_id}",
-      "tool": "scaleway_instances_get_server",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "create_server": {
-      "api": "POST /instance/v1/zones/{zone}/servers",
-      "tool": "scaleway_instances_create_server",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "delete_server": {
-      "api": "DELETE /instance/v1/zones/{zone}/servers/{server_id}",
-      "tool": "scaleway_instances_delete_server",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "server_action": {
-      "api": "POST /instance/v1/zones/{zone}/servers/{server_id}/action",
-      "tool": "scaleway_instances_server_action",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "list_volumes": {
-      "api": "GET /instance/v1/zones/{zone}/volumes",
-      "tool": "scaleway_instances_list_volumes",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "get_volume": {
-      "api": "GET /instance/v1/zones/{zone}/volumes/{volume_id}",
-      "tool": "scaleway_instances_get_volume",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "create_volume": {
-      "api": "POST /instance/v1/zones/{zone}/volumes",
-      "tool": "scaleway_instances_create_volume",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "delete_volume": {
-      "api": "DELETE /instance/v1/zones/{zone}/volumes/{volume_id}",
-      "tool": "scaleway_instances_delete_volume",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "list_security_groups": {
-      "api": "GET /instance/v1/zones/{zone}/security_groups",
-      "tool": "scaleway_instances_list_security_groups",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "get_security_group": {
-      "api": "GET /instance/v1/zones/{zone}/security_groups/{security_group_id}",
-      "tool": "scaleway_instances_get_security_group",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "create_security_group": {
-      "api": "POST /instance/v1/zones/{zone}/security_groups",
-      "tool": "scaleway_instances_create_security_group",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "delete_security_group": {
-      "api": "DELETE /instance/v1/zones/{zone}/security_groups/{security_group_id}",
-      "tool": "scaleway_instances_delete_security_group",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "list_ips": {
-      "api": "GET /instance/v1/zones/{zone}/ips",
-      "tool": "scaleway_instances_list_ips",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "create_ip": {
-      "api": "POST /instance/v1/zones/{zone}/ips",
-      "tool": "scaleway_instances_create_ip",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "delete_ip": {
-      "api": "DELETE /instance/v1/zones/{zone}/ips/{ip_id}",
-      "tool": "scaleway_instances_delete_ip",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "attach_ip": {
-      "api": "PATCH /instance/v1/zones/{zone}/ips/{ip_id}",
-      "tool": "scaleway_instances_attach_ip",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "list_snapshots": {
-      "api": "GET /instance/v1/zones/{zone}/snapshots",
-      "tool": "scaleway_instances_list_snapshots",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "create_snapshot": {
-      "api": "POST /instance/v1/zones/{zone}/snapshots",
-      "tool": "scaleway_instances_create_snapshot",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    },
-    "delete_snapshot": {
-      "api": "DELETE /instance/v1/zones/{zone}/snapshots/{snapshot_id}",
-      "tool": "scaleway_instances_delete_snapshot",
-      "contract_test": "tests/contract/tools/instances/contract.test.ts"
-    }
-  }
+	"instances": {
+		"list_servers": {
+			"api": "GET /instance/v1/zones/{zone}/servers",
+			"tool": "scaleway_instances_list_servers",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"get_server": {
+			"api": "GET /instance/v1/zones/{zone}/servers/{server_id}",
+			"tool": "scaleway_instances_get_server",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"create_server": {
+			"api": "POST /instance/v1/zones/{zone}/servers",
+			"tool": "scaleway_instances_create_server",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"delete_server": {
+			"api": "DELETE /instance/v1/zones/{zone}/servers/{server_id}",
+			"tool": "scaleway_instances_delete_server",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"server_action": {
+			"api": "POST /instance/v1/zones/{zone}/servers/{server_id}/action",
+			"tool": "scaleway_instances_server_action",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"list_volumes": {
+			"api": "GET /instance/v1/zones/{zone}/volumes",
+			"tool": "scaleway_instances_list_volumes",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"get_volume": {
+			"api": "GET /instance/v1/zones/{zone}/volumes/{volume_id}",
+			"tool": "scaleway_instances_get_volume",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"create_volume": {
+			"api": "POST /instance/v1/zones/{zone}/volumes",
+			"tool": "scaleway_instances_create_volume",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"delete_volume": {
+			"api": "DELETE /instance/v1/zones/{zone}/volumes/{volume_id}",
+			"tool": "scaleway_instances_delete_volume",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"list_security_groups": {
+			"api": "GET /instance/v1/zones/{zone}/security_groups",
+			"tool": "scaleway_instances_list_security_groups",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"get_security_group": {
+			"api": "GET /instance/v1/zones/{zone}/security_groups/{security_group_id}",
+			"tool": "scaleway_instances_get_security_group",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"create_security_group": {
+			"api": "POST /instance/v1/zones/{zone}/security_groups",
+			"tool": "scaleway_instances_create_security_group",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"delete_security_group": {
+			"api": "DELETE /instance/v1/zones/{zone}/security_groups/{security_group_id}",
+			"tool": "scaleway_instances_delete_security_group",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"list_ips": {
+			"api": "GET /instance/v1/zones/{zone}/ips",
+			"tool": "scaleway_instances_list_ips",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"create_ip": {
+			"api": "POST /instance/v1/zones/{zone}/ips",
+			"tool": "scaleway_instances_create_ip",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"delete_ip": {
+			"api": "DELETE /instance/v1/zones/{zone}/ips/{ip_id}",
+			"tool": "scaleway_instances_delete_ip",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"attach_ip": {
+			"api": "PATCH /instance/v1/zones/{zone}/ips/{ip_id}",
+			"tool": "scaleway_instances_attach_ip",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"list_snapshots": {
+			"api": "GET /instance/v1/zones/{zone}/snapshots",
+			"tool": "scaleway_instances_list_snapshots",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"create_snapshot": {
+			"api": "POST /instance/v1/zones/{zone}/snapshots",
+			"tool": "scaleway_instances_create_snapshot",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		},
+		"delete_snapshot": {
+			"api": "DELETE /instance/v1/zones/{zone}/snapshots/{snapshot_id}",
+			"tool": "scaleway_instances_delete_snapshot",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		}
+	}
 }

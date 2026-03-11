@@ -16,7 +16,10 @@
 		"@modelcontextprotocol/sdk": "^1.25.0",
 		"@scaleway/sdk-account": "^2.3.1",
 		"@scaleway/sdk-client": "^1.0.0",
+		"@scaleway/sdk-edge-services": "^2.7.0",
 		"@scaleway/sdk-key-manager": "^2.3.1",
+		"@scaleway/sdk-mnq": "^2.3.1",
+		"@scaleway/sdk-secret": "^2.3.1",
 		"zod": "^3.25.0"
 	},
 	"devDependencies": {
