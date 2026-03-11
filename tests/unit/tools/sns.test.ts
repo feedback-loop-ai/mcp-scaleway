@@ -74,7 +74,10 @@ import {
 
 function getMockApi() {
 	const instance = vi.mocked(Mnqv1beta1.SnsAPI);
-	return instance.mock.results[instance.mock.results.length - 1]?.value ?? new Mnqv1beta1.SnsAPI({} as never);
+	return (
+		instance.mock.results[instance.mock.results.length - 1]?.value ??
+		new Mnqv1beta1.SnsAPI({} as never)
+	);
 }
 
 const MOCK_SNS_INFO = {
