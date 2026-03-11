@@ -1,6 +1,8 @@
 # mcp-scaleway
 
 [![CI](https://github.com/feedback-loop-ai/mcp-scaleway/actions/workflows/ci.yml/badge.svg)](https://github.com/feedback-loop-ai/mcp-scaleway/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![MCP](https://img.shields.io/badge/MCP-1.25+-blue.svg)](https://modelcontextprotocol.io/)
 
 An MCP (Model Context Protocol) server that gives AI assistants like Claude full access to the Scaleway cloud platform. Manage compute instances, databases, Kubernetes clusters, serverless functions, object storage, and 30+ more Scaleway services through natural language.
 
@@ -29,6 +31,9 @@ An MCP (Model Context Protocol) server that gives AI assistants like Claude full
 - [Development](#development)
 - [Architecture](#architecture)
 - [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
 
 ## Overview
 
@@ -1256,3 +1261,27 @@ If using Claude Desktop or Claude Code, check that the `env` block in your confi
 | `Cannot find module` | Run `bun install` in the project directory |
 | Rate limiting errors | Scaleway has per-service rate limits; add delays between bulk operations |
 | Timeout errors | Some operations (server creation, cluster provisioning) take time; check status with get/list tools |
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/my-feature`)
+3. Make your changes
+4. Run lint and tests (`bun run lint && bun run test`)
+5. Commit your changes (`git commit -m 'Add my feature'`)
+6. Push to your branch (`git push origin feature/my-feature`)
+7. Open a Pull Request
+
+## Support
+
+If you find this project useful, consider sponsoring its development:
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?logo=github-sponsors)](https://github.com/sponsors/valentinyanakiev)
+
+Your support helps maintain and improve the MCP Scaleway server.
+
+## License
+
+[MIT](LICENSE)
