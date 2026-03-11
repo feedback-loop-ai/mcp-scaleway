@@ -58,9 +58,9 @@ jobs:
 
       - name: Verify shebang
         run: |
-          SHEBANG=$(head -c 21 dist/index.js)
+          SHEBANG=$(head -1 dist/index.js)
           if [ "$SHEBANG" != "#!/usr/bin/env node" ]; then
-            echo "ERROR: dist/index.js missing shebang"
+            echo "ERROR: dist/index.js missing shebang (got: '$SHEBANG')"
             exit 1
           fi
 
