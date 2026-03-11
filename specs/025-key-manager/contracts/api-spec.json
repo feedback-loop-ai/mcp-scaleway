@@ -1,0 +1,101 @@
+{
+	"product": "key-manager",
+	"apiVersion": "v1alpha1",
+	"locality": "regional",
+	"sdk": "@scaleway/sdk-key-manager",
+	"basePath": "/key-manager/v1alpha1/regions/{region}",
+	"endpoints": [
+		{
+			"operation": "ListKeys",
+			"method": "GET",
+			"path": "/keys",
+			"tool": "scaleway_key_manager_list_keys",
+			"pagination": true,
+			"auth": "required"
+		},
+		{
+			"operation": "GetKey",
+			"method": "GET",
+			"path": "/keys/{key_id}",
+			"tool": "scaleway_key_manager_get_key",
+			"auth": "required"
+		},
+		{
+			"operation": "CreateKey",
+			"method": "POST",
+			"path": "/keys",
+			"tool": "scaleway_key_manager_create_key",
+			"auth": "required"
+		},
+		{
+			"operation": "UpdateKey",
+			"method": "PATCH",
+			"path": "/keys/{key_id}",
+			"tool": "scaleway_key_manager_update_key",
+			"auth": "required"
+		},
+		{
+			"operation": "DeleteKey",
+			"method": "DELETE",
+			"path": "/keys/{key_id}",
+			"tool": "scaleway_key_manager_delete_key",
+			"auth": "required"
+		},
+		{
+			"operation": "RotateKey",
+			"method": "POST",
+			"path": "/keys/{key_id}/rotate",
+			"tool": "scaleway_key_manager_rotate_key",
+			"auth": "required"
+		},
+		{
+			"operation": "ProtectKey",
+			"method": "POST",
+			"path": "/keys/{key_id}/protect",
+			"tool": "scaleway_key_manager_protect_key",
+			"auth": "required"
+		},
+		{
+			"operation": "UnprotectKey",
+			"method": "POST",
+			"path": "/keys/{key_id}/unprotect",
+			"tool": "scaleway_key_manager_unprotect_key",
+			"auth": "required"
+		},
+		{
+			"operation": "EnableKey",
+			"method": "POST",
+			"path": "/keys/{key_id}/enable",
+			"tool": "scaleway_key_manager_enable_key",
+			"auth": "required"
+		},
+		{
+			"operation": "DisableKey",
+			"method": "POST",
+			"path": "/keys/{key_id}/disable",
+			"tool": "scaleway_key_manager_disable_key",
+			"auth": "required"
+		},
+		{
+			"operation": "Encrypt",
+			"method": "POST",
+			"path": "/keys/{key_id}/encrypt",
+			"tool": "scaleway_key_manager_encrypt",
+			"auth": "required"
+		},
+		{
+			"operation": "Decrypt",
+			"method": "POST",
+			"path": "/keys/{key_id}/decrypt",
+			"tool": "scaleway_key_manager_decrypt",
+			"auth": "required"
+		},
+		{
+			"operation": "GenerateDataKey",
+			"method": "POST",
+			"path": "/keys/{key_id}/generate-data-key",
+			"tool": "scaleway_key_manager_generate_data_key",
+			"auth": "required"
+		}
+	]
+}
