@@ -132,7 +132,7 @@ jobs:
           MAX_ATTEMPTS=2
           while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
             echo "Publish attempt $ATTEMPT of $MAX_ATTEMPTS"
-            if npm publish --provenance --access public --tag ${{ steps.version.outputs.dist_tag }}; then
+            if npm publish --access public --tag ${{ steps.version.outputs.dist_tag }}; then
               echo "Published successfully"
               exit 0
             fi
