@@ -69,6 +69,7 @@ Key directories:
 - Vitest for testing (@vitest/coverage-v8 for 100% coverage enforcement), Biome for linting/formatting
 - N/A (stateless proxy to Scaleway APIs)
 - TypeScript 5.x (strict mode) with Bun 1.x runtime + `@modelcontextprotocol/sdk` ^1.25.x, `@scaleway/sdk-client` + per-product `@scaleway/sdk-{product}` packages, `zod` ^3.25.x (001-scaleway-api-specs)
+- GitHub-flavored Markdown (documentation feature, no runtime code) + N/A (documentation only) (038-comprehensive-readme)
 
 ## Recent Changes
 - Constitution v1.1.0: Added Principle VIII (100% Test Coverage & API Parity), expanded Contract-First API Design with Scaleway API Reference Spec requirement
