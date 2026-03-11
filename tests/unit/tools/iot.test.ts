@@ -465,6 +465,20 @@ describe("handleCreateDevice", () => {
 		expect(body.description).toBe("A temperature sensor");
 	});
 
+	it("creates a device with messageFilters but no publish/subscribe", async () => {
+		mockOkResponse({ id: "dev-new" });
+
+		await handleCreateDevice({
+			hubId: "22222222-2222-2222-2222-222222222222",
+			name: "partial-filter-sensor",
+			messageFilters: {},
+		});
+
+		const body = JSON.parse(mockFetch.mock.calls[0][1].body);
+		expect(body.message_filters.publish).toBeUndefined();
+		expect(body.message_filters.subscribe).toBeUndefined();
+	});
+
 	it("handles errors", async () => {
 		mockErrorResponse(400, "Bad Request");
 		const result = await handleCreateDevice({
@@ -509,6 +523,19 @@ describe("handleUpdateDevice", () => {
 		expect(body.allow_multiple_connections).toBe(false);
 		expect(body.hub_id).toBe("33333333-3333-3333-3333-333333333333");
 		expect(body.description).toBe("Updated desc");
+	});
+
+	it("updates a device with messageFilters but no publish/subscribe", async () => {
+		mockOkResponse({ id: "dev-1" });
+
+		await handleUpdateDevice({
+			deviceId: "11111111-1111-1111-1111-111111111111",
+			messageFilters: {},
+		});
+
+		const body = JSON.parse(mockFetch.mock.calls[0][1].body);
+		expect(body.message_filters.publish).toBeUndefined();
+		expect(body.message_filters.subscribe).toBeUndefined();
 	});
 
 	it("handles errors", async () => {
