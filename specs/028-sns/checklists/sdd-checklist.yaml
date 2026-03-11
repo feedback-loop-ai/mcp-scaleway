@@ -1,0 +1,98 @@
+feature: "028-sns"
+product: "SNS (Topics & Events)"
+status: complete
+
+user_stories:
+  - id: US-SNS-1
+    priority: P1
+    description: "Activate/deactivate SNS service for a project"
+    tools:
+      - scaleway_sns_activate
+      - scaleway_sns_deactivate
+
+  - id: US-SNS-2
+    priority: P1
+    description: "Credentials CRUD for SNS service"
+    tools:
+      - scaleway_sns_list_credentials
+      - scaleway_sns_get_credentials
+      - scaleway_sns_create_credentials
+      - scaleway_sns_update_credentials
+      - scaleway_sns_delete_credentials
+
+  - id: US-SNS-3
+    priority: P2
+    description: "Get SNS service info (status, endpoint)"
+    tools:
+      - scaleway_sns_get_info
+
+tools:
+  - name: scaleway_sns_activate
+    handler: handleActivateSns
+    schema: ActivateSnsSchema
+    sdk_method: SnsAPI.activateSns
+    tests:
+      unit: tests/unit/tools/sns.test.ts
+      contract: tests/contract/sns.test.ts
+
+  - name: scaleway_sns_deactivate
+    handler: handleDeactivateSns
+    schema: DeactivateSnsSchema
+    sdk_method: SnsAPI.deactivateSns
+    tests:
+      unit: tests/unit/tools/sns.test.ts
+      contract: tests/contract/sns.test.ts
+
+  - name: scaleway_sns_get_info
+    handler: handleGetSnsInfo
+    schema: GetSnsInfoSchema
+    sdk_method: SnsAPI.getSnsInfo
+    tests:
+      unit: tests/unit/tools/sns.test.ts
+      contract: tests/contract/sns.test.ts
+
+  - name: scaleway_sns_list_credentials
+    handler: handleListSnsCredentials
+    schema: ListSnsCredentialsSchema
+    sdk_method: SnsAPI.listSnsCredentials
+    pagination: true
+    tests:
+      unit: tests/unit/tools/sns.test.ts
+      contract: tests/contract/sns.test.ts
+
+  - name: scaleway_sns_get_credentials
+    handler: handleGetSnsCredentials
+    schema: GetSnsCredentialsSchema
+    sdk_method: SnsAPI.getSnsCredentials
+    tests:
+      unit: tests/unit/tools/sns.test.ts
+      contract: tests/contract/sns.test.ts
+
+  - name: scaleway_sns_create_credentials
+    handler: handleCreateSnsCredentials
+    schema: CreateSnsCredentialsSchema
+    sdk_method: SnsAPI.createSnsCredentials
+    tests:
+      unit: tests/unit/tools/sns.test.ts
+      contract: tests/contract/sns.test.ts
+
+  - name: scaleway_sns_update_credentials
+    handler: handleUpdateSnsCredentials
+    schema: UpdateSnsCredentialsSchema
+    sdk_method: SnsAPI.updateSnsCredentials
+    tests:
+      unit: tests/unit/tools/sns.test.ts
+      contract: tests/contract/sns.test.ts
+
+  - name: scaleway_sns_delete_credentials
+    handler: handleDeleteSnsCredentials
+    schema: DeleteSnsCredentialsSchema
+    sdk_method: SnsAPI.deleteSnsCredentials
+    tests:
+      unit: tests/unit/tools/sns.test.ts
+      contract: tests/contract/sns.test.ts
+
+coverage:
+  lines: 100
+  branches: 100
+  api_parity: 8/8
