@@ -68,12 +68,6 @@ Key directories:
 - TypeScript 5.x (strict mode) with Bun 1.x + @modelcontextprotocol/sdk ^1.25.x, @scaleway/sdk, zod ^3.25.x
 - Vitest for testing (@vitest/coverage-v8 for 100% coverage enforcement), Biome for linting/formatting
 - N/A (stateless proxy to Scaleway APIs)
-- TypeScript 5.x (strict mode) with Bun 1.x runtime + `@modelcontextprotocol/sdk` ^1.25.x, `@scaleway/sdk-client` + per-product `@scaleway/sdk-{product}` packages, `zod` ^3.25.x (001-scaleway-api-specs)
-- GitHub-flavored Markdown (documentation feature, no runtime code) + N/A (documentation only) (038-comprehensive-readme)
-- TypeScript 5.x (strict mode) with Bun 1.x runtime + GitHub Actions (`oven-sh/setup-bun@v2`, `actions/checkout@v4`, `actions/upload-artifact@v4`), Biome (lint), Vitest + @vitest/coverage-v8 (test/coverage) (039-ci-build-pipeline)
-- N/A (CI configuration only — YAML files + minor script changes) (039-ci-build-pipeline)
-- TypeScript 5.x (strict mode) with Bun 1.x runtime + @modelcontextprotocol/sdk ^1.25.x, @scaleway/sdk-client + per-product packages, zod ^3.25.x (040-release-pipeline)
-- N/A (stateless proxy — no state involved in release pipeline) (040-release-pipeline)
 
 ## Recent Changes
 - Constitution v1.1.0: Added Principle VIII (100% Test Coverage & API Parity), expanded Contract-First API Design with Scaleway API Reference Spec requirement
