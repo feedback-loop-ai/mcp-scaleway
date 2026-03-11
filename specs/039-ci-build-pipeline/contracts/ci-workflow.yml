@@ -1,0 +1,117 @@
+# CI Workflow Design Contract
+# This is the authoritative design contract for .github/workflows/ci.yml
+# Requirements traced: FR-001, FR-002, FR-003, FR-004, FR-006, FR-007, FR-008, FR-010, FR-012, FR-013, FR-014
+
+name: CI # FR-011 (badge references this name)
+
+on:
+  push:
+    branches: ["*"] # FR-001: trigger on push to any branch
+  pull_request:
+    branches: [main] # FR-004: provide status checks for PRs to main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true # FR-014: cancel in-progress runs on new push
+
+env:
+  BUN_VERSION: "1.3.6" # Pinned to match local development
+
+jobs:
+  # FR-008: separate parallel jobs for each check category
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5 # FR-006: well within 10-minute budget
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/cache@v4 # FR-010: cache dependencies
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      - run: bun run lint # FR-002: linting check
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      - run: bun x tsc --noEmit # FR-002: type checking
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10 # FR-006: 10-minute budget for test + coverage
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+
+      # FR-002: unit tests + contract tests with coverage
+      # FR-012: 100% line+branch coverage enforced by vitest thresholds
+      - name: Run tests with coverage
+        run: bun run test -- --coverage.enabled --coverage.reporter=text --coverage.reporter=json-summary
+
+      # FR-012: coverage results surfaced via GitHub Job Summary
+      - name: Coverage summary
+        if: always()
+        run: |
+          if [ -f coverage/coverage-summary.json ]; then
+            echo '## Coverage Summary' >> $GITHUB_STEP_SUMMARY
+            echo '' >> $GITHUB_STEP_SUMMARY
+            echo '| Metric | Coverage |' >> $GITHUB_STEP_SUMMARY
+            echo '|--------|----------|' >> $GITHUB_STEP_SUMMARY
+            echo "| Lines | $(jq -r '.total.lines.pct' coverage/coverage-summary.json)% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Branches | $(jq -r '.total.branches.pct' coverage/coverage-summary.json)% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Functions | $(jq -r '.total.functions.pct' coverage/coverage-summary.json)% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Statements | $(jq -r '.total.statements.pct' coverage/coverage-summary.json)% |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      # FR-012: coverage uploaded as build artifact
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  parity:
+    name: API Parity
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      - run: bun run test:parity # FR-013: validate API parity matrix
