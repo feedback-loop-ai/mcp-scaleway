@@ -104,8 +104,8 @@ const mockCreatePurgeRequest = vi.fn();
 const mockListPurgeRequests = vi.fn();
 const mockGetPurgeRequest = vi.fn();
 
-vi.mock("@scaleway/sdk-edge-services/v1beta1", () => ({
-	API: vi.fn().mockImplementation(() => ({
+vi.mock("@scaleway/sdk-edge-services", () => ({
+	EdgeServicesv1beta1: { API: vi.fn().mockImplementation(() => ({
 		listPipelines: mockListPipelines,
 		getPipeline: mockGetPipeline,
 		createPipeline: mockCreatePipeline,
@@ -134,7 +134,7 @@ vi.mock("@scaleway/sdk-edge-services/v1beta1", () => ({
 		createPurgeRequest: mockCreatePurgeRequest,
 		listPurgeRequests: mockListPurgeRequests,
 		getPurgeRequest: mockGetPurgeRequest,
-	})),
+	})) },
 }));
 
 vi.mock("../../../src/shared/auth.js", () => ({

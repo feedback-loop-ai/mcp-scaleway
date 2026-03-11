@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { registerSnsTools } from "../../../src/tools/sns/index.js";
 
 // Mock the SDK module
-vi.mock("@scaleway/sdk-mnq/v1beta1", () => {
+vi.mock("@scaleway/sdk-mnq", () => {
 	const mockActivateSns = vi.fn();
 	const mockDeactivateSns = vi.fn();
 	const mockGetSnsInfo = vi.fn();
@@ -14,16 +14,18 @@ vi.mock("@scaleway/sdk-mnq/v1beta1", () => {
 	const mockDeleteSnsCredentials = vi.fn();
 
 	return {
-		SnsAPI: vi.fn().mockImplementation(() => ({
-			activateSns: mockActivateSns,
-			deactivateSns: mockDeactivateSns,
-			getSnsInfo: mockGetSnsInfo,
-			listSnsCredentials: mockListSnsCredentials,
-			getSnsCredentials: mockGetSnsCredentials,
-			createSnsCredentials: mockCreateSnsCredentials,
-			updateSnsCredentials: mockUpdateSnsCredentials,
-			deleteSnsCredentials: mockDeleteSnsCredentials,
-		})),
+		Mnqv1beta1: {
+			SnsAPI: vi.fn().mockImplementation(() => ({
+				activateSns: mockActivateSns,
+				deactivateSns: mockDeactivateSns,
+				getSnsInfo: mockGetSnsInfo,
+				listSnsCredentials: mockListSnsCredentials,
+				getSnsCredentials: mockGetSnsCredentials,
+				createSnsCredentials: mockCreateSnsCredentials,
+				updateSnsCredentials: mockUpdateSnsCredentials,
+				deleteSnsCredentials: mockDeleteSnsCredentials,
+			})),
+		},
 	};
 });
 
@@ -43,7 +45,7 @@ vi.mock("../../../src/shared/client.js", () => ({
 }));
 
 // Import handlers after mocks
-import { SnsAPI } from "@scaleway/sdk-mnq/v1beta1";
+import { Mnqv1beta1 } from "@scaleway/sdk-mnq";
 import {
 	handleActivateSns,
 	handleCreateSnsCredentials,
@@ -71,8 +73,8 @@ import {
 } from "../../../src/tools/sns/types.js";
 
 function getMockApi() {
-	const instance = vi.mocked(SnsAPI);
-	return instance.mock.results[instance.mock.results.length - 1]?.value ?? new SnsAPI({} as never);
+	const instance = vi.mocked(Mnqv1beta1.SnsAPI);
+	return instance.mock.results[instance.mock.results.length - 1]?.value ?? new Mnqv1beta1.SnsAPI({} as never);
 }
 
 const MOCK_SNS_INFO = {

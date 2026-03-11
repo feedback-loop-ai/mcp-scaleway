@@ -1,4 +1,4 @@
-import { API } from "@scaleway/sdk-edge-services/v1beta1";
+import { EdgeServicesv1beta1 } from "@scaleway/sdk-edge-services";
 import type { z } from "zod";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
@@ -35,10 +35,10 @@ import type {
 	UpdateTLSStageParams,
 } from "./types.js";
 
-function getApi(): API {
+function getApi(): EdgeServicesv1beta1.API {
 	const config = loadAuthConfig();
 	const client = createScalewayClient(config);
-	return new API(client);
+	return new EdgeServicesv1beta1.API(client);
 }
 
 function successResponse(data: unknown) {
