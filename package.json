@@ -4,13 +4,21 @@
 	"description": "MCP server for Scaleway cloud provider",
 	"type": "module",
 	"main": "src/server.ts",
+	"bin": {
+		"mcp-scaleway": "./dist/index.js"
+	},
+	"files": ["dist/", "README.md", "LICENSE"],
+	"engines": {
+		"node": ">=18.0.0"
+	},
 	"scripts": {
 		"start": "bun run src/main.ts",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
 		"test": "vitest run --config tests/vitest.config.ts",
 		"test:watch": "vitest --config tests/vitest.config.ts",
-		"test:parity": "vitest run --config tests/vitest.config.ts -- parity"
+		"test:parity": "vitest run --config tests/vitest.config.ts -- parity",
+		"build": "bun run bun.build.ts"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.25.0",
