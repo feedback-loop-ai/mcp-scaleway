@@ -1,5 +1,6 @@
 # mcp-scaleway
 
+[![npm](https://img.shields.io/npm/v/mcp-scaleway)](https://www.npmjs.com/package/mcp-scaleway)
 [![CI](https://github.com/feedback-loop-ai/mcp-scaleway/actions/workflows/ci.yml/badge.svg)](https://github.com/feedback-loop-ai/mcp-scaleway/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP](https://img.shields.io/badge/MCP-1.25+-blue.svg)](https://modelcontextprotocol.io/)
@@ -64,18 +65,13 @@ Supports 36 Scaleway service areas organized across 8 categories:
 ## Quick Start
 
 ```bash
-# 1. Clone and install
-git clone https://github.com/feedback-loop-ai/mcp-scaleway.git
-cd mcp-scaleway
-bun install
-
-# 2. Set your Scaleway credentials
+# Set your Scaleway credentials
 export SCW_ACCESS_KEY="SCWxxxxxxxxxxxxxxxxx"
 export SCW_SECRET_KEY="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 export SCW_DEFAULT_PROJECT_ID="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
-# 3. Start the server
-bun run start
+# Run the server
+npx mcp-scaleway
 ```
 
 Then configure your MCP client (see [Configuration](#configuration) below).
@@ -84,22 +80,29 @@ Then configure your MCP client (see [Configuration](#configuration) below).
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) 1.x or later
+- [Node.js](https://nodejs.org) 18+ (or [Bun](https://bun.sh) 1.x)
 - A [Scaleway account](https://console.scaleway.com) with API credentials
 
-### Install
+### Via npx (no install needed)
+
+```bash
+npx mcp-scaleway
+```
+
+### Global install
+
+```bash
+npm install -g mcp-scaleway
+mcp-scaleway
+```
+
+### From source
 
 ```bash
 git clone https://github.com/feedback-loop-ai/mcp-scaleway.git
 cd mcp-scaleway
 bun install
-```
-
-### Verify
-
-```bash
 bun run start
-# Server starts and listens on stdio
 ```
 
 ## Authentication
@@ -146,9 +149,8 @@ Add the server to your Claude Desktop configuration file:
 {
   "mcpServers": {
     "scaleway": {
-      "command": "bun",
-      "args": ["run", "start"],
-      "cwd": "/path/to/mcp-scaleway",
+      "command": "npx",
+      "args": ["mcp-scaleway"],
       "env": {
         "SCW_ACCESS_KEY": "SCWxxxxxxxxxxxxxxxxx",
         "SCW_SECRET_KEY": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
@@ -167,9 +169,8 @@ Add to your project's `.mcp.json` file (or `~/.claude/mcp.json` for global acces
 {
   "mcpServers": {
     "scaleway": {
-      "command": "bun",
-      "args": ["run", "start"],
-      "cwd": "/path/to/mcp-scaleway",
+      "command": "npx",
+      "args": ["mcp-scaleway"],
       "env": {
         "SCW_ACCESS_KEY": "SCWxxxxxxxxxxxxxxxxx",
         "SCW_SECRET_KEY": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
@@ -185,7 +186,7 @@ Add to your project's `.mcp.json` file (or `~/.claude/mcp.json` for global acces
 The server uses **stdio transport** (reads from stdin, writes to stdout). Any MCP-compatible client can connect by running:
 
 ```bash
-SCW_ACCESS_KEY=... SCW_SECRET_KEY=... SCW_DEFAULT_PROJECT_ID=... bun run start
+SCW_ACCESS_KEY=... SCW_SECRET_KEY=... SCW_DEFAULT_PROJECT_ID=... npx mcp-scaleway
 ```
 
 The server follows the [MCP specification](https://modelcontextprotocol.io) and works with any client that supports the protocol.
@@ -1099,9 +1100,8 @@ Use the `allowedTools` field in your `.mcp.json` to filter tools by pattern:
 {
   "mcpServers": {
     "scaleway": {
-      "command": "bun",
-      "args": ["run", "start"],
-      "cwd": "/path/to/mcp-scaleway",
+      "command": "npx",
+      "args": ["mcp-scaleway"],
       "env": {
         "SCW_ACCESS_KEY": "...",
         "SCW_SECRET_KEY": "...",
@@ -1234,9 +1234,9 @@ If using Claude Desktop or Claude Code, check that the `env` block in your confi
 
 **Server starts but no tools appear**
 
-- Verify the server is running: `bun run start` should start without errors
-- Check that your MCP client config points to the correct `cwd` path
-- Ensure `bun` is in your PATH
+- Verify the server is running: `npx mcp-scaleway` should start without errors
+- Check that your MCP client config is correct
+- Ensure `node` (18+) is in your PATH
 
 **"Permission denied" errors from Scaleway API**
 
