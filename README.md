@@ -1,5 +1,7 @@
 # mcp-scaleway
 
+[![CI](https://github.com/feedback-loop-ai/mcp-scaleway/actions/workflows/ci.yml/badge.svg)](https://github.com/feedback-loop-ai/mcp-scaleway/actions/workflows/ci.yml)
+
 An MCP (Model Context Protocol) server that gives AI assistants like Claude full access to the Scaleway cloud platform. Manage compute instances, databases, Kubernetes clusters, serverless functions, object storage, and 30+ more Scaleway services through natural language.
 
 ## Table of Contents

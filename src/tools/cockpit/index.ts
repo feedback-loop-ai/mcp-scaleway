@@ -189,12 +189,12 @@ export function registerCockpitTools(server: McpServer): void {
 	);
 
 	// --- Managed Alerts ---
+	const ManagedAlertsCP = ListManagedAlertsContactPointsInput;
 	server.tool(
 		"scaleway_cockpit_list_managed_alerts_contact_points",
 		"List managed alerts contact points",
-		ListManagedAlertsContactPointsInput.shape,
-		async (params) =>
-			handleListManagedAlertsContactPoints(ListManagedAlertsContactPointsInput.parse(params)),
+		ManagedAlertsCP.shape,
+		async (params) => handleListManagedAlertsContactPoints(ManagedAlertsCP.parse(params)),
 	);
 
 	server.tool(
