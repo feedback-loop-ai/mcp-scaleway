@@ -15,7 +15,7 @@
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.25.0",
 		"@scaleway/sdk-client": "^1.0.0",
-		"@scaleway/sdk-edge-services": "^2.7.0",
+		"@scaleway/sdk-secret": "^2.3.1",
 		"zod": "^3.25.0"
 	},
 	"devDependencies": {
