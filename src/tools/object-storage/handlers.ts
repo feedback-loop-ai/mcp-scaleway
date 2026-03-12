@@ -1,5 +1,6 @@
 import { loadAuthConfig } from "../../shared/auth.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
+import { signS3Request } from "../../shared/s3-signer.js";
 import type {
 	CreateBucketInput,
 	DeleteBucketInput,
@@ -21,12 +22,24 @@ function buildEndpoint(region: string): string {
 	return `https://s3.${region}.scw.cloud`;
 }
 
-function buildHeaders(accessKey: string, secretKey: string): Record<string, string> {
-	return {
-		"X-Auth-Token": secretKey,
-		"X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD",
-		Authorization: `SCW ${accessKey}:${secretKey}`,
-	};
+function buildSignedHeaders(params: {
+	method: string;
+	url: string;
+	accessKey: string;
+	secretKey: string;
+	region: string;
+	extraHeaders?: Record<string, string>;
+	body?: string | Buffer;
+}): Record<string, string> {
+	return signS3Request({
+		method: params.method,
+		url: params.url,
+		headers: params.extraHeaders ?? {},
+		body: params.body,
+		accessKey: params.accessKey,
+		secretKey: params.secretKey,
+		region: params.region,
+	});
 }
 
 interface ToolResponse {
@@ -47,10 +60,16 @@ export async function handleListBuckets(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = buildHeaders(config.accessKey, config.secretKey);
+		const url = buildEndpoint(region);
+		const headers = buildSignedHeaders({
+			method: "GET",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
 
-		const response = await fetch(endpoint, { method: "GET", headers });
+		const response = await fetch(url, { method: "GET", headers });
 
 		if (!response.ok) {
 			const errText = await response.text();
@@ -75,15 +94,21 @@ export async function handleCreateBucket(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers: Record<string, string> = {
-			...buildHeaders(config.accessKey, config.secretKey),
-		};
+		const url = `${buildEndpoint(region)}/${input.name}`;
+		const extraHeaders: Record<string, string> = {};
 		if (input.acl) {
-			headers["x-amz-acl"] = input.acl;
+			extraHeaders["x-amz-acl"] = input.acl;
 		}
+		const headers = buildSignedHeaders({
+			method: "PUT",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+			extraHeaders,
+		});
 
-		const response = await fetch(`${endpoint}/${input.name}`, {
+		const response = await fetch(url, {
 			method: "PUT",
 			headers,
 		});
@@ -108,10 +133,16 @@ export async function handleDeleteBucket(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = buildHeaders(config.accessKey, config.secretKey);
+		const url = `${buildEndpoint(region)}/${input.name}`;
+		const headers = buildSignedHeaders({
+			method: "DELETE",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
 
-		const response = await fetch(`${endpoint}/${input.name}`, {
+		const response = await fetch(url, {
 			method: "DELETE",
 			headers,
 		});
@@ -136,13 +167,19 @@ export async function handleGetBucketInfo(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = buildHeaders(config.accessKey, config.secretKey);
+		const baseUrl = `${buildEndpoint(region)}/${input.name}`;
 
 		// HEAD bucket for existence + get versioning and object count via list
-		const headResponse = await fetch(`${endpoint}/${input.name}`, {
+		const headHeaders = buildSignedHeaders({
 			method: "HEAD",
-			headers,
+			url: baseUrl,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
+		const headResponse = await fetch(baseUrl, {
+			method: "HEAD",
+			headers: headHeaders,
 		});
 
 		if (!headResponse.ok) {
@@ -153,17 +190,33 @@ export async function handleGetBucketInfo(input: {
 		}
 
 		// Get versioning status
-		const versioningResponse = await fetch(`${endpoint}/${input.name}?versioning`, {
+		const versioningUrl = `${baseUrl}?versioning`;
+		const versioningHeaders = buildSignedHeaders({
 			method: "GET",
-			headers,
+			url: versioningUrl,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
+		const versioningResponse = await fetch(versioningUrl, {
+			method: "GET",
+			headers: versioningHeaders,
 		});
 		const versioningXml = versioningResponse.ok ? await versioningResponse.text() : "";
 		const versioning = parseVersioningXml(versioningXml);
 
 		// Get object count via listing
-		const listResponse = await fetch(`${endpoint}/${input.name}?list-type=2&max-keys=0`, {
+		const listUrl = `${baseUrl}?list-type=2&max-keys=0`;
+		const listHeaders = buildSignedHeaders({
 			method: "GET",
-			headers,
+			url: listUrl,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
+		const listResponse = await fetch(listUrl, {
+			method: "GET",
+			headers: listHeaders,
 		});
 		const listXml = listResponse.ok ? await listResponse.text() : "";
 		const objectCount = parseKeyCount(listXml);
@@ -194,8 +247,6 @@ export async function handleListObjects(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = buildHeaders(config.accessKey, config.secretKey);
 
 		const params = new URLSearchParams({ "list-type": "2" });
 		if (input.prefix) params.set("prefix", input.prefix);
@@ -203,7 +254,16 @@ export async function handleListObjects(input: {
 		if (input.maxKeys !== undefined) params.set("max-keys", String(input.maxKeys));
 		if (input.continuationToken) params.set("continuation-token", input.continuationToken);
 
-		const response = await fetch(`${endpoint}/${input.bucket}?${params.toString()}`, {
+		const url = `${buildEndpoint(region)}/${input.bucket}?${params.toString()}`;
+		const headers = buildSignedHeaders({
+			method: "GET",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
+
+		const response = await fetch(url, {
 			method: "GET",
 			headers,
 		});
@@ -231,10 +291,16 @@ export async function handleGetObjectInfo(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = buildHeaders(config.accessKey, config.secretKey);
+		const url = `${buildEndpoint(region)}/${input.bucket}/${encodeURIComponent(input.key)}`;
+		const headers = buildSignedHeaders({
+			method: "HEAD",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
 
-		const response = await fetch(`${endpoint}/${input.bucket}/${encodeURIComponent(input.key)}`, {
+		const response = await fetch(url, {
 			method: "HEAD",
 			headers,
 		});
@@ -274,22 +340,30 @@ export async function handlePutObject(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers: Record<string, string> = {
-			...buildHeaders(config.accessKey, config.secretKey),
-		};
+		const url = `${buildEndpoint(region)}/${input.bucket}/${encodeURIComponent(input.key)}`;
+		const extraHeaders: Record<string, string> = {};
 
-		if (input.contentType) headers["Content-Type"] = input.contentType;
-		if (input.storageClass) headers["x-amz-storage-class"] = input.storageClass;
+		if (input.contentType) extraHeaders["Content-Type"] = input.contentType;
+		if (input.storageClass) extraHeaders["x-amz-storage-class"] = input.storageClass;
 		if (input.metadata) {
 			for (const [k, v] of Object.entries(input.metadata)) {
-				headers[`x-amz-meta-${k}`] = v;
+				extraHeaders[`x-amz-meta-${k}`] = v;
 			}
 		}
 
 		const body = input.contentBase64 ? Buffer.from(input.contentBase64, "base64") : undefined;
 
-		const response = await fetch(`${endpoint}/${input.bucket}/${encodeURIComponent(input.key)}`, {
+		const headers = buildSignedHeaders({
+			method: "PUT",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+			extraHeaders,
+			body,
+		});
+
+		const response = await fetch(url, {
 			method: "PUT",
 			headers,
 			body,
@@ -320,10 +394,16 @@ export async function handleDeleteObject(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = buildHeaders(config.accessKey, config.secretKey);
+		const url = `${buildEndpoint(region)}/${input.bucket}/${encodeURIComponent(input.key)}`;
+		const headers = buildSignedHeaders({
+			method: "DELETE",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
 
-		const response = await fetch(`${endpoint}/${input.bucket}/${encodeURIComponent(input.key)}`, {
+		const response = await fetch(url, {
 			method: "DELETE",
 			headers,
 		});
@@ -350,10 +430,16 @@ export async function handleGetBucketPolicy(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = buildHeaders(config.accessKey, config.secretKey);
+		const url = `${buildEndpoint(region)}/${input.bucket}?policy`;
+		const headers = buildSignedHeaders({
+			method: "GET",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
 
-		const response = await fetch(`${endpoint}/${input.bucket}?policy`, {
+		const response = await fetch(url, {
 			method: "GET",
 			headers,
 		});
@@ -383,13 +469,18 @@ export async function handleSetBucketPolicy(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = {
-			...buildHeaders(config.accessKey, config.secretKey),
-			"Content-Type": "application/json",
-		};
+		const url = `${buildEndpoint(region)}/${input.bucket}?policy`;
+		const headers = buildSignedHeaders({
+			method: "PUT",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+			extraHeaders: { "Content-Type": "application/json" },
+			body: input.policy,
+		});
 
-		const response = await fetch(`${endpoint}/${input.bucket}?policy`, {
+		const response = await fetch(url, {
 			method: "PUT",
 			headers,
 			body: input.policy,
@@ -415,10 +506,16 @@ export async function handleGetBucketLifecycle(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = buildHeaders(config.accessKey, config.secretKey);
+		const url = `${buildEndpoint(region)}/${input.bucket}?lifecycle`;
+		const headers = buildSignedHeaders({
+			method: "GET",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
 
-		const response = await fetch(`${endpoint}/${input.bucket}?lifecycle`, {
+		const response = await fetch(url, {
 			method: "GET",
 			headers,
 		});
@@ -455,15 +552,19 @@ export async function handleSetBucketLifecycle(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = {
-			...buildHeaders(config.accessKey, config.secretKey),
-			"Content-Type": "application/xml",
-		};
-
+		const url = `${buildEndpoint(region)}/${input.bucket}?lifecycle`;
 		const xml = buildLifecycleXml(input.rules);
+		const headers = buildSignedHeaders({
+			method: "PUT",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+			extraHeaders: { "Content-Type": "application/xml" },
+			body: xml,
+		});
 
-		const response = await fetch(`${endpoint}/${input.bucket}?lifecycle`, {
+		const response = await fetch(url, {
 			method: "PUT",
 			headers,
 			body: xml,
@@ -491,10 +592,16 @@ export async function handleGetBucketVersioning(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = buildHeaders(config.accessKey, config.secretKey);
+		const url = `${buildEndpoint(region)}/${input.bucket}?versioning`;
+		const headers = buildSignedHeaders({
+			method: "GET",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+		});
 
-		const response = await fetch(`${endpoint}/${input.bucket}?versioning`, {
+		const response = await fetch(url, {
 			method: "GET",
 			headers,
 		});
@@ -522,15 +629,19 @@ export async function handleSetBucketVersioning(input: {
 	try {
 		const config = loadAuthConfig();
 		const region = input.region ?? config.defaultRegion;
-		const endpoint = buildEndpoint(region);
-		const headers = {
-			...buildHeaders(config.accessKey, config.secretKey),
-			"Content-Type": "application/xml",
-		};
-
+		const url = `${buildEndpoint(region)}/${input.bucket}?versioning`;
 		const xml = `<?xml version="1.0" encoding="UTF-8"?><VersioningConfiguration><Status>${input.status}</Status></VersioningConfiguration>`;
+		const headers = buildSignedHeaders({
+			method: "PUT",
+			url,
+			accessKey: config.accessKey,
+			secretKey: config.secretKey,
+			region,
+			extraHeaders: { "Content-Type": "application/xml" },
+			body: xml,
+		});
 
-		const response = await fetch(`${endpoint}/${input.bucket}?versioning`, {
+		const response = await fetch(url, {
 			method: "PUT",
 			headers,
 			body: xml,
