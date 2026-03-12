@@ -669,11 +669,15 @@ export function parseListBucketsXml(
 	region: string,
 ): Array<{ name: string; region: string; creationDate: string }> {
 	const buckets: Array<{ name: string; region: string; creationDate: string }> = [];
-	const bucketRegex =
-		/<Bucket>\s*<Name>([^<]+)<\/Name>\s*<CreationDate>([^<]+)<\/CreationDate>\s*<\/Bucket>/g;
+	const bucketRegex = /<Bucket>([\s\S]*?)<\/Bucket>/g;
 	let match = bucketRegex.exec(xml);
 	while (match) {
-		buckets.push({ name: match[1], region, creationDate: match[2] });
+		const inner = match[1];
+		const name = /<Name>([^<]+)<\/Name>/.exec(inner)?.[1];
+		const creationDate = /<CreationDate>([^<]+)<\/CreationDate>/.exec(inner)?.[1];
+		if (name) {
+			buckets.push({ name, region, creationDate: creationDate ?? "" });
+		}
 		match = bucketRegex.exec(xml);
 	}
 	return buckets;

@@ -368,6 +368,28 @@ describe("XML parsing helpers", () => {
 			expect(result[1].name).toBe("bucket2");
 		});
 
+		it("parses XML with CreationDate before Name (Scaleway actual format)", () => {
+			const xml = `<ListAllMyBucketsResult><Buckets>
+				<Bucket><CreationDate>2025-11-26T14:35:43.000Z</CreationDate><Name>my-bucket</Name></Bucket>
+			</Buckets></ListAllMyBucketsResult>`;
+			const result = parseListBucketsXml(xml, "fr-par");
+			expect(result).toHaveLength(1);
+			expect(result[0]).toEqual({
+				name: "my-bucket",
+				region: "fr-par",
+				creationDate: "2025-11-26T14:35:43.000Z",
+			});
+		});
+
+		it("handles bucket with missing CreationDate", () => {
+			const xml =
+				"<ListAllMyBucketsResult><Buckets><Bucket><Name>no-date</Name></Bucket></Buckets></ListAllMyBucketsResult>";
+			const result = parseListBucketsXml(xml, "fr-par");
+			expect(result).toHaveLength(1);
+			expect(result[0].name).toBe("no-date");
+			expect(result[0].creationDate).toBe("");
+		});
+
 		it("returns empty array for no buckets", () => {
 			const xml = "<ListAllMyBucketsResult><Buckets></Buckets></ListAllMyBucketsResult>";
 			expect(parseListBucketsXml(xml, "nl-ams")).toEqual([]);
