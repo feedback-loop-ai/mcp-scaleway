@@ -64,12 +64,12 @@ const mockPool = {
 };
 
 describe("k8s handlers", () => {
-	let mockSend: Mock;
+	let mockFetch: Mock;
 
 	beforeEach(() => {
-		mockSend = vi.fn();
+		mockFetch = vi.fn();
 		(auth.loadAuthConfig as Mock).mockReturnValue(MOCK_CONFIG);
-		(client.createScalewayClient as Mock).mockReturnValue({ send: mockSend });
+		(client.createScalewayClient as Mock).mockReturnValue({ fetch: mockFetch });
 	});
 
 	afterEach(() => {
@@ -80,7 +80,7 @@ describe("k8s handlers", () => {
 
 	describe("handleListClusters", () => {
 		it("returns paginated clusters", async () => {
-			mockSend.mockResolvedValue({ clusters: [mockCluster], total_count: 1 });
+			mockFetch.mockResolvedValue({ clusters: [mockCluster], total_count: 1 });
 
 			const result = await handleListClusters({ region: "fr-par", page: 1, pageSize: 50 });
 
@@ -90,11 +90,11 @@ describe("k8s handlers", () => {
 			expect(data.totalCount).toBe(1);
 			expect(data.page).toBe(1);
 			expect(data.pageSize).toBe(50);
-			expect(mockSend).toHaveBeenCalledOnce();
+			expect(mockFetch).toHaveBeenCalledOnce();
 		});
 
 		it("passes filter parameters", async () => {
-			mockSend.mockResolvedValue({ clusters: [], total_count: 0 });
+			mockFetch.mockResolvedValue({ clusters: [], total_count: 0 });
 
 			await handleListClusters({
 				region: "fr-par",
@@ -106,16 +106,18 @@ describe("k8s handlers", () => {
 				project_id: MOCK_CONFIG.defaultProjectId,
 			});
 
-			const call = mockSend.mock.calls[0][0];
-			expect(call.url).toContain("name=prod");
-			expect(call.url).toContain("status=ready");
-			expect(call.url).toContain("type=kapsule");
-			expect(call.url).toContain("project_id=");
+			const call = mockFetch.mock.calls[0][0];
+			expect(call.path).toContain("/k8s/v1/regions/fr-par/clusters");
+			const params = call.urlParams as URLSearchParams;
+			expect(params.get("name")).toBe("prod");
+			expect(params.get("status")).toBe("ready");
+			expect(params.get("type")).toBe("kapsule");
+			expect(params.get("project_id")).toBe(MOCK_CONFIG.defaultProjectId);
 		});
 
 		it("handles API errors", async () => {
 			const error = Object.assign(new Error("Not found"), { statusCode: 404 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleListClusters({ region: "fr-par", page: 1, pageSize: 50 });
 
@@ -127,7 +129,7 @@ describe("k8s handlers", () => {
 
 	describe("handleGetCluster", () => {
 		it("returns cluster details", async () => {
-			mockSend.mockResolvedValue(mockCluster);
+			mockFetch.mockResolvedValue(mockCluster);
 
 			const result = await handleGetCluster({ region: "fr-par", cluster_id: CLUSTER_ID });
 
@@ -138,7 +140,7 @@ describe("k8s handlers", () => {
 
 		it("handles not found error", async () => {
 			const error = Object.assign(new Error("Cluster not found"), { statusCode: 404 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleGetCluster({ region: "fr-par", cluster_id: CLUSTER_ID });
 
@@ -148,7 +150,7 @@ describe("k8s handlers", () => {
 
 	describe("handleCreateCluster", () => {
 		it("creates a cluster", async () => {
-			mockSend.mockResolvedValue(mockCluster);
+			mockFetch.mockResolvedValue(mockCluster);
 
 			const result = await handleCreateCluster({
 				region: "fr-par",
@@ -159,9 +161,10 @@ describe("k8s handlers", () => {
 
 			const data = JSON.parse(result.content[0].text);
 			expect(data.name).toBe("test-cluster");
-			const call = mockSend.mock.calls[0][0];
+			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("POST");
-			expect(call.body).toEqual({
+			const body = JSON.parse(call.body);
+			expect(body).toEqual({
 				name: "test-cluster",
 				version: "1.30.2",
 				cni: "cilium",
@@ -169,7 +172,7 @@ describe("k8s handlers", () => {
 		});
 
 		it("passes optional fields", async () => {
-			mockSend.mockResolvedValue(mockCluster);
+			mockFetch.mockResolvedValue(mockCluster);
 
 			await handleCreateCluster({
 				region: "fr-par",
@@ -182,16 +185,17 @@ describe("k8s handlers", () => {
 				project_id: MOCK_CONFIG.defaultProjectId,
 			});
 
-			const call = mockSend.mock.calls[0][0];
-			expect(call.body.description).toBe("My cluster");
-			expect(call.body.tags).toEqual(["env:prod"]);
-			expect(call.body.type).toBe("kapsule");
-			expect(call.body.project_id).toBe(MOCK_CONFIG.defaultProjectId);
+			const call = mockFetch.mock.calls[0][0];
+			const body = JSON.parse(call.body);
+			expect(body.description).toBe("My cluster");
+			expect(body.tags).toEqual(["env:prod"]);
+			expect(body.type).toBe("kapsule");
+			expect(body.project_id).toBe(MOCK_CONFIG.defaultProjectId);
 		});
 
 		it("handles validation errors", async () => {
 			const error = Object.assign(new Error("Bad request"), { statusCode: 400 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleCreateCluster({
 				region: "fr-par",
@@ -208,22 +212,21 @@ describe("k8s handlers", () => {
 
 	describe("handleDeleteCluster", () => {
 		it("deletes a cluster", async () => {
-			mockSend.mockResolvedValue(mockCluster);
+			mockFetch.mockResolvedValue(mockCluster);
 
 			const result = await handleDeleteCluster({
 				region: "fr-par",
 				cluster_id: CLUSTER_ID,
 			});
 
-			const call = mockSend.mock.calls[0][0];
+			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("DELETE");
-			expect(call.url).toContain(`/clusters/${CLUSTER_ID}`);
-			expect(call.url).not.toContain("with_additional_resources");
+			expect(call.path).toContain(`/clusters/${CLUSTER_ID}`);
 			expect(result.content[0].type).toBe("text");
 		});
 
 		it("passes with_additional_resources param", async () => {
-			mockSend.mockResolvedValue(mockCluster);
+			mockFetch.mockResolvedValue(mockCluster);
 
 			await handleDeleteCluster({
 				region: "fr-par",
@@ -231,13 +234,14 @@ describe("k8s handlers", () => {
 				with_additional_resources: true,
 			});
 
-			const call = mockSend.mock.calls[0][0];
-			expect(call.url).toContain("with_additional_resources=true");
+			const call = mockFetch.mock.calls[0][0];
+			const params = call.urlParams as URLSearchParams;
+			expect(params.get("with_additional_resources")).toBe("true");
 		});
 
 		it("handles errors", async () => {
 			const error = Object.assign(new Error("Forbidden"), { statusCode: 403 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleDeleteCluster({
 				region: "fr-par",
@@ -252,7 +256,7 @@ describe("k8s handlers", () => {
 
 	describe("handleUpgradeCluster", () => {
 		it("upgrades a cluster", async () => {
-			mockSend.mockResolvedValue({ ...mockCluster, version: "1.31.0" });
+			mockFetch.mockResolvedValue({ ...mockCluster, version: "1.31.0" });
 
 			const result = await handleUpgradeCluster({
 				region: "fr-par",
@@ -260,16 +264,17 @@ describe("k8s handlers", () => {
 				version: "1.31.0",
 			});
 
-			const call = mockSend.mock.calls[0][0];
+			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("POST");
-			expect(call.url).toContain("/upgrade");
-			expect(call.body.version).toBe("1.31.0");
+			expect(call.path).toContain("/upgrade");
+			const body = JSON.parse(call.body);
+			expect(body.version).toBe("1.31.0");
 			const data = JSON.parse(result.content[0].text);
 			expect(data.version).toBe("1.31.0");
 		});
 
 		it("passes upgrade_pools option", async () => {
-			mockSend.mockResolvedValue(mockCluster);
+			mockFetch.mockResolvedValue(mockCluster);
 
 			await handleUpgradeCluster({
 				region: "fr-par",
@@ -278,13 +283,14 @@ describe("k8s handlers", () => {
 				upgrade_pools: true,
 			});
 
-			const call = mockSend.mock.calls[0][0];
-			expect(call.body.upgrade_pools).toBe(true);
+			const call = mockFetch.mock.calls[0][0];
+			const body = JSON.parse(call.body);
+			expect(body.upgrade_pools).toBe(true);
 		});
 
 		it("handles errors", async () => {
 			const error = Object.assign(new Error("Rate limited"), { statusCode: 429 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleUpgradeCluster({
 				region: "fr-par",
@@ -301,7 +307,7 @@ describe("k8s handlers", () => {
 	describe("handleListClusterAvailableVersions", () => {
 		it("returns available versions", async () => {
 			const versions = { versions: [{ name: "1.31.0" }, { name: "1.30.3" }] };
-			mockSend.mockResolvedValue(versions);
+			mockFetch.mockResolvedValue(versions);
 
 			const result = await handleListClusterAvailableVersions({
 				region: "fr-par",
@@ -314,7 +320,7 @@ describe("k8s handlers", () => {
 
 		it("handles errors", async () => {
 			const error = Object.assign(new Error("Unauthorized"), { statusCode: 401 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleListClusterAvailableVersions({
 				region: "fr-par",
@@ -330,7 +336,7 @@ describe("k8s handlers", () => {
 	describe("handleGetClusterKubeconfig", () => {
 		it("returns kubeconfig", async () => {
 			const kubeconfig = { content: "YXBpVmVyc2lvbjogdjE=" };
-			mockSend.mockResolvedValue(kubeconfig);
+			mockFetch.mockResolvedValue(kubeconfig);
 
 			const result = await handleGetClusterKubeconfig({
 				region: "fr-par",
@@ -343,7 +349,7 @@ describe("k8s handlers", () => {
 
 		it("handles errors", async () => {
 			const error = new Error("Unknown failure");
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleGetClusterKubeconfig({
 				region: "fr-par",
@@ -360,7 +366,7 @@ describe("k8s handlers", () => {
 
 	describe("handleListPools", () => {
 		it("returns paginated pools", async () => {
-			mockSend.mockResolvedValue({ nodes: [mockPool], total_count: 1 });
+			mockFetch.mockResolvedValue({ nodes: [mockPool], total_count: 1 });
 
 			const result = await handleListPools({
 				region: "fr-par",
@@ -375,7 +381,7 @@ describe("k8s handlers", () => {
 		});
 
 		it("passes filter parameters", async () => {
-			mockSend.mockResolvedValue({ nodes: [], total_count: 0 });
+			mockFetch.mockResolvedValue({ nodes: [], total_count: 0 });
 
 			await handleListPools({
 				region: "fr-par",
@@ -386,14 +392,15 @@ describe("k8s handlers", () => {
 				status: "ready",
 			});
 
-			const call = mockSend.mock.calls[0][0];
-			expect(call.url).toContain("name=default");
-			expect(call.url).toContain("status=ready");
+			const call = mockFetch.mock.calls[0][0];
+			const params = call.urlParams as URLSearchParams;
+			expect(params.get("name")).toBe("default");
+			expect(params.get("status")).toBe("ready");
 		});
 
 		it("handles errors", async () => {
 			const error = Object.assign(new Error("Not found"), { statusCode: 404 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleListPools({
 				region: "fr-par",
@@ -408,7 +415,7 @@ describe("k8s handlers", () => {
 
 	describe("handleGetPool", () => {
 		it("returns pool details", async () => {
-			mockSend.mockResolvedValue(mockPool);
+			mockFetch.mockResolvedValue(mockPool);
 
 			const result = await handleGetPool({ region: "fr-par", pool_id: POOL_ID });
 
@@ -419,7 +426,7 @@ describe("k8s handlers", () => {
 
 		it("handles errors", async () => {
 			const error = Object.assign(new Error("Not found"), { statusCode: 404 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleGetPool({ region: "fr-par", pool_id: POOL_ID });
 
@@ -429,7 +436,7 @@ describe("k8s handlers", () => {
 
 	describe("handleCreatePool", () => {
 		it("creates a pool", async () => {
-			mockSend.mockResolvedValue(mockPool);
+			mockFetch.mockResolvedValue(mockPool);
 
 			const result = await handleCreatePool({
 				region: "fr-par",
@@ -441,15 +448,16 @@ describe("k8s handlers", () => {
 
 			const data = JSON.parse(result.content[0].text);
 			expect(data.name).toBe("default-pool");
-			const call = mockSend.mock.calls[0][0];
+			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("POST");
-			expect(call.body.name).toBe("default-pool");
-			expect(call.body.node_type).toBe("DEV1-M");
-			expect(call.body.size).toBe(3);
+			const body = JSON.parse(call.body);
+			expect(body.name).toBe("default-pool");
+			expect(body.node_type).toBe("DEV1-M");
+			expect(body.size).toBe(3);
 		});
 
 		it("passes optional autoscaling fields", async () => {
-			mockSend.mockResolvedValue(mockPool);
+			mockFetch.mockResolvedValue(mockPool);
 
 			await handleCreatePool({
 				region: "fr-par",
@@ -464,17 +472,18 @@ describe("k8s handlers", () => {
 				tags: ["env:prod"],
 			});
 
-			const call = mockSend.mock.calls[0][0];
-			expect(call.body.autoscaling).toBe(true);
-			expect(call.body.autohealing).toBe(true);
-			expect(call.body.min_size).toBe(1);
-			expect(call.body.max_size).toBe(10);
-			expect(call.body.tags).toEqual(["env:prod"]);
+			const call = mockFetch.mock.calls[0][0];
+			const body = JSON.parse(call.body);
+			expect(body.autoscaling).toBe(true);
+			expect(body.autohealing).toBe(true);
+			expect(body.min_size).toBe(1);
+			expect(body.max_size).toBe(10);
+			expect(body.tags).toEqual(["env:prod"]);
 		});
 
 		it("handles errors", async () => {
 			const error = Object.assign(new Error("Bad request"), { statusCode: 400 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleCreatePool({
 				region: "fr-par",
@@ -491,7 +500,7 @@ describe("k8s handlers", () => {
 	describe("handleUpdatePool", () => {
 		it("updates a pool", async () => {
 			const updated = { ...mockPool, size: 5 };
-			mockSend.mockResolvedValue(updated);
+			mockFetch.mockResolvedValue(updated);
 
 			const result = await handleUpdatePool({
 				region: "fr-par",
@@ -499,15 +508,16 @@ describe("k8s handlers", () => {
 				size: 5,
 			});
 
-			const call = mockSend.mock.calls[0][0];
+			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("PATCH");
-			expect(call.body.size).toBe(5);
+			const body = JSON.parse(call.body);
+			expect(body.size).toBe(5);
 			const data = JSON.parse(result.content[0].text);
 			expect(data.size).toBe(5);
 		});
 
 		it("passes all optional fields", async () => {
-			mockSend.mockResolvedValue(mockPool);
+			mockFetch.mockResolvedValue(mockPool);
 
 			await handleUpdatePool({
 				region: "fr-par",
@@ -520,17 +530,18 @@ describe("k8s handlers", () => {
 				tags: ["updated"],
 			});
 
-			const call = mockSend.mock.calls[0][0];
-			expect(call.body.min_size).toBe(2);
-			expect(call.body.max_size).toBe(10);
-			expect(call.body.autoscaling).toBe(false);
-			expect(call.body.autohealing).toBe(false);
-			expect(call.body.tags).toEqual(["updated"]);
+			const call = mockFetch.mock.calls[0][0];
+			const body = JSON.parse(call.body);
+			expect(body.min_size).toBe(2);
+			expect(body.max_size).toBe(10);
+			expect(body.autoscaling).toBe(false);
+			expect(body.autohealing).toBe(false);
+			expect(body.tags).toEqual(["updated"]);
 		});
 
 		it("handles errors", async () => {
 			const error = Object.assign(new Error("Not found"), { statusCode: 404 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleUpdatePool({
 				region: "fr-par",
@@ -544,19 +555,19 @@ describe("k8s handlers", () => {
 
 	describe("handleDeletePool", () => {
 		it("deletes a pool", async () => {
-			mockSend.mockResolvedValue(mockPool);
+			mockFetch.mockResolvedValue(mockPool);
 
 			const result = await handleDeletePool({ region: "fr-par", pool_id: POOL_ID });
 
-			const call = mockSend.mock.calls[0][0];
+			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("DELETE");
-			expect(call.url).toContain(`/pools/${POOL_ID}`);
+			expect(call.path).toContain(`/pools/${POOL_ID}`);
 			expect(result.content[0].type).toBe("text");
 		});
 
 		it("handles errors", async () => {
 			const error = Object.assign(new Error("Forbidden"), { statusCode: 403 });
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleDeletePool({ region: "fr-par", pool_id: POOL_ID });
 
@@ -567,7 +578,7 @@ describe("k8s handlers", () => {
 	describe("handleUpgradePool", () => {
 		it("upgrades a pool", async () => {
 			const upgraded = { ...mockPool, version: "1.31.0" };
-			mockSend.mockResolvedValue(upgraded);
+			mockFetch.mockResolvedValue(upgraded);
 
 			const result = await handleUpgradePool({
 				region: "fr-par",
@@ -575,17 +586,18 @@ describe("k8s handlers", () => {
 				version: "1.31.0",
 			});
 
-			const call = mockSend.mock.calls[0][0];
+			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("POST");
-			expect(call.url).toContain("/upgrade");
-			expect(call.body.version).toBe("1.31.0");
+			expect(call.path).toContain("/upgrade");
+			const body = JSON.parse(call.body);
+			expect(body.version).toBe("1.31.0");
 			const data = JSON.parse(result.content[0].text);
 			expect(data.version).toBe("1.31.0");
 		});
 
 		it("handles errors", async () => {
 			const error = "string error";
-			mockSend.mockRejectedValue(error);
+			mockFetch.mockRejectedValue(error);
 
 			const result = await handleUpgradePool({
 				region: "fr-par",
