@@ -23,21 +23,18 @@ function getClient() {
 	return createScalewayClient(config);
 }
 
-function buildUrl(region: string, path: string): string {
-	return `https://api.scaleway.com/k8s/v1/regions/${region}${path}`;
+function buildPath(region: string, path: string): string {
+	return `/k8s/v1/regions/${region}${path}`;
 }
 
-async function apiRequest(
-	method: string,
-	url: string,
-	body?: Record<string, unknown>,
-): Promise<unknown> {
-	const client = getClient();
-	const request = { method, url, body };
-	const response = await (client as unknown as { send: (r: unknown) => Promise<unknown> }).send(
-		request,
-	);
-	return response;
+function buildParams(params: Record<string, unknown>): URLSearchParams {
+	const search = new URLSearchParams();
+	for (const [key, value] of Object.entries(params)) {
+		if (value !== undefined && value !== null) {
+			search.set(key, String(value));
+		}
+	}
+	return search;
 }
 
 function formatSuccess(data: unknown) {
@@ -50,21 +47,24 @@ function formatSuccess(data: unknown) {
 
 export async function handleListClusters(input: ListClustersInput) {
 	try {
+		const client = getClient();
 		const { region, page, pageSize, ...filters } = input;
-		const queryParams = new URLSearchParams();
 		const pagination = paginationToQuery(page, pageSize);
-		queryParams.set("page", String(pagination.page));
-		queryParams.set("page_size", String(pagination.page_size));
-		if (filters.project_id) queryParams.set("project_id", filters.project_id);
-		if (filters.name) queryParams.set("name", filters.name);
-		if (filters.status) queryParams.set("status", filters.status);
-		if (filters.type) queryParams.set("type", filters.type);
 
-		const url = `${buildUrl(region, "/clusters")}?${queryParams.toString()}`;
-		const response = (await apiRequest("GET", url)) as {
+		const response = (await client.fetch<{
 			clusters: unknown[];
 			total_count: number;
-		};
+		}>({
+			method: "GET",
+			path: buildPath(region, "/clusters"),
+			urlParams: buildParams({
+				...pagination,
+				project_id: filters.project_id,
+				name: filters.name,
+				status: filters.status,
+				type: filters.type,
+			}),
+		})) as { clusters: unknown[]; total_count: number };
 
 		const result = buildPaginatedResponse(response.clusters, response.total_count, page, pageSize);
 		return formatSuccess(result);
@@ -75,8 +75,11 @@ export async function handleListClusters(input: ListClustersInput) {
 
 export async function handleGetCluster(input: GetClusterInput) {
 	try {
-		const url = buildUrl(input.region, `/clusters/${input.cluster_id}`);
-		const response = await apiRequest("GET", url);
+		const client = getClient();
+		const response = await client.fetch<unknown>({
+			method: "GET",
+			path: buildPath(input.region, `/clusters/${input.cluster_id}`),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -85,9 +88,13 @@ export async function handleGetCluster(input: GetClusterInput) {
 
 export async function handleCreateCluster(input: CreateClusterInput) {
 	try {
+		const client = getClient();
 		const { region, ...body } = input;
-		const url = buildUrl(region, "/clusters");
-		const response = await apiRequest("POST", url, body as Record<string, unknown>);
+		const response = await client.fetch<unknown>({
+			method: "POST",
+			path: buildPath(region, "/clusters"),
+			body: JSON.stringify(body),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -96,14 +103,13 @@ export async function handleCreateCluster(input: CreateClusterInput) {
 
 export async function handleDeleteCluster(input: DeleteClusterInput) {
 	try {
+		const client = getClient();
 		const { region, cluster_id, with_additional_resources } = input;
-		const queryParams = new URLSearchParams();
-		if (with_additional_resources !== undefined) {
-			queryParams.set("with_additional_resources", String(with_additional_resources));
-		}
-		const qs = queryParams.toString();
-		const url = `${buildUrl(region, `/clusters/${cluster_id}`)}${qs ? `?${qs}` : ""}`;
-		const response = await apiRequest("DELETE", url);
+		const response = await client.fetch<unknown>({
+			method: "DELETE",
+			path: buildPath(region, `/clusters/${cluster_id}`),
+			urlParams: buildParams({ with_additional_resources }),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -112,9 +118,13 @@ export async function handleDeleteCluster(input: DeleteClusterInput) {
 
 export async function handleUpgradeCluster(input: UpgradeClusterInput) {
 	try {
+		const client = getClient();
 		const { region, cluster_id, ...body } = input;
-		const url = buildUrl(region, `/clusters/${cluster_id}/upgrade`);
-		const response = await apiRequest("POST", url, body as Record<string, unknown>);
+		const response = await client.fetch<unknown>({
+			method: "POST",
+			path: buildPath(region, `/clusters/${cluster_id}/upgrade`),
+			body: JSON.stringify(body),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -123,8 +133,11 @@ export async function handleUpgradeCluster(input: UpgradeClusterInput) {
 
 export async function handleListClusterAvailableVersions(input: ListClusterAvailableVersionsInput) {
 	try {
-		const url = buildUrl(input.region, `/clusters/${input.cluster_id}/available-versions`);
-		const response = await apiRequest("GET", url);
+		const client = getClient();
+		const response = await client.fetch<unknown>({
+			method: "GET",
+			path: buildPath(input.region, `/clusters/${input.cluster_id}/available-versions`),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -133,8 +146,11 @@ export async function handleListClusterAvailableVersions(input: ListClusterAvail
 
 export async function handleGetClusterKubeconfig(input: GetClusterKubeconfigInput) {
 	try {
-		const url = buildUrl(input.region, `/clusters/${input.cluster_id}/kubeconfig`);
-		const response = await apiRequest("GET", url);
+		const client = getClient();
+		const response = await client.fetch<unknown>({
+			method: "GET",
+			path: buildPath(input.region, `/clusters/${input.cluster_id}/kubeconfig`),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -145,19 +161,22 @@ export async function handleGetClusterKubeconfig(input: GetClusterKubeconfigInpu
 
 export async function handleListPools(input: ListPoolsInput) {
 	try {
+		const client = getClient();
 		const { region, cluster_id, page, pageSize, ...filters } = input;
-		const queryParams = new URLSearchParams();
 		const pagination = paginationToQuery(page, pageSize);
-		queryParams.set("page", String(pagination.page));
-		queryParams.set("page_size", String(pagination.page_size));
-		if (filters.name) queryParams.set("name", filters.name);
-		if (filters.status) queryParams.set("status", filters.status);
 
-		const url = `${buildUrl(region, `/clusters/${cluster_id}/pools`)}?${queryParams.toString()}`;
-		const response = (await apiRequest("GET", url)) as {
+		const response = (await client.fetch<{
 			nodes: unknown[];
 			total_count: number;
-		};
+		}>({
+			method: "GET",
+			path: buildPath(region, `/clusters/${cluster_id}/pools`),
+			urlParams: buildParams({
+				...pagination,
+				name: filters.name,
+				status: filters.status,
+			}),
+		})) as { nodes: unknown[]; total_count: number };
 
 		const result = buildPaginatedResponse(response.nodes, response.total_count, page, pageSize);
 		return formatSuccess(result);
@@ -168,8 +187,11 @@ export async function handleListPools(input: ListPoolsInput) {
 
 export async function handleGetPool(input: GetPoolInput) {
 	try {
-		const url = buildUrl(input.region, `/pools/${input.pool_id}`);
-		const response = await apiRequest("GET", url);
+		const client = getClient();
+		const response = await client.fetch<unknown>({
+			method: "GET",
+			path: buildPath(input.region, `/pools/${input.pool_id}`),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -178,9 +200,13 @@ export async function handleGetPool(input: GetPoolInput) {
 
 export async function handleCreatePool(input: CreatePoolInput) {
 	try {
+		const client = getClient();
 		const { region, cluster_id, ...body } = input;
-		const url = buildUrl(region, `/clusters/${cluster_id}/pools`);
-		const response = await apiRequest("POST", url, body as Record<string, unknown>);
+		const response = await client.fetch<unknown>({
+			method: "POST",
+			path: buildPath(region, `/clusters/${cluster_id}/pools`),
+			body: JSON.stringify(body),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -189,9 +215,13 @@ export async function handleCreatePool(input: CreatePoolInput) {
 
 export async function handleUpdatePool(input: UpdatePoolInput) {
 	try {
+		const client = getClient();
 		const { region, pool_id, ...body } = input;
-		const url = buildUrl(region, `/pools/${pool_id}`);
-		const response = await apiRequest("PATCH", url, body as Record<string, unknown>);
+		const response = await client.fetch<unknown>({
+			method: "PATCH",
+			path: buildPath(region, `/pools/${pool_id}`),
+			body: JSON.stringify(body),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -200,8 +230,11 @@ export async function handleUpdatePool(input: UpdatePoolInput) {
 
 export async function handleDeletePool(input: DeletePoolInput) {
 	try {
-		const url = buildUrl(input.region, `/pools/${input.pool_id}`);
-		const response = await apiRequest("DELETE", url);
+		const client = getClient();
+		const response = await client.fetch<unknown>({
+			method: "DELETE",
+			path: buildPath(input.region, `/pools/${input.pool_id}`),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -210,9 +243,13 @@ export async function handleDeletePool(input: DeletePoolInput) {
 
 export async function handleUpgradePool(input: UpgradePoolInput) {
 	try {
+		const client = getClient();
 		const { region, pool_id, ...body } = input;
-		const url = buildUrl(region, `/pools/${pool_id}/upgrade`);
-		const response = await apiRequest("POST", url, body as Record<string, unknown>);
+		const response = await client.fetch<unknown>({
+			method: "POST",
+			path: buildPath(region, `/pools/${pool_id}/upgrade`),
+			body: JSON.stringify(body),
+		});
 		return formatSuccess(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));

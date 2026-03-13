@@ -74,6 +74,8 @@ Key directories:
 - N/A (CI configuration only — YAML files + minor script changes) (039-ci-build-pipeline)
 - TypeScript 5.x (strict mode) with Bun 1.x runtime + @modelcontextprotocol/sdk ^1.25.x, @scaleway/sdk-client + per-product packages, zod ^3.25.x (040-release-pipeline)
 - N/A (stateless proxy — no state involved in release pipeline) (040-release-pipeline)
+- TypeScript 5.x (strict mode) with Bun 1.x + `@modelcontextprotocol/sdk` ^1.25.x, `@scaleway/sdk-client` ^1.0.0, `zod` ^3.25.x (041-quota-query-tool)
+- N/A (stateless proxy) (041-quota-query-tool)
 
 ## Recent Changes
 - Constitution v1.1.0: Added Principle VIII (100% Test Coverage & API Parity), expanded Contract-First API Design with Scaleway API Reference Spec requirement
