@@ -1,6 +1,6 @@
 {
 	"name": "mcp-scaleway",
-	"version": "0.2.3",
+	"version": "0.3.0",
 	"description": "MCP server for Scaleway cloud provider",
 	"type": "module",
 	"main": "src/server.ts",
