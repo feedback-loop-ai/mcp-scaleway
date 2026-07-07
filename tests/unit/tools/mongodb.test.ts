@@ -84,26 +84,31 @@ describe("mongodb types", () => {
 			name: "test-db",
 			version: "7.0.12",
 			node_type: "MGDB-PLAY2-NANO",
-			node_number: 1,
+			node_amount: 1,
 			user_name: "admin",
 			password: "secret123",
 		});
 		expect(result.name).toBe("test-db");
-		expect(result.node_number).toBe(1);
+		expect(result.node_amount).toBe(1);
 	});
 
-	it("validates CreateInstanceParams with volume", async () => {
+	it("validates CreateInstanceParams with volume and endpoints", async () => {
 		const { CreateInstanceParams } = await import("../../../src/tools/mongodb/types.js");
 		const result = CreateInstanceParams.parse({
 			name: "test-db",
 			version: "7.0.12",
 			node_type: "MGDB-PLAY2-NANO",
-			node_number: 1,
+			node_amount: 1,
 			user_name: "admin",
 			password: "secret123",
-			volume: { volume_type: "sbs_5k", volume_size: 10000000000 },
+			volume: { type: "sbs_5k", size_bytes: 10000000000 },
+			endpoints: [
+				{ private_network: { private_network_id: "44444444-4444-4444-4444-444444444444" } },
+				{ public_network: {} },
+			],
 		});
-		expect(result.volume?.volume_type).toBe("sbs_5k");
+		expect(result.volume?.type).toBe("sbs_5k");
+		expect(result.endpoints).toHaveLength(2);
 	});
 
 	it("rejects CreateInstanceParams missing required fields", async () => {
@@ -117,8 +122,13 @@ describe("mongodb types", () => {
 			instance_id: "11111111-1111-1111-1111-111111111111",
 			name: "new-name",
 			tags: ["env:staging"],
+			snapshot_schedule_frequency_hours: 24,
+			snapshot_schedule_retention_days: 7,
+			is_snapshot_schedule_enabled: true,
 		});
 		expect(result.name).toBe("new-name");
+		expect(result.snapshot_schedule_frequency_hours).toBe(24);
+		expect(result.is_snapshot_schedule_enabled).toBe(true);
 	});
 
 	it("validates DeleteInstanceParams", async () => {
@@ -211,21 +221,21 @@ describe("mongodb types", () => {
 			snapshot_id: "11111111-1111-1111-1111-111111111111",
 			instance_name: "restored-db",
 			node_type: "MGDB-PLAY2-NANO",
-			node_number: 1,
+			node_amount: 1,
 		});
 		expect(result.instance_name).toBe("restored-db");
 	});
 
-	it("validates RestoreSnapshotParams with volume", async () => {
+	it("validates RestoreSnapshotParams with volume_type", async () => {
 		const { RestoreSnapshotParams } = await import("../../../src/tools/mongodb/types.js");
 		const result = RestoreSnapshotParams.parse({
 			snapshot_id: "11111111-1111-1111-1111-111111111111",
 			instance_name: "restored-db",
 			node_type: "MGDB-PLAY2-NANO",
-			node_number: 1,
-			volume: { volume_type: "sbs_15k", volume_size: 20000000000 },
+			node_amount: 1,
+			volume_type: "sbs_15k",
 		});
-		expect(result.volume?.volume_type).toBe("sbs_15k");
+		expect(result.volume_type).toBe("sbs_15k");
 	});
 
 	it("validates DeleteSnapshotParams", async () => {
@@ -239,9 +249,9 @@ describe("mongodb types", () => {
 	it("validates ListNodeTypesParams", async () => {
 		const { ListNodeTypesParams } = await import("../../../src/tools/mongodb/types.js");
 		const result = ListNodeTypesParams.parse({
-			include_disabled_types: true,
+			include_disabled: true,
 		});
-		expect(result.include_disabled_types).toBe(true);
+		expect(result.include_disabled).toBe(true);
 	});
 
 	it("validates ListVersionsParams", async () => {
@@ -389,7 +399,7 @@ describe("mongodb handlers", () => {
 				name: "test-db",
 				version: "7.0.12",
 				node_type: "MGDB-PLAY2-NANO",
-				node_number: 1,
+				node_amount: 1,
 				user_name: "admin",
 				password: "secret",
 			});
@@ -399,7 +409,9 @@ describe("mongodb handlers", () => {
 			const req = getRequest();
 			const body = getRequestBody();
 			expect(body.name).toBe("test-db");
+			expect(body.node_amount).toBe(1);
 			expect(body.project_id).toBe("11111111-1111-1111-1111-111111111111");
+			expect(req.path).toContain("/mongodb/v1/regions/");
 			expect(req.method).toBe("POST");
 		});
 
@@ -411,19 +423,24 @@ describe("mongodb handlers", () => {
 				name: "test-db",
 				version: "7.0.12",
 				node_type: "MGDB-PLAY2-NANO",
-				node_number: 3,
+				node_amount: 3,
 				user_name: "admin",
 				password: "secret",
 				project_id: "22222222-2222-2222-2222-222222222222",
 				tags: ["env:prod"],
-				volume: { volume_type: "sbs_5k", volume_size: 10000000000 },
+				volume: { type: "sbs_5k", size_bytes: 10000000000 },
+				endpoints: [
+					{ private_network: { private_network_id: "44444444-4444-4444-4444-444444444444" } },
+				],
 			});
 
 			const req = getRequest();
 			const body = getRequestBody();
 			expect(body.project_id).toBe("22222222-2222-2222-2222-222222222222");
 			expect(body.tags).toEqual(["env:prod"]);
-			expect((body.volume as Record<string, unknown>).volume_type).toBe("sbs_5k");
+			expect((body.volume as Record<string, unknown>).type).toBe("sbs_5k");
+			expect((body.volume as Record<string, unknown>).size_bytes).toBe(10000000000);
+			expect(body.endpoints).toHaveLength(1);
 		});
 
 		it("handles creation error", async () => {
@@ -436,7 +453,7 @@ describe("mongodb handlers", () => {
 				name: "test-db",
 				version: "7.0.12",
 				node_type: "MGDB-PLAY2-NANO",
-				node_number: 1,
+				node_amount: 1,
 				user_name: "admin",
 				password: "secret",
 			});
@@ -461,19 +478,25 @@ describe("mongodb handlers", () => {
 			expect(req.method).toBe("PATCH");
 		});
 
-		it("updates instance tags", async () => {
+		it("updates instance tags and snapshot schedule", async () => {
 			const { handleUpdateInstance } = await import("../../../src/tools/mongodb/handlers.js");
 			mockFetch.mockResolvedValue({ id: "inst-1" });
 
 			await handleUpdateInstance({
 				instance_id: "11111111-1111-1111-1111-111111111111",
 				tags: ["env:staging"],
+				snapshot_schedule_frequency_hours: 24,
+				snapshot_schedule_retention_days: 7,
+				is_snapshot_schedule_enabled: true,
 			});
 
 			const req = getRequest();
 			const body = getRequestBody();
 			expect(body.tags).toEqual(["env:staging"]);
 			expect(body.name).toBeUndefined();
+			expect(body.snapshot_schedule_frequency_hours).toBe(24);
+			expect(body.snapshot_schedule_retention_days).toBe(7);
+			expect(body.is_snapshot_schedule_enabled).toBe(true);
 		});
 
 		it("handles update error", async () => {
@@ -746,6 +769,9 @@ describe("mongodb handlers", () => {
 
 			const req = getRequest();
 			const body = getRequestBody();
+			expect(req.path).toContain("/snapshots");
+			expect(req.method).toBe("POST");
+			expect(body.instance_id).toBe("11111111-1111-1111-1111-111111111111");
 			expect(body.name).toBe("backup");
 			expect(body.expires_at).toBeUndefined();
 		});
@@ -790,17 +816,20 @@ describe("mongodb handlers", () => {
 				snapshot_id: "11111111-1111-1111-1111-111111111111",
 				instance_name: "restored-db",
 				node_type: "MGDB-PLAY2-NANO",
-				node_number: 1,
+				node_amount: 1,
 			});
 			const data = JSON.parse(result.content[0].text);
 			expect(data.name).toBe("restored-db");
 
 			const req = getRequest();
+			const body = getRequestBody();
 			expect(req.path).toContain("/snapshots/11111111-1111-1111-1111-111111111111/restore");
 			expect(req.method).toBe("POST");
+			expect(body.node_amount).toBe(1);
+			expect(body.volume_type).toBeUndefined();
 		});
 
-		it("restores with volume config", async () => {
+		it("restores with volume_type", async () => {
 			const { handleRestoreSnapshot } = await import("../../../src/tools/mongodb/handlers.js");
 			mockFetch.mockResolvedValue({ id: "new-inst" });
 
@@ -808,13 +837,13 @@ describe("mongodb handlers", () => {
 				snapshot_id: "11111111-1111-1111-1111-111111111111",
 				instance_name: "restored-db",
 				node_type: "MGDB-PLAY2-NANO",
-				node_number: 1,
-				volume: { volume_type: "sbs_15k", volume_size: 20000000000 },
+				node_amount: 1,
+				volume_type: "sbs_15k",
 			});
 
 			const req = getRequest();
 			const body = getRequestBody();
-			expect((body.volume as Record<string, unknown>).volume_type).toBe("sbs_15k");
+			expect(body.volume_type).toBe("sbs_15k");
 		});
 
 		it("handles error", async () => {
@@ -825,7 +854,7 @@ describe("mongodb handlers", () => {
 				snapshot_id: "11111111-1111-1111-1111-111111111111",
 				instance_name: "restored-db",
 				node_type: "MGDB-PLAY2-NANO",
-				node_number: 1,
+				node_amount: 1,
 			});
 			expect("isError" in result && result.isError).toBe(true);
 		});
@@ -874,15 +903,15 @@ describe("mongodb handlers", () => {
 			expect(data.items[0].name).toBe("MGDB-PLAY2-NANO");
 		});
 
-		it("passes include_disabled_types parameter", async () => {
+		it("passes include_disabled parameter", async () => {
 			const { handleListNodeTypes } = await import("../../../src/tools/mongodb/handlers.js");
 			mockFetch.mockResolvedValue({ node_types: [], total_count: 0 });
 
-			await handleListNodeTypes({ include_disabled_types: true });
+			await handleListNodeTypes({ include_disabled: true });
 
 			const req = getRequest();
 			const params = req.urlParams?.toString() ?? "";
-			expect(params).toContain("include_disabled_types=true");
+			expect(params).toContain("include_disabled=true");
 		});
 
 		it("handles error", async () => {

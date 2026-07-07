@@ -26,7 +26,6 @@ vi.mock("../../../src/shared/client.js", () => ({
 
 import {
 	handleCheckDomainAvailability,
-	handleCreateContact,
 	handleDisableAutoRenew,
 	handleEnableAutoRenew,
 	handleGetContact,
@@ -124,11 +123,11 @@ describe("Contract: GET /domains/{domain} (get_domain)", () => {
 	});
 });
 
-// ── Contract: Register Domain (POST /domains) ─────────────────────────────
+// ── Contract: Register Domain (POST /buy-domains) ─────────────────────────
 
-describe("Contract: POST /domains (register_domain)", () => {
-	it("sends POST to /domains with request body", async () => {
-		mockFetch.mockResolvedValue({ domain: "new.com" });
+describe("Contract: POST /buy-domains (register_domain)", () => {
+	it("sends POST to /buy-domains with request body", async () => {
+		mockFetch.mockResolvedValue({ domains: ["new.com"], task_id: "t-1" });
 		await handleRegisterDomain({
 			domain: "new.com",
 			duration_in_years: 2,
@@ -138,16 +137,16 @@ describe("Contract: POST /domains (register_domain)", () => {
 
 		const req = getRequest();
 		expect(req.method).toBe("POST");
-		expect(req.path).toBe("/domain/v2beta1/domains");
+		expect(req.path).toBe("/domain/v2beta1/buy-domains");
 		expect(req.headers).toEqual({ "Content-Type": "application/json" });
 		const body = JSON.parse(req.body as string);
 		expect(body).toEqual({
-			domain: "new.com",
+			domains: ["new.com"],
 			duration_in_years: 2,
 			project_id: "proj-1",
 			owner_contact_id: "c-1",
-			admin_contact_id: undefined,
-			tech_contact_id: undefined,
+			administrative_contact_id: undefined,
+			technical_contact_id: undefined,
 		});
 	});
 
@@ -166,26 +165,27 @@ describe("Contract: POST /domains (register_domain)", () => {
 	});
 });
 
-// ── Contract: Renew Domain (POST /domains/{domain}/renew) ──────────────────
+// ── Contract: Renew Domain (POST /renew-domains) ───────────────────────────
 
-describe("Contract: POST /domains/{domain}/renew (renew_domain)", () => {
-	it("sends POST to /domains/{domain}/renew", async () => {
-		mockFetch.mockResolvedValue({ domain: "example.com" });
+describe("Contract: POST /renew-domains (renew_domain)", () => {
+	it("sends POST to /renew-domains", async () => {
+		mockFetch.mockResolvedValue({ domains: ["example.com"], task_id: "t-1" });
 		await handleRenewDomain({ domain: "example.com", duration_in_years: 3 });
 
 		const req = getRequest();
 		expect(req.method).toBe("POST");
-		expect(req.path).toBe("/domain/v2beta1/domains/example.com/renew");
+		expect(req.path).toBe("/domain/v2beta1/renew-domains");
 		const body = JSON.parse(req.body as string);
+		expect(body.domains).toEqual(["example.com"]);
 		expect(body.duration_in_years).toBe(3);
 	});
 });
 
-// ── Contract: Transfer Domain (POST /domains/transfer) ─────────────────────
+// ── Contract: Transfer Domain (POST /domains/transfer-domains) ─────────────
 
-describe("Contract: POST /domains/transfer (transfer_domain)", () => {
-	it("sends POST to /domains/transfer", async () => {
-		mockFetch.mockResolvedValue({ domain: "transfer.com" });
+describe("Contract: POST /domains/transfer-domains (transfer_domain)", () => {
+	it("sends POST to /domains/transfer-domains", async () => {
+		mockFetch.mockResolvedValue({ domains: ["transfer.com"], task_id: "t-1" });
 		await handleTransferDomain({
 			domain: "transfer.com",
 			auth_code: "EPP123",
@@ -195,9 +195,11 @@ describe("Contract: POST /domains/transfer (transfer_domain)", () => {
 
 		const req = getRequest();
 		expect(req.method).toBe("POST");
-		expect(req.path).toBe("/domain/v2beta1/domains/transfer");
+		expect(req.path).toBe("/domain/v2beta1/domains/transfer-domains");
 		const body = JSON.parse(req.body as string);
-		expect(body.auth_code).toBe("EPP123");
+		expect(body.domains).toEqual([{ domain: "transfer.com", auth_code: "EPP123" }]);
+		expect(body.project_id).toBe("proj-1");
+		expect(body.owner_contact_id).toBe("c-1");
 	});
 
 	it("returns 403 as permission_denied", async () => {
@@ -265,17 +267,17 @@ describe("Contract: POST /domains/{domain}/disable-auto-renew", () => {
 	});
 });
 
-// ── Contract: Check Availability (GET /domains/availability) ───────────────
+// ── Contract: Check Availability (GET /search-domains) ─────────────────────
 
-describe("Contract: GET /domains/availability (check_domain_availability)", () => {
-	it("sends GET to /domains/availability with domain query", async () => {
-		mockFetch.mockResolvedValue({ domain: "d.com", available: true, tld: "com" });
+describe("Contract: GET /search-domains (check_domain_availability)", () => {
+	it("sends GET to /search-domains with domains query", async () => {
+		mockFetch.mockResolvedValue({ available_domains: [{ domain: "d.com", available: true }] });
 		await handleCheckDomainAvailability({ domain: "d.com" });
 
 		const req = getRequest();
 		expect(req.method).toBe("GET");
-		expect(req.path).toBe("/domain/v2beta1/domains/availability");
-		expect(req.urlParams?.get("domain")).toBe("d.com");
+		expect(req.path).toBe("/domain/v2beta1/search-domains");
+		expect(req.urlParams?.get("domains")).toBe("d.com");
 	});
 });
 
@@ -314,36 +316,14 @@ describe("Contract: GET /contacts/{contact_id} (get_contact)", () => {
 	});
 });
 
-// ── Contract: Create Contact (POST /contacts) ─────────────────────────────
-
-describe("Contract: POST /contacts (create_contact)", () => {
-	it("sends POST to /contacts with body", async () => {
-		const input = {
-			firstname: "Jane",
-			lastname: "Doe",
-			email: "jane@example.com",
-			phone: "+33612345678",
-			address_line_1: "1 Rue",
-			city: "Paris",
-			zip: "75001",
-			country: "FR",
-		};
-		mockFetch.mockResolvedValue({ id: "c-new", ...input });
-		await handleCreateContact(input);
-
-		const req = getRequest();
-		expect(req.method).toBe("POST");
-		expect(req.path).toBe("/domain/v2beta1/contacts");
-		expect(req.headers).toEqual({ "Content-Type": "application/json" });
-	});
-});
-
 // ── Contract: Update Contact (PATCH /contacts/{contact_id}) ────────────────
+// Note: the Registrar API has no standalone create-contact endpoint; contacts
+// are created inline via buy/transfer requests (owner_contact). No POST /contacts.
 
 describe("Contract: PATCH /contacts/{contact_id} (update_contact)", () => {
 	it("sends PATCH to /contacts/{contact_id}", async () => {
 		mockFetch.mockResolvedValue({ id: "c-1" });
-		await handleUpdateContact({ contact_id: "c-1", firstname: "Updated" });
+		await handleUpdateContact({ contact_id: "c-1", phone_number: "+33600000000" });
 
 		const req = getRequest();
 		expect(req.method).toBe("PATCH");
@@ -372,16 +352,25 @@ describe("Contract: GET /tlds (list_tlds)", () => {
 	});
 });
 
-// ── Contract: Get TLD (GET /tlds/{tld_name}) ──────────────────────────────
+// ── Contract: Get TLD (GET /tlds?tlds=) ───────────────────────────────────
+// No standalone GET /tlds/{tld} endpoint; get_tld filters the ListTlds endpoint.
 
-describe("Contract: GET /tlds/{tld_name} (get_tld)", () => {
-	it("sends GET to /tlds/{tld_name}", async () => {
-		mockFetch.mockResolvedValue({ name: "com" });
-		await handleGetTld({ tld_name: "com" });
+describe("Contract: GET /tlds?tlds= (get_tld)", () => {
+	it("sends GET to /tlds filtered by tld name and returns the single TLD", async () => {
+		mockFetch.mockResolvedValue({ tlds: [{ name: "com" }], total_count: 1 });
+		const result = await handleGetTld({ tld_name: "com" });
 
 		const req = getRequest();
 		expect(req.method).toBe("GET");
-		expect(req.path).toBe("/domain/v2beta1/tlds/com");
+		expect(req.path).toBe("/domain/v2beta1/tlds");
+		expect(req.urlParams?.get("tlds")).toBe("com");
+		expect(parseContent(result)).toEqual({ name: "com" });
+	});
+
+	it("returns the raw response when no TLD matches", async () => {
+		mockFetch.mockResolvedValue({ tlds: [], total_count: 0 });
+		const result = await handleGetTld({ tld_name: "zzz" });
+		expect(parseContent(result)).toEqual({ tlds: [], total_count: 0 });
 	});
 
 	it("returns 404 as not_found for unknown TLD", async () => {
@@ -435,18 +424,9 @@ describe("Contract: POST/PATCH requests include Content-Type", () => {
 		expect(req.headers).toEqual({ "Content-Type": "application/json" });
 	});
 
-	it("create_contact includes Content-Type", async () => {
+	it("update_contact includes Content-Type", async () => {
 		mockFetch.mockResolvedValue({});
-		await handleCreateContact({
-			firstname: "J",
-			lastname: "D",
-			email: "j@e.com",
-			phone: "+1",
-			address_line_1: "1",
-			city: "C",
-			zip: "0",
-			country: "FR",
-		});
+		await handleUpdateContact({ contact_id: "c-1", phone_number: "+33600000000" });
 		const req = getRequest();
 		expect(req.headers).toEqual({ "Content-Type": "application/json" });
 	});

@@ -87,7 +87,7 @@ export async function handleCreateLb(args: {
 	project_id?: string;
 	name: string;
 	description?: string;
-	ip_id?: string;
+	ip_ids?: string[];
 	assign_flexible_ip?: boolean;
 	assign_flexible_ipv6?: boolean;
 	type?: string;

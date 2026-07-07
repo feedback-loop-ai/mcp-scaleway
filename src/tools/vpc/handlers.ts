@@ -46,7 +46,7 @@ export async function handleListVpcs(input: ListVpcsInput) {
 			page: String(pq.page),
 			page_size: String(pq.page_size),
 			...(filters.name ? { name: filters.name } : {}),
-			...(filters.project ? { project: filters.project } : {}),
+			...(filters.project_id ? { project_id: filters.project_id } : {}),
 		});
 		if (filters.tags) {
 			for (const tag of filters.tags) {
@@ -88,7 +88,7 @@ export async function handleCreateVpc(input: CreateVpcInput) {
 			path: `${VPC_API_V2}/${input.region}/vpcs`,
 			body: JSON.stringify({
 				name: input.name,
-				project: input.project,
+				project_id: input.project_id,
 				tags: input.tags ?? [],
 			}),
 			headers: { "Content-Type": "application/json" },

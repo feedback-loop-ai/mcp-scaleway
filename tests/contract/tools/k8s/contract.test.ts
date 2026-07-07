@@ -4,6 +4,10 @@
  * Validates request/response shapes, pagination, auth requirements, and error codes
  * against the Scaleway K8s API specification in specs/scaleway-api/k8s/.
  *
+ * API Reference: https://www.scaleway.com/en/developers/api/kubernetes/
+ * Spec: specs/scaleway-api/k8s/api-reference.md
+ * Parity Matrix: tests/parity-matrix.json#k8s
+ *
  * Each test references its corresponding Scaleway API endpoint.
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";

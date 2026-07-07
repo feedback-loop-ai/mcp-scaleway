@@ -87,3 +87,66 @@ export const ListOSParams = z
 	})
 	.merge(PaginationParams)
 	.describe("Parameters for listing Apple Silicon OS versions");
+
+// --- Private Networks ---
+
+export const ListServerPrivateNetworksOrderBy = z
+	.enum(["created_at_asc", "created_at_desc", "updated_at_asc", "updated_at_desc"])
+	.optional()
+	.describe("Sort order for the returned Private Network attachments");
+
+export const ListServerPrivateNetworksParams = z
+	.object({
+		zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-3)"),
+		order_by: ListServerPrivateNetworksOrderBy,
+		server_id: z.string().optional().describe("Filter by Apple Silicon server ID"),
+		private_network_id: z.string().optional().describe("Filter by Private Network ID"),
+		organization_id: z.string().optional().describe("Filter by Organization ID"),
+		project_id: z.string().optional().describe("Filter by Project ID"),
+		ipam_ip_ids: z
+			.array(z.string())
+			.optional()
+			.describe("Filter by IPAM IP IDs attached to the server"),
+	})
+	.merge(PaginationParams)
+	.describe("Parameters for listing Apple Silicon server Private Network attachments");
+
+export const GetServerPrivateNetworkParams = z
+	.object({
+		zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-3)"),
+		server_id: z.string().describe("ID of the server"),
+		private_network_id: z.string().describe("ID of the Private Network"),
+	})
+	.describe("Parameters for getting a single Apple Silicon server Private Network attachment");
+
+export const AddServerPrivateNetworkParams = z
+	.object({
+		zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-3)"),
+		server_id: z.string().describe("ID of the server to attach"),
+		private_network_id: z.string().describe("ID of the Private Network to attach the server to"),
+		ipam_ip_ids: z
+			.array(z.string())
+			.optional()
+			.describe("IPAM IDs of IPs to attach to the server on the Private Network"),
+	})
+	.describe("Parameters for attaching an Apple Silicon server to a Private Network");
+
+export const SetServerPrivateNetworksParams = z
+	.object({
+		zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-3)"),
+		server_id: z.string().describe("ID of the server to configure"),
+		per_private_network_ipam_ip_ids: z
+			.record(z.string(), z.array(z.string()))
+			.describe(
+				"Map of Private Network IDs to arrays of IPAM IP IDs. An empty array auto-assigns the next available IP from the Private Network CIDR.",
+			),
+	})
+	.describe("Parameters for setting the full list of Private Networks on an Apple Silicon server");
+
+export const DeleteServerPrivateNetworkParams = z
+	.object({
+		zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-3)"),
+		server_id: z.string().describe("ID of the server to detach"),
+		private_network_id: z.string().describe("ID of the Private Network to detach from the server"),
+	})
+	.describe("Parameters for detaching an Apple Silicon server from a Private Network");

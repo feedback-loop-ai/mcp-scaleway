@@ -4,18 +4,22 @@ import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
 import { buildPaginatedResponse } from "../../shared/pagination.js";
 import {
+	AddServerPrivateNetworkInput,
 	CreateIpInput,
 	CreateServerInput,
 	DeleteIpInput,
 	DeleteServerInput,
+	DeleteServerPrivateNetworkInput,
 	GetBmcAccessInput,
 	GetServerInput,
 	InstallServerInput,
 	ListIpsInput,
 	ListOffersInput,
 	ListOssInput,
+	ListServerPrivateNetworksInput,
 	ListServersInput,
 	RebootServerInput,
+	SetServerPrivateNetworksInput,
 	StartServerInput,
 	StopServerInput,
 } from "./types.js";
@@ -335,6 +339,85 @@ export async function handleDeleteIp(params: Record<string, unknown>) {
 	try {
 		const client = getClient();
 		const data = await apiCall(client, "DELETE", `${BASE_URL}/${input.zone}/ips/${input.ip_id}`);
+		return jsonResponse(data);
+	} catch (error) {
+		return formatErrorResponse(mapScalewayError(error));
+	}
+}
+
+// --- US5: Private Networks ---
+
+export async function handleListServerPrivateNetworks(params: Record<string, unknown>) {
+	const input = ListServerPrivateNetworksInput.parse(params);
+	try {
+		const client = getClient();
+		const searchParams = paginationSearchParams(input.page, input.pageSize);
+		if (input.server_id) searchParams.set("server_id", input.server_id);
+		if (input.private_network_id) searchParams.set("private_network_id", input.private_network_id);
+		if (input.organization_id) searchParams.set("organization_id", input.organization_id);
+		if (input.project_id) searchParams.set("project_id", input.project_id);
+		if (input.order_by) searchParams.set("order_by", input.order_by);
+
+		const data = (await apiCall(
+			client,
+			"GET",
+			`${BASE_URL}/${input.zone}/server-private-networks?${searchParams.toString()}`,
+		)) as { server_private_networks: unknown[]; total_count: number };
+
+		return jsonResponse(
+			buildPaginatedResponse(
+				data.server_private_networks,
+				data.total_count,
+				input.page,
+				input.pageSize,
+			),
+		);
+	} catch (error) {
+		return formatErrorResponse(mapScalewayError(error));
+	}
+}
+
+export async function handleAddServerPrivateNetwork(params: Record<string, unknown>) {
+	const input = AddServerPrivateNetworkInput.parse(params);
+	try {
+		const client = getClient();
+		const data = await apiCall(
+			client,
+			"POST",
+			`${BASE_URL}/${input.zone}/servers/${input.server_id}/private-networks`,
+			{ private_network_id: input.private_network_id },
+		);
+		return jsonResponse(data);
+	} catch (error) {
+		return formatErrorResponse(mapScalewayError(error));
+	}
+}
+
+export async function handleSetServerPrivateNetworks(params: Record<string, unknown>) {
+	const input = SetServerPrivateNetworksInput.parse(params);
+	try {
+		const client = getClient();
+		const data = await apiCall(
+			client,
+			"PUT",
+			`${BASE_URL}/${input.zone}/servers/${input.server_id}/private-networks`,
+			{ private_network_ids: input.private_network_ids },
+		);
+		return jsonResponse(data);
+	} catch (error) {
+		return formatErrorResponse(mapScalewayError(error));
+	}
+}
+
+export async function handleDeleteServerPrivateNetwork(params: Record<string, unknown>) {
+	const input = DeleteServerPrivateNetworkInput.parse(params);
+	try {
+		const client = getClient();
+		const data = await apiCall(
+			client,
+			"DELETE",
+			`${BASE_URL}/${input.zone}/servers/${input.server_id}/private-networks/${input.private_network_id}`,
+		);
 		return jsonResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));

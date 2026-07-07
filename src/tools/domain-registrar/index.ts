@@ -1,7 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
 	handleCheckDomainAvailability,
-	handleCreateContact,
 	handleDisableAutoRenew,
 	handleEnableAutoRenew,
 	handleGetContact,
@@ -18,7 +17,6 @@ import {
 } from "./handlers.js";
 import {
 	CheckDomainAvailabilityInput,
-	CreateContactInput,
 	DisableAutoRenewInput,
 	EnableAutoRenewInput,
 	GetContactInput,
@@ -114,13 +112,6 @@ export function registerDomainRegistrarTools(server: McpServer): void {
 		"Get detailed information about a specific contact",
 		GetContactInput.shape,
 		async (params) => handleGetContact(GetContactInput.parse(params)),
-	);
-
-	server.tool(
-		"scaleway_domain_registrar_create_contact",
-		"Create a new domain registration contact",
-		CreateContactInput.shape,
-		async (params) => handleCreateContact(CreateContactInput.parse(params)),
 	);
 
 	server.tool(

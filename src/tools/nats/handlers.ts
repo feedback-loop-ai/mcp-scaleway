@@ -134,8 +134,9 @@ export async function handleListNatsCredentials(params: ListNatsCredentialsParam
 			total_count: number;
 		}>({
 			method: "GET",
-			path: `${NATS_API_PREFIX}/${params.region}/nats-accounts/${params.natsAccountId}/nats-credentials`,
+			path: `${NATS_API_PREFIX}/${params.region}/nats-credentials`,
 			urlParams: urlParams(
+				["nats_account_id", params.natsAccountId],
 				["page", params.page],
 				["page_size", params.pageSize],
 				["order_by", params.orderBy],

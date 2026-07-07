@@ -4,6 +4,7 @@ import { createScalewayClient } from "../../shared/client.js";
 import {
 	handleDownloadInvoice,
 	handleGetInvoice,
+	handleListCharges,
 	handleListConsumptions,
 	handleListDiscounts,
 	handleListInvoices,
@@ -11,6 +12,7 @@ import {
 import {
 	DownloadInvoiceParams,
 	GetInvoiceParams,
+	ListChargesParams,
 	ListConsumptionsParams,
 	ListDiscountsParams,
 	ListInvoicesParams,
@@ -62,6 +64,18 @@ export function registerBillingTools(server: McpServer): void {
 			const client = createScalewayClient(config);
 			const parsed = DownloadInvoiceParams.parse(params);
 			return handleDownloadInvoice(client, parsed);
+		},
+	);
+
+	server.tool(
+		"scaleway_billing_list_charges",
+		"List FinOps charges for a Scaleway organization with per-resource and fine-grained time granularity. Returns itemized charges (resource, project, category, untaxed value, discount, unit, billed quantity) over a time window. Supports filtering by project, resource, invoice, SKU and date range, and cursor pagination via page_token. Requires organization_id.",
+		ListChargesParams.shape,
+		async (params) => {
+			const config = loadAuthConfig();
+			const client = createScalewayClient(config);
+			const parsed = ListChargesParams.parse(params);
+			return handleListCharges(client, parsed);
 		},
 	);
 

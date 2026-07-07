@@ -158,6 +158,63 @@ export const ListDiscountsParams = PaginationParams.extend({
 });
 export type ListDiscountsParams = z.infer<typeof ListDiscountsParams>;
 
+// --- FinOps: Charge (per-resource, fine-grained consumption) ---
+// API: GET /billing/v2beta1/charges (Billing - FinOps, https://www.scaleway.com/en/developers/api/billing_finops/)
+export const Charge = z.object({
+	category_name: z.string().describe("Category name (e.g. Compute, Storage)"),
+	resource_name: z.string().describe("Human-readable resource name"),
+	resource_id: z.string().describe("Resource ID the charge relates to"),
+	project_id: z.string().describe("Project ID"),
+	value: Money.describe("Monetary value of the charge (untaxed)"),
+	discount_value: Money.describe("Discount applied to the charge"),
+	begin_date: z.string().describe("Start of the charge time window (RFC 3339)"),
+	end_date: z.string().describe("End of the charge time window (RFC 3339)"),
+	unit: z.string().describe("Unit of measure"),
+	billed_quantity: z.number().describe("Quantity billed over the window"),
+});
+export type Charge = z.infer<typeof Charge>;
+
+export const ChargeOrderBy = z.enum(["start_date_asc", "start_date_desc"]);
+export type ChargeOrderBy = z.infer<typeof ChargeOrderBy>;
+
+export const ListChargesParams = z.object({
+	organization_id: z.string().describe("Organization ID (required)"),
+	order_by: ChargeOrderBy.optional().describe("Sort order"),
+	page_size: z
+		.number()
+		.int()
+		.min(1)
+		.max(100)
+		.optional()
+		.describe("Number of charges to return (1-100)"),
+	page_token: z.string().optional().describe("Pagination cursor returned by a previous call"),
+	start_date_after: z
+		.string()
+		.optional()
+		.describe("Only return charges beginning after this RFC 3339 timestamp"),
+	end_date_before: z
+		.string()
+		.optional()
+		.describe("Only return charges ending before this RFC 3339 timestamp"),
+	clamp_to_time_range: z
+		.boolean()
+		.optional()
+		.describe("Clamp partial charges to the requested [start_date_after, end_date_before] window"),
+	invoice_ids: z.array(z.string()).optional().describe("Filter by invoice IDs"),
+	project_ids: z.array(z.string()).optional().describe("Filter by project IDs"),
+	resource_ids: z.array(z.string()).optional().describe("Filter by resource IDs"),
+	resource_names: z.array(z.string()).optional().describe("Filter by resource names"),
+	skus: z.array(z.string()).optional().describe("Filter by SKUs"),
+});
+export type ListChargesParams = z.infer<typeof ListChargesParams>;
+
+export const ListChargesResponse = z.object({
+	charges: z.array(Charge),
+	total_count: z.number(),
+	next_page_token: z.string().nullable().optional(),
+});
+export type ListChargesResponse = z.infer<typeof ListChargesResponse>;
+
 // --- Response Schemas ---
 export const ListConsumptionsResponse = z.object({
 	consumptions: z.array(Consumption),

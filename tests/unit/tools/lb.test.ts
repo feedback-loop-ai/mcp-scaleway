@@ -142,7 +142,7 @@ describe("lb types schemas", () => {
 	});
 
 	it("validates CertificateType enum", () => {
-		expect(CertificateType.parse("letsencryt")).toBe("letsencryt");
+		expect(CertificateType.parse("letsencrypt")).toBe("letsencrypt");
 		expect(CertificateType.parse("custom")).toBe("custom");
 		expect(() => CertificateType.parse("invalid")).toThrow();
 	});
@@ -255,7 +255,7 @@ describe("lb types schemas", () => {
 			project_id: UUID,
 			name: "my-lb",
 			description: "test",
-			ip_id: UUID,
+			ip_ids: [UUID],
 			assign_flexible_ip: true,
 			assign_flexible_ipv6: false,
 			type: "lb-s",
@@ -771,7 +771,7 @@ describe("lb handlers", () => {
 				project_id: UUID,
 				name: "new-lb",
 				description: "desc",
-				ip_id: UUID2,
+				ip_ids: [UUID2],
 				assign_flexible_ip: true,
 				assign_flexible_ipv6: false,
 				type: "lb-s",
@@ -783,6 +783,7 @@ describe("lb handlers", () => {
 			expect(call.path).toBe("/lb/v1/zones/nl-ams-1/lbs");
 			const body = JSON.parse(call.body);
 			expect(body.project_id).toBe(UUID);
+			expect(body.ip_ids).toEqual([UUID2]);
 			expect(body.type).toBe("lb-s");
 			expect(body.tags).toEqual(["t1"]);
 			// zone should not be in body

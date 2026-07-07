@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as handlers from "../../../src/tools/block-storage/handlers.js";
 import { registerBlockStorageTools } from "../../../src/tools/block-storage/index.js";
 import {
+	BlockOrderBy,
 	CreateSnapshotParams,
 	CreateVolumeParams,
 	DeleteSnapshotParams,
@@ -12,18 +13,19 @@ import {
 	ListSnapshotsParams,
 	ListVolumeTypesParams,
 	ListVolumesParams,
+	Money,
+	Reference,
+	ReferenceStatus,
+	ReferenceType,
 	Snapshot,
-	SnapshotClass,
 	SnapshotStatus,
+	StorageClass,
 	UpdateSnapshotParams,
 	UpdateVolumeParams,
 	Volume,
 	VolumeSpecifications,
 	VolumeStatus,
-	VolumeType,
 	VolumeTypeInfo,
-	VolumeTypePricing,
-	VolumeTypeSpecs,
 } from "../../../src/tools/block-storage/types.js";
 
 // Mock shared modules
@@ -53,7 +55,7 @@ describe("block-storage module", () => {
 
 describe("block-storage types", () => {
 	describe("VolumeStatus", () => {
-		it("accepts valid statuses", () => {
+		it("accepts all v1 statuses including updating", () => {
 			for (const status of [
 				"unknown_status",
 				"creating",
@@ -65,6 +67,7 @@ describe("block-storage types", () => {
 				"error",
 				"snapshotting",
 				"locked",
+				"updating",
 			]) {
 				expect(VolumeStatus.parse(status)).toBe(status);
 			}
@@ -75,68 +78,213 @@ describe("block-storage types", () => {
 		});
 	});
 
-	describe("VolumeType", () => {
-		it("accepts valid types", () => {
-			for (const t of ["unknown_type", "b_ssd", "sbs_5k", "sbs_15k"]) {
-				expect(VolumeType.parse(t)).toBe(t);
+	describe("SnapshotStatus", () => {
+		it("accepts all v1 statuses including exporting", () => {
+			for (const s of [
+				"unknown_status",
+				"creating",
+				"available",
+				"error",
+				"deleting",
+				"deleted",
+				"in_use",
+				"locked",
+				"exporting",
+			]) {
+				expect(SnapshotStatus.parse(s)).toBe(s);
 			}
 		});
 
-		it("rejects invalid type", () => {
-			expect(() => VolumeType.parse("hdd")).toThrow();
+		it("rejects invalid status", () => {
+			expect(() => SnapshotStatus.parse("pending")).toThrow();
+		});
+	});
+
+	describe("StorageClass", () => {
+		it("accepts v1 storage classes", () => {
+			for (const c of ["unknown_storage_class", "unspecified", "bssd", "sbs"]) {
+				expect(StorageClass.parse(c)).toBe(c);
+			}
+		});
+
+		it("rejects old v1alpha1 class values", () => {
+			expect(() => StorageClass.parse("instant")).toThrow();
+		});
+	});
+
+	describe("ReferenceType / ReferenceStatus", () => {
+		it("accepts reference type values", () => {
+			for (const t of ["unknown_type", "link", "exclusive", "read_only"]) {
+				expect(ReferenceType.parse(t)).toBe(t);
+			}
+		});
+
+		it("accepts reference status values", () => {
+			for (const s of [
+				"unknown_status",
+				"attaching",
+				"attached",
+				"detaching",
+				"detached",
+				"creating",
+				"error",
+			]) {
+				expect(ReferenceStatus.parse(s)).toBe(s);
+			}
+		});
+	});
+
+	describe("BlockOrderBy", () => {
+		it("accepts ordering values", () => {
+			for (const o of ["created_at_asc", "created_at_desc", "name_asc", "name_desc"]) {
+				expect(BlockOrderBy.parse(o)).toBe(o);
+			}
+		});
+
+		it("rejects invalid ordering", () => {
+			expect(() => BlockOrderBy.parse("size_asc")).toThrow();
+		});
+	});
+
+	describe("Reference", () => {
+		it("parses a reference", () => {
+			const result = Reference.parse({
+				id: "dddddddd-dddd-dddd-dddd-dddddddddddd",
+				product_resource_type: "instance_server",
+				product_resource_id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+				created_at: "2025-01-01T00:00:00Z",
+				type: "exclusive",
+				status: "attached",
+			});
+			expect(result.type).toBe("exclusive");
 		});
 	});
 
 	describe("VolumeSpecifications", () => {
 		it("parses full specs", () => {
-			const result = VolumeSpecifications.parse({
-				perfIops: 5000,
-				class: "sbs_5k",
-			});
-			expect(result.perfIops).toBe(5000);
-			expect(result.class).toBe("sbs_5k");
+			const result = VolumeSpecifications.parse({ perf_iops: 5000, class: "sbs" });
+			expect(result.perf_iops).toBe(5000);
+			expect(result.class).toBe("sbs");
 		});
 
-		it("parses empty specs", () => {
-			const result = VolumeSpecifications.parse({});
-			expect(result.perfIops).toBeUndefined();
+		it("parses null perf_iops and empty specs", () => {
+			const result = VolumeSpecifications.parse({ perf_iops: null });
+			expect(result.perf_iops).toBeNull();
+			expect(VolumeSpecifications.parse({}).class).toBeUndefined();
 		});
 	});
 
 	describe("Volume", () => {
-		it("parses a full volume", () => {
+		it("parses a full volume with snake_case fields", () => {
 			const result = Volume.parse({
 				id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
 				name: "test-vol",
 				type: "sbs_5k",
 				size: 10000000000,
-				zone: "fr-par-1",
+				project_id: "11111111-1111-1111-1111-111111111111",
+				created_at: "2025-01-01T00:00:00Z",
+				updated_at: "2025-01-01T00:00:00Z",
+				references: [
+					{
+						id: "dddddddd-dddd-dddd-dddd-dddddddddddd",
+						product_resource_type: "instance_server",
+						product_resource_id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+						created_at: null,
+						type: "exclusive",
+						status: "attached",
+					},
+				],
+				parent_snapshot_id: null,
 				status: "available",
-				specs: { perfIops: 5000 },
-				lastDetachedAt: null,
-				projectId: "11111111-1111-1111-1111-111111111111",
 				tags: ["env:test"],
-				parentSnapshotId: null,
-				createdAt: "2025-01-01T00:00:00Z",
-				updatedAt: "2025-01-01T00:00:00Z",
+				zone: "fr-par-1",
+				specs: { perf_iops: 5000, class: "sbs" },
+				last_detached_at: null,
+				kms_key_id: null,
 			});
 			expect(result.id).toBe("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
-			expect(result.tags).toEqual(["env:test"]);
+			expect(result.references?.[0].status).toBe("attached");
 		});
 
-		it("parses volume with minimal fields", () => {
+		it("parses a minimal volume", () => {
 			const result = Volume.parse({
 				id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
 				name: "min-vol",
-				type: "b_ssd",
+				type: "sbs_15k",
 				size: 5000000000,
-				zone: "fr-par-1",
+				project_id: "11111111-1111-1111-1111-111111111111",
 				status: "creating",
-				projectId: "11111111-1111-1111-1111-111111111111",
 				tags: [],
+				zone: "fr-par-1",
 			});
 			expect(result.specs).toBeUndefined();
-			expect(result.lastDetachedAt).toBeUndefined();
+			expect(result.references).toBeUndefined();
+		});
+	});
+
+	describe("Snapshot", () => {
+		it("parses a full snapshot", () => {
+			const result = Snapshot.parse({
+				id: "cccccccc-cccc-cccc-cccc-cccccccccccc",
+				name: "test-snap",
+				parent_volume: {
+					id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+					name: "parent-vol",
+					type: "sbs_5k",
+					status: "available",
+				},
+				size: 10000000000,
+				project_id: "11111111-1111-1111-1111-111111111111",
+				created_at: "2025-01-01T00:00:00Z",
+				updated_at: "2025-01-01T00:00:00Z",
+				references: [],
+				status: "available",
+				tags: ["backup"],
+				zone: "fr-par-1",
+				class: "sbs",
+				public: false,
+			});
+			expect(result.class).toBe("sbs");
+			expect(result.parent_volume?.name).toBe("parent-vol");
+		});
+
+		it("parses snapshot with null parent_volume", () => {
+			const result = Snapshot.parse({
+				id: "cccccccc-cccc-cccc-cccc-cccccccccccc",
+				name: "min-snap",
+				parent_volume: null,
+				size: 5000000000,
+				project_id: "11111111-1111-1111-1111-111111111111",
+				status: "creating",
+				tags: [],
+				zone: "nl-ams-1",
+			});
+			expect(result.parent_volume).toBeNull();
+			expect(result.public).toBeUndefined();
+		});
+	});
+
+	describe("Money / VolumeTypeInfo", () => {
+		it("parses money", () => {
+			const result = Money.parse({ currency_code: "EUR", units: 0, nanos: 400000 });
+			expect(result.currency_code).toBe("EUR");
+		});
+
+		it("parses full volume type info", () => {
+			const result = VolumeTypeInfo.parse({
+				type: "sbs_5k",
+				pricing: { currency_code: "EUR", units: 0, nanos: 400000 },
+				snapshot_pricing: { currency_code: "EUR", units: 0, nanos: 200000 },
+				specs: { perf_iops: 5000, class: "sbs" },
+				zone: "fr-par-1",
+			});
+			expect(result.type).toBe("sbs_5k");
+			expect(result.specs?.perf_iops).toBe(5000);
+		});
+
+		it("parses minimal volume type info", () => {
+			const result = VolumeTypeInfo.parse({ type: "sbs_15k" });
+			expect(result.pricing).toBeUndefined();
 		});
 	});
 
@@ -145,19 +293,25 @@ describe("block-storage types", () => {
 			const result = ListVolumesParams.parse({});
 			expect(result.page).toBe(1);
 			expect(result.pageSize).toBe(50);
+			expect(result.includeDeleted).toBe(false);
 		});
 
 		it("accepts all filter fields", () => {
 			const result = ListVolumesParams.parse({
 				zone: "nl-ams-1",
 				projectId: "11111111-1111-1111-1111-111111111111",
+				organizationId: "22222222-2222-2222-2222-222222222222",
 				name: "my-vol",
-				status: "available",
+				orderBy: "name_asc",
+				tags: ["env:prod"],
+				productResourceId: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+				volumeType: "sbs_5k",
+				includeDeleted: true,
 				page: 2,
 				pageSize: 10,
 			});
-			expect(result.zone).toBe("nl-ams-1");
-			expect(result.status).toBe("available");
+			expect(result.orderBy).toBe("name_asc");
+			expect(result.includeDeleted).toBe(true);
 		});
 
 		it("rejects invalid zone format", () => {
@@ -206,9 +360,10 @@ describe("block-storage types", () => {
 				fromEmpty: { size: 10000000000 },
 				perfIops: 5000,
 				tags: ["env:prod"],
+				kmsKeyId: "ffffffff-ffff-ffff-ffff-ffffffffffff",
 			});
 			expect(result.perfIops).toBe(5000);
-			expect(result.tags).toEqual(["env:prod"]);
+			expect(result.kmsKeyId).toBe("ffffffff-ffff-ffff-ffff-ffffffffffff");
 		});
 
 		it("rejects empty name", () => {
@@ -245,95 +400,23 @@ describe("block-storage types", () => {
 		});
 	});
 
-	describe("SnapshotStatus", () => {
-		it("accepts valid statuses", () => {
-			for (const s of [
-				"unknown_status",
-				"creating",
-				"available",
-				"deleting",
-				"deleted",
-				"error",
-				"in_use",
-				"locked",
-			]) {
-				expect(SnapshotStatus.parse(s)).toBe(s);
-			}
-		});
-
-		it("rejects invalid status", () => {
-			expect(() => SnapshotStatus.parse("pending")).toThrow();
-		});
-	});
-
-	describe("SnapshotClass", () => {
-		it("accepts valid classes", () => {
-			for (const c of ["unknown_class", "standard", "instant"]) {
-				expect(SnapshotClass.parse(c)).toBe(c);
-			}
-		});
-
-		it("rejects invalid class", () => {
-			expect(() => SnapshotClass.parse("premium")).toThrow();
-		});
-	});
-
-	describe("Snapshot", () => {
-		it("parses a full snapshot", () => {
-			const result = Snapshot.parse({
-				id: "cccccccc-cccc-cccc-cccc-cccccccccccc",
-				name: "test-snap",
-				volumeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
-				size: 10000000000,
-				zone: "fr-par-1",
-				status: "available",
-				projectId: "11111111-1111-1111-1111-111111111111",
-				tags: ["backup"],
-				class: "standard",
-				createdAt: "2025-01-01T00:00:00Z",
-				updatedAt: "2025-01-01T00:00:00Z",
-				parentVolume: {
-					id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
-					name: "parent-vol",
-					type: "sbs_5k",
-					status: "available",
-				},
-			});
-			expect(result.class).toBe("standard");
-			expect(result.parentVolume?.name).toBe("parent-vol");
-		});
-
-		it("parses snapshot with null/optional fields", () => {
-			const result = Snapshot.parse({
-				id: "cccccccc-cccc-cccc-cccc-cccccccccccc",
-				name: "min-snap",
-				volumeId: null,
-				size: 5000000000,
-				zone: "nl-ams-1",
-				status: "creating",
-				projectId: "11111111-1111-1111-1111-111111111111",
-				tags: [],
-				parentVolume: null,
-			});
-			expect(result.volumeId).toBeNull();
-			expect(result.parentVolume).toBeNull();
-		});
-	});
-
 	describe("ListSnapshotsParams", () => {
 		it("applies defaults", () => {
 			const result = ListSnapshotsParams.parse({});
 			expect(result.page).toBe(1);
-			expect(result.pageSize).toBe(50);
+			expect(result.includeDeleted).toBe(false);
 		});
 
 		it("accepts all filter fields", () => {
 			const result = ListSnapshotsParams.parse({
 				zone: "fr-par-1",
 				projectId: "11111111-1111-1111-1111-111111111111",
+				organizationId: "22222222-2222-2222-2222-222222222222",
 				name: "snap",
+				orderBy: "created_at_desc",
 				volumeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
-				status: "available",
+				tags: ["daily"],
+				includeDeleted: true,
 			});
 			expect(result.volumeId).toBe("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
 		});
@@ -356,8 +439,9 @@ describe("block-storage types", () => {
 				zone: "fr-par-1",
 				projectId: "11111111-1111-1111-1111-111111111111",
 				tags: ["daily"],
+				public: true,
 			});
-			expect(result.volumeId).toBe("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+			expect(result.public).toBe(true);
 		});
 
 		it("parses with only required fields", () => {
@@ -375,6 +459,7 @@ describe("block-storage types", () => {
 				snapshotId: "cccccccc-cccc-cccc-cccc-cccccccccccc",
 				name: "renamed-snap",
 				tags: ["updated"],
+				public: false,
 			});
 			expect(result.name).toBe("renamed-snap");
 		});
@@ -393,52 +478,6 @@ describe("block-storage types", () => {
 				snapshotId: "cccccccc-cccc-cccc-cccc-cccccccccccc",
 			});
 			expect(result.snapshotId).toBe("cccccccc-cccc-cccc-cccc-cccccccccccc");
-		});
-	});
-
-	describe("VolumeTypePricing", () => {
-		it("parses pricing", () => {
-			const result = VolumeTypePricing.parse({ pricePerHour: 0.0004 });
-			expect(result.pricePerHour).toBe(0.0004);
-		});
-
-		it("parses empty pricing", () => {
-			const result = VolumeTypePricing.parse({});
-			expect(result.pricePerHour).toBeUndefined();
-		});
-	});
-
-	describe("VolumeTypeSpecs", () => {
-		it("parses full specs", () => {
-			const result = VolumeTypeSpecs.parse({
-				minSize: 1000000000,
-				maxSize: 10000000000000,
-				minIops: 100,
-				maxIops: 15000,
-			});
-			expect(result.maxIops).toBe(15000);
-		});
-
-		it("parses empty specs", () => {
-			const result = VolumeTypeSpecs.parse({});
-			expect(result.minSize).toBeUndefined();
-		});
-	});
-
-	describe("VolumeTypeInfo", () => {
-		it("parses full volume type info", () => {
-			const result = VolumeTypeInfo.parse({
-				name: "sbs_5k",
-				pricing: { pricePerHour: 0.0004 },
-				snapshotPricing: { pricePerHour: 0.0002 },
-				specs: { minSize: 1000000000, maxSize: 10000000000000 },
-			});
-			expect(result.name).toBe("sbs_5k");
-		});
-
-		it("parses minimal volume type info", () => {
-			const result = VolumeTypeInfo.parse({ name: "b_ssd" });
-			expect(result.pricing).toBeUndefined();
 		});
 	});
 
@@ -466,17 +505,19 @@ describe("block-storage handlers", () => {
 	});
 
 	describe("listVolumes", () => {
-		it("returns paginated volumes", async () => {
+		it("returns paginated volumes and targets block/v1 path", async () => {
 			mockFetch.mockResolvedValueOnce({
 				volumes: [{ id: "vol-1", name: "test" }],
 				total_count: 1,
 			});
 
-			const result = await handlers.listVolumes({ page: 1, pageSize: 50 });
+			const result = await handlers.listVolumes({ page: 1, pageSize: 50, includeDeleted: false });
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.items).toHaveLength(1);
 			expect(parsed.totalCount).toBe(1);
-			expect(mockFetch).toHaveBeenCalledOnce();
+			const callArgs = mockFetch.mock.calls[0][0];
+			expect(callArgs.path).toBe("/block/v1/zones/fr-par-1/volumes");
+			expect(callArgs.urlParams.get("include_deleted")).toBe("false");
 		});
 
 		it("passes filter params", async () => {
@@ -487,33 +528,44 @@ describe("block-storage handlers", () => {
 				pageSize: 10,
 				zone: "nl-ams-1",
 				projectId: "11111111-1111-1111-1111-111111111111",
+				organizationId: "22222222-2222-2222-2222-222222222222",
 				name: "my-vol",
-				status: "available",
+				orderBy: "name_asc",
+				tags: ["env:prod"],
+				productResourceId: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+				volumeType: "sbs_5k",
+				includeDeleted: true,
 			});
 
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(callArgs.urlParams.get("project_id")).toBe("11111111-1111-1111-1111-111111111111");
+			expect(callArgs.urlParams.get("organization_id")).toBe(
+				"22222222-2222-2222-2222-222222222222",
+			);
 			expect(callArgs.urlParams.get("name")).toBe("my-vol");
-			expect(callArgs.urlParams.get("status")).toBe("available");
+			expect(callArgs.urlParams.get("order_by")).toBe("name_asc");
+			expect(callArgs.urlParams.get("tags")).toBe("env:prod");
+			expect(callArgs.urlParams.get("product_resource_id")).toBe(
+				"eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+			);
+			expect(callArgs.urlParams.get("volume_type")).toBe("sbs_5k");
+			expect(callArgs.urlParams.get("include_deleted")).toBe("true");
 			expect(callArgs.path).toContain("nl-ams-1");
 		});
 
 		it("returns error on failure", async () => {
-			const error = new Error("Network error");
-			mockFetch.mockRejectedValueOnce(error);
+			mockFetch.mockRejectedValueOnce(new Error("Network error"));
 
-			const result = await handlers.listVolumes({ page: 1, pageSize: 50 });
+			const result = await handlers.listVolumes({ page: 1, pageSize: 50, includeDeleted: false });
 			expect("isError" in result && result.isError).toBe(true);
 		});
 	});
 
 	describe("getVolume", () => {
-		it("returns volume details", async () => {
+		it("returns volume details directly (unwrapped)", async () => {
 			mockFetch.mockResolvedValueOnce({
-				volume: {
-					id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
-					name: "test-vol",
-				},
+				id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+				name: "test-vol",
 			});
 
 			const result = await handlers.getVolume({
@@ -521,10 +573,13 @@ describe("block-storage handlers", () => {
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.id).toBe("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+			expect(mockFetch.mock.calls[0][0].path).toBe(
+				"/block/v1/zones/fr-par-1/volumes/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+			);
 		});
 
 		it("uses specified zone", async () => {
-			mockFetch.mockResolvedValueOnce({ volume: { id: "v1" } });
+			mockFetch.mockResolvedValueOnce({ id: "v1" });
 
 			await handlers.getVolume({
 				volumeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
@@ -535,10 +590,7 @@ describe("block-storage handlers", () => {
 		});
 
 		it("returns error on failure", async () => {
-			const error = Object.assign(new Error("Not found"), {
-				statusCode: 404,
-			});
-			mockFetch.mockRejectedValueOnce(error);
+			mockFetch.mockRejectedValueOnce(Object.assign(new Error("Not found"), { statusCode: 404 }));
 
 			const result = await handlers.getVolume({
 				volumeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
@@ -551,9 +603,7 @@ describe("block-storage handlers", () => {
 
 	describe("createVolume", () => {
 		it("creates volume from empty", async () => {
-			mockFetch.mockResolvedValueOnce({
-				volume: { id: "new-vol", name: "test" },
-			});
+			mockFetch.mockResolvedValueOnce({ id: "new-vol", name: "test" });
 
 			const result = await handlers.createVolume({
 				name: "test",
@@ -567,10 +617,8 @@ describe("block-storage handlers", () => {
 			expect(body.project_id).toBe("11111111-1111-1111-1111-111111111111");
 		});
 
-		it("creates volume from snapshot", async () => {
-			mockFetch.mockResolvedValueOnce({
-				volume: { id: "snap-vol" },
-			});
+		it("creates volume from snapshot with size override", async () => {
+			mockFetch.mockResolvedValueOnce({ id: "snap-vol" });
 
 			await handlers.createVolume({
 				name: "snap-vol",
@@ -586,15 +634,11 @@ describe("block-storage handlers", () => {
 		});
 
 		it("creates volume from snapshot without size override", async () => {
-			mockFetch.mockResolvedValueOnce({
-				volume: { id: "snap-vol" },
-			});
+			mockFetch.mockResolvedValueOnce({ id: "snap-vol" });
 
 			await handlers.createVolume({
 				name: "snap-vol",
-				fromSnapshot: {
-					snapshotId: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
-				},
+				fromSnapshot: { snapshotId: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb" },
 			});
 
 			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
@@ -602,7 +646,7 @@ describe("block-storage handlers", () => {
 		});
 
 		it("passes optional fields", async () => {
-			mockFetch.mockResolvedValueOnce({ volume: { id: "v1" } });
+			mockFetch.mockResolvedValueOnce({ id: "v1" });
 
 			await handlers.createVolume({
 				name: "full-vol",
@@ -610,12 +654,14 @@ describe("block-storage handlers", () => {
 				projectId: "22222222-2222-2222-2222-222222222222",
 				perfIops: 5000,
 				tags: ["env:prod"],
+				kmsKeyId: "ffffffff-ffff-ffff-ffff-ffffffffffff",
 			});
 
 			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
 			expect(body.project_id).toBe("22222222-2222-2222-2222-222222222222");
 			expect(body.perf_iops).toBe(5000);
 			expect(body.tags).toEqual(["env:prod"]);
+			expect(body.kms_key_id).toBe("ffffffff-ffff-ffff-ffff-ffffffffffff");
 		});
 
 		it("returns error on failure", async () => {
@@ -631,9 +677,7 @@ describe("block-storage handlers", () => {
 
 	describe("updateVolume", () => {
 		it("updates volume fields", async () => {
-			mockFetch.mockResolvedValueOnce({
-				volume: { id: "v1", name: "updated" },
-			});
+			mockFetch.mockResolvedValueOnce({ id: "v1", name: "updated" });
 
 			const result = await handlers.updateVolume({
 				volumeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
@@ -654,7 +698,7 @@ describe("block-storage handlers", () => {
 		});
 
 		it("sends empty body when no optional fields", async () => {
-			mockFetch.mockResolvedValueOnce({ volume: { id: "v1" } });
+			mockFetch.mockResolvedValueOnce({ id: "v1" });
 
 			await handlers.updateVolume({
 				volumeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
@@ -700,14 +744,16 @@ describe("block-storage handlers", () => {
 
 	describe("listSnapshots", () => {
 		it("returns paginated snapshots", async () => {
-			mockFetch.mockResolvedValueOnce({
-				snapshots: [{ id: "s1" }],
-				total_count: 1,
-			});
+			mockFetch.mockResolvedValueOnce({ snapshots: [{ id: "s1" }], total_count: 1 });
 
-			const result = await handlers.listSnapshots({ page: 1, pageSize: 50 });
+			const result = await handlers.listSnapshots({
+				page: 1,
+				pageSize: 50,
+				includeDeleted: false,
+			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.items).toHaveLength(1);
+			expect(mockFetch.mock.calls[0][0].path).toBe("/block/v1/zones/fr-par-1/snapshots");
 		});
 
 		it("passes filter params", async () => {
@@ -718,31 +764,41 @@ describe("block-storage handlers", () => {
 				pageSize: 10,
 				zone: "fr-par-1",
 				projectId: "11111111-1111-1111-1111-111111111111",
+				organizationId: "22222222-2222-2222-2222-222222222222",
 				name: "snap",
+				orderBy: "created_at_desc",
 				volumeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
-				status: "available",
+				tags: ["daily"],
+				includeDeleted: true,
 			});
 
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(callArgs.urlParams.get("project_id")).toBe("11111111-1111-1111-1111-111111111111");
+			expect(callArgs.urlParams.get("organization_id")).toBe(
+				"22222222-2222-2222-2222-222222222222",
+			);
 			expect(callArgs.urlParams.get("volume_id")).toBe("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
 			expect(callArgs.urlParams.get("name")).toBe("snap");
-			expect(callArgs.urlParams.get("status")).toBe("available");
+			expect(callArgs.urlParams.get("order_by")).toBe("created_at_desc");
+			expect(callArgs.urlParams.get("tags")).toBe("daily");
+			expect(callArgs.urlParams.get("include_deleted")).toBe("true");
 		});
 
 		it("returns error on failure", async () => {
 			mockFetch.mockRejectedValueOnce(new Error("err"));
 
-			const result = await handlers.listSnapshots({ page: 1, pageSize: 50 });
+			const result = await handlers.listSnapshots({
+				page: 1,
+				pageSize: 50,
+				includeDeleted: false,
+			});
 			expect("isError" in result && result.isError).toBe(true);
 		});
 	});
 
 	describe("getSnapshot", () => {
-		it("returns snapshot details", async () => {
-			mockFetch.mockResolvedValueOnce({
-				snapshot: { id: "cccccccc-cccc-cccc-cccc-cccccccccccc" },
-			});
+		it("returns snapshot details directly", async () => {
+			mockFetch.mockResolvedValueOnce({ id: "cccccccc-cccc-cccc-cccc-cccccccccccc" });
 
 			const result = await handlers.getSnapshot({
 				snapshotId: "cccccccc-cccc-cccc-cccc-cccccccccccc",
@@ -763,9 +819,7 @@ describe("block-storage handlers", () => {
 
 	describe("createSnapshot", () => {
 		it("creates snapshot", async () => {
-			mockFetch.mockResolvedValueOnce({
-				snapshot: { id: "new-snap", name: "my-snap" },
-			});
+			mockFetch.mockResolvedValueOnce({ id: "new-snap", name: "my-snap" });
 
 			const result = await handlers.createSnapshot({
 				name: "my-snap",
@@ -780,19 +834,21 @@ describe("block-storage handlers", () => {
 		});
 
 		it("passes optional fields", async () => {
-			mockFetch.mockResolvedValueOnce({ snapshot: { id: "s1" } });
+			mockFetch.mockResolvedValueOnce({ id: "s1" });
 
 			await handlers.createSnapshot({
 				name: "tagged-snap",
 				volumeId: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
 				projectId: "22222222-2222-2222-2222-222222222222",
 				tags: ["daily"],
+				public: true,
 				zone: "nl-ams-1",
 			});
 
 			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
 			expect(body.project_id).toBe("22222222-2222-2222-2222-222222222222");
 			expect(body.tags).toEqual(["daily"]);
+			expect(body.public).toBe(true);
 			expect(mockFetch.mock.calls[0][0].path).toContain("nl-ams-1");
 		});
 
@@ -809,26 +865,26 @@ describe("block-storage handlers", () => {
 
 	describe("updateSnapshot", () => {
 		it("updates snapshot fields", async () => {
-			mockFetch.mockResolvedValueOnce({
-				snapshot: { id: "s1", name: "renamed" },
-			});
+			mockFetch.mockResolvedValueOnce({ id: "s1", name: "renamed" });
 
 			const result = await handlers.updateSnapshot({
 				snapshotId: "cccccccc-cccc-cccc-cccc-cccccccccccc",
 				name: "renamed",
 				tags: ["updated"],
+				public: false,
 			});
 
 			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
 			expect(body.name).toBe("renamed");
 			expect(body.tags).toEqual(["updated"]);
+			expect(body.public).toBe(false);
 
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.name).toBe("renamed");
 		});
 
 		it("sends empty body when no optional fields", async () => {
-			mockFetch.mockResolvedValueOnce({ snapshot: { id: "s1" } });
+			mockFetch.mockResolvedValueOnce({ id: "s1" });
 
 			await handlers.updateSnapshot({
 				snapshotId: "cccccccc-cccc-cccc-cccc-cccccccccccc",
@@ -873,30 +929,21 @@ describe("block-storage handlers", () => {
 	describe("listVolumeTypes", () => {
 		it("returns paginated volume types", async () => {
 			mockFetch.mockResolvedValueOnce({
-				volume_types: [{ name: "sbs_5k" }],
+				volume_types: [{ type: "sbs_5k" }],
 				total_count: 1,
 			});
 
-			const result = await handlers.listVolumeTypes({
-				page: 1,
-				pageSize: 50,
-			});
+			const result = await handlers.listVolumeTypes({ page: 1, pageSize: 50 });
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.items).toHaveLength(1);
-			expect(parsed.items[0].name).toBe("sbs_5k");
+			expect(parsed.items[0].type).toBe("sbs_5k");
+			expect(mockFetch.mock.calls[0][0].path).toBe("/block/v1/zones/fr-par-1/volume-types");
 		});
 
 		it("uses specified zone", async () => {
-			mockFetch.mockResolvedValueOnce({
-				volume_types: [],
-				total_count: 0,
-			});
+			mockFetch.mockResolvedValueOnce({ volume_types: [], total_count: 0 });
 
-			await handlers.listVolumeTypes({
-				page: 1,
-				pageSize: 50,
-				zone: "nl-ams-1",
-			});
+			await handlers.listVolumeTypes({ page: 1, pageSize: 50, zone: "nl-ams-1" });
 
 			expect(mockFetch.mock.calls[0][0].path).toContain("nl-ams-1");
 		});
@@ -904,10 +951,7 @@ describe("block-storage handlers", () => {
 		it("returns error on failure", async () => {
 			mockFetch.mockRejectedValueOnce(new Error("fail"));
 
-			const result = await handlers.listVolumeTypes({
-				page: 1,
-				pageSize: 50,
-			});
+			const result = await handlers.listVolumeTypes({ page: 1, pageSize: 50 });
 			expect("isError" in result && result.isError).toBe(true);
 		});
 	});

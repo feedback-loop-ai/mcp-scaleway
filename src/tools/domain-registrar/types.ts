@@ -54,7 +54,7 @@ export const Contact = z.object({
 	firstname: z.string().describe("First name"),
 	lastname: z.string().describe("Last name"),
 	email: z.string().email().describe("Email address"),
-	phone: z.string().describe("Phone number"),
+	phone_number: z.string().describe("Phone number"),
 	company_name: z.string().optional().describe("Company name"),
 	address_line_1: z.string().describe("Address line 1"),
 	city: z.string().describe("City"),
@@ -64,30 +64,57 @@ export const Contact = z.object({
 });
 export type Contact = z.infer<typeof Contact>;
 
-// ── Domain Availability Entity ─────────────────────────────────────────────
-
-export const DomainAvailability = z.object({
-	domain: z.string().describe("Fully qualified domain name"),
-	available: z.boolean().describe("Whether the domain is available"),
-	tld: z.string().describe("Top-level domain"),
-});
-export type DomainAvailability = z.infer<typeof DomainAvailability>;
-
 // ── TLD Entity ─────────────────────────────────────────────────────────────
+
+export const TldOffer = z.object({
+	action: z.string().describe("Action (create, renew, transfer, redemption...)"),
+	operation_path: z.string().describe("Path to the pricing operation"),
+	price: z
+		.object({
+			currency_code: z.string().optional(),
+			units: z.number().optional(),
+			nanos: z.number().optional(),
+		})
+		.describe("Price of the offer"),
+});
+export type TldOffer = z.infer<typeof TldOffer>;
 
 export const Tld = z.object({
 	name: z.string().describe("TLD name (e.g., com, fr, io)"),
 	dnssec_support: z.boolean().describe("Whether DNSSEC is supported"),
-	offers: z
-		.array(
-			z.object({
-				action: z.string().describe("Action (e.g., register, renew, transfer)"),
-				price: z.number().describe("Price in currency units"),
-			}),
-		)
-		.describe("Available offers for this TLD"),
+	duration_in_years_min: z.number().describe("Minimum registration duration in years"),
+	duration_in_years_max: z.number().describe("Maximum registration duration in years"),
+	idn_support: z.boolean().describe("Whether IDN (internationalized domain names) is supported"),
+	offers: z.record(TldOffer).describe("Available offers for this TLD, keyed by action"),
+	specifications: z.record(z.string()).describe("TLD-specific specifications"),
 });
 export type Tld = z.infer<typeof Tld>;
+
+// ── Domain Availability Entity ─────────────────────────────────────────────
+
+export const AvailableDomain = z.object({
+	domain: z.string().describe("Fully qualified domain name"),
+	available: z.boolean().describe("Whether the domain is available"),
+	tld: Tld.optional().describe("TLD details for the domain"),
+});
+export type AvailableDomain = z.infer<typeof AvailableDomain>;
+
+export const SearchAvailableDomainsResponse = z.object({
+	available_domains: z.array(AvailableDomain).describe("Array of searched domains"),
+	exact_match_domain: AvailableDomain.optional().describe("Exact match, if requested and found"),
+});
+export type SearchAvailableDomainsResponse = z.infer<typeof SearchAvailableDomainsResponse>;
+
+// ── Order Response Entity (buy / renew / transfer) ─────────────────────────
+
+export const OrderResponse = z.object({
+	domains: z.array(z.string()).describe("Domains affected by the order"),
+	organization_id: z.string().describe("Organization ID"),
+	project_id: z.string().describe("Project ID"),
+	task_id: z.string().describe("ID of the created task"),
+	created_at: z.string().nullable().optional().describe("Order creation date (ISO 8601)"),
+});
+export type OrderResponse = z.infer<typeof OrderResponse>;
 
 // ── Tool Input Schemas ─────────────────────────────────────────────────────
 
@@ -183,27 +210,10 @@ export const GetContactInput = z.object({
 });
 export type GetContactInput = z.infer<typeof GetContactInput>;
 
-export const CreateContactInput = z.object({
-	firstname: z.string().min(1).describe("First name"),
-	lastname: z.string().min(1).describe("Last name"),
-	email: z.string().email().describe("Email address"),
-	phone: z.string().min(1).describe("Phone number (E.164 format)"),
-	company_name: z.string().optional().describe("Company name"),
-	address_line_1: z.string().min(1).describe("Address line 1"),
-	city: z.string().min(1).describe("City"),
-	zip: z.string().min(1).describe("ZIP/postal code"),
-	country: z.string().length(2).describe("Country code (ISO 3166-1 alpha-2)"),
-	state: z.string().optional().describe("State or province"),
-});
-export type CreateContactInput = z.infer<typeof CreateContactInput>;
-
 export const UpdateContactInput = z.object({
 	contact_id: z.string().min(1).describe("Contact unique identifier"),
-	firstname: z.string().min(1).optional().describe("First name"),
-	lastname: z.string().min(1).optional().describe("Last name"),
 	email: z.string().email().optional().describe("Email address"),
-	phone: z.string().min(1).optional().describe("Phone number"),
-	company_name: z.string().optional().describe("Company name"),
+	phone_number: z.string().min(1).optional().describe("Phone number"),
 	address_line_1: z.string().min(1).optional().describe("Address line 1"),
 	city: z.string().min(1).optional().describe("City"),
 	zip: z.string().min(1).optional().describe("ZIP/postal code"),

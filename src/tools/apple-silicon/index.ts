@@ -3,14 +3,19 @@ import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { createAppleSiliconHandlers } from "./handlers.js";
 import {
+	AddServerPrivateNetworkParams,
 	CreateServerParams,
 	DeleteServerParams,
+	DeleteServerPrivateNetworkParams,
 	GetServerParams,
+	GetServerPrivateNetworkParams,
 	ListOSParams,
+	ListServerPrivateNetworksParams,
 	ListServerTypesParams,
 	ListServersParams,
 	RebootServerParams,
 	ReinstallServerParams,
+	SetServerPrivateNetworksParams,
 } from "./types.js";
 
 export function registerAppleSiliconTools(server: McpServer): void {
@@ -72,5 +77,43 @@ export function registerAppleSiliconTools(server: McpServer): void {
 		"List available macOS versions for Apple Silicon servers. Filter by server type or name.",
 		ListOSParams.shape,
 		async (params) => handlers.listOS(ListOSParams.parse(params)),
+	);
+
+	server.tool(
+		"scaleway_apple_silicon_list_server_private_networks",
+		"List Private Network attachments for Apple Silicon servers. Filter by server, Private Network, organization, or project.",
+		ListServerPrivateNetworksParams.shape,
+		async (params) =>
+			handlers.listServerPrivateNetworks(ListServerPrivateNetworksParams.parse(params)),
+	);
+
+	server.tool(
+		"scaleway_apple_silicon_get_server_private_network",
+		"Get a single Private Network attachment for an Apple Silicon server, including VLAN and IPAM IP details.",
+		GetServerPrivateNetworkParams.shape,
+		async (params) => handlers.getServerPrivateNetwork(GetServerPrivateNetworkParams.parse(params)),
+	);
+
+	server.tool(
+		"scaleway_apple_silicon_add_server_private_network",
+		"Attach an Apple Silicon server to a Private Network. Optionally provide IPAM IP IDs to assign.",
+		AddServerPrivateNetworkParams.shape,
+		async (params) => handlers.addServerPrivateNetwork(AddServerPrivateNetworkParams.parse(params)),
+	);
+
+	server.tool(
+		"scaleway_apple_silicon_set_server_private_networks",
+		"Set the complete list of Private Networks on an Apple Silicon server, replacing any existing attachments.",
+		SetServerPrivateNetworksParams.shape,
+		async (params) =>
+			handlers.setServerPrivateNetworks(SetServerPrivateNetworksParams.parse(params)),
+	);
+
+	server.tool(
+		"scaleway_apple_silicon_delete_server_private_network",
+		"Detach an Apple Silicon server from a Private Network.",
+		DeleteServerPrivateNetworkParams.shape,
+		async (params) =>
+			handlers.deleteServerPrivateNetwork(DeleteServerPrivateNetworkParams.parse(params)),
 	);
 }

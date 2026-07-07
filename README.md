@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP](https://img.shields.io/badge/MCP-1.25+-blue.svg)](https://modelcontextprotocol.io/)
 
-An MCP (Model Context Protocol) server that gives AI assistants like Claude full access to the Scaleway cloud platform. Manage compute instances, databases, Kubernetes clusters, serverless functions, object storage, and 30+ more Scaleway services through natural language.
+An MCP (Model Context Protocol) server that gives AI assistants like Claude full access to the Scaleway cloud platform. Manage compute instances, databases, Kubernetes clusters, serverless functions, object storage, and 45+ more Scaleway services through natural language.
 
 ## Table of Contents
 
@@ -38,29 +38,29 @@ An MCP (Model Context Protocol) server that gives AI assistants like Claude full
 
 ## Overview
 
-**mcp-scaleway** is a stateless MCP server that acts as a bridge between AI assistants and the [Scaleway](https://www.scaleway.com) cloud platform. It exposes 539 tools across 36 Scaleway services, enabling AI agents to provision infrastructure, manage databases, deploy applications, and operate cloud resources on your behalf.
+**mcp-scaleway** is a stateless MCP server that acts as a bridge between AI assistants and the [Scaleway](https://www.scaleway.com) cloud platform. It exposes 733 tools across 50 Scaleway services, enabling AI agents to provision infrastructure, manage databases, deploy applications, and operate cloud resources on your behalf.
 
 **Why use this?**
 
 - **Natural language cloud management** - Ask your AI assistant to "create a Kubernetes cluster with 3 nodes" instead of writing API calls
-- **Full Scaleway coverage** - 36 services, 539 operations, from compute to AI to networking
+- **Full Scaleway coverage** - 50 services, 733 operations, from compute to AI to networking
 - **Zero state** - Pure proxy to Scaleway APIs; no data stored, no side effects beyond what you request
 - **Type-safe** - Every input validated with Zod schemas before reaching Scaleway
 
 ## Features
 
-Supports 36 Scaleway service areas organized across 8 categories:
+Supports 50 Scaleway service areas organized across 8 categories:
 
 | Category | Services |
 |----------|----------|
-| **Compute** | Instances, Elastic Metal, Apple Silicon |
-| **Storage & Databases** | Block Storage, Object Storage, RDB (PostgreSQL/MySQL), MongoDB, Redis, Serverless SQL DB |
-| **Networking** | VPC, Load Balancer, Public Gateway, DNS, Domain Registrar, IPAM, Edge Services |
+| **Compute** | Instances, Elastic Metal, Apple Silicon, Dedibox, Autoscaling |
+| **Storage & Databases** | Block Storage, Object Storage, File Storage, RDB (PostgreSQL/MySQL), MongoDB, Redis, Serverless SQL DB, Data Warehouse (ClickHouse), OpenSearch |
+| **Networking** | VPC, Load Balancer, Public Gateway, DNS, Domain Registrar, IPAM, Edge Services, Site-to-Site VPN, InterLink |
 | **Serverless & Containers** | Containers, Functions, Jobs, Kubernetes (K8s) |
-| **AI & Machine Learning** | Inference, Generative APIs, Cockpit (Observability) |
-| **Security & Identity** | IAM, Secret Manager, Key Manager |
-| **Managed Services** | NATS, SQS, SNS, TEM (Transactional Email), IoT Hub, Container Registry, Marketplace |
-| **Account & Billing** | Account, Billing, Web Hosting |
+| **AI & Machine Learning** | Inference, Generative APIs, Cockpit (Observability), Data Lab (Apache Spark) |
+| **Security & Identity** | IAM, Secret Manager, Key Manager, Audit Trail |
+| **Managed Services** | NATS, SQS, SNS, TEM (Transactional Email), Mailbox, Kafka, RabbitMQ, IoT Hub, Container Registry, Marketplace |
+| **Account & Billing** | Account, Billing, Web Hosting, Product Catalog, Environmental Footprint |
 
 ## Quick Start
 
@@ -276,7 +276,7 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 </details>
 
 <details>
-<summary><strong>Elastic Metal</strong> (14 tools) - Dedicated bare metal servers</summary>
+<summary><strong>Elastic Metal</strong> (18 tools) - Dedicated bare metal servers</summary>
 
 | Tool | Description |
 |------|-------------|
@@ -294,11 +294,15 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 | `scaleway_elastic_metal_list_ips` | List flexible IPs for Elastic Metal |
 | `scaleway_elastic_metal_create_ip` | Create a new flexible IP |
 | `scaleway_elastic_metal_delete_ip` | Delete a flexible IP |
+| `scaleway_elastic_metal_list_server_private_networks` | List Private Network attachments for servers |
+| `scaleway_elastic_metal_add_server_private_network` | Attach a server to a Private Network (max 8 per server) |
+| `scaleway_elastic_metal_set_server_private_networks` | Replace the full set of Private Networks on a server |
+| `scaleway_elastic_metal_delete_server_private_network` | Detach a server from a Private Network |
 
 </details>
 
 <details>
-<summary><strong>Apple Silicon</strong> (8 tools) - Mac mini as-a-Service</summary>
+<summary><strong>Apple Silicon</strong> (13 tools) - Mac mini as-a-Service</summary>
 
 | Tool | Description |
 |------|-------------|
@@ -310,6 +314,60 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 | `scaleway_apple_silicon_reinstall_server` | Reinstall the OS (all data erased) |
 | `scaleway_apple_silicon_list_server_types` | List available server types with specs |
 | `scaleway_apple_silicon_list_os` | List available macOS versions |
+| `scaleway_apple_silicon_list_server_private_networks` | List Private Network attachments for servers |
+| `scaleway_apple_silicon_get_server_private_network` | Get a single Private Network attachment (VLAN and IPAM details) |
+| `scaleway_apple_silicon_add_server_private_network` | Attach a server to a Private Network |
+| `scaleway_apple_silicon_set_server_private_networks` | Replace the full set of Private Networks on a server |
+| `scaleway_apple_silicon_delete_server_private_network` | Detach a server from a Private Network |
+
+</details>
+
+<details>
+<summary><strong>Dedibox</strong> (17 tools) - Dedicated servers (Online.net)</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_dedibox_list_servers` | List Dedibox dedicated servers in a zone |
+| `scaleway_dedibox_get_server` | Get details of a specific server by numeric ID |
+| `scaleway_dedibox_update_server` | Update a server (hostname, enable/disable IPv6) |
+| `scaleway_dedibox_reboot_server` | Reboot a server |
+| `scaleway_dedibox_start_server` | Start a server |
+| `scaleway_dedibox_stop_server` | Stop a server |
+| `scaleway_dedibox_delete_server` | Delete (terminate) a server |
+| `scaleway_dedibox_install_server` | Install an operating system on a server |
+| `scaleway_dedibox_get_server_install` | Get the current installation status |
+| `scaleway_dedibox_cancel_server_install` | Cancel an ongoing installation |
+| `scaleway_dedibox_list_offers` | List available Dedibox offers in a zone |
+| `scaleway_dedibox_get_offer` | Get details of a specific offer |
+| `scaleway_dedibox_list_os` | List available operating systems in a zone |
+| `scaleway_dedibox_get_os` | Get details of a specific operating system |
+| `scaleway_dedibox_get_bmc_access` | Get BMC console access details |
+| `scaleway_dedibox_start_bmc_access` | Start BMC console access |
+| `scaleway_dedibox_stop_bmc_access` | Stop BMC console access |
+
+</details>
+
+<details>
+<summary><strong>Autoscaling</strong> (16 tools) - Instance scaling groups</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_autoscaling_list_instance_groups` | List autoscaling instance groups in a zone |
+| `scaleway_autoscaling_get_instance_group` | Get details of a specific instance group |
+| `scaleway_autoscaling_create_instance_group` | Create an instance group from a template |
+| `scaleway_autoscaling_update_instance_group` | Update an instance group (name, tags, capacity, load balancer) |
+| `scaleway_autoscaling_delete_instance_group` | Delete an instance group |
+| `scaleway_autoscaling_list_instance_group_events` | List lifecycle and scaling events for a group |
+| `scaleway_autoscaling_list_instance_templates` | List instance templates in a zone |
+| `scaleway_autoscaling_get_instance_template` | Get details of a specific template |
+| `scaleway_autoscaling_create_instance_template` | Create a template describing scaled-up instances |
+| `scaleway_autoscaling_update_instance_template` | Update a template |
+| `scaleway_autoscaling_delete_instance_template` | Delete a template |
+| `scaleway_autoscaling_list_instance_policies` | List scaling policies in a zone |
+| `scaleway_autoscaling_get_instance_policy` | Get details of a specific scaling policy |
+| `scaleway_autoscaling_create_instance_policy` | Create a scaling policy on an instance group |
+| `scaleway_autoscaling_update_instance_policy` | Update a scaling policy |
+| `scaleway_autoscaling_delete_instance_policy` | Delete a scaling policy |
 
 </details>
 
@@ -353,6 +411,20 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 | `scaleway_object_storage_set_bucket_lifecycle` | Set lifecycle rules (expiration, transitions) |
 | `scaleway_object_storage_get_bucket_versioning` | Get versioning status |
 | `scaleway_object_storage_set_bucket_versioning` | Enable or suspend versioning |
+
+</details>
+
+<details>
+<summary><strong>File Storage</strong> (6 tools) - Managed NFS file systems</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_file_storage_list_filesystems` | List file systems in a region with optional filtering |
+| `scaleway_file_storage_get_filesystem` | Get details of a specific file system |
+| `scaleway_file_storage_create_filesystem` | Create a new file system (size in bytes) |
+| `scaleway_file_storage_update_filesystem` | Update a file system (rename, resize, or replace tags) |
+| `scaleway_file_storage_delete_filesystem` | Delete a detached file system |
+| `scaleway_file_storage_list_attachments` | List attachments (file system to resource links) |
 
 </details>
 
@@ -452,6 +524,56 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 | `scaleway_serverless_sqldb_get_database_backup` | Get backup details |
 | `scaleway_serverless_sqldb_export_database_backup` | Export a backup (download URL) |
 | `scaleway_serverless_sqldb_restore_database` | Restore from a backup |
+
+</details>
+
+<details>
+<summary><strong>Data Warehouse</strong> (19 tools) - Managed ClickHouse&reg;</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_data_warehouse_list_deployments` | List Data Warehouse deployments in a region |
+| `scaleway_data_warehouse_get_deployment` | Get details of a specific deployment |
+| `scaleway_data_warehouse_create_deployment` | Create a new ClickHouse&reg; deployment |
+| `scaleway_data_warehouse_update_deployment` | Update a deployment (name, tags, CPU range, replicas, move factor) |
+| `scaleway_data_warehouse_delete_deployment` | Delete a deployment (permanent, all data lost) |
+| `scaleway_data_warehouse_start_deployment` | Start a stopped deployment |
+| `scaleway_data_warehouse_stop_deployment` | Stop a running deployment |
+| `scaleway_data_warehouse_get_deployment_certificate` | Retrieve the TLS certificate for a deployment |
+| `scaleway_data_warehouse_list_databases` | List databases within a deployment |
+| `scaleway_data_warehouse_create_database` | Create a new database |
+| `scaleway_data_warehouse_delete_database` | Delete a database by name |
+| `scaleway_data_warehouse_list_users` | List users of a deployment |
+| `scaleway_data_warehouse_create_user` | Create a new user |
+| `scaleway_data_warehouse_update_user` | Update a user's password or admin permissions |
+| `scaleway_data_warehouse_delete_user` | Delete a user by name |
+| `scaleway_data_warehouse_create_endpoint` | Create a public or Private Network endpoint |
+| `scaleway_data_warehouse_delete_endpoint` | Delete an endpoint |
+| `scaleway_data_warehouse_list_presets` | List available deployment configuration presets |
+| `scaleway_data_warehouse_list_versions` | List available ClickHouse&reg; versions |
+
+</details>
+
+<details>
+<summary><strong>OpenSearch</strong> (15 tools) - Cloud Essentials for OpenSearch</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_opensearch_list_deployments` | List OpenSearch deployments in a region |
+| `scaleway_opensearch_get_deployment` | Get details of a specific deployment |
+| `scaleway_opensearch_create_deployment` | Create a new deployment (node type, version, optional volume/endpoints) |
+| `scaleway_opensearch_update_deployment` | Update a deployment (rename or change tags) |
+| `scaleway_opensearch_upgrade_deployment` | Scale node count or increase volume size |
+| `scaleway_opensearch_delete_deployment` | Delete a deployment |
+| `scaleway_opensearch_get_certificate_authority` | Download the deployment's Certificate Authority (CA) |
+| `scaleway_opensearch_list_node_types` | List available node types with specs and stock |
+| `scaleway_opensearch_list_versions` | List available OpenSearch versions |
+| `scaleway_opensearch_list_users` | List users of a deployment |
+| `scaleway_opensearch_create_user` | Create a new user |
+| `scaleway_opensearch_update_user` | Update a user (e.g. change password) |
+| `scaleway_opensearch_delete_user` | Delete a user |
+| `scaleway_opensearch_create_endpoint` | Create a public or Private Network endpoint |
+| `scaleway_opensearch_delete_endpoint` | Delete an endpoint |
 
 </details>
 
@@ -575,13 +697,13 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 </details>
 
 <details>
-<summary><strong>Domain Registrar</strong> (15 tools) - Domain registration</summary>
+<summary><strong>Domain Registrar</strong> (14 tools) - Domain registration</summary>
 
 | Tool | Description |
 |------|-------------|
 | `scaleway_domain_registrar_list_domains` | List all domains |
 | `scaleway_domain_registrar_get_domain` | Get domain details |
-| `scaleway_domain_registrar_register_domain` | Register a new domain |
+| `scaleway_domain_registrar_register_domain` | Register a new domain (contacts created inline) |
 | `scaleway_domain_registrar_renew_domain` | Renew a domain |
 | `scaleway_domain_registrar_transfer_domain` | Transfer a domain from another registrar |
 | `scaleway_domain_registrar_update_domain` | Update domain contacts |
@@ -590,7 +712,6 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 | `scaleway_domain_registrar_check_domain_availability` | Check domain availability |
 | `scaleway_domain_registrar_list_contacts` | List registration contacts |
 | `scaleway_domain_registrar_get_contact` | Get contact details |
-| `scaleway_domain_registrar_create_contact` | Create a new contact |
 | `scaleway_domain_registrar_update_contact` | Update a contact |
 | `scaleway_domain_registrar_list_tlds` | List available TLDs with pricing |
 | `scaleway_domain_registrar_get_tld` | Get TLD details |
@@ -643,6 +764,72 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 | `scaleway_edge_services_purge_cache` | Purge cached content |
 | `scaleway_edge_services_list_purge_requests` | List purge requests |
 | `scaleway_edge_services_get_purge_request` | Get purge request details |
+
+</details>
+
+<details>
+<summary><strong>Site-to-Site VPN</strong> (27 tools) - IPsec VPN gateways</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_vpn_list_gateways` | List VPN gateways in a region |
+| `scaleway_vpn_get_gateway` | Get details of a specific VPN gateway |
+| `scaleway_vpn_create_gateway` | Create a VPN gateway attached to a Private Network |
+| `scaleway_vpn_update_gateway` | Update a VPN gateway's name or tags |
+| `scaleway_vpn_delete_gateway` | Delete a VPN gateway |
+| `scaleway_vpn_list_gateway_types` | List available VPN gateway commercial types |
+| `scaleway_vpn_list_customer_gateways` | List customer gateways (remote network devices) |
+| `scaleway_vpn_get_customer_gateway` | Get details of a specific customer gateway |
+| `scaleway_vpn_create_customer_gateway` | Create a customer gateway for a remote device |
+| `scaleway_vpn_update_customer_gateway` | Update a customer gateway (name, tags, public IPs, ASN) |
+| `scaleway_vpn_delete_customer_gateway` | Delete a customer gateway |
+| `scaleway_vpn_list_connections` | List VPN connections (IPsec tunnels) |
+| `scaleway_vpn_get_connection` | Get details of a specific connection |
+| `scaleway_vpn_create_connection` | Create an IPsec tunnel between a VPN and customer gateway |
+| `scaleway_vpn_update_connection` | Update a connection's name or tags |
+| `scaleway_vpn_delete_connection` | Delete a connection |
+| `scaleway_vpn_renew_connection_psk` | Regenerate a connection's pre-shared key |
+| `scaleway_vpn_change_connection_psk` | Change a connection's PSK to a Secret Manager secret |
+| `scaleway_vpn_set_connection_routing_policy` | Attach IPv4/IPv6 routing policies to a connection |
+| `scaleway_vpn_detach_connection_routing_policy` | Detach routing policies from a connection |
+| `scaleway_vpn_enable_route_propagation` | Enable BGP dynamic route propagation on a connection |
+| `scaleway_vpn_disable_route_propagation` | Disable BGP dynamic route propagation on a connection |
+| `scaleway_vpn_list_routing_policies` | List VPN routing policies |
+| `scaleway_vpn_get_routing_policy` | Get details of a specific routing policy |
+| `scaleway_vpn_create_routing_policy` | Create a routing policy with allowed IPv4/IPv6 prefixes |
+| `scaleway_vpn_update_routing_policy` | Update a routing policy's name, tags, or prefix filters |
+| `scaleway_vpn_delete_routing_policy` | Delete a routing policy |
+
+</details>
+
+<details>
+<summary><strong>InterLink</strong> (23 tools) - Private cloud interconnect</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_interlink_list_links` | List InterLink links (BGP peering sessions) |
+| `scaleway_interlink_get_link` | Get link details including BGP session status |
+| `scaleway_interlink_create_link` | Create a link (hosted via partner or self-hosted) |
+| `scaleway_interlink_update_link` | Update a link's name, tags, or peer ASN |
+| `scaleway_interlink_delete_link` | Delete a link |
+| `scaleway_interlink_attach_vpc` | Attach a VPC to a link |
+| `scaleway_interlink_detach_vpc` | Detach the VPC attached to a link |
+| `scaleway_interlink_attach_routing_policy` | Attach a routing policy to a link |
+| `scaleway_interlink_detach_routing_policy` | Detach a routing policy from a link |
+| `scaleway_interlink_set_routing_policy` | Set (replace) the routing policy on a link |
+| `scaleway_interlink_enable_route_propagation` | Enable route propagation on a link |
+| `scaleway_interlink_disable_route_propagation` | Disable route propagation on a link |
+| `scaleway_interlink_list_routing_policies` | List InterLink routing policies |
+| `scaleway_interlink_get_routing_policy` | Get details of a specific routing policy |
+| `scaleway_interlink_create_routing_policy` | Create a routing policy with IP prefix filters |
+| `scaleway_interlink_update_routing_policy` | Update a routing policy |
+| `scaleway_interlink_delete_routing_policy` | Delete a routing policy |
+| `scaleway_interlink_list_partners` | List InterLink partners (hosting providers) |
+| `scaleway_interlink_get_partner` | Get details of a specific partner |
+| `scaleway_interlink_list_pops` | List Points of Presence (PoPs / datacenter locations) |
+| `scaleway_interlink_get_pop` | Get details of a specific Point of Presence |
+| `scaleway_interlink_list_dedicated_connections` | List dedicated (self-hosted) connections |
+| `scaleway_interlink_get_dedicated_connection` | Get details of a specific dedicated connection |
 
 </details>
 
@@ -809,6 +996,22 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 
 </details>
 
+<details>
+<summary><strong>Data Lab</strong> (8 tools) - Apache Spark clusters</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_data_lab_list_clusters` | List Data Lab for Apache Spark clusters in a region |
+| `scaleway_data_lab_get_cluster` | Get details of a specific Spark cluster |
+| `scaleway_data_lab_create_cluster` | Create a Spark cluster with worker (and optional main) nodes |
+| `scaleway_data_lab_update_cluster` | Update a cluster (rename, retag, or scale worker count) |
+| `scaleway_data_lab_delete_cluster` | Delete a Spark cluster |
+| `scaleway_data_lab_list_node_types` | List available worker and notebook node types |
+| `scaleway_data_lab_list_cluster_versions` | List available Apache Spark versions |
+| `scaleway_data_lab_list_notebook_versions` | List available notebook software versions |
+
+</details>
+
 ### Security & Identity
 
 <details>
@@ -896,6 +1099,19 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 
 </details>
 
+<details>
+<summary><strong>Audit Trail</strong> (5 tools) - Activity audit logging</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_audit_trail_list_events` | List audit events with rich filters (cursor-paginated) |
+| `scaleway_audit_trail_list_products` | List products integrated with Audit Trail and their tracked methods |
+| `scaleway_audit_trail_list_export_jobs` | List export jobs (scheduled event exports to Object Storage) |
+| `scaleway_audit_trail_create_export_job` | Create an export job to a Scaleway Object Storage bucket |
+| `scaleway_audit_trail_delete_export_job` | Delete an export job |
+
+</details>
+
 ### Managed Services
 
 <details>
@@ -967,6 +1183,74 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 | `scaleway_tem_create_webhook` | Create a webhook |
 | `scaleway_tem_update_webhook` | Update a webhook |
 | `scaleway_tem_delete_webhook` | Delete a webhook |
+
+</details>
+
+<details>
+<summary><strong>Mailbox</strong> (16 tools) - Managed email mailboxes</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_mailbox_list_domains` | List Mailbox domains |
+| `scaleway_mailbox_get_domain` | Get details of a specific domain |
+| `scaleway_mailbox_create_domain` | Register a domain for use with Mailbox |
+| `scaleway_mailbox_delete_domain` | Delete a domain |
+| `scaleway_mailbox_get_domain_records` | Get the DNS records required to configure a domain |
+| `scaleway_mailbox_validate_domain_records` | Trigger validation of a domain's DNS records |
+| `scaleway_mailbox_create_mailboxes` | Create one or more mailboxes in a domain (batch) |
+| `scaleway_mailbox_list_mailboxes` | List mailboxes with optional filters |
+| `scaleway_mailbox_get_mailbox` | Get details of a specific mailbox |
+| `scaleway_mailbox_update_mailbox` | Update a mailbox's subscription period or password |
+| `scaleway_mailbox_delete_mailbox` | Delete a mailbox |
+| `scaleway_mailbox_restore_mailbox` | Restore a mailbox scheduled for deletion |
+| `scaleway_mailbox_create_alias` | Create an email alias for a mailbox |
+| `scaleway_mailbox_list_aliases` | List aliases with optional filters |
+| `scaleway_mailbox_get_alias` | Get details of a specific alias |
+| `scaleway_mailbox_delete_alias` | Delete an email alias |
+
+</details>
+
+<details>
+<summary><strong>Kafka</strong> (13 tools) - Managed Apache Kafka</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_kafka_list_clusters` | List Clusters for Apache Kafka in a region |
+| `scaleway_kafka_get_cluster` | Get details of a specific cluster |
+| `scaleway_kafka_create_cluster` | Create a cluster (version, node type, node amount, volume) |
+| `scaleway_kafka_update_cluster` | Update a cluster (rename or replace tags) |
+| `scaleway_kafka_delete_cluster` | Delete a cluster |
+| `scaleway_kafka_get_cluster_certificate_authority` | Get the TLS certificate authority (PEM) |
+| `scaleway_kafka_renew_cluster_certificate_authority` | Renew the TLS certificate authority |
+| `scaleway_kafka_create_endpoint` | Create a private or public network endpoint |
+| `scaleway_kafka_delete_endpoint` | Delete a cluster endpoint |
+| `scaleway_kafka_list_users` | List users of a cluster |
+| `scaleway_kafka_update_user` | Update a user (e.g. change password) |
+| `scaleway_kafka_list_node_types` | List available node types |
+| `scaleway_kafka_list_versions` | List available Apache Kafka versions |
+
+</details>
+
+<details>
+<summary><strong>RabbitMQ</strong> (15 tools) - Managed RabbitMQ (MessageQ)</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_rabbitmq_list_deployments` | List RabbitMQ deployments in a region |
+| `scaleway_rabbitmq_get_deployment` | Get details of a specific deployment |
+| `scaleway_rabbitmq_create_deployment` | Create a deployment (node type, count, version, optional user/endpoints) |
+| `scaleway_rabbitmq_update_deployment` | Update a deployment (rename or update tags) |
+| `scaleway_rabbitmq_upgrade_deployment` | Scale node count or volume size |
+| `scaleway_rabbitmq_delete_deployment` | Delete a deployment |
+| `scaleway_rabbitmq_get_deployment_certificate` | Download the deployment's certificate authority |
+| `scaleway_rabbitmq_list_users` | List users of a deployment |
+| `scaleway_rabbitmq_create_user` | Create a new user |
+| `scaleway_rabbitmq_update_user` | Update a user (e.g. change password) |
+| `scaleway_rabbitmq_delete_user` | Delete a user |
+| `scaleway_rabbitmq_create_endpoint` | Create a public or private network endpoint |
+| `scaleway_rabbitmq_delete_endpoint` | Delete an endpoint |
+| `scaleway_rabbitmq_list_node_types` | List available node types |
+| `scaleway_rabbitmq_list_versions` | List available RabbitMQ (MessageQ) versions |
 
 </details>
 
@@ -1059,11 +1343,12 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 </details>
 
 <details>
-<summary><strong>Billing</strong> (5 tools) - Invoices and consumption</summary>
+<summary><strong>Billing</strong> (6 tools) - Invoices, consumption, and FinOps</summary>
 
 | Tool | Description |
 |------|-------------|
 | `scaleway_billing_list_consumptions` | List consumption data |
+| `scaleway_billing_list_charges` | List FinOps charges with per-resource, fine-grained time granularity |
 | `scaleway_billing_list_invoices` | List invoices |
 | `scaleway_billing_get_invoice` | Get invoice details |
 | `scaleway_billing_download_invoice` | Download invoice as PDF |
@@ -1088,9 +1373,30 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 
 </details>
 
+<details>
+<summary><strong>Product Catalog</strong> (2 tools) - Public product & pricing catalog</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_product_catalog_list_products` | List products (SKUs) with pricing, hardware, locality, and impact (no auth required) |
+| `scaleway_product_catalog_list_categories` | List distinct product categories with per-category product counts |
+
+</details>
+
+<details>
+<summary><strong>Environmental Footprint</strong> (3 tools) - Carbon & water impact reporting</summary>
+
+| Tool | Description |
+|------|-------------|
+| `scaleway_environmental_footprint_get_impact_data` | Retrieve estimated carbon (kgCO₂e) and water (m³) impact data for a date range |
+| `scaleway_environmental_footprint_get_report_availability` | List months/years with available impact reports |
+| `scaleway_environmental_footprint_download_impact_report` | Download a monthly or yearly environmental impact PDF report |
+
+</details>
+
 ## Managing Tool Access
 
-With 539 tools available, you may want to limit which tools are exposed to your AI assistant for focused sessions.
+With 733 tools available, you may want to limit which tools are exposed to your AI assistant for focused sessions.
 
 ### Claude Code
 
@@ -1118,12 +1424,13 @@ Use the `allowedTools` field in your `.mcp.json` to filter tools by pattern:
 | Use Case | Pattern |
 |----------|---------|
 | Kubernetes only | `scaleway_k8s_*` |
-| Compute only | `scaleway_instances_*`, `scaleway_elastic_metal_*`, `scaleway_apple_silicon_*` |
-| Databases only | `scaleway_rdb_*`, `scaleway_mongodb_*`, `scaleway_redis_*` |
+| Compute only | `scaleway_instances_*`, `scaleway_elastic_metal_*`, `scaleway_apple_silicon_*`, `scaleway_dedibox_*`, `scaleway_autoscaling_*` |
+| Databases only | `scaleway_rdb_*`, `scaleway_mongodb_*`, `scaleway_redis_*`, `scaleway_data_warehouse_*`, `scaleway_opensearch_*` |
 | Serverless only | `scaleway_functions_*`, `scaleway_containers_*`, `scaleway_jobs_*` |
-| Networking only | `scaleway_vpc_*`, `scaleway_lb_*`, `scaleway_dns_*` |
-| AI only | `scaleway_inference_*`, `scaleway_generative_apis_*` |
-| Security only | `scaleway_iam_*`, `scaleway_secret_manager_*`, `scaleway_key_manager_*` |
+| Networking only | `scaleway_vpc_*`, `scaleway_lb_*`, `scaleway_dns_*`, `scaleway_vpn_*`, `scaleway_interlink_*` |
+| Messaging only | `scaleway_nats_*`, `scaleway_sqs_*`, `scaleway_sns_*`, `scaleway_kafka_*`, `scaleway_rabbitmq_*` |
+| AI only | `scaleway_inference_*`, `scaleway_generative_apis_*`, `scaleway_data_lab_*` |
+| Security only | `scaleway_iam_*`, `scaleway_secret_manager_*`, `scaleway_key_manager_*`, `scaleway_audit_trail_*` |
 | Read-only | `scaleway_*_list_*`, `scaleway_*_get_*` |
 
 ## Development
@@ -1192,9 +1499,10 @@ src/
 │   ├── client.ts               # Scaleway SDK client (singleton)
 │   ├── errors.ts               # HTTP error mapping
 │   ├── pagination.ts           # Pagination helpers
+│   ├── s3-signer.ts            # AWS SigV4 signing for Object Storage (S3) requests
 │   └── types.ts                # Shared Zod schemas
 └── tools/
-    ├── index.ts                # Registers all 36 service tool groups
+    ├── index.ts                # registerAllTools() wires up all 50 service tool groups
     └── {service}/              # One directory per Scaleway service
         ├── index.ts            # Tool registration (server.tool() calls)
         ├── types.ts            # Zod input schemas

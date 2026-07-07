@@ -55,7 +55,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: expect.stringContaining("/redis/v1/regions/fr-par/clusters"),
+					path: expect.stringContaining("/redis/v1/zones/fr-par-1/clusters"),
 				}),
 			);
 			const parsed = JSON.parse(result.content[0].text);
@@ -71,7 +71,7 @@ describe("redis handlers", () => {
 			await handleListClusters({
 				page: 2,
 				pageSize: 10,
-				region: "nl-ams",
+				zone: "nl-ams-1",
 				project_id: "proj-123",
 				name: "test-redis",
 				order_by: "name_asc",
@@ -80,7 +80,7 @@ describe("redis handlers", () => {
 			});
 
 			const callPath = mockFetch.mock.calls[0][0].path;
-			expect(callPath).toContain("/regions/nl-ams/");
+			expect(callPath).toContain("/zones/nl-ams-1/");
 			expect(callPath).toContain("project_id=proj-123");
 			expect(callPath).toContain("name=test-redis");
 			expect(callPath).toContain("order_by=name_asc");
@@ -115,20 +115,20 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1",
+					path: "/redis/v1/zones/fr-par-1/clusters/cluster-1",
 				}),
 			);
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.id).toBe("cluster-1");
 		});
 
-		it("uses provided region", async () => {
+		it("uses provided zone", async () => {
 			const { handleGetCluster } = await importHandlers();
 			mockFetch.mockResolvedValueOnce({ id: "cluster-1" });
 
-			await handleGetCluster({ cluster_id: "cluster-1", region: "nl-ams" });
+			await handleGetCluster({ cluster_id: "cluster-1", zone: "nl-ams-1" });
 
-			expect(mockFetch.mock.calls[0][0].path).toContain("/regions/nl-ams/");
+			expect(mockFetch.mock.calls[0][0].path).toContain("/zones/nl-ams-1/");
 		});
 
 		it("handles errors", async () => {
@@ -159,7 +159,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "POST",
-					path: "/redis/v1/regions/fr-par/clusters",
+					path: "/redis/v1/zones/fr-par-1/clusters",
 					headers: { "Content-Type": "application/json" },
 				}),
 			);
@@ -179,7 +179,7 @@ describe("redis handlers", () => {
 			mockFetch.mockResolvedValueOnce({ id: "new-cluster" });
 
 			await handleCreateCluster({
-				region: "nl-ams",
+				zone: "nl-ams-1",
 				project_id: "proj-123",
 				name: "my-redis",
 				version: "7.0",
@@ -237,7 +237,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "PATCH",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1",
+					path: "/redis/v1/zones/fr-par-1/clusters/cluster-1",
 				}),
 			);
 			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
@@ -250,7 +250,7 @@ describe("redis handlers", () => {
 
 			await handleUpdateCluster({
 				cluster_id: "cluster-1",
-				region: "nl-ams",
+				zone: "nl-ams-1",
 				name: "new-name",
 				tags: ["tag1"],
 				user_name: "newuser",
@@ -293,7 +293,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "DELETE",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1",
+					path: "/redis/v1/zones/fr-par-1/clusters/cluster-1",
 				}),
 			);
 			const parsed = JSON.parse(result.content[0].text);
@@ -323,7 +323,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1/metrics",
+					path: "/redis/v1/zones/fr-par-1/clusters/cluster-1/metrics",
 				}),
 			);
 			const parsed = JSON.parse(result.content[0].text);
@@ -336,14 +336,14 @@ describe("redis handlers", () => {
 
 			await handleGetClusterMetrics({
 				cluster_id: "cluster-1",
-				region: "nl-ams",
+				zone: "nl-ams-1",
 				start_at: "2024-01-01T00:00:00Z",
 				end_at: "2024-01-02T00:00:00Z",
 				metric_name: "cpu_usage",
 			});
 
 			const callPath = mockFetch.mock.calls[0][0].path;
-			expect(callPath).toContain("/regions/nl-ams/");
+			expect(callPath).toContain("/zones/nl-ams-1/");
 			expect(callPath).toContain("start_at=");
 			expect(callPath).toContain("end_at=");
 			expect(callPath).toContain("metric_name=cpu_usage");
@@ -368,7 +368,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1/certificate",
+					path: "/redis/v1/zones/fr-par-1/clusters/cluster-1/certificate",
 				}),
 			);
 			expect(result.content[0].text).toContain("BEGIN CERTIFICATE");
@@ -393,7 +393,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "POST",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1/renew-certificate",
+					path: "/redis/v1/zones/fr-par-1/clusters/cluster-1/renew-certificate",
 				}),
 			);
 			const parsed = JSON.parse(result.content[0].text);
@@ -426,7 +426,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "POST",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1/acls",
+					path: "/redis/v1/zones/fr-par-1/clusters/cluster-1/acls",
 				}),
 			);
 			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
@@ -446,23 +446,31 @@ describe("redis handlers", () => {
 	});
 
 	describe("handleDeleteACLRules", () => {
-		it("deletes ACL rules by IDs", async () => {
+		it("deletes a single ACL rule by ID", async () => {
 			const { handleDeleteACLRules } = await importHandlers();
-			mockFetch.mockResolvedValueOnce({ acl_rules: [] });
+			mockFetch.mockResolvedValueOnce({});
 
 			const result = await handleDeleteACLRules({
-				cluster_id: "cluster-1",
-				acl_rule_ids: ["acl-1", "acl-2"],
+				acl_id: "acl-1",
 			});
 
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "DELETE",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1/acls",
+					path: "/redis/v1/zones/fr-par-1/acls/acl-1",
 				}),
 			);
-			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
-			expect(body.acl_rule_ids).toEqual(["acl-1", "acl-2"]);
+			expect(mockFetch.mock.calls[0][0].body).toBeUndefined();
+			expect(result.content).toBeDefined();
+		});
+
+		it("uses provided zone", async () => {
+			const { handleDeleteACLRules } = await importHandlers();
+			mockFetch.mockResolvedValueOnce({});
+
+			await handleDeleteACLRules({ acl_id: "acl-1", zone: "nl-ams-1" });
+
+			expect(mockFetch.mock.calls[0][0].path).toBe("/redis/v1/zones/nl-ams-1/acls/acl-1");
 		});
 
 		it("handles errors", async () => {
@@ -470,8 +478,7 @@ describe("redis handlers", () => {
 			mockFetch.mockRejectedValueOnce(new Error("fail"));
 
 			const result = await handleDeleteACLRules({
-				cluster_id: "cluster-1",
-				acl_rule_ids: ["acl-1"],
+				acl_id: "acl-1",
 			});
 			expect("isError" in result && result.isError).toBe(true);
 		});
@@ -492,7 +499,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "PUT",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1/acls",
+					path: "/redis/v1/zones/fr-par-1/clusters/cluster-1/acls",
 				}),
 			);
 			const parsed = JSON.parse(result.content[0].text);
@@ -528,7 +535,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "POST",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1/endpoints",
+					path: "/redis/v1/zones/fr-par-1/clusters/cluster-1/endpoints",
 				}),
 			);
 			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
@@ -553,17 +560,25 @@ describe("redis handlers", () => {
 			mockFetch.mockResolvedValueOnce({});
 
 			const result = await handleDeleteEndpoints({
-				cluster_id: "cluster-1",
 				endpoint_id: "ep-1",
 			});
 
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "DELETE",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1/endpoints/ep-1",
+					path: "/redis/v1/zones/fr-par-1/endpoints/ep-1",
 				}),
 			);
 			expect(result.content).toBeDefined();
+		});
+
+		it("uses provided zone", async () => {
+			const { handleDeleteEndpoints } = await importHandlers();
+			mockFetch.mockResolvedValueOnce({});
+
+			await handleDeleteEndpoints({ endpoint_id: "ep-1", zone: "nl-ams-1" });
+
+			expect(mockFetch.mock.calls[0][0].path).toBe("/redis/v1/zones/nl-ams-1/endpoints/ep-1");
 		});
 
 		it("handles errors", async () => {
@@ -571,7 +586,6 @@ describe("redis handlers", () => {
 			mockFetch.mockRejectedValueOnce(new Error("fail"));
 
 			const result = await handleDeleteEndpoints({
-				cluster_id: "cluster-1",
 				endpoint_id: "ep-1",
 			});
 			expect("isError" in result && result.isError).toBe(true);
@@ -600,7 +614,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "PUT",
-					path: "/redis/v1/regions/fr-par/clusters/cluster-1/endpoints",
+					path: "/redis/v1/zones/fr-par-1/clusters/cluster-1/endpoints",
 				}),
 			);
 			const parsed = JSON.parse(result.content[0].text);
@@ -634,7 +648,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: expect.stringContaining("/redis/v1/regions/fr-par/node-types"),
+					path: expect.stringContaining("/redis/v1/zones/fr-par-1/node-types"),
 				}),
 			);
 			const parsed = JSON.parse(result.content[0].text);
@@ -649,13 +663,13 @@ describe("redis handlers", () => {
 			await handleListNodeTypes({
 				page: 1,
 				pageSize: 50,
-				region: "nl-ams",
+				zone: "nl-ams-1",
 				include_disabled_types: true,
 			});
 
 			const callPath = mockFetch.mock.calls[0][0].path;
 			expect(callPath).toContain("include_disabled_types=true");
-			expect(callPath).toContain("/regions/nl-ams/");
+			expect(callPath).toContain("/zones/nl-ams-1/");
 		});
 
 		it("handles errors", async () => {
@@ -680,7 +694,7 @@ describe("redis handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: expect.stringContaining("/redis/v1/regions/fr-par/cluster-versions"),
+					path: expect.stringContaining("/redis/v1/zones/fr-par-1/cluster-versions"),
 				}),
 			);
 			const parsed = JSON.parse(result.content[0].text);
@@ -694,7 +708,7 @@ describe("redis handlers", () => {
 			await handleListClusterVersions({
 				page: 1,
 				pageSize: 50,
-				region: "pl-waw",
+				zone: "pl-waw-1",
 				include_disabled: true,
 				include_beta: true,
 				include_deprecated: false,
@@ -702,7 +716,7 @@ describe("redis handlers", () => {
 			});
 
 			const callPath = mockFetch.mock.calls[0][0].path;
-			expect(callPath).toContain("/regions/pl-waw/");
+			expect(callPath).toContain("/zones/pl-waw-1/");
 			expect(callPath).toContain("include_disabled=true");
 			expect(callPath).toContain("include_beta=true");
 			expect(callPath).toContain("include_deprecated=false");

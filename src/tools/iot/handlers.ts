@@ -383,7 +383,7 @@ export async function handleGetDeviceCertificate(params: GetDeviceCertificatePar
 export async function handleRenewDeviceCertificate(params: RenewDeviceCertificateParams) {
 	try {
 		const region = getRegion(params);
-		const url = `${getIotApiUrl(region)}/devices/${params.deviceId}/certificate/renew`;
+		const url = `${getIotApiUrl(region)}/devices/${params.deviceId}/renew-certificate`;
 		const data = await scalewayFetch("POST", url);
 		return successResponse(data);
 	} catch (error) {

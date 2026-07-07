@@ -414,6 +414,12 @@ describe("jobs handlers", () => {
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.state).toBe("queued");
 			expect(mockFetch).toHaveBeenCalledWith(expect.objectContaining({ method: "POST" }));
+			const callPath = mockFetch.mock.calls[0][0].path;
+			expect(callPath).toContain("/serverless-jobs/v1alpha2/");
+			expect(callPath).toContain(`/job-definitions/${TEST_UUID}/start`);
+			// job_definition_id travels in the path, not the body
+			const startBody = JSON.parse(mockFetch.mock.calls[0][0].body);
+			expect(startBody.job_definition_id).toBeUndefined();
 		});
 
 		it("sends optional overrides", async () => {

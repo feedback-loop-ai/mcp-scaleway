@@ -23,7 +23,7 @@ export const StickySessionsType = z.enum(["none", "cookie", "table"]);
 
 export const CertificateStatus = z.enum(["pending", "ready", "error"]);
 
-export const CertificateType = z.enum(["letsencryt", "custom"]);
+export const CertificateType = z.enum(["letsencrypt", "custom"]);
 
 // ─── Health check sub-schemas ───────────────────────────────────────────────
 
@@ -77,7 +77,7 @@ export const CreateLbParams = z.object({
 	project_id: z.string().uuid().optional().describe("Project ID"),
 	name: z.string().describe("Name of the load balancer"),
 	description: z.string().optional().describe("Description"),
-	ip_id: z.string().uuid().optional().describe("Existing IP ID to assign"),
+	ip_ids: z.array(z.string().uuid()).optional().describe("Existing IP IDs to assign"),
 	assign_flexible_ip: z.boolean().optional().describe("Assign a new flexible IP"),
 	assign_flexible_ipv6: z.boolean().optional().describe("Assign a new flexible IPv6"),
 	type: z.string().optional().describe("LB type (e.g. lb-s)"),

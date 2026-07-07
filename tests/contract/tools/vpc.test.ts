@@ -51,7 +51,7 @@ describe("VPC contract tests (016-vpc)", () => {
 				pageSize: 25,
 				name: "my-vpc",
 				tags: ["env:test"],
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 			});
 			expect(result.success).toBe(true);
 		});
@@ -103,7 +103,7 @@ describe("VPC contract tests (016-vpc)", () => {
 		it("rejects invalid project UUID", () => {
 			const result = ListVpcsInput.safeParse({
 				region: "fr-par",
-				project: "not-a-uuid",
+				project_id: "not-a-uuid",
 			});
 			expect(result.success).toBe(false);
 		});
@@ -145,7 +145,7 @@ describe("VPC contract tests (016-vpc)", () => {
 			const result = CreateVpcInput.safeParse({
 				region: "fr-par",
 				name: "my-vpc",
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 			});
 			expect(result.success).toBe(true);
 		});
@@ -154,7 +154,7 @@ describe("VPC contract tests (016-vpc)", () => {
 			const result = CreateVpcInput.safeParse({
 				region: "fr-par",
 				name: "my-vpc",
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 				tags: ["env:prod", "team:infra"],
 			});
 			expect(result.success).toBe(true);
@@ -164,7 +164,7 @@ describe("VPC contract tests (016-vpc)", () => {
 			const result = CreateVpcInput.safeParse({
 				region: "fr-par",
 				name: "",
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 			});
 			expect(result.success).toBe(false);
 		});
@@ -172,7 +172,7 @@ describe("VPC contract tests (016-vpc)", () => {
 		it("rejects missing name", () => {
 			const result = CreateVpcInput.safeParse({
 				region: "fr-par",
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 			});
 			expect(result.success).toBe(false);
 		});
@@ -189,7 +189,7 @@ describe("VPC contract tests (016-vpc)", () => {
 			const result = CreateVpcInput.safeParse({
 				region: "fr-par",
 				name: "my-vpc",
-				project: "not-a-uuid",
+				project_id: "not-a-uuid",
 			});
 			expect(result.success).toBe(false);
 		});
@@ -471,7 +471,7 @@ describe("VPC contract tests (016-vpc)", () => {
 			id: z.string().uuid(),
 			name: z.string(),
 			region: z.string(),
-			project: z.string().uuid(),
+			project_id: z.string().uuid(),
 			tags: z.array(z.string()),
 			is_default: z.boolean(),
 			private_network_count: z.number().int(),
@@ -517,7 +517,7 @@ describe("VPC contract tests (016-vpc)", () => {
 				id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
 				name: "my-vpc",
 				region: "fr-par",
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 				tags: ["env:test"],
 				is_default: false,
 				private_network_count: 2,
@@ -556,7 +556,7 @@ describe("VPC contract tests (016-vpc)", () => {
 						id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
 						name: "my-vpc",
 						region: "fr-par",
-						project: "11111111-1111-1111-1111-111111111111",
+						project_id: "11111111-1111-1111-1111-111111111111",
 						tags: [],
 						is_default: true,
 						private_network_count: 0,

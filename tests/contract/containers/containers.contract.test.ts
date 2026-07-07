@@ -5,7 +5,7 @@
  * against the Scaleway Containers API v1beta1.
  *
  * API Reference: https://www.scaleway.com/en/developers/api/serverless-containers/
- * Spec: specs/scaleway-api/
+ * Spec: specs/scaleway-api/containers/api-reference.md
  * Parity Matrix: tests/parity-matrix.json#containers
  */
 import { type Mock, afterEach, beforeEach, describe, expect, it, vi } from "vitest";

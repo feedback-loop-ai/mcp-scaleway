@@ -378,18 +378,77 @@ export async function handleListRules(client: Client, input: ListRulesInput) {
 	}
 }
 
+// The Scaleway IAM API exposes only two rule endpoints: `GET /rules?policy_id=`
+// (list) and `PUT /rules` (full-set replace via SetRules). There are no per-rule
+// create/update/delete endpoints. The tools below therefore implement those
+// operations on top of the documented read+set pattern: fetch the policy's
+// current rules, apply the requested change to the list, then PUT the whole list
+// back. Note: rules scoped to an account root user (account_root_user_id) cannot
+// be expressed as RuleSpecs and are preserved only by their project/organization
+// scope. A policy is assumed to have at most 100 rules (a single list page).
+
+interface IamRuleObject {
+	id?: string;
+	permission_set_names?: string[] | null;
+	condition?: string;
+	project_ids?: string[] | null;
+	organization_id?: string | null;
+}
+
+interface ListRulesData {
+	rules?: IamRuleObject[];
+}
+
+interface RuleSpec {
+	permission_set_names: string[] | null;
+	condition: string;
+	project_ids?: string[];
+	organization_id?: string;
+}
+
+function toRuleSpec(rule: IamRuleObject): RuleSpec {
+	const spec: RuleSpec = {
+		permission_set_names: rule.permission_set_names ?? null,
+		condition: rule.condition ?? "",
+	};
+	if (rule.project_ids != null) {
+		spec.project_ids = rule.project_ids;
+	} else if (rule.organization_id != null) {
+		spec.organization_id = rule.organization_id;
+	}
+	return spec;
+}
+
+async function fetchPolicyRules(client: Client, policyId: string): Promise<IamRuleObject[]> {
+	const data = await client.fetch<ListRulesData>({
+		method: "GET",
+		path: `${IAM_API}/rules`,
+		urlParams: buildParams({ policy_id: policyId, page: 1, page_size: 100 }),
+	});
+	return data.rules ?? [];
+}
+
+function setPolicyRules(client: Client, policyId: string, rules: RuleSpec[]) {
+	return client.fetch<unknown>({
+		method: "PUT",
+		path: `${IAM_API}/rules`,
+		body: JSON.stringify({ policy_id: policyId, rules }),
+	});
+}
+
 export async function handleCreateRule(client: Client, input: CreateRuleInput) {
 	try {
-		const data = await client.fetch<unknown>({
-			method: "POST",
-			path: `${IAM_API}/rules`,
-			body: JSON.stringify({
-				policy_id: input.policy_id,
-				permission_set_names: input.permission_set_names,
-				project_ids: input.project_ids,
-				organization_id: input.organization_id,
-			}),
-		});
+		const existing = await fetchPolicyRules(client, input.policy_id);
+		const rules = existing.map(toRuleSpec);
+		const newRule: RuleSpec = {
+			permission_set_names: input.permission_set_names,
+			condition: "",
+		};
+		if (input.condition !== undefined) newRule.condition = input.condition;
+		if (input.project_ids !== undefined) newRule.project_ids = input.project_ids;
+		if (input.organization_id !== undefined) newRule.organization_id = input.organization_id;
+		rules.push(newRule);
+		const data = await setPolicyRules(client, input.policy_id, rules);
 		return jsonResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -398,12 +457,30 @@ export async function handleCreateRule(client: Client, input: CreateRuleInput) {
 
 export async function handleUpdateRule(client: Client, input: UpdateRuleInput) {
 	try {
-		const { rule_id, ...body } = input;
-		const data = await client.fetch<unknown>({
-			method: "PATCH",
-			path: `${IAM_API}/rules/${rule_id}`,
-			body: JSON.stringify(body),
+		const existing = await fetchPolicyRules(client, input.policy_id);
+		let found = false;
+		const rules = existing.map((rule) => {
+			const spec = toRuleSpec(rule);
+			if (rule.id === input.rule_id) {
+				found = true;
+				if (input.permission_set_names !== undefined)
+					spec.permission_set_names = input.permission_set_names;
+				if (input.condition !== undefined) spec.condition = input.condition;
+				if (input.project_ids !== undefined) {
+					spec.project_ids = input.project_ids;
+					spec.organization_id = undefined;
+				}
+				if (input.organization_id !== undefined) {
+					spec.organization_id = input.organization_id;
+					spec.project_ids = undefined;
+				}
+			}
+			return spec;
 		});
+		if (!found) {
+			throw new Error(`Rule ${input.rule_id} not found in policy ${input.policy_id}`);
+		}
+		const data = await setPolicyRules(client, input.policy_id, rules);
 		return jsonResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -412,10 +489,12 @@ export async function handleUpdateRule(client: Client, input: UpdateRuleInput) {
 
 export async function handleDeleteRule(client: Client, input: DeleteRuleInput) {
 	try {
-		await client.fetch<unknown>({
-			method: "DELETE",
-			path: `${IAM_API}/rules/${input.rule_id}`,
-		});
+		const existing = await fetchPolicyRules(client, input.policy_id);
+		const remaining = existing.filter((rule) => rule.id !== input.rule_id);
+		if (remaining.length === existing.length) {
+			throw new Error(`Rule ${input.rule_id} not found in policy ${input.policy_id}`);
+		}
+		await setPolicyRules(client, input.policy_id, remaining.map(toRuleSpec));
 		return jsonResponse({ message: "Rule deleted successfully" });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -501,7 +580,7 @@ export async function handleAddGroupMember(client: Client, input: AddGroupMember
 	try {
 		const data = await client.fetch<unknown>({
 			method: "POST",
-			path: `${IAM_API}/groups/${input.group_id}/members`,
+			path: `${IAM_API}/groups/${input.group_id}/add-member`,
 			body: JSON.stringify({
 				user_id: input.user_id,
 				application_id: input.application_id,
@@ -516,8 +595,8 @@ export async function handleAddGroupMember(client: Client, input: AddGroupMember
 export async function handleRemoveGroupMember(client: Client, input: RemoveGroupMemberInput) {
 	try {
 		const data = await client.fetch<unknown>({
-			method: "DELETE",
-			path: `${IAM_API}/groups/${input.group_id}/members`,
+			method: "POST",
+			path: `${IAM_API}/groups/${input.group_id}/remove-member`,
 			body: JSON.stringify({
 				user_id: input.user_id,
 				application_id: input.application_id,

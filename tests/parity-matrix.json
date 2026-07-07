@@ -1,104 +1,3772 @@
 {
-	"instances": {
-		"list_servers": {
-			"api": "GET /instance/v1/zones/{zone}/servers",
-			"tool": "scaleway_instances_list_servers",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+	"account": {
+		"CreateProject": {
+			"api": "POST /account/v3/projects",
+			"contract_test": "tests/contract/account/account.contract.test.ts",
+			"tool": "scaleway_account_create_project"
 		},
-		"get_server": {
-			"api": "GET /instance/v1/zones/{zone}/servers/{server_id}",
-			"tool": "scaleway_instances_get_server",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		"DeleteProject": {
+			"api": "DELETE /account/v3/projects/{project_id}",
+			"contract_test": "tests/contract/account/account.contract.test.ts",
+			"tool": "scaleway_account_delete_project"
+		},
+		"GetProject": {
+			"api": "GET /account/v3/projects/{project_id}",
+			"contract_test": "tests/contract/account/account.contract.test.ts",
+			"tool": "scaleway_account_get_project"
+		},
+		"ListProjects": {
+			"api": "GET /account/v3/projects",
+			"contract_test": "tests/contract/account/account.contract.test.ts",
+			"tool": "scaleway_account_list_projects"
+		},
+		"UpdateProject": {
+			"api": "PATCH /account/v3/projects/{project_id}",
+			"contract_test": "tests/contract/account/account.contract.test.ts",
+			"tool": "scaleway_account_update_project"
+		}
+	},
+	"apple-silicon": {
+		"add_server_private_network": {
+			"api": "POST /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_add_server_private_network"
 		},
 		"create_server": {
-			"api": "POST /instance/v1/zones/{zone}/servers",
-			"tool": "scaleway_instances_create_server",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+			"api": "POST /apple-silicon/v1alpha1/zones/{zone}/servers",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_create_server"
 		},
 		"delete_server": {
-			"api": "DELETE /instance/v1/zones/{zone}/servers/{server_id}",
-			"tool": "scaleway_instances_delete_server",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+			"api": "DELETE /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_delete_server"
 		},
-		"server_action": {
-			"api": "POST /instance/v1/zones/{zone}/servers/{server_id}/action",
-			"tool": "scaleway_instances_server_action",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		"delete_server_private_network": {
+			"api": "DELETE /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks/{private_network_id}",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_delete_server_private_network"
 		},
-		"list_volumes": {
-			"api": "GET /instance/v1/zones/{zone}/volumes",
-			"tool": "scaleway_instances_list_volumes",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		"get_server": {
+			"api": "GET /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_get_server"
 		},
-		"get_volume": {
-			"api": "GET /instance/v1/zones/{zone}/volumes/{volume_id}",
-			"tool": "scaleway_instances_get_volume",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		"get_server_private_network": {
+			"api": "GET /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks/{private_network_id}",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_get_server_private_network"
+		},
+		"list_os": {
+			"api": "GET /apple-silicon/v1alpha1/zones/{zone}/os",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_list_os"
+		},
+		"list_server_private_networks": {
+			"api": "GET /apple-silicon/v1alpha1/zones/{zone}/server-private-networks",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_list_server_private_networks"
+		},
+		"list_server_types": {
+			"api": "GET /apple-silicon/v1alpha1/zones/{zone}/server-types",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_list_server_types"
+		},
+		"list_servers": {
+			"api": "GET /apple-silicon/v1alpha1/zones/{zone}/servers",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_list_servers"
+		},
+		"reboot_server": {
+			"api": "POST /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/reboot",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_reboot_server"
+		},
+		"reinstall_server": {
+			"api": "POST /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/reinstall",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_reinstall_server"
+		},
+		"set_server_private_networks": {
+			"api": "PUT /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks",
+			"contract_test": "tests/contract/tools/apple-silicon/contract.test.ts",
+			"tool": "scaleway_apple_silicon_set_server_private_networks"
+		}
+	},
+	"audit-trail": {
+		"create_export_job": {
+			"api": "POST /audit-trail/v1alpha1/regions/{region}/export-jobs",
+			"contract_test": "tests/contract/audit-trail/audit-trail.contract.test.ts",
+			"tool": "scaleway_audit_trail_create_export_job"
+		},
+		"delete_export_job": {
+			"api": "DELETE /audit-trail/v1alpha1/regions/{region}/export-jobs/{export_job_id}",
+			"contract_test": "tests/contract/audit-trail/audit-trail.contract.test.ts",
+			"tool": "scaleway_audit_trail_delete_export_job"
+		},
+		"list_events": {
+			"api": "GET /audit-trail/v1alpha1/regions/{region}/events",
+			"contract_test": "tests/contract/audit-trail/audit-trail.contract.test.ts",
+			"tool": "scaleway_audit_trail_list_events"
+		},
+		"list_export_jobs": {
+			"api": "GET /audit-trail/v1alpha1/regions/{region}/export-jobs",
+			"contract_test": "tests/contract/audit-trail/audit-trail.contract.test.ts",
+			"tool": "scaleway_audit_trail_list_export_jobs"
+		},
+		"list_products": {
+			"api": "GET /audit-trail/v1alpha1/regions/{region}/products",
+			"contract_test": "tests/contract/audit-trail/audit-trail.contract.test.ts",
+			"tool": "scaleway_audit_trail_list_products"
+		}
+	},
+	"autoscaling": {
+		"create_instance_group": {
+			"api": "POST /autoscaling/v1alpha1/zones/{zone}/instance-groups",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_create_instance_group"
+		},
+		"create_instance_policy": {
+			"api": "POST /autoscaling/v1alpha1/zones/{zone}/instance-policies",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_create_instance_policy"
+		},
+		"create_instance_template": {
+			"api": "POST /autoscaling/v1alpha1/zones/{zone}/instance-templates",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_create_instance_template"
+		},
+		"delete_instance_group": {
+			"api": "DELETE /autoscaling/v1alpha1/zones/{zone}/instance-groups/{instance_group_id}",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_delete_instance_group"
+		},
+		"delete_instance_policy": {
+			"api": "DELETE /autoscaling/v1alpha1/zones/{zone}/instance-policies/{instance_policy_id}",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_delete_instance_policy"
+		},
+		"delete_instance_template": {
+			"api": "DELETE /autoscaling/v1alpha1/zones/{zone}/instance-templates/{instance_template_id}",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_delete_instance_template"
+		},
+		"get_instance_group": {
+			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-groups/{instance_group_id}",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_get_instance_group"
+		},
+		"get_instance_policy": {
+			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-policies/{instance_policy_id}",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_get_instance_policy"
+		},
+		"get_instance_template": {
+			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-templates/{instance_template_id}",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_get_instance_template"
+		},
+		"list_instance_group_events": {
+			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-groups/{instance_group_id}/events",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_list_instance_group_events"
+		},
+		"list_instance_groups": {
+			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-groups",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_list_instance_groups"
+		},
+		"list_instance_policies": {
+			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-policies",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_list_instance_policies"
+		},
+		"list_instance_templates": {
+			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-templates",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_list_instance_templates"
+		},
+		"update_instance_group": {
+			"api": "PATCH /autoscaling/v1alpha1/zones/{zone}/instance-groups/{instance_group_id}",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_update_instance_group"
+		},
+		"update_instance_policy": {
+			"api": "PATCH /autoscaling/v1alpha1/zones/{zone}/instance-policies/{instance_policy_id}",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_update_instance_policy"
+		},
+		"update_instance_template": {
+			"api": "PATCH /autoscaling/v1alpha1/zones/{zone}/instance-templates/{instance_template_id}",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_update_instance_template"
+		}
+	},
+	"billing": {
+		"DownloadInvoice": {
+			"api": "GET /billing/v2beta1/invoices/{invoice_id}/download",
+			"contract_test": "tests/contract/billing/billing.contract.test.ts",
+			"tool": "scaleway_billing_download_invoice"
+		},
+		"GetInvoice": {
+			"api": "GET /billing/v2beta1/invoices/{invoice_id}",
+			"contract_test": "tests/contract/billing/billing.contract.test.ts",
+			"tool": "scaleway_billing_get_invoice"
+		},
+		"ListCharges": {
+			"api": "GET /billing/v2beta1/charges",
+			"contract_test": "tests/contract/billing/billing.contract.test.ts",
+			"tool": "scaleway_billing_list_charges"
+		},
+		"ListConsumptions": {
+			"api": "GET /billing/v2beta1/consumptions",
+			"contract_test": "tests/contract/billing/billing.contract.test.ts",
+			"tool": "scaleway_billing_list_consumptions"
+		},
+		"ListDiscounts": {
+			"api": "GET /billing/v2beta1/discounts",
+			"contract_test": "tests/contract/billing/billing.contract.test.ts",
+			"tool": "scaleway_billing_list_discounts"
+		},
+		"ListInvoices": {
+			"api": "GET /billing/v2beta1/invoices",
+			"contract_test": "tests/contract/billing/billing.contract.test.ts",
+			"tool": "scaleway_billing_list_invoices"
+		}
+	},
+	"block-storage": {
+		"create_snapshot": {
+			"api": "POST /block/v1/zones/{zone}/snapshots",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_create_snapshot"
 		},
 		"create_volume": {
-			"api": "POST /instance/v1/zones/{zone}/volumes",
-			"tool": "scaleway_instances_create_volume",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+			"api": "POST /block/v1/zones/{zone}/volumes",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_create_volume"
+		},
+		"delete_snapshot": {
+			"api": "DELETE /block/v1/zones/{zone}/snapshots/{snapshot_id}",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_delete_snapshot"
 		},
 		"delete_volume": {
-			"api": "DELETE /instance/v1/zones/{zone}/volumes/{volume_id}",
-			"tool": "scaleway_instances_delete_volume",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+			"api": "DELETE /block/v1/zones/{zone}/volumes/{volume_id}",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_delete_volume"
 		},
-		"list_security_groups": {
-			"api": "GET /instance/v1/zones/{zone}/security_groups",
-			"tool": "scaleway_instances_list_security_groups",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		"get_snapshot": {
+			"api": "GET /block/v1/zones/{zone}/snapshots/{snapshot_id}",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_get_snapshot"
 		},
-		"get_security_group": {
-			"api": "GET /instance/v1/zones/{zone}/security_groups/{security_group_id}",
-			"tool": "scaleway_instances_get_security_group",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		"get_volume": {
+			"api": "GET /block/v1/zones/{zone}/volumes/{volume_id}",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_get_volume"
 		},
-		"create_security_group": {
-			"api": "POST /instance/v1/zones/{zone}/security_groups",
-			"tool": "scaleway_instances_create_security_group",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		"list_snapshots": {
+			"api": "GET /block/v1/zones/{zone}/snapshots",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_list_snapshots"
 		},
-		"delete_security_group": {
-			"api": "DELETE /instance/v1/zones/{zone}/security_groups/{security_group_id}",
-			"tool": "scaleway_instances_delete_security_group",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		"list_volume_types": {
+			"api": "GET /block/v1/zones/{zone}/volume-types",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_list_volume_types"
+		},
+		"list_volumes": {
+			"api": "GET /block/v1/zones/{zone}/volumes",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_list_volumes"
+		},
+		"update_snapshot": {
+			"api": "PATCH /block/v1/zones/{zone}/snapshots/{snapshot_id}",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_update_snapshot"
+		},
+		"update_volume": {
+			"api": "PATCH /block/v1/zones/{zone}/volumes/{volume_id}",
+			"contract_test": "tests/contract/block-storage/block-storage.contract.test.ts",
+			"tool": "scaleway_block_storage_update_volume"
+		}
+	},
+	"cockpit": {
+		"ActivateCockpit": {
+			"api": "POST /cockpit/v1/regions/{region}/activate-cockpit",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_activate_cockpit"
+		},
+		"CreateContactPoint": {
+			"api": "POST /cockpit/v1/regions/{region}/alert-manager/contact-points",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_create_contact_point"
+		},
+		"CreateDataSource": {
+			"api": "POST /cockpit/v1/regions/{region}/data-sources",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_create_data_source"
+		},
+		"CreateGrafanaUser": {
+			"api": "POST /cockpit/v1/grafana/users",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_create_grafana_user"
+		},
+		"CreateToken": {
+			"api": "POST /cockpit/v1/regions/{region}/tokens",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_create_token"
+		},
+		"DeactivateCockpit": {
+			"api": "POST /cockpit/v1/regions/{region}/deactivate-cockpit",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_deactivate_cockpit"
+		},
+		"DeleteContactPoint": {
+			"api": "DELETE /cockpit/v1/regions/{region}/alert-manager/contact-points",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_delete_contact_point"
+		},
+		"DeleteDataSource": {
+			"api": "DELETE /cockpit/v1/regions/{region}/data-sources/{data_source_id}",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_delete_data_source"
+		},
+		"DeleteGrafanaUser": {
+			"api": "DELETE /cockpit/v1/grafana/users/{grafana_user_id}",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_delete_grafana_user"
+		},
+		"DeleteToken": {
+			"api": "DELETE /cockpit/v1/regions/{region}/tokens/{token_id}",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_delete_token"
+		},
+		"DisableAlertManager": {
+			"api": "POST /cockpit/v1/regions/{region}/alert-manager/disable",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_disable_alert_manager"
+		},
+		"DisableManagedAlerts": {
+			"api": "POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/disable",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_disable_managed_alerts"
+		},
+		"EnableAlertManager": {
+			"api": "POST /cockpit/v1/regions/{region}/alert-manager/enable",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_enable_alert_manager"
+		},
+		"EnableManagedAlerts": {
+			"api": "POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/enable",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_enable_managed_alerts"
+		},
+		"GetAlertManager": {
+			"api": "GET /cockpit/v1/regions/{region}/alert-manager",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_get_alert_manager"
+		},
+		"GetCockpit": {
+			"api": "GET /cockpit/v1/regions/{region}/cockpit",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_get_cockpit"
+		},
+		"ListContactPoints": {
+			"api": "GET /cockpit/v1/regions/{region}/alert-manager/contact-points",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_list_contact_points"
+		},
+		"ListDataSources": {
+			"api": "GET /cockpit/v1/regions/{region}/data-sources",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_list_data_sources"
+		},
+		"ListGrafanaUsers": {
+			"api": "GET /cockpit/v1/grafana/users",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_list_grafana_users"
+		},
+		"ListManagedAlertsContactPoints": {
+			"api": "GET /cockpit/v1/regions/{region}/alert-manager/managed-alerts-contact-points",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_list_managed_alerts_contact_points"
+		},
+		"ListTokens": {
+			"api": "GET /cockpit/v1/regions/{region}/tokens",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_list_tokens"
+		},
+		"ResetGrafanaUserPassword": {
+			"api": "POST /cockpit/v1/grafana/users/{grafana_user_id}/reset-password",
+			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"tool": "scaleway_cockpit_reset_grafana_user_password"
+		}
+	},
+	"containers": {
+		"create_container": {
+			"api": "POST /containers/v1beta1/regions/{region}/containers",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_create_container"
+		},
+		"create_cron": {
+			"api": "POST /containers/v1beta1/regions/{region}/crons",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_create_cron"
+		},
+		"create_domain": {
+			"api": "POST /containers/v1beta1/regions/{region}/domains",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_create_domain"
+		},
+		"create_namespace": {
+			"api": "POST /containers/v1beta1/regions/{region}/namespaces",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_create_namespace"
+		},
+		"create_token": {
+			"api": "POST /containers/v1beta1/regions/{region}/tokens",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_create_token"
+		},
+		"delete_container": {
+			"api": "DELETE /containers/v1beta1/regions/{region}/containers/{container_id}",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_delete_container"
+		},
+		"delete_cron": {
+			"api": "DELETE /containers/v1beta1/regions/{region}/crons/{cron_id}",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_delete_cron"
+		},
+		"delete_domain": {
+			"api": "DELETE /containers/v1beta1/regions/{region}/domains/{domain_id}",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_delete_domain"
+		},
+		"delete_namespace": {
+			"api": "DELETE /containers/v1beta1/regions/{region}/namespaces/{namespace_id}",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_delete_namespace"
+		},
+		"delete_token": {
+			"api": "DELETE /containers/v1beta1/regions/{region}/tokens/{token_id}",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_delete_token"
+		},
+		"deploy_container": {
+			"api": "POST /containers/v1beta1/regions/{region}/containers/{container_id}/deploy",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_deploy_container"
+		},
+		"get_container": {
+			"api": "GET /containers/v1beta1/regions/{region}/containers/{container_id}",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_get_container"
+		},
+		"get_namespace": {
+			"api": "GET /containers/v1beta1/regions/{region}/namespaces/{namespace_id}",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_get_namespace"
+		},
+		"list_containers": {
+			"api": "GET /containers/v1beta1/regions/{region}/containers",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_list_containers"
+		},
+		"list_crons": {
+			"api": "GET /containers/v1beta1/regions/{region}/crons",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_list_crons"
+		},
+		"list_domains": {
+			"api": "GET /containers/v1beta1/regions/{region}/domains",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_list_domains"
+		},
+		"list_namespaces": {
+			"api": "GET /containers/v1beta1/regions/{region}/namespaces",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_list_namespaces"
+		},
+		"update_container": {
+			"api": "PATCH /containers/v1beta1/regions/{region}/containers/{container_id}",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_update_container"
+		},
+		"update_cron": {
+			"api": "PATCH /containers/v1beta1/regions/{region}/crons/{cron_id}",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_update_cron"
+		},
+		"update_namespace": {
+			"api": "PATCH /containers/v1beta1/regions/{region}/namespaces/{namespace_id}",
+			"contract_test": "tests/contract/containers/containers.contract.test.ts",
+			"tool": "scaleway_containers_update_namespace"
+		}
+	},
+	"data-lab": {
+		"create_cluster": {
+			"api": "POST /datalab/v1beta1/regions/{region}/datalabs",
+			"contract_test": "tests/contract/data-lab/data-lab.contract.test.ts",
+			"tool": "scaleway_data_lab_create_cluster"
+		},
+		"delete_cluster": {
+			"api": "DELETE /datalab/v1beta1/regions/{region}/datalabs/{datalab_id}",
+			"contract_test": "tests/contract/data-lab/data-lab.contract.test.ts",
+			"tool": "scaleway_data_lab_delete_cluster"
+		},
+		"get_cluster": {
+			"api": "GET /datalab/v1beta1/regions/{region}/datalabs/{datalab_id}",
+			"contract_test": "tests/contract/data-lab/data-lab.contract.test.ts",
+			"tool": "scaleway_data_lab_get_cluster"
+		},
+		"list_cluster_versions": {
+			"api": "GET /datalab/v1beta1/regions/{region}/cluster-versions",
+			"contract_test": "tests/contract/data-lab/data-lab.contract.test.ts",
+			"tool": "scaleway_data_lab_list_cluster_versions"
+		},
+		"list_clusters": {
+			"api": "GET /datalab/v1beta1/regions/{region}/datalabs",
+			"contract_test": "tests/contract/data-lab/data-lab.contract.test.ts",
+			"tool": "scaleway_data_lab_list_clusters"
+		},
+		"list_node_types": {
+			"api": "GET /datalab/v1beta1/regions/{region}/node-types",
+			"contract_test": "tests/contract/data-lab/data-lab.contract.test.ts",
+			"tool": "scaleway_data_lab_list_node_types"
+		},
+		"list_notebook_versions": {
+			"api": "GET /datalab/v1beta1/regions/{region}/notebook-versions",
+			"contract_test": "tests/contract/data-lab/data-lab.contract.test.ts",
+			"tool": "scaleway_data_lab_list_notebook_versions"
+		},
+		"update_cluster": {
+			"api": "PATCH /datalab/v1beta1/regions/{region}/datalabs/{datalab_id}",
+			"contract_test": "tests/contract/data-lab/data-lab.contract.test.ts",
+			"tool": "scaleway_data_lab_update_cluster"
+		}
+	},
+	"data-warehouse": {
+		"create_database": {
+			"api": "POST /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/databases",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_create_database"
+		},
+		"create_deployment": {
+			"api": "POST /datawarehouse/v1beta1/regions/{region}/deployments",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_create_deployment"
+		},
+		"create_endpoint": {
+			"api": "POST /datawarehouse/v1beta1/regions/{region}/endpoints",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_create_endpoint"
+		},
+		"create_user": {
+			"api": "POST /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/users",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_create_user"
+		},
+		"delete_database": {
+			"api": "DELETE /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/databases/{name}",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_delete_database"
+		},
+		"delete_deployment": {
+			"api": "DELETE /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_delete_deployment"
+		},
+		"delete_endpoint": {
+			"api": "DELETE /datawarehouse/v1beta1/regions/{region}/endpoints/{endpoint_id}",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_delete_endpoint"
+		},
+		"delete_user": {
+			"api": "DELETE /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/users/{name}",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_delete_user"
+		},
+		"get_deployment": {
+			"api": "GET /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_get_deployment"
+		},
+		"get_deployment_certificate": {
+			"api": "GET /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/certificate",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_get_deployment_certificate"
+		},
+		"list_databases": {
+			"api": "GET /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/databases",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_list_databases"
+		},
+		"list_deployments": {
+			"api": "GET /datawarehouse/v1beta1/regions/{region}/deployments",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_list_deployments"
+		},
+		"list_presets": {
+			"api": "GET /datawarehouse/v1beta1/regions/{region}/presets",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_list_presets"
+		},
+		"list_users": {
+			"api": "GET /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/users",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_list_users"
+		},
+		"list_versions": {
+			"api": "GET /datawarehouse/v1beta1/regions/{region}/versions",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_list_versions"
+		},
+		"start_deployment": {
+			"api": "POST /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/start",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_start_deployment"
+		},
+		"stop_deployment": {
+			"api": "POST /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/stop",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_stop_deployment"
+		},
+		"update_deployment": {
+			"api": "PATCH /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_update_deployment"
+		},
+		"update_user": {
+			"api": "PATCH /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/users/{name}",
+			"contract_test": "tests/contract/data-warehouse/data-warehouse.contract.test.ts",
+			"tool": "scaleway_data_warehouse_update_user"
+		}
+	},
+	"dedibox": {
+		"cancel_server_install": {
+			"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/cancel-install",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_cancel_server_install"
+		},
+		"delete_server": {
+			"api": "DELETE /dedibox/v1/zones/{zone}/servers/{server_id}",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_delete_server"
+		},
+		"get_bmc_access": {
+			"api": "GET /dedibox/v1/zones/{zone}/servers/{server_id}/bmc-access",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_get_bmc_access"
+		},
+		"get_offer": {
+			"api": "GET /dedibox/v1/zones/{zone}/offers/{offer_id}",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_get_offer"
+		},
+		"get_os": {
+			"api": "GET /dedibox/v1/zones/{zone}/os/{os_id}",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_get_os"
+		},
+		"get_server": {
+			"api": "GET /dedibox/v1/zones/{zone}/servers/{server_id}",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_get_server"
+		},
+		"get_server_install": {
+			"api": "GET /dedibox/v1/zones/{zone}/servers/{server_id}/install",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_get_server_install"
+		},
+		"install_server": {
+			"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/install",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_install_server"
+		},
+		"list_offers": {
+			"api": "GET /dedibox/v1/zones/{zone}/offers",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_list_offers"
+		},
+		"list_os": {
+			"api": "GET /dedibox/v1/zones/{zone}/os",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_list_os"
+		},
+		"list_servers": {
+			"api": "GET /dedibox/v1/zones/{zone}/servers",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_list_servers"
+		},
+		"reboot_server": {
+			"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/reboot",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_reboot_server"
+		},
+		"start_bmc_access": {
+			"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/bmc-access",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_start_bmc_access"
+		},
+		"start_server": {
+			"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/start",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_start_server"
+		},
+		"stop_bmc_access": {
+			"api": "DELETE /dedibox/v1/zones/{zone}/servers/{server_id}/bmc-access",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_stop_bmc_access"
+		},
+		"stop_server": {
+			"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/stop",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_stop_server"
+		},
+		"update_server": {
+			"api": "PATCH /dedibox/v1/zones/{zone}/servers/{server_id}",
+			"contract_test": "tests/contract/dedibox/dedibox.contract.test.ts",
+			"tool": "scaleway_dedibox_update_server"
+		}
+	},
+	"dns": {
+		"ClearDnsRecords": {
+			"api": "DELETE /domain/v2beta1/dns-zones/{dns_zone}/records",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_clear_records"
+		},
+		"CloneDnsZone": {
+			"api": "POST /domain/v2beta1/dns-zones/{dns_zone}/clone",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_clone_zone"
+		},
+		"CreateDnsZone": {
+			"api": "POST /domain/v2beta1/dns-zones",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_create_zone"
+		},
+		"CreateSslCertificate": {
+			"api": "POST /domain/v2beta1/ssl-certificates",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_create_ssl_certificate"
+		},
+		"DeleteDnsZone": {
+			"api": "DELETE /domain/v2beta1/dns-zones/{dns_zone}",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_delete_zone"
+		},
+		"DeleteSslCertificate": {
+			"api": "DELETE /domain/v2beta1/ssl-certificates/{dns_zone}",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_delete_ssl_certificate"
+		},
+		"DeleteTsigKey": {
+			"api": "DELETE /domain/v2beta1/dns-zones/{dns_zone}/tsig-key",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_delete_tsig_key"
+		},
+		"ExportRawDnsZone": {
+			"api": "GET /domain/v2beta1/dns-zones/{dns_zone}/raw",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_export_raw_zone"
+		},
+		"GetSslCertificate": {
+			"api": "GET /domain/v2beta1/ssl-certificates/{dns_zone}",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_get_ssl_certificate"
+		},
+		"GetTsigKey": {
+			"api": "GET /domain/v2beta1/dns-zones/{dns_zone}/tsig-key",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_get_tsig_key"
+		},
+		"ImportRawDnsZone": {
+			"api": "POST /domain/v2beta1/dns-zones/{dns_zone}/raw",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_import_raw_zone"
+		},
+		"ListDnsRecords": {
+			"api": "GET /domain/v2beta1/dns-zones/{dns_zone}/records",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_list_records"
+		},
+		"ListDnsZones": {
+			"api": "GET /domain/v2beta1/dns-zones",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_list_zones"
+		},
+		"ListNameservers": {
+			"api": "GET /domain/v2beta1/dns-zones/{dns_zone}/nameservers",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_list_nameservers"
+		},
+		"RefreshDnsZone": {
+			"api": "POST /domain/v2beta1/dns-zones/{dns_zone}/refresh",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_refresh_zone"
+		},
+		"UpdateDnsRecords": {
+			"api": "PATCH /domain/v2beta1/dns-zones/{dns_zone}/records",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_update_records"
+		},
+		"UpdateDnsZone": {
+			"api": "PATCH /domain/v2beta1/dns-zones/{dns_zone}",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_update_zone"
+		},
+		"UpdateNameservers": {
+			"api": "PUT /domain/v2beta1/dns-zones/{dns_zone}/nameservers",
+			"contract_test": "tests/contract/dns/dns.contract.test.ts",
+			"tool": "scaleway_dns_update_nameservers"
+		}
+	},
+	"domain-registrar": {
+		"check_domain_availability": {
+			"api": "GET /domain/v2beta1/search-domains",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_check_domain_availability"
+		},
+		"disable_auto_renew": {
+			"api": "POST /domain/v2beta1/domains/{domain}/disable-auto-renew",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_disable_auto_renew"
+		},
+		"enable_auto_renew": {
+			"api": "POST /domain/v2beta1/domains/{domain}/enable-auto-renew",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_enable_auto_renew"
+		},
+		"get_contact": {
+			"api": "GET /domain/v2beta1/contacts/{contact_id}",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_get_contact"
+		},
+		"get_domain": {
+			"api": "GET /domain/v2beta1/domains/{domain}",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_get_domain"
+		},
+		"get_tld": {
+			"api": "GET /domain/v2beta1/tlds?tlds={tld_name}",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_get_tld"
+		},
+		"list_contacts": {
+			"api": "GET /domain/v2beta1/contacts",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_list_contacts"
+		},
+		"list_domains": {
+			"api": "GET /domain/v2beta1/domains",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_list_domains"
+		},
+		"list_tlds": {
+			"api": "GET /domain/v2beta1/tlds",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_list_tlds"
+		},
+		"register_domain": {
+			"api": "POST /domain/v2beta1/buy-domains",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_register_domain"
+		},
+		"renew_domain": {
+			"api": "POST /domain/v2beta1/renew-domains",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_renew_domain"
+		},
+		"transfer_domain": {
+			"api": "POST /domain/v2beta1/domains/transfer-domains",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_transfer_domain"
+		},
+		"update_contact": {
+			"api": "PATCH /domain/v2beta1/contacts/{contact_id}",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_update_contact"
+		},
+		"update_domain": {
+			"api": "PATCH /domain/v2beta1/domains/{domain}",
+			"contract_test": "tests/contract/domain-registrar/domain-registrar.contract.test.ts",
+			"tool": "scaleway_domain_registrar_update_domain"
+		}
+	},
+	"edge-services": {
+		"create_backend_stage": {
+			"api": "POST /edge-services/v1beta1/pipelines/{pipeline_id}/backend-stages",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_create_backend_stage"
+		},
+		"create_cache_stage": {
+			"api": "POST /edge-services/v1beta1/pipelines/{pipeline_id}/cache-stages",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_create_cache_stage"
+		},
+		"create_dns_stage": {
+			"api": "POST /edge-services/v1beta1/pipelines/{pipeline_id}/dns-stages",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_create_dns_stage"
+		},
+		"create_pipeline": {
+			"api": "POST /edge-services/v1beta1/pipelines",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_create_pipeline"
+		},
+		"create_tls_stage": {
+			"api": "POST /edge-services/v1beta1/pipelines/{pipeline_id}/tls-stages",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_create_tls_stage"
+		},
+		"delete_backend_stage": {
+			"api": "DELETE /edge-services/v1beta1/backend-stages/{backend_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_delete_backend_stage"
+		},
+		"delete_cache_stage": {
+			"api": "DELETE /edge-services/v1beta1/cache-stages/{cache_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_delete_cache_stage"
+		},
+		"delete_dns_stage": {
+			"api": "DELETE /edge-services/v1beta1/dns-stages/{dns_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_delete_dns_stage"
+		},
+		"delete_pipeline": {
+			"api": "DELETE /edge-services/v1beta1/pipelines/{pipeline_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_delete_pipeline"
+		},
+		"delete_tls_stage": {
+			"api": "DELETE /edge-services/v1beta1/tls-stages/{tls_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_delete_tls_stage"
+		},
+		"get_backend_stage": {
+			"api": "GET /edge-services/v1beta1/backend-stages/{backend_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_get_backend_stage"
+		},
+		"get_cache_stage": {
+			"api": "GET /edge-services/v1beta1/cache-stages/{cache_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_get_cache_stage"
+		},
+		"get_dns_stage": {
+			"api": "GET /edge-services/v1beta1/dns-stages/{dns_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_get_dns_stage"
+		},
+		"get_pipeline": {
+			"api": "GET /edge-services/v1beta1/pipelines/{pipeline_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_get_pipeline"
+		},
+		"get_purge_request": {
+			"api": "GET /edge-services/v1beta1/purge-requests/{purge_request_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_get_purge_request"
+		},
+		"get_tls_stage": {
+			"api": "GET /edge-services/v1beta1/tls-stages/{tls_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_get_tls_stage"
+		},
+		"list_backend_stages": {
+			"api": "GET /edge-services/v1beta1/pipelines/{pipeline_id}/backend-stages",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_list_backend_stages"
+		},
+		"list_cache_stages": {
+			"api": "GET /edge-services/v1beta1/pipelines/{pipeline_id}/cache-stages",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_list_cache_stages"
+		},
+		"list_dns_stages": {
+			"api": "GET /edge-services/v1beta1/pipelines/{pipeline_id}/dns-stages",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_list_dns_stages"
+		},
+		"list_pipelines": {
+			"api": "GET /edge-services/v1beta1/pipelines",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_list_pipelines"
+		},
+		"list_purge_requests": {
+			"api": "GET /edge-services/v1beta1/purge-requests",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_list_purge_requests"
+		},
+		"list_tls_stages": {
+			"api": "GET /edge-services/v1beta1/pipelines/{pipeline_id}/tls-stages",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_list_tls_stages"
+		},
+		"purge_cache": {
+			"api": "POST /edge-services/v1beta1/purge-requests",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_purge_cache"
+		},
+		"update_backend_stage": {
+			"api": "PATCH /edge-services/v1beta1/backend-stages/{backend_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_update_backend_stage"
+		},
+		"update_cache_stage": {
+			"api": "PATCH /edge-services/v1beta1/cache-stages/{cache_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_update_cache_stage"
+		},
+		"update_dns_stage": {
+			"api": "PATCH /edge-services/v1beta1/dns-stages/{dns_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_update_dns_stage"
+		},
+		"update_pipeline": {
+			"api": "PATCH /edge-services/v1beta1/pipelines/{pipeline_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_update_pipeline"
+		},
+		"update_tls_stage": {
+			"api": "PATCH /edge-services/v1beta1/tls-stages/{tls_stage_id}",
+			"contract_test": "tests/contract/edge-services.test.ts",
+			"tool": "scaleway_edge_services_update_tls_stage"
+		}
+	},
+	"elastic-metal": {
+		"add_server_private_network": {
+			"api": "POST /baremetal/v1/zones/{zone}/servers/{server_id}/private-networks",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_add_server_private_network"
+		},
+		"create_ip": {
+			"api": "POST /baremetal/v1/zones/{zone}/ips",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_create_ip"
+		},
+		"create_server": {
+			"api": "POST /baremetal/v1/zones/{zone}/servers",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_create_server"
+		},
+		"delete_ip": {
+			"api": "DELETE /baremetal/v1/zones/{zone}/ips/{ip_id}",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_delete_ip"
+		},
+		"delete_server": {
+			"api": "DELETE /baremetal/v1/zones/{zone}/servers/{server_id}",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_delete_server"
+		},
+		"delete_server_private_network": {
+			"api": "DELETE /baremetal/v1/zones/{zone}/servers/{server_id}/private-networks/{private_network_id}",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_delete_server_private_network"
+		},
+		"get_bmc_access": {
+			"api": "GET /baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_get_bmc_access"
+		},
+		"get_server": {
+			"api": "GET /baremetal/v1/zones/{zone}/servers/{server_id}",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_get_server"
+		},
+		"install_server": {
+			"api": "POST /baremetal/v1/zones/{zone}/servers/{server_id}/install",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_install_server"
 		},
 		"list_ips": {
-			"api": "GET /instance/v1/zones/{zone}/ips",
-			"tool": "scaleway_instances_list_ips",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+			"api": "GET /baremetal/v1/zones/{zone}/ips",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_list_ips"
+		},
+		"list_offers": {
+			"api": "GET /baremetal/v1/zones/{zone}/offers",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_list_offers"
+		},
+		"list_oss": {
+			"api": "GET /baremetal/v1/zones/{zone}/os",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_list_oss"
+		},
+		"list_server_private_networks": {
+			"api": "GET /baremetal/v1/zones/{zone}/server-private-networks",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_list_server_private_networks"
+		},
+		"list_servers": {
+			"api": "GET /baremetal/v1/zones/{zone}/servers",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_list_servers"
+		},
+		"reboot_server": {
+			"api": "POST /baremetal/v1/zones/{zone}/servers/{server_id}/reboot",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_reboot_server"
+		},
+		"set_server_private_networks": {
+			"api": "PUT /baremetal/v1/zones/{zone}/servers/{server_id}/private-networks",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_set_server_private_networks"
+		},
+		"start_server": {
+			"api": "POST /baremetal/v1/zones/{zone}/servers/{server_id}/start",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_start_server"
+		},
+		"stop_server": {
+			"api": "POST /baremetal/v1/zones/{zone}/servers/{server_id}/stop",
+			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"tool": "scaleway_elastic_metal_stop_server"
+		}
+	},
+	"environmental-footprint": {
+		"download_impact_report": {
+			"api": "POST /environmental-footprint/v1alpha1/reports/download",
+			"contract_test": "tests/contract/environmental-footprint/environmental-footprint.contract.test.ts",
+			"tool": "scaleway_environmental_footprint_download_impact_report"
+		},
+		"get_impact_data": {
+			"api": "GET /environmental-footprint/v1alpha1/data/query",
+			"contract_test": "tests/contract/environmental-footprint/environmental-footprint.contract.test.ts",
+			"tool": "scaleway_environmental_footprint_get_impact_data"
+		},
+		"get_report_availability": {
+			"api": "GET /environmental-footprint/v1alpha1/reports/availability",
+			"contract_test": "tests/contract/environmental-footprint/environmental-footprint.contract.test.ts",
+			"tool": "scaleway_environmental_footprint_get_report_availability"
+		}
+	},
+	"file-storage": {
+		"create_filesystem": {
+			"api": "POST /file/v1alpha1/regions/{region}/filesystems",
+			"contract_test": "tests/contract/file-storage/file-storage.contract.test.ts",
+			"tool": "scaleway_file_storage_create_filesystem"
+		},
+		"delete_filesystem": {
+			"api": "DELETE /file/v1alpha1/regions/{region}/filesystems/{filesystem_id}",
+			"contract_test": "tests/contract/file-storage/file-storage.contract.test.ts",
+			"tool": "scaleway_file_storage_delete_filesystem"
+		},
+		"get_filesystem": {
+			"api": "GET /file/v1alpha1/regions/{region}/filesystems/{filesystem_id}",
+			"contract_test": "tests/contract/file-storage/file-storage.contract.test.ts",
+			"tool": "scaleway_file_storage_get_filesystem"
+		},
+		"list_attachments": {
+			"api": "GET /file/v1alpha1/regions/{region}/attachments",
+			"contract_test": "tests/contract/file-storage/file-storage.contract.test.ts",
+			"tool": "scaleway_file_storage_list_attachments"
+		},
+		"list_filesystems": {
+			"api": "GET /file/v1alpha1/regions/{region}/filesystems",
+			"contract_test": "tests/contract/file-storage/file-storage.contract.test.ts",
+			"tool": "scaleway_file_storage_list_filesystems"
+		},
+		"update_filesystem": {
+			"api": "PATCH /file/v1alpha1/regions/{region}/filesystems/{filesystem_id}",
+			"contract_test": "tests/contract/file-storage/file-storage.contract.test.ts",
+			"tool": "scaleway_file_storage_update_filesystem"
+		}
+	},
+	"functions": {
+		"create_cron": {
+			"api": "POST /functions/v1beta1/regions/{region}/crons",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_create_cron"
+		},
+		"create_domain": {
+			"api": "POST /functions/v1beta1/regions/{region}/domains",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_create_domain"
+		},
+		"create_function": {
+			"api": "POST /functions/v1beta1/regions/{region}/functions",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_create_function"
+		},
+		"create_namespace": {
+			"api": "POST /functions/v1beta1/regions/{region}/namespaces",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_create_namespace"
+		},
+		"create_token": {
+			"api": "POST /functions/v1beta1/regions/{region}/tokens",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_create_token"
+		},
+		"delete_cron": {
+			"api": "DELETE /functions/v1beta1/regions/{region}/crons/{cron_id}",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_delete_cron"
+		},
+		"delete_domain": {
+			"api": "DELETE /functions/v1beta1/regions/{region}/domains/{domain_id}",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_delete_domain"
+		},
+		"delete_function": {
+			"api": "DELETE /functions/v1beta1/regions/{region}/functions/{function_id}",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_delete_function"
+		},
+		"delete_namespace": {
+			"api": "DELETE /functions/v1beta1/regions/{region}/namespaces/{namespace_id}",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_delete_namespace"
+		},
+		"delete_token": {
+			"api": "DELETE /functions/v1beta1/regions/{region}/tokens/{token_id}",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_delete_token"
+		},
+		"deploy_function": {
+			"api": "POST /functions/v1beta1/regions/{region}/functions/{function_id}/deploy",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_deploy_function"
+		},
+		"get_function": {
+			"api": "GET /functions/v1beta1/regions/{region}/functions/{function_id}",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_get_function"
+		},
+		"get_namespace": {
+			"api": "GET /functions/v1beta1/regions/{region}/namespaces/{namespace_id}",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_get_namespace"
+		},
+		"list_crons": {
+			"api": "GET /functions/v1beta1/regions/{region}/crons",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_list_crons"
+		},
+		"list_domains": {
+			"api": "GET /functions/v1beta1/regions/{region}/domains",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_list_domains"
+		},
+		"list_functions": {
+			"api": "GET /functions/v1beta1/regions/{region}/functions",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_list_functions"
+		},
+		"list_namespaces": {
+			"api": "GET /functions/v1beta1/regions/{region}/namespaces",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_list_namespaces"
+		},
+		"update_cron": {
+			"api": "PATCH /functions/v1beta1/regions/{region}/crons/{cron_id}",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_update_cron"
+		},
+		"update_function": {
+			"api": "PATCH /functions/v1beta1/regions/{region}/functions/{function_id}",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_update_function"
+		},
+		"update_namespace": {
+			"api": "PATCH /functions/v1beta1/regions/{region}/namespaces/{namespace_id}",
+			"contract_test": "tests/contract/tools/functions/contract.test.ts",
+			"tool": "scaleway_functions_update_namespace"
+		}
+	},
+	"generative-apis": {
+		"chat_completion": {
+			"api": "POST https://api.scaleway.ai/{region}/v1/chat/completions",
+			"contract_test": "tests/contract/tools/generative-apis/generative-apis.contract.test.ts",
+			"tool": "scaleway_generative_apis_chat_completion"
+		},
+		"create_embedding": {
+			"api": "POST https://api.scaleway.ai/{region}/v1/embeddings",
+			"contract_test": "tests/contract/tools/generative-apis/generative-apis.contract.test.ts",
+			"tool": "scaleway_generative_apis_create_embedding"
+		},
+		"get_model": {
+			"api": "GET https://api.scaleway.ai/{region}/v1/models (client-side filter by id)",
+			"contract_test": "tests/contract/tools/generative-apis/generative-apis.contract.test.ts",
+			"tool": "scaleway_generative_apis_get_model"
+		},
+		"list_models": {
+			"api": "GET https://api.scaleway.ai/{region}/v1/models",
+			"contract_test": "tests/contract/tools/generative-apis/generative-apis.contract.test.ts",
+			"tool": "scaleway_generative_apis_list_models"
+		}
+	},
+	"iam": {
+		"AddGroupMember": {
+			"api": "POST /iam/v1alpha1/groups/{group_id}/add-member",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_add_group_member"
+		},
+		"CreateApiKey": {
+			"api": "POST /iam/v1alpha1/api-keys",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_create_api_key"
+		},
+		"CreateApplication": {
+			"api": "POST /iam/v1alpha1/applications",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_create_application"
+		},
+		"CreateGroup": {
+			"api": "POST /iam/v1alpha1/groups",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_create_group"
+		},
+		"CreatePolicy": {
+			"api": "POST /iam/v1alpha1/policies",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_create_policy"
+		},
+		"CreateRule": {
+			"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_create_rule"
+		},
+		"CreateUser": {
+			"api": "POST /iam/v1alpha1/users",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_create_user"
+		},
+		"DeleteApiKey": {
+			"api": "DELETE /iam/v1alpha1/api-keys/{access_key}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_delete_api_key"
+		},
+		"DeleteApplication": {
+			"api": "DELETE /iam/v1alpha1/applications/{application_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_delete_application"
+		},
+		"DeleteGroup": {
+			"api": "DELETE /iam/v1alpha1/groups/{group_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_delete_group"
+		},
+		"DeletePolicy": {
+			"api": "DELETE /iam/v1alpha1/policies/{policy_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_delete_policy"
+		},
+		"DeleteRule": {
+			"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_delete_rule"
+		},
+		"DeleteUser": {
+			"api": "DELETE /iam/v1alpha1/users/{user_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_delete_user"
+		},
+		"GetApiKey": {
+			"api": "GET /iam/v1alpha1/api-keys/{access_key}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_get_api_key"
+		},
+		"GetApplication": {
+			"api": "GET /iam/v1alpha1/applications/{application_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_get_application"
+		},
+		"GetGroup": {
+			"api": "GET /iam/v1alpha1/groups/{group_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_get_group"
+		},
+		"GetPolicy": {
+			"api": "GET /iam/v1alpha1/policies/{policy_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_get_policy"
+		},
+		"GetUser": {
+			"api": "GET /iam/v1alpha1/users/{user_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_get_user"
+		},
+		"ListApiKeys": {
+			"api": "GET /iam/v1alpha1/api-keys",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_list_api_keys"
+		},
+		"ListApplications": {
+			"api": "GET /iam/v1alpha1/applications",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_list_applications"
+		},
+		"ListGroups": {
+			"api": "GET /iam/v1alpha1/groups",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_list_groups"
+		},
+		"ListPermissionSets": {
+			"api": "GET /iam/v1alpha1/permission-sets",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_list_permission_sets"
+		},
+		"ListPolicies": {
+			"api": "GET /iam/v1alpha1/policies",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_list_policies"
+		},
+		"ListRules": {
+			"api": "GET /iam/v1alpha1/rules",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_list_rules"
+		},
+		"ListUsers": {
+			"api": "GET /iam/v1alpha1/users",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_list_users"
+		},
+		"RemoveGroupMember": {
+			"api": "POST /iam/v1alpha1/groups/{group_id}/remove-member",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_remove_group_member"
+		},
+		"UpdateApiKey": {
+			"api": "PATCH /iam/v1alpha1/api-keys/{access_key}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_update_api_key"
+		},
+		"UpdateApplication": {
+			"api": "PATCH /iam/v1alpha1/applications/{application_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_update_application"
+		},
+		"UpdateGroup": {
+			"api": "PATCH /iam/v1alpha1/groups/{group_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_update_group"
+		},
+		"UpdatePolicy": {
+			"api": "PATCH /iam/v1alpha1/policies/{policy_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_update_policy"
+		},
+		"UpdateRule": {
+			"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_update_rule"
+		},
+		"UpdateUser": {
+			"api": "PATCH /iam/v1alpha1/users/{user_id}",
+			"contract_test": "tests/contract/iam/iam.contract.test.ts",
+			"tool": "scaleway_iam_update_user"
+		}
+	},
+	"inference": {
+		"accept_eula": {
+			"api": "POST /inference/v1/regions/{region}/models/{model_id}/eula",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_accept_eula"
+		},
+		"create_deployment": {
+			"api": "POST /inference/v1/regions/{region}/deployments",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_create_deployment"
+		},
+		"create_endpoint": {
+			"api": "POST /inference/v1/regions/{region}/endpoints",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_create_endpoint"
+		},
+		"delete_deployment": {
+			"api": "DELETE /inference/v1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_delete_deployment"
+		},
+		"delete_endpoint": {
+			"api": "DELETE /inference/v1/regions/{region}/endpoints/{endpoint_id}",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_delete_endpoint"
+		},
+		"get_deployment": {
+			"api": "GET /inference/v1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_get_deployment"
+		},
+		"get_eula": {
+			"api": "GET /inference/v1/regions/{region}/models/{model_id}/eula",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_get_eula"
+		},
+		"get_model": {
+			"api": "GET /inference/v1/regions/{region}/models/{model_id}",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_get_model"
+		},
+		"list_deployment_events": {
+			"api": "GET /inference/v1/regions/{region}/deployments/{deployment_id}/events",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_list_deployment_events"
+		},
+		"list_deployments": {
+			"api": "GET /inference/v1/regions/{region}/deployments",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_list_deployments"
+		},
+		"list_endpoints": {
+			"api": "GET /inference/v1/regions/{region}/endpoints",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_list_endpoints"
+		},
+		"list_models": {
+			"api": "GET /inference/v1/regions/{region}/models",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_list_models"
+		},
+		"list_node_types": {
+			"api": "GET /inference/v1/regions/{region}/node-types",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_list_node_types"
+		},
+		"update_deployment": {
+			"api": "PATCH /inference/v1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_update_deployment"
+		},
+		"update_endpoint": {
+			"api": "PATCH /inference/v1/regions/{region}/endpoints/{endpoint_id}",
+			"contract_test": "tests/contract/inference.test.ts",
+			"tool": "scaleway_inference_update_endpoint"
+		}
+	},
+	"instances": {
+		"attach_ip": {
+			"api": "PATCH /instance/v1/zones/{zone}/ips/{ip_id}",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_attach_ip"
 		},
 		"create_ip": {
 			"api": "POST /instance/v1/zones/{zone}/ips",
-			"tool": "scaleway_instances_create_ip",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_create_ip"
 		},
-		"delete_ip": {
-			"api": "DELETE /instance/v1/zones/{zone}/ips/{ip_id}",
-			"tool": "scaleway_instances_delete_ip",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		"create_security_group": {
+			"api": "POST /instance/v1/zones/{zone}/security_groups",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_create_security_group"
 		},
-		"attach_ip": {
-			"api": "PATCH /instance/v1/zones/{zone}/ips/{ip_id}",
-			"tool": "scaleway_instances_attach_ip",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
-		},
-		"list_snapshots": {
-			"api": "GET /instance/v1/zones/{zone}/snapshots",
-			"tool": "scaleway_instances_list_snapshots",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+		"create_server": {
+			"api": "POST /instance/v1/zones/{zone}/servers",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_create_server"
 		},
 		"create_snapshot": {
 			"api": "POST /instance/v1/zones/{zone}/snapshots",
-			"tool": "scaleway_instances_create_snapshot",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_create_snapshot"
+		},
+		"create_volume": {
+			"api": "POST /instance/v1/zones/{zone}/volumes",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_create_volume"
+		},
+		"delete_ip": {
+			"api": "DELETE /instance/v1/zones/{zone}/ips/{ip_id}",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_delete_ip"
+		},
+		"delete_security_group": {
+			"api": "DELETE /instance/v1/zones/{zone}/security_groups/{security_group_id}",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_delete_security_group"
+		},
+		"delete_server": {
+			"api": "DELETE /instance/v1/zones/{zone}/servers/{server_id}",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_delete_server"
 		},
 		"delete_snapshot": {
 			"api": "DELETE /instance/v1/zones/{zone}/snapshots/{snapshot_id}",
-			"tool": "scaleway_instances_delete_snapshot",
-			"contract_test": "tests/contract/tools/instances/contract.test.ts"
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_delete_snapshot"
+		},
+		"delete_volume": {
+			"api": "DELETE /instance/v1/zones/{zone}/volumes/{volume_id}",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_delete_volume"
+		},
+		"get_security_group": {
+			"api": "GET /instance/v1/zones/{zone}/security_groups/{security_group_id}",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_get_security_group"
+		},
+		"get_server": {
+			"api": "GET /instance/v1/zones/{zone}/servers/{server_id}",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_get_server"
+		},
+		"get_volume": {
+			"api": "GET /instance/v1/zones/{zone}/volumes/{volume_id}",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_get_volume"
+		},
+		"list_ips": {
+			"api": "GET /instance/v1/zones/{zone}/ips",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_list_ips"
+		},
+		"list_security_groups": {
+			"api": "GET /instance/v1/zones/{zone}/security_groups",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_list_security_groups"
+		},
+		"list_servers": {
+			"api": "GET /instance/v1/zones/{zone}/servers",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_list_servers"
+		},
+		"list_snapshots": {
+			"api": "GET /instance/v1/zones/{zone}/snapshots",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_list_snapshots"
+		},
+		"list_volumes": {
+			"api": "GET /instance/v1/zones/{zone}/volumes",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_list_volumes"
+		},
+		"server_action": {
+			"api": "POST /instance/v1/zones/{zone}/servers/{server_id}/action",
+			"contract_test": "tests/contract/tools/instances/contract.test.ts",
+			"tool": "scaleway_instances_server_action"
+		}
+	},
+	"interlink": {
+		"attach_routing_policy": {
+			"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/attach-routing-policy",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_attach_routing_policy"
+		},
+		"attach_vpc": {
+			"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/attach-vpc",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_attach_vpc"
+		},
+		"create_link": {
+			"api": "POST /interlink/v1beta1/regions/{region}/links",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_create_link"
+		},
+		"create_routing_policy": {
+			"api": "POST /interlink/v1beta1/regions/{region}/routing-policies",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_create_routing_policy"
+		},
+		"delete_link": {
+			"api": "DELETE /interlink/v1beta1/regions/{region}/links/{link_id}",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_delete_link"
+		},
+		"delete_routing_policy": {
+			"api": "DELETE /interlink/v1beta1/regions/{region}/routing-policies/{routing_policy_id}",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_delete_routing_policy"
+		},
+		"detach_routing_policy": {
+			"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/detach-routing-policy",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_detach_routing_policy"
+		},
+		"detach_vpc": {
+			"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/detach-vpc",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_detach_vpc"
+		},
+		"disable_route_propagation": {
+			"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/disable-route-propagation",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_disable_route_propagation"
+		},
+		"enable_route_propagation": {
+			"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/enable-route-propagation",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_enable_route_propagation"
+		},
+		"get_dedicated_connection": {
+			"api": "GET /interlink/v1beta1/regions/{region}/dedicated-connections/{connection_id}",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_get_dedicated_connection"
+		},
+		"get_link": {
+			"api": "GET /interlink/v1beta1/regions/{region}/links/{link_id}",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_get_link"
+		},
+		"get_partner": {
+			"api": "GET /interlink/v1beta1/regions/{region}/partners/{partner_id}",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_get_partner"
+		},
+		"get_pop": {
+			"api": "GET /interlink/v1beta1/regions/{region}/pops/{pop_id}",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_get_pop"
+		},
+		"get_routing_policy": {
+			"api": "GET /interlink/v1beta1/regions/{region}/routing-policies/{routing_policy_id}",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_get_routing_policy"
+		},
+		"list_dedicated_connections": {
+			"api": "GET /interlink/v1beta1/regions/{region}/dedicated-connections",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_list_dedicated_connections"
+		},
+		"list_links": {
+			"api": "GET /interlink/v1beta1/regions/{region}/links",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_list_links"
+		},
+		"list_partners": {
+			"api": "GET /interlink/v1beta1/regions/{region}/partners",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_list_partners"
+		},
+		"list_pops": {
+			"api": "GET /interlink/v1beta1/regions/{region}/pops",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_list_pops"
+		},
+		"list_routing_policies": {
+			"api": "GET /interlink/v1beta1/regions/{region}/routing-policies",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_list_routing_policies"
+		},
+		"set_routing_policy": {
+			"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/set-routing-policy",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_set_routing_policy"
+		},
+		"update_link": {
+			"api": "PATCH /interlink/v1beta1/regions/{region}/links/{link_id}",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_update_link"
+		},
+		"update_routing_policy": {
+			"api": "PATCH /interlink/v1beta1/regions/{region}/routing-policies/{routing_policy_id}",
+			"contract_test": "tests/contract/interlink/interlink.contract.test.ts",
+			"tool": "scaleway_interlink_update_routing_policy"
+		}
+	},
+	"iot": {
+		"CreateDevice": {
+			"api": "POST /iot/v1/regions/{region}/devices",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_create_device"
+		},
+		"CreateHub": {
+			"api": "POST /iot/v1/regions/{region}/hubs",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_create_hub"
+		},
+		"CreateNetwork": {
+			"api": "POST /iot/v1/regions/{region}/networks",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_create_network"
+		},
+		"CreateRoute": {
+			"api": "POST /iot/v1/regions/{region}/routes",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_create_route"
+		},
+		"DeleteDevice": {
+			"api": "DELETE /iot/v1/regions/{region}/devices/{device_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_delete_device"
+		},
+		"DeleteHub": {
+			"api": "DELETE /iot/v1/regions/{region}/hubs/{hub_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_delete_hub"
+		},
+		"DeleteNetwork": {
+			"api": "DELETE /iot/v1/regions/{region}/networks/{network_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_delete_network"
+		},
+		"DeleteRoute": {
+			"api": "DELETE /iot/v1/regions/{region}/routes/{route_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_delete_route"
+		},
+		"DisableDevice": {
+			"api": "POST /iot/v1/regions/{region}/devices/{device_id}/disable",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_disable_device"
+		},
+		"DisableHub": {
+			"api": "POST /iot/v1/regions/{region}/hubs/{hub_id}/disable",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_disable_hub"
+		},
+		"EnableDevice": {
+			"api": "POST /iot/v1/regions/{region}/devices/{device_id}/enable",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_enable_device"
+		},
+		"EnableHub": {
+			"api": "POST /iot/v1/regions/{region}/hubs/{hub_id}/enable",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_enable_hub"
+		},
+		"GetDevice": {
+			"api": "GET /iot/v1/regions/{region}/devices/{device_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_get_device"
+		},
+		"GetDeviceCertificate": {
+			"api": "GET /iot/v1/regions/{region}/devices/{device_id}/certificate",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_get_device_certificate"
+		},
+		"GetDeviceMetrics": {
+			"api": "GET /iot/v1/regions/{region}/devices/{device_id}/metrics",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_get_device_metrics"
+		},
+		"GetHub": {
+			"api": "GET /iot/v1/regions/{region}/hubs/{hub_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_get_hub"
+		},
+		"GetHubCA": {
+			"api": "GET /iot/v1/regions/{region}/hubs/{hub_id}/ca",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_get_hub_ca"
+		},
+		"GetNetwork": {
+			"api": "GET /iot/v1/regions/{region}/networks/{network_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_get_network"
+		},
+		"GetRoute": {
+			"api": "GET /iot/v1/regions/{region}/routes/{route_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_get_route"
+		},
+		"ListDevices": {
+			"api": "GET /iot/v1/regions/{region}/devices",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_list_devices"
+		},
+		"ListHubs": {
+			"api": "GET /iot/v1/regions/{region}/hubs",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_list_hubs"
+		},
+		"ListNetworks": {
+			"api": "GET /iot/v1/regions/{region}/networks",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_list_networks"
+		},
+		"ListRoutes": {
+			"api": "GET /iot/v1/regions/{region}/routes",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_list_routes"
+		},
+		"RenewDeviceCertificate": {
+			"api": "POST /iot/v1/regions/{region}/devices/{device_id}/renew-certificate",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_renew_device_certificate"
+		},
+		"SetDeviceCertificate": {
+			"api": "PUT /iot/v1/regions/{region}/devices/{device_id}/certificate",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_set_device_certificate"
+		},
+		"SetHubCA": {
+			"api": "POST /iot/v1/regions/{region}/hubs/{hub_id}/ca",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_set_hub_ca"
+		},
+		"UpdateDevice": {
+			"api": "PATCH /iot/v1/regions/{region}/devices/{device_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_update_device"
+		},
+		"UpdateHub": {
+			"api": "PATCH /iot/v1/regions/{region}/hubs/{hub_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_update_hub"
+		},
+		"UpdateRoute": {
+			"api": "PATCH /iot/v1/regions/{region}/routes/{route_id}",
+			"contract_test": "tests/contract/iot/iot.contract.test.ts",
+			"tool": "scaleway_iot_update_route"
+		}
+	},
+	"ipam": {
+		"book_ip": {
+			"api": "POST /ipam/v1/regions/{region}/ips",
+			"contract_test": "tests/contract/ipam.test.ts",
+			"tool": "scaleway_ipam_book_ip"
+		},
+		"get_ip": {
+			"api": "GET /ipam/v1/regions/{region}/ips/{ip_id}",
+			"contract_test": "tests/contract/ipam.test.ts",
+			"tool": "scaleway_ipam_get_ip"
+		},
+		"list_ips": {
+			"api": "GET /ipam/v1/regions/{region}/ips",
+			"contract_test": "tests/contract/ipam.test.ts",
+			"tool": "scaleway_ipam_list_ips"
+		},
+		"release_ip": {
+			"api": "DELETE /ipam/v1/regions/{region}/ips/{ip_id}",
+			"contract_test": "tests/contract/ipam.test.ts",
+			"tool": "scaleway_ipam_release_ip"
+		},
+		"update_ip": {
+			"api": "PATCH /ipam/v1/regions/{region}/ips/{ip_id}",
+			"contract_test": "tests/contract/ipam.test.ts",
+			"tool": "scaleway_ipam_update_ip"
+		}
+	},
+	"jobs": {
+		"create_definition": {
+			"api": "POST /serverless-jobs/v1alpha2/regions/{region}/job-definitions",
+			"contract_test": "tests/contract/jobs.test.ts",
+			"tool": "scaleway_jobs_create_definition"
+		},
+		"delete_definition": {
+			"api": "DELETE /serverless-jobs/v1alpha2/regions/{region}/job-definitions/{job_definition_id}",
+			"contract_test": "tests/contract/jobs.test.ts",
+			"tool": "scaleway_jobs_delete_definition"
+		},
+		"get_definition": {
+			"api": "GET /serverless-jobs/v1alpha2/regions/{region}/job-definitions/{job_definition_id}",
+			"contract_test": "tests/contract/jobs.test.ts",
+			"tool": "scaleway_jobs_get_definition"
+		},
+		"get_run": {
+			"api": "GET /serverless-jobs/v1alpha2/regions/{region}/job-runs/{job_run_id}",
+			"contract_test": "tests/contract/jobs.test.ts",
+			"tool": "scaleway_jobs_get_run"
+		},
+		"list_definitions": {
+			"api": "GET /serverless-jobs/v1alpha2/regions/{region}/job-definitions",
+			"contract_test": "tests/contract/jobs.test.ts",
+			"tool": "scaleway_jobs_list_definitions"
+		},
+		"list_runs": {
+			"api": "GET /serverless-jobs/v1alpha2/regions/{region}/job-runs",
+			"contract_test": "tests/contract/jobs.test.ts",
+			"tool": "scaleway_jobs_list_runs"
+		},
+		"start": {
+			"api": "POST /serverless-jobs/v1alpha2/regions/{region}/job-definitions/{job_definition_id}/start",
+			"contract_test": "tests/contract/jobs.test.ts",
+			"tool": "scaleway_jobs_start"
+		},
+		"stop_run": {
+			"api": "POST /serverless-jobs/v1alpha2/regions/{region}/job-runs/{job_run_id}/stop",
+			"contract_test": "tests/contract/jobs.test.ts",
+			"tool": "scaleway_jobs_stop_run"
+		},
+		"update_definition": {
+			"api": "PATCH /serverless-jobs/v1alpha2/regions/{region}/job-definitions/{job_definition_id}",
+			"contract_test": "tests/contract/jobs.test.ts",
+			"tool": "scaleway_jobs_update_definition"
+		}
+	},
+	"k8s": {
+		"create_cluster": {
+			"api": "POST /k8s/v1/regions/{region}/clusters",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_create_cluster"
+		},
+		"create_pool": {
+			"api": "POST /k8s/v1/regions/{region}/clusters/{cluster_id}/pools",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_create_pool"
+		},
+		"delete_cluster": {
+			"api": "DELETE /k8s/v1/regions/{region}/clusters/{cluster_id}",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_delete_cluster"
+		},
+		"delete_pool": {
+			"api": "DELETE /k8s/v1/regions/{region}/pools/{pool_id}",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_delete_pool"
+		},
+		"get_cluster": {
+			"api": "GET /k8s/v1/regions/{region}/clusters/{cluster_id}",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_get_cluster"
+		},
+		"get_cluster_kubeconfig": {
+			"api": "GET /k8s/v1/regions/{region}/clusters/{cluster_id}/kubeconfig",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_get_cluster_kubeconfig"
+		},
+		"get_pool": {
+			"api": "GET /k8s/v1/regions/{region}/pools/{pool_id}",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_get_pool"
+		},
+		"list_cluster_available_versions": {
+			"api": "GET /k8s/v1/regions/{region}/clusters/{cluster_id}/available-versions",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_list_cluster_available_versions"
+		},
+		"list_clusters": {
+			"api": "GET /k8s/v1/regions/{region}/clusters",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_list_clusters"
+		},
+		"list_pools": {
+			"api": "GET /k8s/v1/regions/{region}/clusters/{cluster_id}/pools",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_list_pools"
+		},
+		"update_pool": {
+			"api": "PATCH /k8s/v1/regions/{region}/pools/{pool_id}",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_update_pool"
+		},
+		"upgrade_cluster": {
+			"api": "POST /k8s/v1/regions/{region}/clusters/{cluster_id}/upgrade",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_upgrade_cluster"
+		},
+		"upgrade_pool": {
+			"api": "POST /k8s/v1/regions/{region}/pools/{pool_id}/upgrade",
+			"contract_test": "tests/contract/tools/k8s/contract.test.ts",
+			"tool": "scaleway_k8s_upgrade_pool"
+		}
+	},
+	"kafka": {
+		"create_cluster": {
+			"api": "POST /kafka/v1alpha1/regions/{region}/clusters",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_create_cluster"
+		},
+		"create_endpoint": {
+			"api": "POST /kafka/v1alpha1/regions/{region}/endpoints",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_create_endpoint"
+		},
+		"delete_cluster": {
+			"api": "DELETE /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_delete_cluster"
+		},
+		"delete_endpoint": {
+			"api": "DELETE /kafka/v1alpha1/regions/{region}/endpoints/{endpoint_id}",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_delete_endpoint"
+		},
+		"get_cluster": {
+			"api": "GET /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_get_cluster"
+		},
+		"get_cluster_certificate_authority": {
+			"api": "GET /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/certificate-authority",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_get_cluster_certificate_authority"
+		},
+		"list_clusters": {
+			"api": "GET /kafka/v1alpha1/regions/{region}/clusters",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_list_clusters"
+		},
+		"list_node_types": {
+			"api": "GET /kafka/v1alpha1/regions/{region}/node-types",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_list_node_types"
+		},
+		"list_users": {
+			"api": "GET /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/users",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_list_users"
+		},
+		"list_versions": {
+			"api": "GET /kafka/v1alpha1/regions/{region}/versions",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_list_versions"
+		},
+		"renew_cluster_certificate_authority": {
+			"api": "POST /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/renew-certificate-authority",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_renew_cluster_certificate_authority"
+		},
+		"update_cluster": {
+			"api": "PATCH /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_update_cluster"
+		},
+		"update_user": {
+			"api": "PATCH /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/users/{username}",
+			"contract_test": "tests/contract/kafka/kafka.contract.test.ts",
+			"tool": "scaleway_kafka_update_user"
+		}
+	},
+	"key-manager": {
+		"CreateKey": {
+			"api": "POST /key-manager/v1alpha1/regions/{region}/keys",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_create_key"
+		},
+		"Decrypt": {
+			"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/decrypt",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_decrypt"
+		},
+		"DeleteKey": {
+			"api": "DELETE /key-manager/v1alpha1/regions/{region}/keys/{key_id}",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_delete_key"
+		},
+		"DisableKey": {
+			"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/disable",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_disable_key"
+		},
+		"EnableKey": {
+			"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/enable",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_enable_key"
+		},
+		"Encrypt": {
+			"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/encrypt",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_encrypt"
+		},
+		"GenerateDataKey": {
+			"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/generate-data-key",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_generate_data_key"
+		},
+		"GetKey": {
+			"api": "GET /key-manager/v1alpha1/regions/{region}/keys/{key_id}",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_get_key"
+		},
+		"ListKeys": {
+			"api": "GET /key-manager/v1alpha1/regions/{region}/keys",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_list_keys"
+		},
+		"ProtectKey": {
+			"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/protect",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_protect_key"
+		},
+		"RotateKey": {
+			"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/rotate",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_rotate_key"
+		},
+		"UnprotectKey": {
+			"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/unprotect",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_unprotect_key"
+		},
+		"UpdateKey": {
+			"api": "PATCH /key-manager/v1alpha1/regions/{region}/keys/{key_id}",
+			"contract_test": "tests/contract/key-manager.test.ts",
+			"tool": "scaleway_key_manager_update_key"
+		}
+	},
+	"lb": {
+		"add_backend_servers": {
+			"api": "POST /lb/v1/zones/{zone}/backends/{backend_id}/servers",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_add_backend_servers"
+		},
+		"create_backend": {
+			"api": "POST /lb/v1/zones/{zone}/lbs/{lb_id}/backends",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_create_backend"
+		},
+		"create_certificate": {
+			"api": "POST /lb/v1/zones/{zone}/lbs/{lb_id}/certificates",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_create_certificate"
+		},
+		"create_frontend": {
+			"api": "POST /lb/v1/zones/{zone}/lbs/{lb_id}/frontends",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_create_frontend"
+		},
+		"create_lb": {
+			"api": "POST /lb/v1/zones/{zone}/lbs",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_create_lb"
+		},
+		"create_route": {
+			"api": "POST /lb/v1/zones/{zone}/routes",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_create_route"
+		},
+		"delete_backend": {
+			"api": "DELETE /lb/v1/zones/{zone}/backends/{backend_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_delete_backend"
+		},
+		"delete_certificate": {
+			"api": "DELETE /lb/v1/zones/{zone}/certificates/{certificate_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_delete_certificate"
+		},
+		"delete_frontend": {
+			"api": "DELETE /lb/v1/zones/{zone}/frontends/{frontend_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_delete_frontend"
+		},
+		"delete_lb": {
+			"api": "DELETE /lb/v1/zones/{zone}/lbs/{lb_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_delete_lb"
+		},
+		"delete_route": {
+			"api": "DELETE /lb/v1/zones/{zone}/routes/{route_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_delete_route"
+		},
+		"get_backend": {
+			"api": "GET /lb/v1/zones/{zone}/backends/{backend_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_get_backend"
+		},
+		"get_certificate": {
+			"api": "GET /lb/v1/zones/{zone}/certificates/{certificate_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_get_certificate"
+		},
+		"get_frontend": {
+			"api": "GET /lb/v1/zones/{zone}/frontends/{frontend_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_get_frontend"
+		},
+		"get_lb": {
+			"api": "GET /lb/v1/zones/{zone}/lbs/{lb_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_get_lb"
+		},
+		"get_lb_stats": {
+			"api": "GET /lb/v1/zones/{zone}/lbs/{lb_id}/stats",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_get_lb_stats"
+		},
+		"get_route": {
+			"api": "GET /lb/v1/zones/{zone}/routes/{route_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_get_route"
+		},
+		"list_backends": {
+			"api": "GET /lb/v1/zones/{zone}/lbs/{lb_id}/backends",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_list_backends"
+		},
+		"list_certificates": {
+			"api": "GET /lb/v1/zones/{zone}/lbs/{lb_id}/certificates",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_list_certificates"
+		},
+		"list_frontends": {
+			"api": "GET /lb/v1/zones/{zone}/lbs/{lb_id}/frontends",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_list_frontends"
+		},
+		"list_lb_types": {
+			"api": "GET /lb/v1/zones/{zone}/lb-types",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_list_lb_types"
+		},
+		"list_lbs": {
+			"api": "GET /lb/v1/zones/{zone}/lbs",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_list_lbs"
+		},
+		"list_routes": {
+			"api": "GET /lb/v1/zones/{zone}/routes",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_list_routes"
+		},
+		"migrate_lb": {
+			"api": "POST /lb/v1/zones/{zone}/lbs/{lb_id}/migrate",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_migrate_lb"
+		},
+		"remove_backend_servers": {
+			"api": "DELETE /lb/v1/zones/{zone}/backends/{backend_id}/servers",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_remove_backend_servers"
+		},
+		"set_backend_servers": {
+			"api": "PUT /lb/v1/zones/{zone}/backends/{backend_id}/servers",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_set_backend_servers"
+		},
+		"update_backend": {
+			"api": "PUT /lb/v1/zones/{zone}/backends/{backend_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_update_backend"
+		},
+		"update_certificate": {
+			"api": "PUT /lb/v1/zones/{zone}/certificates/{certificate_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_update_certificate"
+		},
+		"update_frontend": {
+			"api": "PUT /lb/v1/zones/{zone}/frontends/{frontend_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_update_frontend"
+		},
+		"update_lb": {
+			"api": "PUT /lb/v1/zones/{zone}/lbs/{lb_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_update_lb"
+		},
+		"update_route": {
+			"api": "PUT /lb/v1/zones/{zone}/routes/{route_id}",
+			"contract_test": "tests/contract/lb.test.ts",
+			"tool": "scaleway_lb_update_route"
+		}
+	},
+	"mailbox": {
+		"create_alias": {
+			"api": "POST /mailbox/v1alpha1/aliases",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_create_alias"
+		},
+		"create_domain": {
+			"api": "POST /mailbox/v1alpha1/domains",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_create_domain"
+		},
+		"create_mailboxes": {
+			"api": "POST /mailbox/v1alpha1/batch-create-mailboxes",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_create_mailboxes"
+		},
+		"delete_alias": {
+			"api": "DELETE /mailbox/v1alpha1/aliases/{alias_id}",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_delete_alias"
+		},
+		"delete_domain": {
+			"api": "DELETE /mailbox/v1alpha1/domains/{domain_id}",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_delete_domain"
+		},
+		"delete_mailbox": {
+			"api": "DELETE /mailbox/v1alpha1/mailboxes/{mailbox_id}",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_delete_mailbox"
+		},
+		"get_alias": {
+			"api": "GET /mailbox/v1alpha1/aliases/{alias_id}",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_get_alias"
+		},
+		"get_domain": {
+			"api": "GET /mailbox/v1alpha1/domains/{domain_id}",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_get_domain"
+		},
+		"get_domain_records": {
+			"api": "GET /mailbox/v1alpha1/domains/{domain_id}/records",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_get_domain_records"
+		},
+		"get_mailbox": {
+			"api": "GET /mailbox/v1alpha1/mailboxes/{mailbox_id}",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_get_mailbox"
+		},
+		"list_aliases": {
+			"api": "GET /mailbox/v1alpha1/aliases",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_list_aliases"
+		},
+		"list_domains": {
+			"api": "GET /mailbox/v1alpha1/domains",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_list_domains"
+		},
+		"list_mailboxes": {
+			"api": "GET /mailbox/v1alpha1/mailboxes",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_list_mailboxes"
+		},
+		"restore_mailbox": {
+			"api": "POST /mailbox/v1alpha1/mailboxes/{mailbox_id}/restore",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_restore_mailbox"
+		},
+		"update_mailbox": {
+			"api": "PATCH /mailbox/v1alpha1/mailboxes/{mailbox_id}",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_update_mailbox"
+		},
+		"validate_domain_records": {
+			"api": "POST /mailbox/v1alpha1/domains/{domain_id}/validate-records",
+			"contract_test": "tests/contract/mailbox/mailbox.contract.test.ts",
+			"tool": "scaleway_mailbox_validate_domain_records"
+		}
+	},
+	"marketplace": {
+		"get_category": {
+			"api": "GET /marketplace/v2/categories/{category_id}",
+			"contract_test": "tests/contract/marketplace.test.ts",
+			"tool": "scaleway_marketplace_get_category"
+		},
+		"get_image": {
+			"api": "GET /marketplace/v2/images/{image_id}",
+			"contract_test": "tests/contract/marketplace.test.ts",
+			"tool": "scaleway_marketplace_get_image"
+		},
+		"get_local_image": {
+			"api": "GET /marketplace/v2/local-images/{local_image_id}",
+			"contract_test": "tests/contract/marketplace.test.ts",
+			"tool": "scaleway_marketplace_get_local_image"
+		},
+		"get_version": {
+			"api": "GET /marketplace/v2/versions/{version_id}",
+			"contract_test": "tests/contract/marketplace.test.ts",
+			"tool": "scaleway_marketplace_get_version"
+		},
+		"list_categories": {
+			"api": "GET /marketplace/v2/categories",
+			"contract_test": "tests/contract/marketplace.test.ts",
+			"tool": "scaleway_marketplace_list_categories"
+		},
+		"list_images": {
+			"api": "GET /marketplace/v2/images",
+			"contract_test": "tests/contract/marketplace.test.ts",
+			"tool": "scaleway_marketplace_list_images"
+		},
+		"list_local_images": {
+			"api": "GET /marketplace/v2/local-images",
+			"contract_test": "tests/contract/marketplace.test.ts",
+			"tool": "scaleway_marketplace_list_local_images"
+		},
+		"list_versions": {
+			"api": "GET /marketplace/v2/versions",
+			"contract_test": "tests/contract/marketplace.test.ts",
+			"tool": "scaleway_marketplace_list_versions"
+		}
+	},
+	"mongodb": {
+		"create_instance": {
+			"api": "POST /mongodb/v1/regions/{region}/instances",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_create_instance"
+		},
+		"create_snapshot": {
+			"api": "POST /mongodb/v1/regions/{region}/snapshots",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_create_snapshot"
+		},
+		"create_user": {
+			"api": "POST /mongodb/v1/regions/{region}/instances/{instance_id}/users",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_create_user"
+		},
+		"delete_instance": {
+			"api": "DELETE /mongodb/v1/regions/{region}/instances/{instance_id}",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_delete_instance"
+		},
+		"delete_snapshot": {
+			"api": "DELETE /mongodb/v1/regions/{region}/snapshots/{snapshot_id}",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_delete_snapshot"
+		},
+		"delete_user": {
+			"api": "DELETE /mongodb/v1/regions/{region}/instances/{instance_id}/users/{user_name}",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_delete_user"
+		},
+		"get_instance": {
+			"api": "GET /mongodb/v1/regions/{region}/instances/{instance_id}",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_get_instance"
+		},
+		"list_instances": {
+			"api": "GET /mongodb/v1/regions/{region}/instances",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_list_instances"
+		},
+		"list_node_types": {
+			"api": "GET /mongodb/v1/regions/{region}/node-types",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_list_node_types"
+		},
+		"list_snapshots": {
+			"api": "GET /mongodb/v1/regions/{region}/snapshots",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_list_snapshots"
+		},
+		"list_users": {
+			"api": "GET /mongodb/v1/regions/{region}/instances/{instance_id}/users",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_list_users"
+		},
+		"list_versions": {
+			"api": "GET /mongodb/v1/regions/{region}/versions",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_list_versions"
+		},
+		"restore_snapshot": {
+			"api": "POST /mongodb/v1/regions/{region}/snapshots/{snapshot_id}/restore",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_restore_snapshot"
+		},
+		"update_instance": {
+			"api": "PATCH /mongodb/v1/regions/{region}/instances/{instance_id}",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_update_instance"
+		},
+		"update_user": {
+			"api": "PATCH /mongodb/v1/regions/{region}/instances/{instance_id}/users/{user_name}",
+			"contract_test": "tests/contract/mongodb.test.ts",
+			"tool": "scaleway_mongodb_update_user"
+		}
+	},
+	"nats": {
+		"CreateNatsAccount": {
+			"api": "POST /mnq/v1beta1/regions/{region}/nats-accounts",
+			"contract_test": "tests/contract/nats/nats-accounts.contract.test.ts",
+			"tool": "scaleway_nats_create_account"
+		},
+		"CreateNatsCredentials": {
+			"api": "POST /mnq/v1beta1/regions/{region}/nats-credentials",
+			"contract_test": "tests/contract/nats/nats-credentials.contract.test.ts",
+			"tool": "scaleway_nats_create_credentials"
+		},
+		"DeleteNatsAccount": {
+			"api": "DELETE /mnq/v1beta1/regions/{region}/nats-accounts/{nats_account_id}",
+			"contract_test": "tests/contract/nats/nats-accounts.contract.test.ts",
+			"tool": "scaleway_nats_delete_account"
+		},
+		"DeleteNatsCredentials": {
+			"api": "DELETE /mnq/v1beta1/regions/{region}/nats-credentials/{nats_credentials_id}",
+			"contract_test": "tests/contract/nats/nats-credentials.contract.test.ts",
+			"tool": "scaleway_nats_delete_credentials"
+		},
+		"GetNatsAccount": {
+			"api": "GET /mnq/v1beta1/regions/{region}/nats-accounts/{nats_account_id}",
+			"contract_test": "tests/contract/nats/nats-accounts.contract.test.ts",
+			"tool": "scaleway_nats_get_account"
+		},
+		"GetNatsCredentials": {
+			"api": "GET /mnq/v1beta1/regions/{region}/nats-credentials/{nats_credentials_id}",
+			"contract_test": "tests/contract/nats/nats-credentials.contract.test.ts",
+			"tool": "scaleway_nats_get_credentials"
+		},
+		"ListNatsAccounts": {
+			"api": "GET /mnq/v1beta1/regions/{region}/nats-accounts",
+			"contract_test": "tests/contract/nats/nats-accounts.contract.test.ts",
+			"tool": "scaleway_nats_list_accounts"
+		},
+		"ListNatsCredentials": {
+			"api": "GET /mnq/v1beta1/regions/{region}/nats-credentials?nats_account_id={id}",
+			"contract_test": "tests/contract/nats/nats-credentials.contract.test.ts",
+			"tool": "scaleway_nats_list_credentials"
+		},
+		"UpdateNatsAccount": {
+			"api": "PATCH /mnq/v1beta1/regions/{region}/nats-accounts/{nats_account_id}",
+			"contract_test": "tests/contract/nats/nats-accounts.contract.test.ts",
+			"tool": "scaleway_nats_update_account"
+		}
+	},
+	"object-storage": {
+		"create_bucket": {
+			"api": "PUT https://s3.{region}.scw.cloud/{bucket} (S3 CreateBucket)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_create_bucket"
+		},
+		"delete_bucket": {
+			"api": "DELETE https://s3.{region}.scw.cloud/{bucket} (S3 DeleteBucket)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_delete_bucket"
+		},
+		"delete_object": {
+			"api": "DELETE https://s3.{region}.scw.cloud/{bucket}/{key} (S3 DeleteObject)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_delete_object"
+		},
+		"get_bucket_info": {
+			"api": "HEAD /{bucket} + GET /{bucket}?versioning + GET /{bucket}?list-type=2&max-keys=0 (S3 HeadBucket/GetBucketVersioning/ListObjectsV2)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_get_bucket_info"
+		},
+		"get_bucket_lifecycle": {
+			"api": "GET https://s3.{region}.scw.cloud/{bucket}?lifecycle (S3 GetBucketLifecycleConfiguration)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_get_bucket_lifecycle"
+		},
+		"get_bucket_policy": {
+			"api": "GET https://s3.{region}.scw.cloud/{bucket}?policy (S3 GetBucketPolicy)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_get_bucket_policy"
+		},
+		"get_bucket_versioning": {
+			"api": "GET https://s3.{region}.scw.cloud/{bucket}?versioning (S3 GetBucketVersioning)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_get_bucket_versioning"
+		},
+		"get_object_info": {
+			"api": "HEAD https://s3.{region}.scw.cloud/{bucket}/{key} (S3 HeadObject)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_get_object_info"
+		},
+		"list_buckets": {
+			"api": "GET https://s3.{region}.scw.cloud/ (S3 ListBuckets)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_list_buckets"
+		},
+		"list_objects": {
+			"api": "GET https://s3.{region}.scw.cloud/{bucket}?list-type=2 (S3 ListObjectsV2)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_list_objects"
+		},
+		"put_object": {
+			"api": "PUT https://s3.{region}.scw.cloud/{bucket}/{key} (S3 PutObject)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_put_object"
+		},
+		"set_bucket_lifecycle": {
+			"api": "PUT https://s3.{region}.scw.cloud/{bucket}?lifecycle (S3 PutBucketLifecycleConfiguration)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_set_bucket_lifecycle"
+		},
+		"set_bucket_policy": {
+			"api": "PUT https://s3.{region}.scw.cloud/{bucket}?policy (S3 PutBucketPolicy)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_set_bucket_policy"
+		},
+		"set_bucket_versioning": {
+			"api": "PUT https://s3.{region}.scw.cloud/{bucket}?versioning (S3 PutBucketVersioning)",
+			"contract_test": "tests/contract/object-storage/object-storage.contract.test.ts",
+			"tool": "scaleway_object_storage_set_bucket_versioning"
+		}
+	},
+	"opensearch": {
+		"create_deployment": {
+			"api": "POST /searchdb/v1alpha1/regions/{region}/deployments",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_create_deployment"
+		},
+		"create_endpoint": {
+			"api": "POST /searchdb/v1alpha1/regions/{region}/endpoints",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_create_endpoint"
+		},
+		"create_user": {
+			"api": "POST /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/users",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_create_user"
+		},
+		"delete_deployment": {
+			"api": "DELETE /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_delete_deployment"
+		},
+		"delete_endpoint": {
+			"api": "DELETE /searchdb/v1alpha1/regions/{region}/endpoints/{endpoint_id}",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_delete_endpoint"
+		},
+		"delete_user": {
+			"api": "DELETE /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/users/{username}",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_delete_user"
+		},
+		"get_certificate_authority": {
+			"api": "GET /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/certificate-authority",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_get_certificate_authority"
+		},
+		"get_deployment": {
+			"api": "GET /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_get_deployment"
+		},
+		"list_deployments": {
+			"api": "GET /searchdb/v1alpha1/regions/{region}/deployments",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_list_deployments"
+		},
+		"list_node_types": {
+			"api": "GET /searchdb/v1alpha1/regions/{region}/node-types",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_list_node_types"
+		},
+		"list_users": {
+			"api": "GET /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/users",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_list_users"
+		},
+		"list_versions": {
+			"api": "GET /searchdb/v1alpha1/regions/{region}/versions",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_list_versions"
+		},
+		"update_deployment": {
+			"api": "PATCH /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_update_deployment"
+		},
+		"update_user": {
+			"api": "PATCH /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/users/{username}",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_update_user"
+		},
+		"upgrade_deployment": {
+			"api": "POST /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/upgrade",
+			"contract_test": "tests/contract/opensearch/opensearch.contract.test.ts",
+			"tool": "scaleway_opensearch_upgrade_deployment"
+		}
+	},
+	"product-catalog": {
+		"list_categories": {
+			"api": "GET /product-catalog/v2alpha1/public-catalog/products (aggregated client-side)",
+			"contract_test": "tests/contract/product-catalog/product-catalog.contract.test.ts",
+			"tool": "scaleway_product_catalog_list_categories"
+		},
+		"list_products": {
+			"api": "GET /product-catalog/v2alpha1/public-catalog/products",
+			"contract_test": "tests/contract/product-catalog/product-catalog.contract.test.ts",
+			"tool": "scaleway_product_catalog_list_products"
+		}
+	},
+	"public-gateway": {
+		"create_dhcp": {
+			"api": "POST /vpc-gw/v1/zones/{zone}/dhcps",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"deprecated_upstream": true,
+			"tool": "scaleway_public_gateway_create_dhcp"
+		},
+		"create_gateway": {
+			"api": "POST /vpc-gw/v2/zones/{zone}/gateways",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_create_gateway"
+		},
+		"create_gateway_network": {
+			"api": "POST /vpc-gw/v2/zones/{zone}/gateway-networks",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_create_gateway_network"
+		},
+		"create_ip": {
+			"api": "POST /vpc-gw/v2/zones/{zone}/ips",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_create_ip"
+		},
+		"create_pat_rule": {
+			"api": "POST /vpc-gw/v2/zones/{zone}/pat-rules",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_create_pat_rule"
+		},
+		"delete_dhcp": {
+			"api": "DELETE /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"deprecated_upstream": true,
+			"tool": "scaleway_public_gateway_delete_dhcp"
+		},
+		"delete_gateway": {
+			"api": "DELETE /vpc-gw/v2/zones/{zone}/gateways/{gateway_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_delete_gateway"
+		},
+		"delete_gateway_network": {
+			"api": "DELETE /vpc-gw/v2/zones/{zone}/gateway-networks/{gateway_network_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_delete_gateway_network"
+		},
+		"delete_ip": {
+			"api": "DELETE /vpc-gw/v2/zones/{zone}/ips/{ip_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_delete_ip"
+		},
+		"delete_pat_rule": {
+			"api": "DELETE /vpc-gw/v2/zones/{zone}/pat-rules/{pat_rule_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_delete_pat_rule"
+		},
+		"get_dhcp": {
+			"api": "GET /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"deprecated_upstream": true,
+			"tool": "scaleway_public_gateway_get_dhcp"
+		},
+		"get_gateway": {
+			"api": "GET /vpc-gw/v2/zones/{zone}/gateways/{gateway_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_get_gateway"
+		},
+		"get_gateway_network": {
+			"api": "GET /vpc-gw/v2/zones/{zone}/gateway-networks/{gateway_network_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_get_gateway_network"
+		},
+		"get_ip": {
+			"api": "GET /vpc-gw/v2/zones/{zone}/ips/{ip_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_get_ip"
+		},
+		"get_pat_rule": {
+			"api": "GET /vpc-gw/v2/zones/{zone}/pat-rules/{pat_rule_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_get_pat_rule"
+		},
+		"list_dhcps": {
+			"api": "GET /vpc-gw/v1/zones/{zone}/dhcps",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"deprecated_upstream": true,
+			"tool": "scaleway_public_gateway_list_dhcps"
+		},
+		"list_gateway_networks": {
+			"api": "GET /vpc-gw/v2/zones/{zone}/gateway-networks",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_list_gateway_networks"
+		},
+		"list_gateway_types": {
+			"api": "GET /vpc-gw/v2/zones/{zone}/gateway-types",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_list_gateway_types"
+		},
+		"list_gateways": {
+			"api": "GET /vpc-gw/v2/zones/{zone}/gateways",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_list_gateways"
+		},
+		"list_ips": {
+			"api": "GET /vpc-gw/v2/zones/{zone}/ips",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_list_ips"
+		},
+		"list_pat_rules": {
+			"api": "GET /vpc-gw/v2/zones/{zone}/pat-rules",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_list_pat_rules"
+		},
+		"update_dhcp": {
+			"api": "PATCH /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"deprecated_upstream": true,
+			"tool": "scaleway_public_gateway_update_dhcp"
+		},
+		"update_gateway": {
+			"api": "PATCH /vpc-gw/v2/zones/{zone}/gateways/{gateway_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_update_gateway"
+		},
+		"update_gateway_network": {
+			"api": "PATCH /vpc-gw/v2/zones/{zone}/gateway-networks/{gateway_network_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_update_gateway_network"
+		},
+		"update_ip": {
+			"api": "PATCH /vpc-gw/v2/zones/{zone}/ips/{ip_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_update_ip"
+		},
+		"update_pat_rule": {
+			"api": "PATCH /vpc-gw/v2/zones/{zone}/pat-rules/{pat_rule_id}",
+			"contract_test": "tests/contract/public-gateway.test.ts",
+			"tool": "scaleway_public_gateway_update_pat_rule"
+		}
+	},
+	"rabbitmq": {
+		"create_deployment": {
+			"api": "POST /messageq/v1alpha1/regions/{region}/deployments",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_create_deployment"
+		},
+		"create_endpoint": {
+			"api": "POST /messageq/v1alpha1/regions/{region}/endpoints",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_create_endpoint"
+		},
+		"create_user": {
+			"api": "POST /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/users",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_create_user"
+		},
+		"delete_deployment": {
+			"api": "DELETE /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_delete_deployment"
+		},
+		"delete_endpoint": {
+			"api": "DELETE /messageq/v1alpha1/regions/{region}/endpoints/{endpoint_id}",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_delete_endpoint"
+		},
+		"delete_user": {
+			"api": "DELETE /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/users/{username}",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_delete_user"
+		},
+		"get_deployment": {
+			"api": "GET /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_get_deployment"
+		},
+		"get_deployment_certificate": {
+			"api": "GET /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/certificate-authority",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_get_deployment_certificate"
+		},
+		"list_deployments": {
+			"api": "GET /messageq/v1alpha1/regions/{region}/deployments",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_list_deployments"
+		},
+		"list_node_types": {
+			"api": "GET /messageq/v1alpha1/regions/{region}/node-types",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_list_node_types"
+		},
+		"list_users": {
+			"api": "GET /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/users",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_list_users"
+		},
+		"list_versions": {
+			"api": "GET /messageq/v1alpha1/regions/{region}/versions",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_list_versions"
+		},
+		"update_deployment": {
+			"api": "PATCH /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_update_deployment"
+		},
+		"update_user": {
+			"api": "PATCH /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/users/{username}",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_update_user"
+		},
+		"upgrade_deployment": {
+			"api": "POST /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/upgrade",
+			"contract_test": "tests/contract/rabbitmq/rabbitmq.contract.test.ts",
+			"tool": "scaleway_rabbitmq_upgrade_deployment"
+		}
+	},
+	"rdb": {
+		"add_acl_rules": {
+			"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/acls",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_add_acl_rules"
+		},
+		"create_backup": {
+			"api": "POST /rdb/v1/regions/{region}/backups",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_create_backup"
+		},
+		"create_database": {
+			"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/databases",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_create_database"
+		},
+		"create_endpoint": {
+			"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/endpoints",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_create_endpoint"
+		},
+		"create_instance": {
+			"api": "POST /rdb/v1/regions/{region}/instances",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_create_instance"
+		},
+		"create_snapshot": {
+			"api": "POST /rdb/v1/regions/{region}/snapshots",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_create_snapshot"
+		},
+		"create_user": {
+			"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/users",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_create_user"
+		},
+		"delete_acl_rules": {
+			"api": "DELETE /rdb/v1/regions/{region}/instances/{instance_id}/acls",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_delete_acl_rules"
+		},
+		"delete_database": {
+			"api": "DELETE /rdb/v1/regions/{region}/instances/{instance_id}/databases/{name}",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_delete_database"
+		},
+		"delete_endpoint": {
+			"api": "DELETE /rdb/v1/regions/{region}/endpoints/{endpoint_id}",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_delete_endpoint"
+		},
+		"delete_instance": {
+			"api": "DELETE /rdb/v1/regions/{region}/instances/{instance_id}",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_delete_instance"
+		},
+		"delete_user": {
+			"api": "DELETE /rdb/v1/regions/{region}/instances/{instance_id}/users/{name}",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_delete_user"
+		},
+		"get_instance": {
+			"api": "GET /rdb/v1/regions/{region}/instances/{instance_id}",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_get_instance"
+		},
+		"list_acl_rules": {
+			"api": "GET /rdb/v1/regions/{region}/instances/{instance_id}/acls",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_list_acl_rules"
+		},
+		"list_backups": {
+			"api": "GET /rdb/v1/regions/{region}/backups",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_list_backups"
+		},
+		"list_database_engines": {
+			"api": "GET /rdb/v1/regions/{region}/database-engines",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_list_database_engines"
+		},
+		"list_databases": {
+			"api": "GET /rdb/v1/regions/{region}/instances/{instance_id}/databases",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_list_databases"
+		},
+		"list_endpoints": {
+			"api": "GET /rdb/v1/regions/{region}/instances/{instance_id}",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_list_endpoints"
+		},
+		"list_instances": {
+			"api": "GET /rdb/v1/regions/{region}/instances",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_list_instances"
+		},
+		"list_node_types": {
+			"api": "GET /rdb/v1/regions/{region}/node-types",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_list_node_types"
+		},
+		"list_snapshots": {
+			"api": "GET /rdb/v1/regions/{region}/snapshots",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_list_snapshots"
+		},
+		"list_users": {
+			"api": "GET /rdb/v1/regions/{region}/instances/{instance_id}/users",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_list_users"
+		},
+		"restore_backup": {
+			"api": "POST /rdb/v1/regions/{region}/backups/{backup_id}/restore",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_restore_backup"
+		},
+		"restore_snapshot": {
+			"api": "POST /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance-from-snapshot",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_restore_snapshot"
+		},
+		"update_instance": {
+			"api": "PATCH /rdb/v1/regions/{region}/instances/{instance_id}",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_update_instance"
+		},
+		"update_user": {
+			"api": "PATCH /rdb/v1/regions/{region}/instances/{instance_id}/users/{name}",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_update_user"
+		},
+		"upgrade_instance": {
+			"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/upgrade",
+			"contract_test": "tests/contract/rdb.test.ts",
+			"tool": "scaleway_rdb_upgrade_instance"
+		}
+	},
+	"redis": {
+		"add_acl_rules": {
+			"api": "POST /redis/v1/zones/{zone}/clusters/{cluster_id}/acls",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_add_acl_rules"
+		},
+		"add_endpoints": {
+			"api": "POST /redis/v1/zones/{zone}/clusters/{cluster_id}/endpoints",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_add_endpoints"
+		},
+		"create_cluster": {
+			"api": "POST /redis/v1/zones/{zone}/clusters",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_create_cluster"
+		},
+		"delete_acl_rules": {
+			"api": "DELETE /redis/v1/zones/{zone}/acls/{acl_id}",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_delete_acl_rules"
+		},
+		"delete_cluster": {
+			"api": "DELETE /redis/v1/zones/{zone}/clusters/{cluster_id}",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_delete_cluster"
+		},
+		"delete_endpoints": {
+			"api": "DELETE /redis/v1/zones/{zone}/endpoints/{endpoint_id}",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_delete_endpoints"
+		},
+		"get_cluster": {
+			"api": "GET /redis/v1/zones/{zone}/clusters/{cluster_id}",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_get_cluster"
+		},
+		"get_cluster_certificate": {
+			"api": "GET /redis/v1/zones/{zone}/clusters/{cluster_id}/certificate",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_get_cluster_certificate"
+		},
+		"list_cluster_metrics": {
+			"api": "GET /redis/v1/zones/{zone}/clusters/{cluster_id}/metrics",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_list_cluster_metrics"
+		},
+		"list_cluster_versions": {
+			"api": "GET /redis/v1/zones/{zone}/cluster-versions",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_list_cluster_versions"
+		},
+		"list_clusters": {
+			"api": "GET /redis/v1/zones/{zone}/clusters",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_list_clusters"
+		},
+		"list_node_types": {
+			"api": "GET /redis/v1/zones/{zone}/node-types",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_list_node_types"
+		},
+		"renew_cluster_certificate": {
+			"api": "POST /redis/v1/zones/{zone}/clusters/{cluster_id}/renew-certificate",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_renew_cluster_certificate"
+		},
+		"set_acl_rules": {
+			"api": "PUT /redis/v1/zones/{zone}/clusters/{cluster_id}/acls",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_set_acl_rules"
+		},
+		"set_endpoints": {
+			"api": "PUT /redis/v1/zones/{zone}/clusters/{cluster_id}/endpoints",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_set_endpoints"
+		},
+		"update_cluster": {
+			"api": "PATCH /redis/v1/zones/{zone}/clusters/{cluster_id}",
+			"contract_test": "tests/contract/redis.test.ts",
+			"tool": "scaleway_redis_update_cluster"
+		}
+	},
+	"registry": {
+		"create_namespace": {
+			"api": "POST /registry/v1/regions/{region}/namespaces",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_create_namespace"
+		},
+		"delete_image": {
+			"api": "DELETE /registry/v1/regions/{region}/images/{image_id}",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_delete_image"
+		},
+		"delete_namespace": {
+			"api": "DELETE /registry/v1/regions/{region}/namespaces/{namespace_id}",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_delete_namespace"
+		},
+		"delete_tag": {
+			"api": "DELETE /registry/v1/regions/{region}/tags/{tag_id}",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_delete_tag"
+		},
+		"get_image": {
+			"api": "GET /registry/v1/regions/{region}/images/{image_id}",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_get_image"
+		},
+		"get_namespace": {
+			"api": "GET /registry/v1/regions/{region}/namespaces/{namespace_id}",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_get_namespace"
+		},
+		"get_tag": {
+			"api": "GET /registry/v1/regions/{region}/tags/{tag_id}",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_get_tag"
+		},
+		"list_images": {
+			"api": "GET /registry/v1/regions/{region}/images",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_list_images"
+		},
+		"list_namespaces": {
+			"api": "GET /registry/v1/regions/{region}/namespaces",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_list_namespaces"
+		},
+		"list_tags": {
+			"api": "GET /registry/v1/regions/{region}/images/{image_id}/tags",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_list_tags"
+		},
+		"update_image": {
+			"api": "PATCH /registry/v1/regions/{region}/images/{image_id}",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_update_image"
+		},
+		"update_namespace": {
+			"api": "PATCH /registry/v1/regions/{region}/namespaces/{namespace_id}",
+			"contract_test": "tests/contract/tools/registry/contract.test.ts",
+			"tool": "scaleway_registry_update_namespace"
+		}
+	},
+	"secret-manager": {
+		"access_secret_version": {
+			"api": "GET /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions/{revision}/access",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_access_secret_version"
+		},
+		"add_secret_owner": {
+			"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/add-owner",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_add_secret_owner"
+		},
+		"create_secret": {
+			"api": "POST /secret-manager/v1beta1/regions/{region}/secrets",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_create_secret"
+		},
+		"create_secret_version": {
+			"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_create_secret_version"
+		},
+		"delete_secret": {
+			"api": "DELETE /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_delete_secret"
+		},
+		"destroy_secret_version": {
+			"api": "DELETE /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions/{revision}",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_destroy_secret_version"
+		},
+		"disable_secret_version": {
+			"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions/{revision}/disable",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_disable_secret_version"
+		},
+		"enable_secret_version": {
+			"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions/{revision}/enable",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_enable_secret_version"
+		},
+		"get_secret": {
+			"api": "GET /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_get_secret"
+		},
+		"get_secret_version": {
+			"api": "GET /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions/{revision}",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_get_secret_version"
+		},
+		"list_secret_versions": {
+			"api": "GET /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_list_secret_versions"
+		},
+		"list_secrets": {
+			"api": "GET /secret-manager/v1beta1/regions/{region}/secrets",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_list_secrets"
+		},
+		"list_tags": {
+			"api": "GET /secret-manager/v1beta1/regions/{region}/tags",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_list_tags"
+		},
+		"protect_secret": {
+			"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/protect",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_protect_secret"
+		},
+		"unprotect_secret": {
+			"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/unprotect",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_unprotect_secret"
+		},
+		"update_secret": {
+			"api": "PATCH /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}",
+			"contract_test": "tests/contract/secret-manager/secret-manager.contract.test.ts",
+			"tool": "scaleway_secret_manager_update_secret"
+		}
+	},
+	"serverless-sqldb": {
+		"create_database": {
+			"api": "POST /serverless-sqldb/v1alpha1/regions/{region}/databases",
+			"contract_test": "tests/contract/serverless-sqldb.contract.test.ts",
+			"tool": "scaleway_serverless_sqldb_create_database"
+		},
+		"delete_database": {
+			"api": "DELETE /serverless-sqldb/v1alpha1/regions/{region}/databases/{database_id}",
+			"contract_test": "tests/contract/serverless-sqldb.contract.test.ts",
+			"tool": "scaleway_serverless_sqldb_delete_database"
+		},
+		"export_database_backup": {
+			"api": "POST /serverless-sqldb/v1alpha1/regions/{region}/backups/{backup_id}/export",
+			"contract_test": "tests/contract/serverless-sqldb.contract.test.ts",
+			"tool": "scaleway_serverless_sqldb_export_database_backup"
+		},
+		"get_database": {
+			"api": "GET /serverless-sqldb/v1alpha1/regions/{region}/databases/{database_id}",
+			"contract_test": "tests/contract/serverless-sqldb.contract.test.ts",
+			"tool": "scaleway_serverless_sqldb_get_database"
+		},
+		"get_database_backup": {
+			"api": "GET /serverless-sqldb/v1alpha1/regions/{region}/backups/{backup_id}",
+			"contract_test": "tests/contract/serverless-sqldb.contract.test.ts",
+			"tool": "scaleway_serverless_sqldb_get_database_backup"
+		},
+		"list_database_backups": {
+			"api": "GET /serverless-sqldb/v1alpha1/regions/{region}/backups",
+			"contract_test": "tests/contract/serverless-sqldb.contract.test.ts",
+			"tool": "scaleway_serverless_sqldb_list_database_backups"
+		},
+		"list_databases": {
+			"api": "GET /serverless-sqldb/v1alpha1/regions/{region}/databases",
+			"contract_test": "tests/contract/serverless-sqldb.contract.test.ts",
+			"tool": "scaleway_serverless_sqldb_list_databases"
+		},
+		"restore_database": {
+			"api": "POST /serverless-sqldb/v1alpha1/regions/{region}/databases/{database_id}/restore",
+			"contract_test": "tests/contract/serverless-sqldb.contract.test.ts",
+			"tool": "scaleway_serverless_sqldb_restore_database"
+		},
+		"update_database": {
+			"api": "PATCH /serverless-sqldb/v1alpha1/regions/{region}/databases/{database_id}",
+			"contract_test": "tests/contract/serverless-sqldb.contract.test.ts",
+			"tool": "scaleway_serverless_sqldb_update_database"
+		}
+	},
+	"sns": {
+		"ActivateSns": {
+			"api": "POST /mnq/v1beta1/regions/{region}/activate-sns",
+			"contract_test": "tests/contract/sns.test.ts",
+			"tool": "scaleway_sns_activate"
+		},
+		"CreateSnsCredentials": {
+			"api": "POST /mnq/v1beta1/regions/{region}/sns-credentials",
+			"contract_test": "tests/contract/sns.test.ts",
+			"tool": "scaleway_sns_create_credentials"
+		},
+		"DeactivateSns": {
+			"api": "POST /mnq/v1beta1/regions/{region}/deactivate-sns",
+			"contract_test": "tests/contract/sns.test.ts",
+			"tool": "scaleway_sns_deactivate"
+		},
+		"DeleteSnsCredentials": {
+			"api": "DELETE /mnq/v1beta1/regions/{region}/sns-credentials/{sns_credentials_id}",
+			"contract_test": "tests/contract/sns.test.ts",
+			"tool": "scaleway_sns_delete_credentials"
+		},
+		"GetSnsCredentials": {
+			"api": "GET /mnq/v1beta1/regions/{region}/sns-credentials/{sns_credentials_id}",
+			"contract_test": "tests/contract/sns.test.ts",
+			"tool": "scaleway_sns_get_credentials"
+		},
+		"GetSnsInfo": {
+			"api": "GET /mnq/v1beta1/regions/{region}/sns-info",
+			"contract_test": "tests/contract/sns.test.ts",
+			"tool": "scaleway_sns_get_info"
+		},
+		"ListSnsCredentials": {
+			"api": "GET /mnq/v1beta1/regions/{region}/sns-credentials",
+			"contract_test": "tests/contract/sns.test.ts",
+			"tool": "scaleway_sns_list_credentials"
+		},
+		"UpdateSnsCredentials": {
+			"api": "PATCH /mnq/v1beta1/regions/{region}/sns-credentials/{sns_credentials_id}",
+			"contract_test": "tests/contract/sns.test.ts",
+			"tool": "scaleway_sns_update_credentials"
+		}
+	},
+	"sqs": {
+		"ActivateSqs": {
+			"api": "POST /mnq/v1beta1/regions/{region}/activate-sqs",
+			"contract_test": "tests/contract/tools/sqs.contract.test.ts",
+			"tool": "scaleway_sqs_activate"
+		},
+		"CreateSqsCredentials": {
+			"api": "POST /mnq/v1beta1/regions/{region}/sqs-credentials",
+			"contract_test": "tests/contract/tools/sqs.contract.test.ts",
+			"tool": "scaleway_sqs_create_credentials"
+		},
+		"DeactivateSqs": {
+			"api": "POST /mnq/v1beta1/regions/{region}/deactivate-sqs",
+			"contract_test": "tests/contract/tools/sqs.contract.test.ts",
+			"tool": "scaleway_sqs_deactivate"
+		},
+		"DeleteSqsCredentials": {
+			"api": "DELETE /mnq/v1beta1/regions/{region}/sqs-credentials/{credential_id}",
+			"contract_test": "tests/contract/tools/sqs.contract.test.ts",
+			"tool": "scaleway_sqs_delete_credentials"
+		},
+		"GetSqsCredentials": {
+			"api": "GET /mnq/v1beta1/regions/{region}/sqs-credentials/{credential_id}",
+			"contract_test": "tests/contract/tools/sqs.contract.test.ts",
+			"tool": "scaleway_sqs_get_credentials"
+		},
+		"GetSqsInfo": {
+			"api": "GET /mnq/v1beta1/regions/{region}/sqs-info",
+			"contract_test": "tests/contract/tools/sqs.contract.test.ts",
+			"tool": "scaleway_sqs_get_info"
+		},
+		"ListSqsCredentials": {
+			"api": "GET /mnq/v1beta1/regions/{region}/sqs-credentials",
+			"contract_test": "tests/contract/tools/sqs.contract.test.ts",
+			"tool": "scaleway_sqs_list_credentials"
+		},
+		"UpdateSqsCredentials": {
+			"api": "PATCH /mnq/v1beta1/regions/{region}/sqs-credentials/{credential_id}",
+			"contract_test": "tests/contract/tools/sqs.contract.test.ts",
+			"tool": "scaleway_sqs_update_credentials"
+		}
+	},
+	"tem": {
+		"cancel_email": {
+			"api": "POST /transactional-email/v1alpha1/regions/{region}/emails/{email_id}/cancel",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_cancel_email"
+		},
+		"check_domain": {
+			"api": "POST /transactional-email/v1alpha1/regions/{region}/domains/{domain_id}/check",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_check_domain"
+		},
+		"create_domain": {
+			"api": "POST /transactional-email/v1alpha1/regions/{region}/domains",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_create_domain"
+		},
+		"create_email": {
+			"api": "POST /transactional-email/v1alpha1/regions/{region}/emails",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_create_email"
+		},
+		"create_webhook": {
+			"api": "POST /transactional-email/v1alpha1/regions/{region}/webhooks",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_create_webhook"
+		},
+		"delete_webhook": {
+			"api": "DELETE /transactional-email/v1alpha1/regions/{region}/webhooks/{webhook_id}",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_delete_webhook"
+		},
+		"get_domain": {
+			"api": "GET /transactional-email/v1alpha1/regions/{region}/domains/{domain_id}",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_get_domain"
+		},
+		"get_domain_last_status": {
+			"api": "GET /transactional-email/v1alpha1/regions/{region}/domains/{domain_id}/verification",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_get_domain_last_status"
+		},
+		"get_email": {
+			"api": "GET /transactional-email/v1alpha1/regions/{region}/emails/{email_id}",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_get_email"
+		},
+		"get_statistics": {
+			"api": "GET /transactional-email/v1alpha1/regions/{region}/statistics",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_get_statistics"
+		},
+		"list_domains": {
+			"api": "GET /transactional-email/v1alpha1/regions/{region}/domains",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_list_domains"
+		},
+		"list_emails": {
+			"api": "GET /transactional-email/v1alpha1/regions/{region}/emails",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_list_emails"
+		},
+		"list_webhooks": {
+			"api": "GET /transactional-email/v1alpha1/regions/{region}/webhooks",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_list_webhooks"
+		},
+		"revoke_domain": {
+			"api": "POST /transactional-email/v1alpha1/regions/{region}/domains/{domain_id}/revoke",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_revoke_domain"
+		},
+		"update_webhook": {
+			"api": "PATCH /transactional-email/v1alpha1/regions/{region}/webhooks/{webhook_id}",
+			"contract_test": "tests/contract/tem.contract.test.ts",
+			"tool": "scaleway_tem_update_webhook"
+		}
+	},
+	"vpc": {
+		"create_private_network": {
+			"api": "POST /vpc/v2/regions/{region}/private-networks",
+			"contract_test": "tests/contract/tools/vpc.test.ts",
+			"tool": "scaleway_vpc_create_private_network"
+		},
+		"create_vpc": {
+			"api": "POST /vpc/v2/regions/{region}/vpcs",
+			"contract_test": "tests/contract/tools/vpc.test.ts",
+			"tool": "scaleway_vpc_create_vpc"
+		},
+		"delete_private_network": {
+			"api": "DELETE /vpc/v2/regions/{region}/private-networks/{private_network_id}",
+			"contract_test": "tests/contract/tools/vpc.test.ts",
+			"tool": "scaleway_vpc_delete_private_network"
+		},
+		"delete_vpc": {
+			"api": "DELETE /vpc/v2/regions/{region}/vpcs/{vpc_id}",
+			"contract_test": "tests/contract/tools/vpc.test.ts",
+			"tool": "scaleway_vpc_delete_vpc"
+		},
+		"get_private_network": {
+			"api": "GET /vpc/v2/regions/{region}/private-networks/{private_network_id}",
+			"contract_test": "tests/contract/tools/vpc.test.ts",
+			"tool": "scaleway_vpc_get_private_network"
+		},
+		"get_vpc": {
+			"api": "GET /vpc/v2/regions/{region}/vpcs/{vpc_id}",
+			"contract_test": "tests/contract/tools/vpc.test.ts",
+			"tool": "scaleway_vpc_get_vpc"
+		},
+		"list_private_networks": {
+			"api": "GET /vpc/v2/regions/{region}/private-networks",
+			"contract_test": "tests/contract/tools/vpc.test.ts",
+			"tool": "scaleway_vpc_list_private_networks"
+		},
+		"list_vpcs": {
+			"api": "GET /vpc/v2/regions/{region}/vpcs",
+			"contract_test": "tests/contract/tools/vpc.test.ts",
+			"tool": "scaleway_vpc_list_vpcs"
+		},
+		"update_private_network": {
+			"api": "PATCH /vpc/v2/regions/{region}/private-networks/{private_network_id}",
+			"contract_test": "tests/contract/tools/vpc.test.ts",
+			"tool": "scaleway_vpc_update_private_network"
+		},
+		"update_vpc": {
+			"api": "PATCH /vpc/v2/regions/{region}/vpcs/{vpc_id}",
+			"contract_test": "tests/contract/tools/vpc.test.ts",
+			"tool": "scaleway_vpc_update_vpc"
+		}
+	},
+	"vpn": {
+		"change_connection_psk": {
+			"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/change-psk",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_change_connection_psk"
+		},
+		"create_connection": {
+			"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_create_connection"
+		},
+		"create_customer_gateway": {
+			"api": "POST /s2s-vpn/v1alpha1/regions/{region}/customer-gateways",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_create_customer_gateway"
+		},
+		"create_routing_policy": {
+			"api": "POST /s2s-vpn/v1alpha1/regions/{region}/routing-policies",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_create_routing_policy"
+		},
+		"create_vpn_gateway": {
+			"api": "POST /s2s-vpn/v1alpha1/regions/{region}/vpn-gateways",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_create_gateway"
+		},
+		"delete_connection": {
+			"api": "DELETE /s2s-vpn/v1alpha1/regions/{region}/connections/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_delete_connection"
+		},
+		"delete_customer_gateway": {
+			"api": "DELETE /s2s-vpn/v1alpha1/regions/{region}/customer-gateways/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_delete_customer_gateway"
+		},
+		"delete_routing_policy": {
+			"api": "DELETE /s2s-vpn/v1alpha1/regions/{region}/routing-policies/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_delete_routing_policy"
+		},
+		"delete_vpn_gateway": {
+			"api": "DELETE /s2s-vpn/v1alpha1/regions/{region}/vpn-gateways/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_delete_gateway"
+		},
+		"detach_connection_routing_policy": {
+			"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/detach-routing-policy",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_detach_connection_routing_policy"
+		},
+		"disable_route_propagation": {
+			"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/disable-route-propagation",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_disable_route_propagation"
+		},
+		"enable_route_propagation": {
+			"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/enable-route-propagation",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_enable_route_propagation"
+		},
+		"get_connection": {
+			"api": "GET /s2s-vpn/v1alpha1/regions/{region}/connections/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_get_connection"
+		},
+		"get_customer_gateway": {
+			"api": "GET /s2s-vpn/v1alpha1/regions/{region}/customer-gateways/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_get_customer_gateway"
+		},
+		"get_routing_policy": {
+			"api": "GET /s2s-vpn/v1alpha1/regions/{region}/routing-policies/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_get_routing_policy"
+		},
+		"get_vpn_gateway": {
+			"api": "GET /s2s-vpn/v1alpha1/regions/{region}/vpn-gateways/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_get_gateway"
+		},
+		"list_connections": {
+			"api": "GET /s2s-vpn/v1alpha1/regions/{region}/connections",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_list_connections"
+		},
+		"list_customer_gateways": {
+			"api": "GET /s2s-vpn/v1alpha1/regions/{region}/customer-gateways",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_list_customer_gateways"
+		},
+		"list_routing_policies": {
+			"api": "GET /s2s-vpn/v1alpha1/regions/{region}/routing-policies",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_list_routing_policies"
+		},
+		"list_vpn_gateway_types": {
+			"api": "GET /s2s-vpn/v1alpha1/regions/{region}/vpn-gateway-types",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_list_gateway_types"
+		},
+		"list_vpn_gateways": {
+			"api": "GET /s2s-vpn/v1alpha1/regions/{region}/vpn-gateways",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_list_gateways"
+		},
+		"renew_connection_psk": {
+			"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/renew-psk",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_renew_connection_psk"
+		},
+		"set_connection_routing_policy": {
+			"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/set-routing-policy",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_set_connection_routing_policy"
+		},
+		"update_connection": {
+			"api": "PATCH /s2s-vpn/v1alpha1/regions/{region}/connections/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_update_connection"
+		},
+		"update_customer_gateway": {
+			"api": "PATCH /s2s-vpn/v1alpha1/regions/{region}/customer-gateways/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_update_customer_gateway"
+		},
+		"update_routing_policy": {
+			"api": "PATCH /s2s-vpn/v1alpha1/regions/{region}/routing-policies/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_update_routing_policy"
+		},
+		"update_vpn_gateway": {
+			"api": "PATCH /s2s-vpn/v1alpha1/regions/{region}/vpn-gateways/{id}",
+			"contract_test": "tests/contract/vpn/vpn.contract.test.ts",
+			"tool": "scaleway_vpn_update_gateway"
+		}
+	},
+	"webhosting": {
+		"create_hosting": {
+			"api": "POST /webhosting/v1/regions/{region}/hostings",
+			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
+			"tool": "scaleway_webhosting_create_hosting"
+		},
+		"delete_hosting": {
+			"api": "DELETE /webhosting/v1/regions/{region}/hostings/{hosting_id}",
+			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
+			"tool": "scaleway_webhosting_delete_hosting"
+		},
+		"get_dns_records": {
+			"api": "GET /webhosting/v1/regions/{region}/hostings/{hosting_id}/dns-records",
+			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
+			"tool": "scaleway_webhosting_get_dns_records"
+		},
+		"get_hosting": {
+			"api": "GET /webhosting/v1/regions/{region}/hostings/{hosting_id}",
+			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
+			"tool": "scaleway_webhosting_get_hosting"
+		},
+		"list_control_panels": {
+			"api": "GET /webhosting/v1/regions/{region}/control-panels",
+			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
+			"tool": "scaleway_webhosting_list_control_panels"
+		},
+		"list_hostings": {
+			"api": "GET /webhosting/v1/regions/{region}/hostings",
+			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
+			"tool": "scaleway_webhosting_list_hostings"
+		},
+		"list_offers": {
+			"api": "GET /webhosting/v1/regions/{region}/offers",
+			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
+			"tool": "scaleway_webhosting_list_offers"
+		},
+		"restore_hosting": {
+			"api": "POST /webhosting/v1/regions/{region}/hostings/{hosting_id}/restore",
+			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
+			"tool": "scaleway_webhosting_restore_hosting"
+		},
+		"update_hosting": {
+			"api": "PATCH /webhosting/v1/regions/{region}/hostings/{hosting_id}",
+			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
+			"tool": "scaleway_webhosting_update_hosting"
 		}
 	}
 }

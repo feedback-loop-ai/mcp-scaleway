@@ -110,3 +110,51 @@ export const DeleteIpInput = z.object({
 	ip_id: z.string().uuid().describe("Flexible IP ID to delete"),
 });
 export type DeleteIpInput = z.infer<typeof DeleteIpInput>;
+
+// --- Private Networks (Bare Metal Private Network API) ---
+
+export const ListServerPrivateNetworksInput = PaginationParams.extend({
+	zone: ScalewayZone.describe("Zone to list server Private Network attachments in"),
+	server_id: z.string().uuid().optional().describe("Filter attachments by server ID"),
+	private_network_id: z
+		.string()
+		.uuid()
+		.optional()
+		.describe("Filter attachments by Private Network ID"),
+	organization_id: z.string().uuid().optional().describe("Filter attachments by Organization ID"),
+	project_id: z.string().uuid().optional().describe("Filter attachments by Project ID"),
+	order_by: z
+		.enum(["created_at_asc", "created_at_desc", "updated_at_asc", "updated_at_desc"])
+		.optional()
+		.describe("Sort order for the returned attachments"),
+});
+export type ListServerPrivateNetworksInput = z.infer<typeof ListServerPrivateNetworksInput>;
+
+export const AddServerPrivateNetworkInput = z.object({
+	zone: ScalewayZone.describe("Zone of the server"),
+	server_id: z.string().uuid().describe("Server ID to attach to a Private Network"),
+	private_network_id: z
+		.string()
+		.uuid()
+		.describe("Private Network ID to attach the server to (max 8 per server)"),
+});
+export type AddServerPrivateNetworkInput = z.infer<typeof AddServerPrivateNetworkInput>;
+
+export const SetServerPrivateNetworksInput = z.object({
+	zone: ScalewayZone.describe("Zone of the server"),
+	server_id: z.string().uuid().describe("Server ID"),
+	private_network_ids: z
+		.array(z.string().uuid())
+		.max(8)
+		.describe(
+			"Complete set of Private Network IDs the server should be attached to; replaces existing attachments (pass [] to detach all)",
+		),
+});
+export type SetServerPrivateNetworksInput = z.infer<typeof SetServerPrivateNetworksInput>;
+
+export const DeleteServerPrivateNetworkInput = z.object({
+	zone: ScalewayZone.describe("Zone of the server"),
+	server_id: z.string().uuid().describe("Server ID"),
+	private_network_id: z.string().uuid().describe("Private Network ID to detach from the server"),
+});
+export type DeleteServerPrivateNetworkInput = z.infer<typeof DeleteServerPrivateNetworkInput>;

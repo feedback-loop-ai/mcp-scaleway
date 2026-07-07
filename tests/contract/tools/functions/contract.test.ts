@@ -2,10 +2,12 @@
  * Contract tests for Scaleway Serverless Functions API
  *
  * Validates request/response shapes, pagination, auth, and error codes
- * against the Scaleway API contract defined in specs/007-functions/spec.md
+ * against the Scaleway API contract for Serverless Functions.
  *
  * API: /functions/v1beta1/regions/{region}/...
- * Spec: specs/scaleway-api/ (Serverless Functions)
+ * API Reference: https://www.scaleway.com/en/developers/api/serverless-functions/
+ * Spec: specs/scaleway-api/functions/api-reference.md
+ * Parity Matrix: tests/parity-matrix.json#functions
  */
 import { describe, expect, it } from "vitest";
 import { z } from "zod";

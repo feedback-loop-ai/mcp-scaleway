@@ -18,18 +18,22 @@ vi.mock("../../../../src/shared/client.js", () => ({
 }));
 
 import {
+	handleAddServerPrivateNetwork,
 	handleCreateIp,
 	handleCreateServer,
 	handleDeleteIp,
 	handleDeleteServer,
+	handleDeleteServerPrivateNetwork,
 	handleGetBmcAccess,
 	handleGetServer,
 	handleInstallServer,
 	handleListIps,
 	handleListOffers,
 	handleListOss,
+	handleListServerPrivateNetworks,
 	handleListServers,
 	handleRebootServer,
+	handleSetServerPrivateNetworks,
 	handleStartServer,
 	handleStopServer,
 } from "../../../../src/tools/elastic-metal/handlers.js";
@@ -68,6 +72,9 @@ const OFFER_ID = "33333333-3333-3333-3333-333333333333";
 const OS_ID = "44444444-4444-4444-4444-444444444444";
 const SSH_KEY_ID = "55555555-5555-5555-5555-555555555555";
 const IP_ID = "66666666-6666-6666-6666-666666666666";
+const PN_ID = "77777777-7777-7777-7777-777777777777";
+const ORG_ID = "88888888-8888-8888-8888-888888888888";
+const SPN_ID = "99999999-9999-9999-9999-999999999999";
 
 beforeEach(() => {
 	mockFetch.mockReset();
@@ -497,6 +504,159 @@ describe("Elastic Metal handlers", () => {
 			mockErrorResponse(404, "Not found");
 			const result = (await handleDeleteIp({ zone: ZONE, ip_id: IP_ID })) as ToolResult;
 			expect(result.isError).toBe(true);
+		});
+	});
+
+	// --- US5: Private Networks ---
+	describe("handleListServerPrivateNetworks", () => {
+		it("returns paginated attachment list", async () => {
+			mockOkResponse({
+				server_private_networks: [{ id: SPN_ID, private_network_id: PN_ID, vlan: 42 }],
+				total_count: 1,
+			});
+			const result = (await handleListServerPrivateNetworks({ zone: ZONE })) as ToolResult;
+			const data = parseContent(result);
+			expect(data.items).toHaveLength(1);
+			expect(data.totalCount).toBe(1);
+			expect(data.page).toBe(1);
+			expect(data.pageSize).toBe(50);
+		});
+
+		it("hits the server-private-networks collection endpoint", async () => {
+			mockOkResponse({ server_private_networks: [], total_count: 0 });
+			await handleListServerPrivateNetworks({ zone: ZONE });
+			const calledUrl = mockFetch.mock.calls[0][0] as string;
+			expect(calledUrl).toContain(`/zones/${ZONE}/server-private-networks?`);
+		});
+
+		it("passes optional filters to query params", async () => {
+			mockOkResponse({ server_private_networks: [], total_count: 0 });
+			await handleListServerPrivateNetworks({
+				zone: ZONE,
+				page: 2,
+				pageSize: 10,
+				server_id: SERVER_ID,
+				private_network_id: PN_ID,
+				organization_id: ORG_ID,
+				project_id: PROJECT_ID,
+				order_by: "created_at_desc",
+			});
+			const calledUrl = mockFetch.mock.calls[0][0] as string;
+			expect(calledUrl).toContain(`server_id=${SERVER_ID}`);
+			expect(calledUrl).toContain(`private_network_id=${PN_ID}`);
+			expect(calledUrl).toContain(`organization_id=${ORG_ID}`);
+			expect(calledUrl).toContain(`project_id=${PROJECT_ID}`);
+			expect(calledUrl).toContain("order_by=created_at_desc");
+		});
+
+		it("returns error on API failure", async () => {
+			mockErrorResponse(500, "Internal server error");
+			const result = (await handleListServerPrivateNetworks({ zone: ZONE })) as ToolResult;
+			expect(result.isError).toBe(true);
+			const data = parseContent(result);
+			expect(data.error.type).toBe("server_error");
+		});
+	});
+
+	describe("handleAddServerPrivateNetwork", () => {
+		it("attaches a server to a Private Network", async () => {
+			mockOkResponse({ id: SPN_ID, private_network_id: PN_ID, status: "attaching" });
+			const result = (await handleAddServerPrivateNetwork({
+				zone: ZONE,
+				server_id: SERVER_ID,
+				private_network_id: PN_ID,
+			})) as ToolResult;
+			const data = parseContent(result);
+			expect(data.private_network_id).toBe(PN_ID);
+			expect(data.status).toBe("attaching");
+			const calledUrl = mockFetch.mock.calls[0][0] as string;
+			expect(calledUrl).toBe(
+				`https://api.scaleway.com/baremetal/v1/zones/${ZONE}/servers/${SERVER_ID}/private-networks`,
+			);
+			const requestBody = JSON.parse(mockFetch.mock.calls[0][1].body as string);
+			expect(requestBody.private_network_id).toBe(PN_ID);
+			expect(mockFetch.mock.calls[0][1].method).toBe("POST");
+		});
+
+		it("returns error on API failure", async () => {
+			mockErrorResponse(409, "Maximum number of Private Networks reached");
+			const result = (await handleAddServerPrivateNetwork({
+				zone: ZONE,
+				server_id: SERVER_ID,
+				private_network_id: PN_ID,
+			})) as ToolResult;
+			expect(result.isError).toBe(true);
+		});
+	});
+
+	describe("handleSetServerPrivateNetworks", () => {
+		it("replaces the full set of Private Networks", async () => {
+			mockOkResponse({
+				server_private_networks: [{ id: SPN_ID, private_network_id: PN_ID }],
+			});
+			const result = (await handleSetServerPrivateNetworks({
+				zone: ZONE,
+				server_id: SERVER_ID,
+				private_network_ids: [PN_ID],
+			})) as ToolResult;
+			const data = parseContent(result);
+			expect(data.server_private_networks).toHaveLength(1);
+			const requestBody = JSON.parse(mockFetch.mock.calls[0][1].body as string);
+			expect(requestBody.private_network_ids).toEqual([PN_ID]);
+			expect(mockFetch.mock.calls[0][1].method).toBe("PUT");
+		});
+
+		it("supports detaching all with an empty array", async () => {
+			mockOkResponse({ server_private_networks: [] });
+			const result = (await handleSetServerPrivateNetworks({
+				zone: ZONE,
+				server_id: SERVER_ID,
+				private_network_ids: [],
+			})) as ToolResult;
+			const data = parseContent(result);
+			expect(data.server_private_networks).toEqual([]);
+		});
+
+		it("returns error on API failure", async () => {
+			mockErrorResponse(400, "Invalid Private Network ID");
+			const result = (await handleSetServerPrivateNetworks({
+				zone: ZONE,
+				server_id: SERVER_ID,
+				private_network_ids: [PN_ID],
+			})) as ToolResult;
+			expect(result.isError).toBe(true);
+			const data = parseContent(result);
+			expect(data.error.type).toBe("invalid_input");
+		});
+	});
+
+	describe("handleDeleteServerPrivateNetwork", () => {
+		it("detaches a server from a Private Network", async () => {
+			mockOkResponse({}, 204);
+			const result = (await handleDeleteServerPrivateNetwork({
+				zone: ZONE,
+				server_id: SERVER_ID,
+				private_network_id: PN_ID,
+			})) as ToolResult;
+			const data = parseContent(result);
+			expect(data).toEqual({});
+			const calledUrl = mockFetch.mock.calls[0][0] as string;
+			expect(calledUrl).toBe(
+				`https://api.scaleway.com/baremetal/v1/zones/${ZONE}/servers/${SERVER_ID}/private-networks/${PN_ID}`,
+			);
+			expect(mockFetch.mock.calls[0][1].method).toBe("DELETE");
+		});
+
+		it("returns error on 404", async () => {
+			mockErrorResponse(404, "Not found");
+			const result = (await handleDeleteServerPrivateNetwork({
+				zone: ZONE,
+				server_id: SERVER_ID,
+				private_network_id: PN_ID,
+			})) as ToolResult;
+			expect(result.isError).toBe(true);
+			const data = parseContent(result);
+			expect(data.error.type).toBe("not_found");
 		});
 	});
 

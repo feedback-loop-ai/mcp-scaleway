@@ -8,11 +8,11 @@ describe("registerDomainRegistrarTools", () => {
 		expect(() => registerDomainRegistrarTools(server)).not.toThrow();
 	});
 
-	it("registers all 15 domain registrar tools", () => {
+	it("registers all 14 domain registrar tools", () => {
 		const server = new McpServer({ name: "test", version: "0.0.1" });
 		const toolSpy = vi.spyOn(server, "tool");
 		registerDomainRegistrarTools(server);
-		expect(toolSpy).toHaveBeenCalledTimes(15);
+		expect(toolSpy).toHaveBeenCalledTimes(14);
 	});
 
 	it("registers tools with correct names", () => {
@@ -32,8 +32,8 @@ describe("registerDomainRegistrarTools", () => {
 		expect(registeredNames).toContain("scaleway_domain_registrar_check_domain_availability");
 		expect(registeredNames).toContain("scaleway_domain_registrar_list_contacts");
 		expect(registeredNames).toContain("scaleway_domain_registrar_get_contact");
-		expect(registeredNames).toContain("scaleway_domain_registrar_create_contact");
 		expect(registeredNames).toContain("scaleway_domain_registrar_update_contact");
+		expect(registeredNames).not.toContain("scaleway_domain_registrar_create_contact");
 		expect(registeredNames).toContain("scaleway_domain_registrar_list_tlds");
 		expect(registeredNames).toContain("scaleway_domain_registrar_get_tld");
 	});

@@ -43,8 +43,8 @@ function getClient() {
 	return createScalewayClient(config);
 }
 
-function regionOrDefault(region?: string): string {
-	return region ?? process.env.SCW_DEFAULT_REGION ?? "fr-par";
+function zoneOrDefault(zone?: string): string {
+	return zone ?? process.env.SCW_DEFAULT_ZONE ?? "fr-par-1";
 }
 
 function formatResponse(data: unknown) {
@@ -63,7 +63,7 @@ function formatResponse(data: unknown) {
 export async function handleListClusters(input: ListClustersInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 		const queryParams = new URLSearchParams();
 
 		const pagination = paginationToQuery(input.page, input.pageSize);
@@ -82,7 +82,7 @@ export async function handleListClusters(input: ListClustersInput) {
 
 		const data = await client.fetch<ListClustersResponse>({
 			method: "GET",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters?${queryParams.toString()}`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters?${queryParams.toString()}`,
 		});
 
 		return formatResponse(
@@ -96,11 +96,11 @@ export async function handleListClusters(input: ListClustersInput) {
 export async function handleGetCluster(input: GetClusterInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const data = await client.fetch<unknown>({
 			method: "GET",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters/${input.cluster_id}`,
 		});
 
 		return formatResponse(data);
@@ -112,7 +112,7 @@ export async function handleGetCluster(input: GetClusterInput) {
 export async function handleCreateCluster(input: CreateClusterInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const body: Record<string, unknown> = {
 			project_id: input.project_id,
@@ -132,7 +132,7 @@ export async function handleCreateCluster(input: CreateClusterInput) {
 
 		const data = await client.fetch<unknown>({
 			method: "POST",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters`,
 			body: JSON.stringify(body),
 			headers: { "Content-Type": "application/json" },
 		});
@@ -146,7 +146,7 @@ export async function handleCreateCluster(input: CreateClusterInput) {
 export async function handleUpdateCluster(input: UpdateClusterInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const body: Record<string, unknown> = {};
 		if (input.name !== undefined) body.name = input.name;
@@ -156,7 +156,7 @@ export async function handleUpdateCluster(input: UpdateClusterInput) {
 
 		const data = await client.fetch<unknown>({
 			method: "PATCH",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters/${input.cluster_id}`,
 			body: JSON.stringify(body),
 			headers: { "Content-Type": "application/json" },
 		});
@@ -170,11 +170,11 @@ export async function handleUpdateCluster(input: UpdateClusterInput) {
 export async function handleDeleteCluster(input: DeleteClusterInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const data = await client.fetch<unknown>({
 			method: "DELETE",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters/${input.cluster_id}`,
 		});
 
 		return formatResponse(data);
@@ -188,7 +188,7 @@ export async function handleDeleteCluster(input: DeleteClusterInput) {
 export async function handleGetClusterMetrics(input: GetClusterMetricsInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 		const queryParams = new URLSearchParams();
 
 		if (input.start_at) queryParams.set("start_at", input.start_at);
@@ -196,7 +196,7 @@ export async function handleGetClusterMetrics(input: GetClusterMetricsInput) {
 		if (input.metric_name) queryParams.set("metric_name", input.metric_name);
 
 		const qs = queryParams.toString();
-		const path = `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}/metrics${qs ? `?${qs}` : ""}`;
+		const path = `/${REDIS_API_PREFIX}/zones/${zone}/clusters/${input.cluster_id}/metrics${qs ? `?${qs}` : ""}`;
 
 		const data = await client.fetch<unknown>({ method: "GET", path });
 
@@ -209,11 +209,11 @@ export async function handleGetClusterMetrics(input: GetClusterMetricsInput) {
 export async function handleGetClusterCertificate(input: GetClusterCertificateInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const data = await client.fetch<unknown>({
 			method: "GET",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}/certificate`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters/${input.cluster_id}/certificate`,
 		});
 
 		return formatResponse(data);
@@ -225,11 +225,11 @@ export async function handleGetClusterCertificate(input: GetClusterCertificateIn
 export async function handleRenewClusterCertificate(input: RenewClusterCertificateInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const data = await client.fetch<unknown>({
 			method: "POST",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}/renew-certificate`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters/${input.cluster_id}/renew-certificate`,
 			body: JSON.stringify({}),
 			headers: { "Content-Type": "application/json" },
 		});
@@ -245,11 +245,11 @@ export async function handleRenewClusterCertificate(input: RenewClusterCertifica
 export async function handleAddACLRules(input: AddACLRulesInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const data = await client.fetch<unknown>({
 			method: "POST",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}/acls`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters/${input.cluster_id}/acls`,
 			body: JSON.stringify({ acl_rules: input.acl_rules }),
 			headers: { "Content-Type": "application/json" },
 		});
@@ -263,13 +263,11 @@ export async function handleAddACLRules(input: AddACLRulesInput) {
 export async function handleDeleteACLRules(input: DeleteACLRulesInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const data = await client.fetch<unknown>({
 			method: "DELETE",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}/acls`,
-			body: JSON.stringify({ acl_rule_ids: input.acl_rule_ids }),
-			headers: { "Content-Type": "application/json" },
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/acls/${input.acl_id}`,
 		});
 
 		return formatResponse(data);
@@ -281,11 +279,11 @@ export async function handleDeleteACLRules(input: DeleteACLRulesInput) {
 export async function handleSetACLRules(input: SetACLRulesInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const data = await client.fetch<unknown>({
 			method: "PUT",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}/acls`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters/${input.cluster_id}/acls`,
 			body: JSON.stringify({ acl_rules: input.acl_rules }),
 			headers: { "Content-Type": "application/json" },
 		});
@@ -301,11 +299,11 @@ export async function handleSetACLRules(input: SetACLRulesInput) {
 export async function handleAddEndpoints(input: AddEndpointsInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const data = await client.fetch<unknown>({
 			method: "POST",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}/endpoints`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters/${input.cluster_id}/endpoints`,
 			body: JSON.stringify({ endpoints: input.endpoints }),
 			headers: { "Content-Type": "application/json" },
 		});
@@ -319,11 +317,11 @@ export async function handleAddEndpoints(input: AddEndpointsInput) {
 export async function handleDeleteEndpoints(input: DeleteEndpointsInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const data = await client.fetch<unknown>({
 			method: "DELETE",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}/endpoints/${input.endpoint_id}`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/endpoints/${input.endpoint_id}`,
 		});
 
 		return formatResponse(data);
@@ -335,11 +333,11 @@ export async function handleDeleteEndpoints(input: DeleteEndpointsInput) {
 export async function handleSetEndpoints(input: SetEndpointsInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 
 		const data = await client.fetch<unknown>({
 			method: "PUT",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/clusters/${input.cluster_id}/endpoints`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/clusters/${input.cluster_id}/endpoints`,
 			body: JSON.stringify({ endpoints: input.endpoints }),
 			headers: { "Content-Type": "application/json" },
 		});
@@ -355,7 +353,7 @@ export async function handleSetEndpoints(input: SetEndpointsInput) {
 export async function handleListNodeTypes(input: ListNodeTypesInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 		const queryParams = new URLSearchParams();
 
 		const pagination = paginationToQuery(input.page, input.pageSize);
@@ -367,7 +365,7 @@ export async function handleListNodeTypes(input: ListNodeTypesInput) {
 
 		const data = await client.fetch<ListNodeTypesResponse>({
 			method: "GET",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/node-types?${queryParams.toString()}`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/node-types?${queryParams.toString()}`,
 		});
 
 		return formatResponse(
@@ -381,7 +379,7 @@ export async function handleListNodeTypes(input: ListNodeTypesInput) {
 export async function handleListClusterVersions(input: ListClusterVersionsInput) {
 	try {
 		const client = getClient();
-		const region = regionOrDefault(input.region);
+		const zone = zoneOrDefault(input.zone);
 		const queryParams = new URLSearchParams();
 
 		const pagination = paginationToQuery(input.page, input.pageSize);
@@ -398,7 +396,7 @@ export async function handleListClusterVersions(input: ListClusterVersionsInput)
 
 		const data = await client.fetch<ListVersionsResponse>({
 			method: "GET",
-			path: `/${REDIS_API_PREFIX}/regions/${region}/cluster-versions?${queryParams.toString()}`,
+			path: `/${REDIS_API_PREFIX}/zones/${zone}/cluster-versions?${queryParams.toString()}`,
 		});
 
 		return formatResponse(

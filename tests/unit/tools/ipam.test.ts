@@ -381,7 +381,10 @@ describe("IPAM handlers", () => {
 
 	describe("handleListIPs", () => {
 		it("returns paginated IP list", async () => {
-			fetchMock.mockResolvedValue({ ips: [SAMPLE_IP], total_count: 1 });
+			fetchMock.mockImplementation((_req, unmarshal?: (obj: unknown) => unknown) => {
+				const value = { ips: [SAMPLE_IP], total_count: 1 };
+				return Promise.resolve(unmarshal ? unmarshal(value) : value);
+			});
 			const client = createMockClient(fetchMock);
 
 			const result = await handleListIPs(client, {
@@ -585,7 +588,10 @@ describe("IPAM handlers", () => {
 
 	describe("handleReleaseIP", () => {
 		it("releases an IP successfully", async () => {
-			fetchMock.mockResolvedValue(undefined);
+			fetchMock.mockImplementation((_req, unmarshal?: (obj: unknown) => unknown) => {
+				unmarshal?.(undefined);
+				return Promise.resolve(undefined);
+			});
 			const client = createMockClient(fetchMock);
 
 			const result = await handleReleaseIP(client, {

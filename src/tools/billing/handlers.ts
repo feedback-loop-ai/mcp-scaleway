@@ -4,6 +4,7 @@ import { paginationToQuery } from "../../shared/pagination.js";
 import type {
 	DownloadInvoiceParams,
 	GetInvoiceParams,
+	ListChargesParams,
 	ListConsumptionsParams,
 	ListDiscountsParams,
 	ListInvoicesParams,
@@ -14,7 +15,14 @@ const BILLING_API_BASE = "/billing/v2beta1";
 function buildUrlParams(params: Record<string, unknown>): URLSearchParams {
 	const urlParams = new URLSearchParams();
 	for (const [key, value] of Object.entries(params)) {
-		if (value !== undefined && value !== null) {
+		if (value === undefined || value === null) {
+			continue;
+		}
+		if (Array.isArray(value)) {
+			for (const item of value) {
+				urlParams.append(key, String(item));
+			}
+		} else {
 			urlParams.set(key, String(value));
 		}
 	}
@@ -96,6 +104,33 @@ export async function handleDownloadInvoice(client: Client, params: DownloadInvo
 		const response = await client.fetch<Record<string, unknown>>({
 			method: "GET",
 			path: `${BILLING_API_BASE}/invoices/${encodeURIComponent(params.invoice_id)}/download`,
+			urlParams,
+		});
+		return formatJsonResponse(response);
+	} catch (error) {
+		return formatErrorResponse(mapScalewayError(error));
+	}
+}
+
+export async function handleListCharges(client: Client, params: ListChargesParams) {
+	try {
+		const urlParams = buildUrlParams({
+			organization_id: params.organization_id,
+			order_by: params.order_by,
+			page_size: params.page_size,
+			page_token: params.page_token,
+			start_date_after: params.start_date_after,
+			end_date_before: params.end_date_before,
+			clamp_to_time_range: params.clamp_to_time_range,
+			invoice_ids: params.invoice_ids,
+			project_ids: params.project_ids,
+			resource_ids: params.resource_ids,
+			resource_names: params.resource_names,
+			skus: params.skus,
+		});
+		const response = await client.fetch<Record<string, unknown>>({
+			method: "GET",
+			path: `${BILLING_API_BASE}/charges`,
 			urlParams,
 		});
 		return formatJsonResponse(response);

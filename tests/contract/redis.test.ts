@@ -2,7 +2,7 @@
  * Contract tests for Scaleway Redis API
  * Validates request/response shapes, pagination, auth, and error codes
  *
- * API Reference: Scaleway Redis v1 (regional)
+ * API Reference: Scaleway Redis v1 (zonal)
  * Spec: specs/scaleway-api/ (redis)
  * Parity: tests/parity-matrix.json#redis
  */
@@ -38,7 +38,7 @@ import {
 } from "../../src/tools/redis/types.js";
 
 describe("Redis contract: entity schemas", () => {
-	// Spec: GET /redis/v1/regions/{region}/clusters/{cluster_id}
+	// Spec: GET /redis/v1/zones/{zone}/clusters/{cluster_id}
 	describe("RedisCluster", () => {
 		it("validates a complete cluster response", () => {
 			const cluster = {
@@ -46,7 +46,7 @@ describe("Redis contract: entity schemas", () => {
 				name: "my-redis",
 				version: "7.0.12",
 				status: "ready",
-				region: "fr-par",
+				zone: "fr-par-1",
 				project_id: "550e8400-e29b-41d4-a716-446655440001",
 				node_type: "RED1-XS",
 				cluster_size: 1,
@@ -68,7 +68,7 @@ describe("Redis contract: entity schemas", () => {
 				name: "name",
 				version: "7.0",
 				status: "ready",
-				region: "fr-par",
+				zone: "fr-par-1",
 				project_id: "proj",
 				node_type: "RED1-XS",
 				cluster_size: 1,
@@ -220,7 +220,7 @@ describe("Redis contract: entity schemas", () => {
 });
 
 describe("Redis contract: input schemas", () => {
-	// Spec: GET /redis/v1/regions/{region}/clusters
+	// Spec: GET /redis/v1/zones/{zone}/clusters
 	describe("ListClustersInput", () => {
 		it("validates with defaults", () => {
 			const result = ListClustersInput.parse({});
@@ -232,7 +232,7 @@ describe("Redis contract: input schemas", () => {
 			const input = {
 				page: 2,
 				pageSize: 25,
-				region: "fr-par",
+				zone: "fr-par-1",
 				project_id: "proj-123",
 				tags: ["env:prod"],
 				name: "my-redis",
@@ -252,8 +252,8 @@ describe("Redis contract: input schemas", () => {
 			expect(() => ListClustersInput.parse({ order_by: "invalid" })).toThrow();
 		});
 
-		it("rejects invalid region format", () => {
-			expect(() => ListClustersInput.parse({ region: "invalid" })).toThrow();
+		it("rejects invalid zone format", () => {
+			expect(() => ListClustersInput.parse({ zone: "invalid" })).toThrow();
 		});
 
 		it("rejects page < 1", () => {
@@ -265,17 +265,17 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: GET /redis/v1/regions/{region}/clusters/{cluster_id}
+	// Spec: GET /redis/v1/zones/{zone}/clusters/{cluster_id}
 	describe("GetClusterInput", () => {
 		it("validates with cluster_id only", () => {
 			const result = GetClusterInput.parse({ cluster_id: "id-123" });
 			expect(result.cluster_id).toBe("id-123");
-			expect(result.region).toBeUndefined();
+			expect(result.zone).toBeUndefined();
 		});
 
-		it("validates with region", () => {
-			const result = GetClusterInput.parse({ cluster_id: "id-123", region: "nl-ams" });
-			expect(result.region).toBe("nl-ams");
+		it("validates with zone", () => {
+			const result = GetClusterInput.parse({ cluster_id: "id-123", zone: "nl-ams-1" });
+			expect(result.zone).toBe("nl-ams-1");
 		});
 
 		it("rejects missing cluster_id", () => {
@@ -283,7 +283,7 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: POST /redis/v1/regions/{region}/clusters
+	// Spec: POST /redis/v1/zones/{zone}/clusters
 	describe("CreateClusterInput", () => {
 		it("validates minimal create input", () => {
 			const input = {
@@ -300,7 +300,7 @@ describe("Redis contract: input schemas", () => {
 
 		it("validates with all optional fields", () => {
 			const input = {
-				region: "fr-par",
+				zone: "fr-par-1",
 				project_id: "proj-123",
 				name: "my-redis",
 				version: "7.0",
@@ -337,7 +337,7 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: PATCH /redis/v1/regions/{region}/clusters/{cluster_id}
+	// Spec: PATCH /redis/v1/zones/{zone}/clusters/{cluster_id}
 	describe("UpdateClusterInput", () => {
 		it("validates with cluster_id only", () => {
 			const result = UpdateClusterInput.parse({ cluster_id: "id-123" });
@@ -347,7 +347,7 @@ describe("Redis contract: input schemas", () => {
 		it("validates with all optional fields", () => {
 			const input = {
 				cluster_id: "id-123",
-				region: "fr-par",
+				zone: "fr-par-1",
 				name: "new-name",
 				tags: ["tag1"],
 				user_name: "newuser",
@@ -361,7 +361,7 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: DELETE /redis/v1/regions/{region}/clusters/{cluster_id}
+	// Spec: DELETE /redis/v1/zones/{zone}/clusters/{cluster_id}
 	describe("DeleteClusterInput", () => {
 		it("validates with cluster_id", () => {
 			const result = DeleteClusterInput.parse({ cluster_id: "id-123" });
@@ -373,7 +373,7 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: GET /redis/v1/regions/{region}/clusters/{cluster_id}/metrics
+	// Spec: GET /redis/v1/zones/{zone}/clusters/{cluster_id}/metrics
 	describe("GetClusterMetricsInput", () => {
 		it("validates with cluster_id only", () => {
 			const result = GetClusterMetricsInput.parse({ cluster_id: "id-123" });
@@ -383,7 +383,7 @@ describe("Redis contract: input schemas", () => {
 		it("validates with all optional fields", () => {
 			const input = {
 				cluster_id: "id-123",
-				region: "fr-par",
+				zone: "fr-par-1",
 				start_at: "2024-01-01T00:00:00Z",
 				end_at: "2024-01-02T00:00:00Z",
 				metric_name: "cpu_usage",
@@ -392,7 +392,7 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: GET /redis/v1/regions/{region}/clusters/{cluster_id}/certificate
+	// Spec: GET /redis/v1/zones/{zone}/clusters/{cluster_id}/certificate
 	describe("GetClusterCertificateInput", () => {
 		it("validates with cluster_id", () => {
 			const result = GetClusterCertificateInput.parse({ cluster_id: "id-123" });
@@ -400,7 +400,7 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: POST /redis/v1/regions/{region}/clusters/{cluster_id}/renew-certificate
+	// Spec: POST /redis/v1/zones/{zone}/clusters/{cluster_id}/renew-certificate
 	describe("RenewClusterCertificateInput", () => {
 		it("validates with cluster_id", () => {
 			const result = RenewClusterCertificateInput.parse({ cluster_id: "id-123" });
@@ -408,7 +408,7 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: POST /redis/v1/regions/{region}/clusters/{cluster_id}/acls
+	// Spec: POST /redis/v1/zones/{zone}/clusters/{cluster_id}/acls
 	describe("AddACLRulesInput", () => {
 		it("validates add ACL rules input", () => {
 			const input = {
@@ -423,18 +423,26 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: DELETE /redis/v1/regions/{region}/clusters/{cluster_id}/acls
+	// Spec: DELETE /redis/v1/zones/{zone}/acls/{acl_id}
 	describe("DeleteACLRulesInput", () => {
-		it("validates delete ACL rules input", () => {
+		it("validates delete ACL rule input", () => {
 			const input = {
-				cluster_id: "id-123",
-				acl_rule_ids: ["acl-1", "acl-2"],
+				acl_id: "acl-1",
 			};
 			expect(DeleteACLRulesInput.parse(input)).toEqual(input);
 		});
+
+		it("validates with zone", () => {
+			const input = { acl_id: "acl-1", zone: "nl-ams-1" };
+			expect(DeleteACLRulesInput.parse(input)).toEqual(input);
+		});
+
+		it("rejects missing acl_id", () => {
+			expect(() => DeleteACLRulesInput.parse({})).toThrow();
+		});
 	});
 
-	// Spec: PUT /redis/v1/regions/{region}/clusters/{cluster_id}/acls
+	// Spec: PUT /redis/v1/zones/{zone}/clusters/{cluster_id}/acls
 	describe("SetACLRulesInput", () => {
 		it("validates set ACL rules input", () => {
 			const input = {
@@ -445,7 +453,7 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: POST /redis/v1/regions/{region}/clusters/{cluster_id}/endpoints
+	// Spec: POST /redis/v1/zones/{zone}/clusters/{cluster_id}/endpoints
 	describe("AddEndpointsInput", () => {
 		it("validates add endpoints input", () => {
 			const input = {
@@ -456,18 +464,26 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: DELETE /redis/v1/regions/{region}/clusters/{cluster_id}/endpoints/{endpoint_id}
+	// Spec: DELETE /redis/v1/zones/{zone}/endpoints/{endpoint_id}
 	describe("DeleteEndpointsInput", () => {
 		it("validates delete endpoint input", () => {
 			const input = {
-				cluster_id: "id-123",
 				endpoint_id: "ep-1",
 			};
 			expect(DeleteEndpointsInput.parse(input)).toEqual(input);
 		});
+
+		it("validates with zone", () => {
+			const input = { endpoint_id: "ep-1", zone: "nl-ams-1" };
+			expect(DeleteEndpointsInput.parse(input)).toEqual(input);
+		});
+
+		it("rejects missing endpoint_id", () => {
+			expect(() => DeleteEndpointsInput.parse({})).toThrow();
+		});
 	});
 
-	// Spec: PUT /redis/v1/regions/{region}/clusters/{cluster_id}/endpoints
+	// Spec: PUT /redis/v1/zones/{zone}/clusters/{cluster_id}/endpoints
 	describe("SetEndpointsInput", () => {
 		it("validates set endpoints input", () => {
 			const input = {
@@ -478,7 +494,7 @@ describe("Redis contract: input schemas", () => {
 		});
 	});
 
-	// Spec: GET /redis/v1/regions/{region}/node-types
+	// Spec: GET /redis/v1/zones/{zone}/node-types
 	describe("ListNodeTypesInput", () => {
 		it("validates with defaults", () => {
 			const result = ListNodeTypesInput.parse({});
@@ -490,14 +506,14 @@ describe("Redis contract: input schemas", () => {
 			const input = {
 				page: 1,
 				pageSize: 25,
-				region: "fr-par",
+				zone: "fr-par-1",
 				include_disabled_types: true,
 			};
 			expect(ListNodeTypesInput.parse(input)).toEqual(input);
 		});
 	});
 
-	// Spec: GET /redis/v1/regions/{region}/cluster-versions
+	// Spec: GET /redis/v1/zones/{zone}/cluster-versions
 	describe("ListClusterVersionsInput", () => {
 		it("validates with defaults", () => {
 			const result = ListClusterVersionsInput.parse({});
@@ -509,7 +525,7 @@ describe("Redis contract: input schemas", () => {
 			const input = {
 				page: 1,
 				pageSize: 25,
-				region: "fr-par",
+				zone: "fr-par-1",
 				include_disabled: true,
 				include_beta: false,
 				include_deprecated: false,
@@ -543,15 +559,15 @@ describe("Redis contract: pagination", () => {
 });
 
 describe("Redis contract: auth", () => {
-	it("region field validates Scaleway region format", () => {
-		// Valid regions
-		expect(GetClusterInput.parse({ cluster_id: "id", region: "fr-par" }).region).toBe("fr-par");
-		expect(GetClusterInput.parse({ cluster_id: "id", region: "nl-ams" }).region).toBe("nl-ams");
-		expect(GetClusterInput.parse({ cluster_id: "id", region: "pl-waw" }).region).toBe("pl-waw");
+	it("zone field validates Scaleway zone format", () => {
+		// Valid zones
+		expect(GetClusterInput.parse({ cluster_id: "id", zone: "fr-par-1" }).zone).toBe("fr-par-1");
+		expect(GetClusterInput.parse({ cluster_id: "id", zone: "nl-ams-1" }).zone).toBe("nl-ams-1");
+		expect(GetClusterInput.parse({ cluster_id: "id", zone: "pl-waw-1" }).zone).toBe("pl-waw-1");
 
-		// Invalid regions
-		expect(() => GetClusterInput.parse({ cluster_id: "id", region: "invalid" })).toThrow();
-		expect(() => GetClusterInput.parse({ cluster_id: "id", region: "fr-par-1" })).toThrow();
+		// Invalid zones (region format without a zone number is rejected)
+		expect(() => GetClusterInput.parse({ cluster_id: "id", zone: "invalid" })).toThrow();
+		expect(() => GetClusterInput.parse({ cluster_id: "id", zone: "fr-par" })).toThrow();
 	});
 });
 
