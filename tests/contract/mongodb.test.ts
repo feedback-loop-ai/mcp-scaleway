@@ -1,10 +1,10 @@
 /**
- * Contract tests for Scaleway MongoDB API (v1alpha1)
+ * Contract tests for Scaleway MongoDB API (v1 — GA)
  *
  * Validates request shapes, response shapes, pagination, auth, and error codes
- * against the Scaleway MongoDB API specification.
+ * against the Scaleway Managed MongoDB v1 API specification.
  *
- * API Reference: specs/015-mongodb/contracts/api-spec.md
+ * API Reference: specs/scaleway-api/mongodb/api-reference.md
  * Parity Matrix: tests/parity-matrix.json > mongodb
  */
 import { describe, expect, it } from "vitest";
@@ -26,10 +26,11 @@ import {
 	SnapshotStatus,
 	UpdateInstanceParams,
 	UpdateUserParams,
+	VolumeType,
 } from "../../src/tools/mongodb/types.js";
 
 describe("MongoDB contract: Instance schemas", () => {
-	// Endpoint: GET /mongodb/v1alpha1/regions/{region}/instances
+	// Endpoint: GET /mongodb/v1/regions/{region}/instances
 	describe("ListInstancesParams", () => {
 		it("accepts empty params with defaults", () => {
 			const result = ListInstancesParams.parse({});
@@ -68,7 +69,7 @@ describe("MongoDB contract: Instance schemas", () => {
 		});
 	});
 
-	// Endpoint: GET /mongodb/v1alpha1/regions/{region}/instances/{instance_id}
+	// Endpoint: GET /mongodb/v1/regions/{region}/instances/{instance_id}
 	describe("GetInstanceParams", () => {
 		it("accepts valid instance_id", () => {
 			const result = GetInstanceParams.parse({
@@ -103,13 +104,13 @@ describe("MongoDB contract: Instance schemas", () => {
 		});
 	});
 
-	// Endpoint: POST /mongodb/v1alpha1/regions/{region}/instances
+	// Endpoint: POST /mongodb/v1/regions/{region}/instances
 	describe("CreateInstanceParams", () => {
 		const validCreate = {
 			name: "my-mongo",
 			version: "7.0.12",
 			node_type: "MGDB-PLAY2-NANO",
-			node_number: 1,
+			node_amount: 1,
 			user_name: "admin",
 			password: "s3cret!",
 		};
@@ -118,29 +119,54 @@ describe("MongoDB contract: Instance schemas", () => {
 			const result = CreateInstanceParams.parse(validCreate);
 			expect(result.name).toBe("my-mongo");
 			expect(result.version).toBe("7.0.12");
+			expect(result.node_amount).toBe(1);
 		});
 
-		it("accepts optional volume with sbs_5k", () => {
+		it("accepts optional volume with sbs_5k (type + size_bytes)", () => {
 			const result = CreateInstanceParams.parse({
 				...validCreate,
-				volume: { volume_type: "sbs_5k", volume_size: 10000000000 },
+				volume: { type: "sbs_5k", size_bytes: 10000000000 },
 			});
-			expect(result.volume?.volume_type).toBe("sbs_5k");
+			expect(result.volume?.type).toBe("sbs_5k");
+			expect(result.volume?.size_bytes).toBe(10000000000);
 		});
 
 		it("accepts optional volume with sbs_15k", () => {
 			const result = CreateInstanceParams.parse({
 				...validCreate,
-				volume: { volume_type: "sbs_15k", volume_size: 20000000000 },
+				volume: { type: "sbs_15k", size_bytes: 20000000000 },
 			});
-			expect(result.volume?.volume_type).toBe("sbs_15k");
+			expect(result.volume?.type).toBe("sbs_15k");
 		});
 
-		it("rejects invalid volume_type", () => {
+		it("accepts optional endpoints (private + public network)", () => {
+			const result = CreateInstanceParams.parse({
+				...validCreate,
+				endpoints: [
+					{ private_network: { private_network_id: "00000000-0000-0000-0000-000000000009" } },
+					{ public_network: {} },
+				],
+			});
+			expect(result.endpoints).toHaveLength(2);
+			expect(result.endpoints?.[0].private_network?.private_network_id).toBe(
+				"00000000-0000-0000-0000-000000000009",
+			);
+		});
+
+		it("rejects invalid endpoint private_network_id", () => {
 			expect(() =>
 				CreateInstanceParams.parse({
 					...validCreate,
-					volume: { volume_type: "local_ssd", volume_size: 10000 },
+					endpoints: [{ private_network: { private_network_id: "not-a-uuid" } }],
+				}),
+			).toThrow();
+		});
+
+		it("rejects invalid volume type", () => {
+			expect(() =>
+				CreateInstanceParams.parse({
+					...validCreate,
+					volume: { type: "local_ssd", size_bytes: 10000 },
 				}),
 			).toThrow();
 		});
@@ -154,12 +180,12 @@ describe("MongoDB contract: Instance schemas", () => {
 			expect(() => CreateInstanceParams.parse(noVersion)).toThrow();
 		});
 
-		it("rejects node_number < 1", () => {
-			expect(() => CreateInstanceParams.parse({ ...validCreate, node_number: 0 })).toThrow();
+		it("rejects node_amount < 1", () => {
+			expect(() => CreateInstanceParams.parse({ ...validCreate, node_amount: 0 })).toThrow();
 		});
 	});
 
-	// Endpoint: PATCH /mongodb/v1alpha1/regions/{region}/instances/{instance_id}
+	// Endpoint: PATCH /mongodb/v1/regions/{region}/instances/{instance_id}
 	describe("UpdateInstanceParams", () => {
 		it("accepts instance_id with name", () => {
 			const result = UpdateInstanceParams.parse({
@@ -177,6 +203,27 @@ describe("MongoDB contract: Instance schemas", () => {
 			expect(result.tags).toEqual(["env:prod"]);
 		});
 
+		it("accepts snapshot schedule fields", () => {
+			const result = UpdateInstanceParams.parse({
+				instance_id: "00000000-0000-0000-0000-000000000001",
+				snapshot_schedule_frequency_hours: 24,
+				snapshot_schedule_retention_days: 7,
+				is_snapshot_schedule_enabled: true,
+			});
+			expect(result.snapshot_schedule_frequency_hours).toBe(24);
+			expect(result.snapshot_schedule_retention_days).toBe(7);
+			expect(result.is_snapshot_schedule_enabled).toBe(true);
+		});
+
+		it("rejects non-positive snapshot schedule frequency", () => {
+			expect(() =>
+				UpdateInstanceParams.parse({
+					instance_id: "00000000-0000-0000-0000-000000000001",
+					snapshot_schedule_frequency_hours: 0,
+				}),
+			).toThrow();
+		});
+
 		it("accepts instance_id alone (no updates)", () => {
 			const result = UpdateInstanceParams.parse({
 				instance_id: "00000000-0000-0000-0000-000000000001",
@@ -186,7 +233,7 @@ describe("MongoDB contract: Instance schemas", () => {
 		});
 	});
 
-	// Endpoint: DELETE /mongodb/v1alpha1/regions/{region}/instances/{instance_id}
+	// Endpoint: DELETE /mongodb/v1/regions/{region}/instances/{instance_id}
 	describe("DeleteInstanceParams", () => {
 		it("accepts valid instance_id", () => {
 			const result = DeleteInstanceParams.parse({
@@ -202,7 +249,7 @@ describe("MongoDB contract: Instance schemas", () => {
 });
 
 describe("MongoDB contract: User schemas", () => {
-	// Endpoint: GET /mongodb/v1alpha1/regions/{region}/instances/{instance_id}/users
+	// Endpoint: GET /mongodb/v1/regions/{region}/instances/{instance_id}/users
 	describe("ListUsersParams", () => {
 		it("requires instance_id", () => {
 			expect(() => ListUsersParams.parse({})).toThrow();
@@ -229,7 +276,7 @@ describe("MongoDB contract: User schemas", () => {
 		});
 	});
 
-	// Endpoint: POST /mongodb/v1alpha1/regions/{region}/instances/{instance_id}/users
+	// Endpoint: POST /mongodb/v1/regions/{region}/instances/{instance_id}/users
 	describe("CreateUserParams", () => {
 		it("accepts valid params", () => {
 			const result = CreateUserParams.parse({
@@ -260,7 +307,7 @@ describe("MongoDB contract: User schemas", () => {
 		});
 	});
 
-	// Endpoint: PATCH /mongodb/v1alpha1/regions/{region}/instances/{instance_id}/users/{name}
+	// Endpoint: PATCH /mongodb/v1/regions/{region}/instances/{instance_id}/users/{user_name}
 	describe("UpdateUserParams", () => {
 		it("accepts password update", () => {
 			const result = UpdateUserParams.parse({
@@ -280,7 +327,7 @@ describe("MongoDB contract: User schemas", () => {
 		});
 	});
 
-	// Endpoint: DELETE /mongodb/v1alpha1/regions/{region}/instances/{instance_id}/users/{name}
+	// Endpoint: DELETE /mongodb/v1/regions/{region}/instances/{instance_id}/users/{user_name}
 	describe("DeleteUserParams", () => {
 		it("requires instance_id and name", () => {
 			const result = DeleteUserParams.parse({
@@ -301,7 +348,7 @@ describe("MongoDB contract: User schemas", () => {
 });
 
 describe("MongoDB contract: Snapshot schemas", () => {
-	// Endpoint: GET /mongodb/v1alpha1/regions/{region}/snapshots
+	// Endpoint: GET /mongodb/v1/regions/{region}/snapshots
 	describe("ListSnapshotsParams", () => {
 		it("accepts empty params", () => {
 			const result = ListSnapshotsParams.parse({});
@@ -324,7 +371,7 @@ describe("MongoDB contract: Snapshot schemas", () => {
 		});
 	});
 
-	// Endpoint: POST /mongodb/v1alpha1/regions/{region}/instances/{instance_id}/snapshots
+	// Endpoint: POST /mongodb/v1/regions/{region}/snapshots
 	describe("CreateSnapshotParams", () => {
 		it("accepts required fields", () => {
 			const result = CreateSnapshotParams.parse({
@@ -354,26 +401,33 @@ describe("MongoDB contract: Snapshot schemas", () => {
 		});
 	});
 
-	// Endpoint: POST /mongodb/v1alpha1/regions/{region}/snapshots/{snapshot_id}/restore
+	// Endpoint: POST /mongodb/v1/regions/{region}/snapshots/{snapshot_id}/restore
 	describe("RestoreSnapshotParams", () => {
 		const validRestore = {
 			snapshot_id: "00000000-0000-0000-0000-000000000001",
 			instance_name: "restored-db",
 			node_type: "MGDB-PLAY2-NANO",
-			node_number: 1,
+			node_amount: 1,
 		};
 
 		it("accepts valid required fields", () => {
 			const result = RestoreSnapshotParams.parse(validRestore);
 			expect(result.instance_name).toBe("restored-db");
+			expect(result.node_amount).toBe(1);
 		});
 
-		it("accepts optional volume", () => {
+		it("accepts optional volume_type", () => {
 			const result = RestoreSnapshotParams.parse({
 				...validRestore,
-				volume: { volume_type: "sbs_15k", volume_size: 50000000000 },
+				volume_type: "sbs_15k",
 			});
-			expect(result.volume?.volume_type).toBe("sbs_15k");
+			expect(result.volume_type).toBe("sbs_15k");
+		});
+
+		it("rejects invalid volume_type", () => {
+			expect(() =>
+				RestoreSnapshotParams.parse({ ...validRestore, volume_type: "local_ssd" }),
+			).toThrow();
 		});
 
 		it("rejects missing instance_name", () => {
@@ -381,12 +435,12 @@ describe("MongoDB contract: Snapshot schemas", () => {
 			expect(() => RestoreSnapshotParams.parse(noName)).toThrow();
 		});
 
-		it("rejects node_number < 1", () => {
-			expect(() => RestoreSnapshotParams.parse({ ...validRestore, node_number: 0 })).toThrow();
+		it("rejects node_amount < 1", () => {
+			expect(() => RestoreSnapshotParams.parse({ ...validRestore, node_amount: 0 })).toThrow();
 		});
 	});
 
-	// Endpoint: DELETE /mongodb/v1alpha1/regions/{region}/snapshots/{snapshot_id}
+	// Endpoint: DELETE /mongodb/v1/regions/{region}/snapshots/{snapshot_id}
 	describe("DeleteSnapshotParams", () => {
 		it("accepts valid snapshot_id", () => {
 			const result = DeleteSnapshotParams.parse({
@@ -402,22 +456,22 @@ describe("MongoDB contract: Snapshot schemas", () => {
 });
 
 describe("MongoDB contract: Reference schemas", () => {
-	// Endpoint: GET /mongodb/v1alpha1/regions/{region}/node-types
+	// Endpoint: GET /mongodb/v1/regions/{region}/node-types
 	describe("ListNodeTypesParams", () => {
 		it("accepts empty params", () => {
 			const result = ListNodeTypesParams.parse({});
 			expect(result.page).toBe(1);
 		});
 
-		it("accepts include_disabled_types", () => {
+		it("accepts include_disabled", () => {
 			const result = ListNodeTypesParams.parse({
-				include_disabled_types: true,
+				include_disabled: true,
 			});
-			expect(result.include_disabled_types).toBe(true);
+			expect(result.include_disabled).toBe(true);
 		});
 	});
 
-	// Endpoint: GET /mongodb/v1alpha1/regions/{region}/versions
+	// Endpoint: GET /mongodb/v1/regions/{region}/versions
 	describe("ListVersionsParams", () => {
 		it("accepts empty params", () => {
 			const result = ListVersionsParams.parse({});
@@ -475,6 +529,18 @@ describe("MongoDB contract: Status enums", () => {
 
 		it("rejects unknown status", () => {
 			expect(() => SnapshotStatus.parse("active")).toThrow();
+		});
+	});
+
+	describe("VolumeType", () => {
+		for (const type of ["sbs_5k", "sbs_15k"]) {
+			it(`accepts '${type}'`, () => {
+				expect(VolumeType.parse(type)).toBe(type);
+			});
+		}
+
+		it("rejects unknown volume type", () => {
+			expect(() => VolumeType.parse("local_ssd")).toThrow();
 		});
 	});
 });

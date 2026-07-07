@@ -4,7 +4,6 @@ import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
 import { buildPaginatedResponse, paginationToQuery } from "../../shared/pagination.js";
 import type {
 	CheckDomainAvailabilityInput,
-	CreateContactInput,
 	DisableAutoRenewInput,
 	EnableAutoRenewInput,
 	GetContactInput,
@@ -91,13 +90,13 @@ export async function handleGetDomain(input: GetDomainInput) {
 
 export async function handleRegisterDomain(input: RegisterDomainInput) {
 	try {
-		const result = await apiRequest("POST", "/domains", {
-			domain: input.domain,
+		const result = await apiRequest("POST", "/buy-domains", {
+			domains: [input.domain],
 			duration_in_years: input.duration_in_years,
 			project_id: input.project_id,
 			owner_contact_id: input.owner_contact_id,
-			admin_contact_id: input.admin_contact_id,
-			tech_contact_id: input.tech_contact_id,
+			administrative_contact_id: input.admin_contact_id,
+			technical_contact_id: input.tech_contact_id,
 		});
 		return successResponse(result);
 	} catch (error) {
@@ -107,7 +106,8 @@ export async function handleRegisterDomain(input: RegisterDomainInput) {
 
 export async function handleRenewDomain(input: RenewDomainInput) {
 	try {
-		const result = await apiRequest("POST", `/domains/${input.domain}/renew`, {
+		const result = await apiRequest("POST", "/renew-domains", {
+			domains: [input.domain],
 			duration_in_years: input.duration_in_years,
 		});
 		return successResponse(result);
@@ -118,9 +118,8 @@ export async function handleRenewDomain(input: RenewDomainInput) {
 
 export async function handleTransferDomain(input: TransferDomainInput) {
 	try {
-		const result = await apiRequest("POST", "/domains/transfer", {
-			domain: input.domain,
-			auth_code: input.auth_code,
+		const result = await apiRequest("POST", "/domains/transfer-domains", {
+			domains: [{ domain: input.domain, auth_code: input.auth_code }],
 			project_id: input.project_id,
 			owner_contact_id: input.owner_contact_id,
 		});
@@ -132,8 +131,17 @@ export async function handleTransferDomain(input: TransferDomainInput) {
 
 export async function handleUpdateDomain(input: UpdateDomainInput) {
 	try {
-		const { domain, ...body } = input;
-		const result = await apiRequest("PATCH", `/domains/${domain}`, body);
+		const body: Record<string, string> = {};
+		if (input.owner_contact_id !== undefined) {
+			body.owner_contact_id = input.owner_contact_id;
+		}
+		if (input.admin_contact_id !== undefined) {
+			body.administrative_contact_id = input.admin_contact_id;
+		}
+		if (input.tech_contact_id !== undefined) {
+			body.technical_contact_id = input.tech_contact_id;
+		}
+		const result = await apiRequest("PATCH", `/domains/${input.domain}`, body);
 		return successResponse(result);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -160,8 +168,8 @@ export async function handleDisableAutoRenew(input: DisableAutoRenewInput) {
 
 export async function handleCheckDomainAvailability(input: CheckDomainAvailabilityInput) {
 	try {
-		const result = await apiRequest("GET", "/domains/availability", undefined, {
-			domain: input.domain,
+		const result = await apiRequest("GET", "/search-domains", undefined, {
+			domains: input.domain,
 		});
 		return successResponse(result);
 	} catch (error) {
@@ -199,15 +207,6 @@ export async function handleGetContact(input: GetContactInput) {
 	}
 }
 
-export async function handleCreateContact(input: CreateContactInput) {
-	try {
-		const result = await apiRequest("POST", "/contacts", input);
-		return successResponse(result);
-	} catch (error) {
-		return formatErrorResponse(mapScalewayError(error));
-	}
-}
-
 export async function handleUpdateContact(input: UpdateContactInput) {
 	try {
 		const { contact_id, ...body } = input;
@@ -238,8 +237,13 @@ export async function handleListTlds(input: ListTldsInput) {
 
 export async function handleGetTld(input: GetTldInput) {
 	try {
-		const result = await apiRequest("GET", `/tlds/${input.tld_name}`);
-		return successResponse(result);
+		// The Registrar API has no standalone GET /tlds/{tld} endpoint. Retrieve the
+		// specific TLD by filtering the documented ListTlds endpoint (GET /tlds?tlds=).
+		const result = (await apiRequest("GET", "/tlds", undefined, {
+			tlds: input.tld_name,
+		})) as { tlds?: unknown[] };
+		const tld = result.tlds?.[0];
+		return successResponse(tld ?? result);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}

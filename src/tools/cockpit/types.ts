@@ -23,15 +23,13 @@ export const TokenScope = z.enum([
 	"unknown_scope",
 	"read_only_metrics",
 	"write_only_metrics",
-	"full_access_metrics",
+	"full_access_metrics_rules",
 	"read_only_logs",
 	"write_only_logs",
-	"full_access_logs",
+	"full_access_logs_rules",
+	"full_access_alert_manager",
 	"read_only_traces",
 	"write_only_traces",
-	"full_access_traces",
-	"full_access_alerts_manager",
-	"read_only_alerts_manager",
 ]);
 export type TokenScope = z.infer<typeof TokenScope>;
 

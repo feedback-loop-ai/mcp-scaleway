@@ -17,7 +17,7 @@ import type {
 const JOBS_API_VERSION = "v1alpha2";
 
 function buildJobsUrl(region: string, path: string): string {
-	return `/jobs/${JOBS_API_VERSION}/regions/${region}/${path}`;
+	return `/serverless-jobs/${JOBS_API_VERSION}/regions/${region}/${path}`;
 }
 
 function getRegion(inputRegion?: string): string {
@@ -161,15 +161,13 @@ export async function handleStartJob(input: StartJobInput) {
 	try {
 		const region = getRegion(input.region);
 		const client = getClient();
-		const body: Record<string, unknown> = {
-			job_definition_id: input.job_definition_id,
-		};
+		const body: Record<string, unknown> = {};
 		if (input.command !== undefined) body.command = input.command;
 		if (input.environment_variables !== undefined)
 			body.environment_variables = input.environment_variables;
 		const response = await client.fetch({
 			method: "POST",
-			path: buildJobsUrl(region, "job-runs"),
+			path: buildJobsUrl(region, `job-definitions/${input.job_definition_id}/start`),
 			body: JSON.stringify(body),
 			headers: { "Content-Type": "application/json" },
 		});

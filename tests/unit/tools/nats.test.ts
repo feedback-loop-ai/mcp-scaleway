@@ -371,7 +371,7 @@ describe("nats handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "mnq/v1beta1/regions/fr-par/nats-accounts/00000000-0000-0000-0000-000000000010/nats-credentials",
+					path: "mnq/v1beta1/regions/fr-par/nats-credentials",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -397,6 +397,9 @@ describe("nats handlers", () => {
 
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(callArgs.method).toBe("GET");
+			expect(callArgs.urlParams.get("nats_account_id")).toBe(
+				"00000000-0000-0000-0000-000000000010",
+			);
 			expect(callArgs.urlParams.get("page")).toBe("1");
 			expect(callArgs.urlParams.get("page_size")).toBe("10");
 			expect(callArgs.urlParams.get("order_by")).toBe("name_desc");

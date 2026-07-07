@@ -5,26 +5,33 @@
  * pagination patterns, auth requirement, and error code mapping.
  *
  * API Reference: Scaleway Elastic Metal (Bare Metal) API v1
+ *   - specs/scaleway-api/elastic-metal/api-reference.md
+ *   - tests/parity-matrix.json (elastic-metal area)
  * Spec: specs/003-elastic-metal/contracts/tool-contract.md
- * Endpoints: /baremetal/v1/zones/{zone}/*
+ *       specs/057-elastic-metal-private-networks/contracts/private-networks.md
+ * Endpoints: /baremetal/v1/zones/{zone}/* (incl. server-private-networks)
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { describe, expect, it } from "vitest";
 import type { z } from "zod";
 import { registerElasticMetalTools } from "../../../../src/tools/elastic-metal/index.js";
 import {
+	AddServerPrivateNetworkInput,
 	CreateIpInput,
 	CreateServerInput,
 	DeleteIpInput,
 	DeleteServerInput,
+	DeleteServerPrivateNetworkInput,
 	GetBmcAccessInput,
 	GetServerInput,
 	InstallServerInput,
 	ListIpsInput,
 	ListOffersInput,
 	ListOssInput,
+	ListServerPrivateNetworksInput,
 	ListServersInput,
 	RebootServerInput,
+	SetServerPrivateNetworksInput,
 	StartServerInput,
 	StopServerInput,
 } from "../../../../src/tools/elastic-metal/types.js";
@@ -44,7 +51,7 @@ const VALID_UUID = "11111111-1111-1111-1111-111111111111";
 describe("Elastic Metal contract tests", () => {
 	// --- Tool Registration ---
 	describe("tool registration", () => {
-		it("registers all 14 Elastic Metal tools on a McpServer", () => {
+		it("registers all 18 Elastic Metal tools on a McpServer", () => {
 			const server = new McpServer({ name: "test", version: "0.0.1" });
 			expect(() => registerElasticMetalTools(server)).not.toThrow();
 		});
@@ -347,6 +354,122 @@ describe("Elastic Metal contract tests", () => {
 		});
 	});
 
+	// --- US5: Private Networks Schema Contracts ---
+	describe("ListServerPrivateNetworksInput schema", () => {
+		it("accepts valid input with zone only", () => {
+			expectSchemaAccepts(ListServerPrivateNetworksInput, { zone: VALID_ZONE });
+		});
+
+		it("applies pagination defaults", () => {
+			const result = ListServerPrivateNetworksInput.parse({ zone: VALID_ZONE });
+			expect(result.page).toBe(1);
+			expect(result.pageSize).toBe(50);
+		});
+
+		it("accepts all optional filters", () => {
+			expectSchemaAccepts(ListServerPrivateNetworksInput, {
+				zone: VALID_ZONE,
+				page: 2,
+				pageSize: 20,
+				server_id: VALID_UUID,
+				private_network_id: VALID_UUID,
+				organization_id: VALID_UUID,
+				project_id: VALID_UUID,
+				order_by: "updated_at_desc",
+			});
+		});
+
+		it("rejects an invalid order_by value", () => {
+			expectSchemaRejects(ListServerPrivateNetworksInput, {
+				zone: VALID_ZONE,
+				order_by: "name_asc",
+			});
+		});
+
+		it("rejects a non-UUID private_network_id filter", () => {
+			expectSchemaRejects(ListServerPrivateNetworksInput, {
+				zone: VALID_ZONE,
+				private_network_id: "not-uuid",
+			});
+		});
+	});
+
+	describe("AddServerPrivateNetworkInput schema", () => {
+		it("accepts valid input", () => {
+			expectSchemaAccepts(AddServerPrivateNetworkInput, {
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				private_network_id: VALID_UUID,
+			});
+		});
+
+		it("rejects missing private_network_id", () => {
+			expectSchemaRejects(AddServerPrivateNetworkInput, {
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+			});
+		});
+
+		it("rejects non-UUID server_id", () => {
+			expectSchemaRejects(AddServerPrivateNetworkInput, {
+				zone: VALID_ZONE,
+				server_id: "not-uuid",
+				private_network_id: VALID_UUID,
+			});
+		});
+	});
+
+	describe("SetServerPrivateNetworksInput schema", () => {
+		it("accepts a list of Private Network IDs", () => {
+			expectSchemaAccepts(SetServerPrivateNetworksInput, {
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				private_network_ids: [VALID_UUID],
+			});
+		});
+
+		it("accepts an empty array (detach all)", () => {
+			expectSchemaAccepts(SetServerPrivateNetworksInput, {
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				private_network_ids: [],
+			});
+		});
+
+		it("rejects more than 8 Private Networks", () => {
+			expectSchemaRejects(SetServerPrivateNetworksInput, {
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				private_network_ids: Array(9).fill(VALID_UUID),
+			});
+		});
+
+		it("rejects non-UUID entries", () => {
+			expectSchemaRejects(SetServerPrivateNetworksInput, {
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				private_network_ids: ["not-uuid"],
+			});
+		});
+	});
+
+	describe("DeleteServerPrivateNetworkInput schema", () => {
+		it("accepts valid input", () => {
+			expectSchemaAccepts(DeleteServerPrivateNetworkInput, {
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				private_network_id: VALID_UUID,
+			});
+		});
+
+		it("rejects missing private_network_id", () => {
+			expectSchemaRejects(DeleteServerPrivateNetworkInput, {
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+			});
+		});
+	});
+
 	// --- Cross-cutting: Zone validation ---
 	describe("zone validation (all schemas)", () => {
 		const schemasRequiringZone = [
@@ -373,6 +496,22 @@ describe("Elastic Metal contract tests", () => {
 			{ name: "ListIpsInput", schema: ListIpsInput },
 			{ name: "CreateIpInput", schema: CreateIpInput, extra: { project_id: VALID_UUID } },
 			{ name: "DeleteIpInput", schema: DeleteIpInput, extra: { ip_id: VALID_UUID } },
+			{ name: "ListServerPrivateNetworksInput", schema: ListServerPrivateNetworksInput },
+			{
+				name: "AddServerPrivateNetworkInput",
+				schema: AddServerPrivateNetworkInput,
+				extra: { server_id: VALID_UUID, private_network_id: VALID_UUID },
+			},
+			{
+				name: "SetServerPrivateNetworksInput",
+				schema: SetServerPrivateNetworksInput,
+				extra: { server_id: VALID_UUID, private_network_ids: [VALID_UUID] },
+			},
+			{
+				name: "DeleteServerPrivateNetworkInput",
+				schema: DeleteServerPrivateNetworkInput,
+				extra: { server_id: VALID_UUID, private_network_id: VALID_UUID },
+			},
 		];
 
 		for (const { name, schema, extra } of schemasRequiringZone) {

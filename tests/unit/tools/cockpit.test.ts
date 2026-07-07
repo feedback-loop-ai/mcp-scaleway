@@ -110,7 +110,8 @@ describe("cockpit module", () => {
 
 		it("validates TokenScope enum", () => {
 			expect(TokenScope.parse("read_only_metrics")).toBe("read_only_metrics");
-			expect(TokenScope.parse("full_access_logs")).toBe("full_access_logs");
+			expect(TokenScope.parse("full_access_logs_rules")).toBe("full_access_logs_rules");
+			expect(TokenScope.parse("full_access_alert_manager")).toBe("full_access_alert_manager");
 			expect(() => TokenScope.parse("invalid")).toThrow();
 		});
 
@@ -721,7 +722,7 @@ describe("cockpit module", () => {
 					scopes: ["read_only_metrics"],
 				});
 				const body = JSON.parse(mockFetch.mock.calls[0][0].body);
-				expect(body.scopes).toEqual(["read_only_metrics"]);
+				expect(body.token_scopes).toEqual(["read_only_metrics"]);
 			});
 
 			it("omits scopes when not provided", async () => {
@@ -732,7 +733,7 @@ describe("cockpit module", () => {
 					name: "my-token",
 				});
 				const body = JSON.parse(mockFetch.mock.calls[0][0].body);
-				expect(body.scopes).toBeUndefined();
+				expect(body.token_scopes).toBeUndefined();
 			});
 
 			it("returns error on failure", async () => {

@@ -12,14 +12,19 @@ import type { Client } from "@scaleway/sdk-client";
 import { describe, expect, it, vi } from "vitest";
 import { createAppleSiliconHandlers } from "../../../../src/tools/apple-silicon/handlers.js";
 import {
+	AddServerPrivateNetworkParams,
 	CreateServerParams,
 	DeleteServerParams,
+	DeleteServerPrivateNetworkParams,
 	GetServerParams,
+	GetServerPrivateNetworkParams,
 	ListOSParams,
+	ListServerPrivateNetworksParams,
 	ListServerTypesParams,
 	ListServersParams,
 	RebootServerParams,
 	ReinstallServerParams,
+	SetServerPrivateNetworksParams,
 } from "../../../../src/tools/apple-silicon/types.js";
 
 // --- Helpers ---
@@ -186,6 +191,86 @@ describe("Apple Silicon contract: input schema validation", () => {
 			});
 			expect(result.server_type).toBe("M2-128");
 			expect(result.name).toBe("Sonoma");
+		});
+	});
+
+	describe("ListServerPrivateNetworksParams", () => {
+		it("accepts minimal input with defaults", () => {
+			const result = ListServerPrivateNetworksParams.parse({});
+			expect(result.page).toBe(1);
+			expect(result.pageSize).toBe(50);
+			expect(result.order_by).toBeUndefined();
+		});
+
+		it("accepts full input", () => {
+			const result = ListServerPrivateNetworksParams.parse({
+				zone: "fr-par-3",
+				order_by: "updated_at_asc",
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+				organization_id: "org-1",
+				project_id: "proj-1",
+				ipam_ip_ids: ["ip-1"],
+				page: 2,
+				pageSize: 10,
+			});
+			expect(result.order_by).toBe("updated_at_asc");
+			expect(result.ipam_ip_ids).toEqual(["ip-1"]);
+		});
+
+		it("rejects invalid order_by", () => {
+			expect(() => ListServerPrivateNetworksParams.parse({ order_by: "name_asc" })).toThrow();
+		});
+	});
+
+	describe("GetServerPrivateNetworkParams", () => {
+		it("requires server_id and private_network_id", () => {
+			expect(() => GetServerPrivateNetworkParams.parse({ server_id: "srv-1" })).toThrow();
+			expect(() => GetServerPrivateNetworkParams.parse({ private_network_id: "pn-1" })).toThrow();
+		});
+
+		it("accepts valid input", () => {
+			const result = GetServerPrivateNetworkParams.parse({
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+			});
+			expect(result.server_id).toBe("srv-1");
+			expect(result.private_network_id).toBe("pn-1");
+		});
+	});
+
+	describe("AddServerPrivateNetworkParams", () => {
+		it("requires server_id and private_network_id", () => {
+			expect(() => AddServerPrivateNetworkParams.parse({ server_id: "srv-1" })).toThrow();
+		});
+
+		it("accepts optional ipam_ip_ids", () => {
+			const result = AddServerPrivateNetworkParams.parse({
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+				ipam_ip_ids: ["ip-1", "ip-2"],
+			});
+			expect(result.ipam_ip_ids).toEqual(["ip-1", "ip-2"]);
+		});
+	});
+
+	describe("SetServerPrivateNetworksParams", () => {
+		it("requires per_private_network_ipam_ip_ids", () => {
+			expect(() => SetServerPrivateNetworksParams.parse({ server_id: "srv-1" })).toThrow();
+		});
+
+		it("accepts a record of Private Network IDs to IPAM IP arrays", () => {
+			const result = SetServerPrivateNetworksParams.parse({
+				server_id: "srv-1",
+				per_private_network_ipam_ip_ids: { "pn-1": ["ip-1"], "pn-2": [] },
+			});
+			expect(result.per_private_network_ipam_ip_ids["pn-1"]).toEqual(["ip-1"]);
+		});
+	});
+
+	describe("DeleteServerPrivateNetworkParams", () => {
+		it("requires server_id and private_network_id", () => {
+			expect(() => DeleteServerPrivateNetworkParams.parse({ server_id: "srv-1" })).toThrow();
 		});
 	});
 });
@@ -391,6 +476,125 @@ describe("Apple Silicon contract: request shapes", () => {
 			expect(params.get("page_size")).toBe("50");
 		});
 	});
+
+	/**
+	 * Contract: GET /apple-silicon/v1alpha1/zones/{zone}/server-private-networks
+	 * Spec: specs/scaleway-api/apple-silicon/api-reference.md (Private Networks)
+	 */
+	describe("scaleway_apple_silicon_list_server_private_networks", () => {
+		it("sends GET to /server-private-networks with filters and pagination", async () => {
+			const { client, getRequest } = captureRequest();
+			const handlers = createAppleSiliconHandlers(client, DEFAULT_ZONE);
+
+			await handlers.listServerPrivateNetworks({
+				page: 1,
+				pageSize: 50,
+				order_by: "created_at_desc",
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+				ipam_ip_ids: ["ip-1"],
+			});
+
+			expect(getRequest().method).toBe("GET");
+			expect(getRequest().path).toBe(
+				"/apple-silicon/v1alpha1/zones/fr-par-3/server-private-networks",
+			);
+			const params = getRequest().urlParams as URLSearchParams;
+			expect(params.get("order_by")).toBe("created_at_desc");
+			expect(params.get("server_id")).toBe("srv-1");
+			expect(params.get("private_network_id")).toBe("pn-1");
+			expect(params.getAll("ipam_ip_ids")).toEqual(["ip-1"]);
+		});
+	});
+
+	/**
+	 * Contract: GET /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks/{private_network_id}
+	 * Spec: specs/scaleway-api/apple-silicon/api-reference.md (Private Networks)
+	 */
+	describe("scaleway_apple_silicon_get_server_private_network", () => {
+		it("sends GET with server_id and private_network_id in path", async () => {
+			const { client, getRequest } = captureRequest();
+			const handlers = createAppleSiliconHandlers(client, DEFAULT_ZONE);
+
+			await handlers.getServerPrivateNetwork({
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+			});
+
+			expect(getRequest().method).toBe("GET");
+			expect(getRequest().path).toBe(
+				"/apple-silicon/v1alpha1/zones/fr-par-3/servers/srv-1/private-networks/pn-1",
+			);
+		});
+	});
+
+	/**
+	 * Contract: POST /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks
+	 * Spec: specs/scaleway-api/apple-silicon/api-reference.md (Private Networks)
+	 */
+	describe("scaleway_apple_silicon_add_server_private_network", () => {
+		it("sends POST with private_network_id and ipam_ip_ids body", async () => {
+			const { client, getRequest } = captureRequest();
+			const handlers = createAppleSiliconHandlers(client, DEFAULT_ZONE);
+
+			await handlers.addServerPrivateNetwork({
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+				ipam_ip_ids: ["ip-1"],
+			});
+
+			expect(getRequest().method).toBe("POST");
+			expect(getRequest().path).toBe(
+				"/apple-silicon/v1alpha1/zones/fr-par-3/servers/srv-1/private-networks",
+			);
+			const body = JSON.parse(getRequest().body as string);
+			expect(body).toEqual({ private_network_id: "pn-1", ipam_ip_ids: ["ip-1"] });
+		});
+	});
+
+	/**
+	 * Contract: PUT /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks
+	 * Spec: specs/scaleway-api/apple-silicon/api-reference.md (Private Networks)
+	 */
+	describe("scaleway_apple_silicon_set_server_private_networks", () => {
+		it("sends PUT with per_private_network_ipam_ip_ids body", async () => {
+			const { client, getRequest } = captureRequest();
+			const handlers = createAppleSiliconHandlers(client, DEFAULT_ZONE);
+
+			await handlers.setServerPrivateNetworks({
+				server_id: "srv-1",
+				per_private_network_ipam_ip_ids: { "pn-1": ["ip-1"] },
+			});
+
+			expect(getRequest().method).toBe("PUT");
+			expect(getRequest().path).toBe(
+				"/apple-silicon/v1alpha1/zones/fr-par-3/servers/srv-1/private-networks",
+			);
+			const body = JSON.parse(getRequest().body as string);
+			expect(body).toEqual({ per_private_network_ipam_ip_ids: { "pn-1": ["ip-1"] } });
+		});
+	});
+
+	/**
+	 * Contract: DELETE /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks/{private_network_id}
+	 * Spec: specs/scaleway-api/apple-silicon/api-reference.md (Private Networks)
+	 */
+	describe("scaleway_apple_silicon_delete_server_private_network", () => {
+		it("sends DELETE with server_id and private_network_id in path", async () => {
+			const { client, getRequest } = captureRequest();
+			const handlers = createAppleSiliconHandlers(client, DEFAULT_ZONE);
+
+			await handlers.deleteServerPrivateNetwork({
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+			});
+
+			expect(getRequest().method).toBe("DELETE");
+			expect(getRequest().path).toBe(
+				"/apple-silicon/v1alpha1/zones/fr-par-3/servers/srv-1/private-networks/pn-1",
+			);
+		});
+	});
 });
 
 // --- Response shape contracts ---
@@ -494,6 +698,75 @@ describe("Apple Silicon contract: response shapes", () => {
 		const parsed = JSON.parse(result.content[0].text);
 		expect(parsed.os).toHaveLength(1);
 		expect(parsed.total_count).toBe(1);
+	});
+
+	it("listServerPrivateNetworks returns server_private_networks with total_count", async () => {
+		const response = {
+			server_private_networks: [
+				{
+					id: "spn-1",
+					server_id: "srv-1",
+					private_network_id: "pn-1",
+					vlan: 42,
+					status: "vpc_enabled",
+					ipam_ip_ids: ["ip-1"],
+				},
+			],
+			total_count: 1,
+		};
+		const { client } = captureRequestWithResponse(response);
+		const handlers = createAppleSiliconHandlers(client, DEFAULT_ZONE);
+
+		const result = await handlers.listServerPrivateNetworks({ page: 1, pageSize: 50 });
+
+		const parsed = JSON.parse(result.content[0].text);
+		expect(parsed.server_private_networks).toHaveLength(1);
+		expect(parsed.server_private_networks[0].id).toBe("spn-1");
+		expect(parsed.total_count).toBe(1);
+	});
+
+	it("addServerPrivateNetwork returns the attachment object", async () => {
+		const attachment = { id: "spn-1", private_network_id: "pn-1", status: "vpc_updating" };
+		const { client } = captureRequestWithResponse(attachment);
+		const handlers = createAppleSiliconHandlers(client, DEFAULT_ZONE);
+
+		const result = await handlers.addServerPrivateNetwork({
+			server_id: "srv-1",
+			private_network_id: "pn-1",
+		});
+
+		const parsed = JSON.parse(result.content[0].text);
+		expect(parsed.id).toBe("spn-1");
+		expect(parsed.status).toBe("vpc_updating");
+	});
+
+	it("setServerPrivateNetworks returns server_private_networks array", async () => {
+		const response = {
+			server_private_networks: [{ id: "spn-1", private_network_id: "pn-1" }],
+		};
+		const { client } = captureRequestWithResponse(response);
+		const handlers = createAppleSiliconHandlers(client, DEFAULT_ZONE);
+
+		const result = await handlers.setServerPrivateNetworks({
+			server_id: "srv-1",
+			per_private_network_ipam_ip_ids: { "pn-1": [] },
+		});
+
+		const parsed = JSON.parse(result.content[0].text);
+		expect(parsed.server_private_networks).toHaveLength(1);
+	});
+
+	it("deleteServerPrivateNetwork returns success message", async () => {
+		const { client } = captureRequestWithResponse(undefined);
+		const handlers = createAppleSiliconHandlers(client, DEFAULT_ZONE);
+
+		const result = await handlers.deleteServerPrivateNetwork({
+			server_id: "srv-1",
+			private_network_id: "pn-1",
+		});
+
+		const parsed = JSON.parse(result.content[0].text);
+		expect(parsed.message).toBe("Private Network detached successfully");
 	});
 });
 

@@ -26,7 +26,7 @@ import {
  * Contract tests for Scaleway Container Registry API.
  *
  * API Reference: https://www.scaleway.com/en/developers/api/registry/
- * Spec: specs/006-registry/spec.md
+ * Spec: specs/scaleway-api/registry/api-reference.md
  * Parity: tests/parity-matrix.json -> registry.*
  */
 

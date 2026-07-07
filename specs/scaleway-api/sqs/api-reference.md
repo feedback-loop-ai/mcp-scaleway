@@ -2,6 +2,14 @@
 
 **Base URL**: `https://api.scaleway.com/mnq/v1beta1/regions/{region}`
 
+Queues (branded "SQS" in the API) is part of Scaleway Messaging and Queuing (MnQ) and exposes an Amazon
+SQS-compatible protocol endpoint. Regions: `fr-par`, `nl-ams`.
+
+## Authentication
+- Header: `X-Auth-Token: <secret_key>` (Scaleway management API)
+- The protocol endpoint (`sqs_endpoint_url`) is accessed with the access/secret key pair from the credentials
+  endpoints.
+
 ## Endpoints
 
 ### Activate SQS

@@ -18,7 +18,6 @@ vi.mock("../../../../src/shared/client.js", () => ({
 
 import {
 	handleCheckDomainAvailability,
-	handleCreateContact,
 	handleDisableAutoRenew,
 	handleEnableAutoRenew,
 	handleGetContact,
@@ -146,9 +145,11 @@ describe("handleRegisterDomain", () => {
 			tech_contact_id: "c-3",
 		});
 		const req = getRequest();
+		expect(req.path).toBe("/domain/v2beta1/buy-domains");
 		const body = JSON.parse(req.body as string);
-		expect(body.admin_contact_id).toBe("c-2");
-		expect(body.tech_contact_id).toBe("c-3");
+		expect(body.domains).toEqual(["new.com"]);
+		expect(body.administrative_contact_id).toBe("c-2");
+		expect(body.technical_contact_id).toBe("c-3");
 	});
 
 	it("returns error on failure", async () => {
@@ -204,8 +205,9 @@ describe("handleTransferDomain", () => {
 			owner_contact_id: "c-1",
 		});
 		const req = getRequest();
+		expect(req.path).toBe("/domain/v2beta1/domains/transfer-domains");
 		const body = JSON.parse(req.body as string);
-		expect(body.auth_code).toBe("EPP123");
+		expect(body.domains).toEqual([{ domain: "transfer.com", auth_code: "EPP123" }]);
 	});
 
 	it("returns error on failure", async () => {
@@ -245,7 +247,8 @@ describe("handleUpdateDomain", () => {
 		const req = getRequest();
 		expect(req.method).toBe("PATCH");
 		const body = JSON.parse(req.body as string);
-		expect(body.admin_contact_id).toBe("c-2");
+		expect(body.administrative_contact_id).toBe("c-2");
+		expect(body.technical_contact_id).toBe("c-3");
 		expect(body).not.toHaveProperty("domain");
 	});
 
@@ -318,7 +321,8 @@ describe("handleCheckDomainAvailability", () => {
 		mockFetch.mockResolvedValue({});
 		await handleCheckDomainAvailability({ domain: "check.com" });
 		const req = getRequest();
-		expect(req.urlParams?.get("domain")).toBe("check.com");
+		expect(req.path).toBe("/domain/v2beta1/search-domains");
+		expect(req.urlParams?.get("domains")).toBe("check.com");
 	});
 
 	it("returns error on failure", async () => {
@@ -391,81 +395,28 @@ describe("handleGetContact", () => {
 	});
 });
 
-describe("handleCreateContact", () => {
-	it("creates a contact successfully", async () => {
-		const contact = { id: "c-new", firstname: "Jane" };
-		mockFetch.mockResolvedValue(contact);
-		const result = await handleCreateContact({
-			firstname: "Jane",
-			lastname: "Doe",
-			email: "jane@example.com",
-			phone: "+33612345678",
-			address_line_1: "1 Rue",
-			city: "Paris",
-			zip: "75001",
-			country: "FR",
-		});
-		const data = parseContent(result);
-		expect(data.id).toBe("c-new");
-	});
-
-	it("sends correct body", async () => {
-		mockFetch.mockResolvedValue({ id: "c-new" });
-		await handleCreateContact({
-			firstname: "Jane",
-			lastname: "Doe",
-			email: "jane@example.com",
-			phone: "+33612345678",
-			address_line_1: "1 Rue",
-			city: "Paris",
-			zip: "75001",
-			country: "FR",
-			company_name: "ACME",
-			state: "IDF",
-		});
-		const req = getRequest();
-		const body = JSON.parse(req.body as string);
-		expect(body.company_name).toBe("ACME");
-		expect(body.state).toBe("IDF");
-	});
-
-	it("returns error on failure", async () => {
-		const err = new Error("Bad Request");
-		(err as unknown as Record<string, unknown>).statusCode = 400;
-		mockFetch.mockRejectedValue(err);
-		const result = await handleCreateContact({
-			firstname: "",
-			lastname: "Doe",
-			email: "bad@example.com",
-			phone: "+33612345678",
-			address_line_1: "1 Rue",
-			city: "Paris",
-			zip: "75001",
-			country: "FR",
-		});
-		expect((result as unknown as { isError: boolean }).isError).toBe(true);
-	});
-});
-
 describe("handleUpdateContact", () => {
 	it("updates a contact successfully", async () => {
-		mockFetch.mockResolvedValue({ id: "c-1", firstname: "Updated" });
-		const result = await handleUpdateContact({ contact_id: "c-1", firstname: "Updated" });
+		mockFetch.mockResolvedValue({ id: "c-1", phone_number: "+33600000000" });
+		const result = await handleUpdateContact({
+			contact_id: "c-1",
+			phone_number: "+33600000000",
+		});
 		const data = parseContent(result);
-		expect(data.firstname).toBe("Updated");
+		expect(data.phone_number).toBe("+33600000000");
 	});
 
 	it("sends PATCH with correct body (excludes contact_id)", async () => {
 		mockFetch.mockResolvedValue({});
 		await handleUpdateContact({
 			contact_id: "c-1",
-			lastname: "Smith",
+			phone_number: "+33600000000",
 			city: "Lyon",
 		});
 		const req = getRequest();
 		expect(req.method).toBe("PATCH");
 		const body = JSON.parse(req.body as string);
-		expect(body.lastname).toBe("Smith");
+		expect(body.city).toBe("Lyon");
 		expect(body).not.toHaveProperty("contact_id");
 	});
 
@@ -500,11 +451,24 @@ describe("handleListTlds", () => {
 });
 
 describe("handleGetTld", () => {
-	it("returns TLD details", async () => {
-		mockFetch.mockResolvedValue({ name: "com", dnssec_support: true, offers: [] });
+	it("returns the single matching TLD from the filtered list", async () => {
+		mockFetch.mockResolvedValue({
+			tlds: [{ name: "com", dnssec_support: true }],
+			total_count: 1,
+		});
 		const result = await handleGetTld({ tld_name: "com" });
+		const req = getRequest();
+		expect(req.path).toBe("/domain/v2beta1/tlds");
+		expect(req.urlParams?.get("tlds")).toBe("com");
 		const data = parseContent(result);
 		expect(data.name).toBe("com");
+	});
+
+	it("returns the raw response when no TLD matches", async () => {
+		mockFetch.mockResolvedValue({ tlds: [], total_count: 0 });
+		const result = await handleGetTld({ tld_name: "zzz" });
+		const data = parseContent(result);
+		expect(data.total_count).toBe(0);
 	});
 
 	it("returns error for non-existent TLD", async () => {

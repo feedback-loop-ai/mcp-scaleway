@@ -1,7 +1,8 @@
+import { urlParams } from "@scaleway/sdk-client";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
-import { buildPaginatedResponse, paginationToQuery } from "../../shared/pagination.js";
+import { buildPaginatedResponse } from "../../shared/pagination.js";
 import type {
 	CreateSnapshotParams,
 	CreateVolumeParams,
@@ -16,10 +17,11 @@ import type {
 	UpdateVolumeParams,
 } from "./types.js";
 
-const BLOCK_STORAGE_API = "block/v1alpha1";
+const BLOCK_API = "block/v1";
 
-function getBlockStorageUrl(zone: string, path: string): string {
-	return `/${BLOCK_STORAGE_API}/zones/${zone}/${path}`;
+function getClient() {
+	const config = loadAuthConfig();
+	return createScalewayClient(config);
 }
 
 function resolveZone(zone?: string): string {
@@ -27,85 +29,62 @@ function resolveZone(zone?: string): string {
 	return zone ?? config.defaultZone;
 }
 
-function toUrlParams(params: Record<string, unknown>): URLSearchParams {
-	const urlParams = new URLSearchParams();
-	for (const [key, value] of Object.entries(params)) {
-		if (value !== undefined && value !== null) {
-			urlParams.set(key, String(value));
-		}
-	}
-	return urlParams;
+function blockPath(zone: string, path: string): string {
+	return `/${BLOCK_API}/zones/${zone}/${path}`;
+}
+
+function jsonResponse(data: unknown) {
+	return {
+		content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }],
+	};
 }
 
 // --- Volume Handlers ---
 
 export async function listVolumes(params: ListVolumesParams) {
 	try {
-		const config = loadAuthConfig();
-		const client = createScalewayClient(config);
+		const client = getClient();
 		const zone = resolveZone(params.zone);
 
-		const queryObj: Record<string, unknown> = {
-			...paginationToQuery(params.page, params.pageSize),
-		};
-		if (params.projectId) queryObj.project_id = params.projectId;
-		if (params.name) queryObj.name = params.name;
-		if (params.status) queryObj.status = params.status;
+		const response = await client.fetch<{
+			volumes: unknown[];
+			total_count: number;
+		}>({
+			method: "GET",
+			path: blockPath(zone, "volumes"),
+			urlParams: urlParams(
+				["page", params.page],
+				["page_size", params.pageSize],
+				["project_id", params.projectId],
+				["organization_id", params.organizationId],
+				["name", params.name],
+				["order_by", params.orderBy],
+				["tags", params.tags],
+				["product_resource_id", params.productResourceId],
+				["volume_type", params.volumeType],
+				["include_deleted", params.includeDeleted],
+			),
+		});
 
-		const response = (await client.fetch(
-			{
-				method: "GET",
-				path: getBlockStorageUrl(zone, "volumes"),
-				urlParams: toUrlParams(queryObj),
-			},
-			/* unmarshal */ undefined,
-		)) as { volumes: unknown[]; total_count: number };
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify(
-						buildPaginatedResponse(
-							response.volumes,
-							response.total_count,
-							params.page,
-							params.pageSize,
-						),
-						null,
-						2,
-					),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		return jsonResponse(
+			buildPaginatedResponse(response.volumes, response.total_count, params.page, params.pageSize),
+		);
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
 
 export async function getVolume(params: GetVolumeParams) {
 	try {
-		const config = loadAuthConfig();
-		const client = createScalewayClient(config);
+		const client = getClient();
 		const zone = resolveZone(params.zone);
 
-		const response = (await client.fetch(
-			{
-				method: "GET",
-				path: getBlockStorageUrl(zone, `volumes/${params.volumeId}`),
-			},
-			undefined,
-		)) as { volume: unknown };
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify(response.volume, null, 2),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		const response = await client.fetch<unknown>({
+			method: "GET",
+			path: blockPath(zone, `volumes/${params.volumeId}`),
+		});
+		return jsonResponse(response);
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
@@ -120,6 +99,7 @@ export async function createVolume(params: CreateVolumeParams) {
 			name: params.name,
 			project_id: params.projectId ?? config.defaultProjectId,
 		};
+		if (params.perfIops !== undefined) body.perf_iops = params.perfIops;
 		if (params.fromEmpty) {
 			body.from_empty = { size: params.fromEmpty.size };
 		}
@@ -129,36 +109,24 @@ export async function createVolume(params: CreateVolumeParams) {
 				...(params.fromSnapshot.size !== undefined ? { size: params.fromSnapshot.size } : {}),
 			};
 		}
-		if (params.perfIops !== undefined) body.perf_iops = params.perfIops;
 		if (params.tags) body.tags = params.tags;
+		if (params.kmsKeyId !== undefined) body.kms_key_id = params.kmsKeyId;
 
-		const response = (await client.fetch(
-			{
-				method: "POST",
-				path: getBlockStorageUrl(zone, "volumes"),
-				body: JSON.stringify(body),
-				headers: { "Content-Type": "application/json" },
-			},
-			undefined,
-		)) as { volume: unknown };
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify(response.volume, null, 2),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		const response = await client.fetch<unknown>({
+			method: "POST",
+			path: blockPath(zone, "volumes"),
+			body: JSON.stringify(body),
+			headers: { "Content-Type": "application/json" },
+		});
+		return jsonResponse(response);
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
 
 export async function updateVolume(params: UpdateVolumeParams) {
 	try {
-		const config = loadAuthConfig();
-		const client = createScalewayClient(config);
+		const client = getClient();
 		const zone = resolveZone(params.zone);
 
 		const body: Record<string, unknown> = {};
@@ -167,52 +135,29 @@ export async function updateVolume(params: UpdateVolumeParams) {
 		if (params.perfIops !== undefined) body.perf_iops = params.perfIops;
 		if (params.tags !== undefined) body.tags = params.tags;
 
-		const response = (await client.fetch(
-			{
-				method: "PATCH",
-				path: getBlockStorageUrl(zone, `volumes/${params.volumeId}`),
-				body: JSON.stringify(body),
-				headers: { "Content-Type": "application/json" },
-			},
-			undefined,
-		)) as { volume: unknown };
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify(response.volume, null, 2),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		const response = await client.fetch<unknown>({
+			method: "PATCH",
+			path: blockPath(zone, `volumes/${params.volumeId}`),
+			body: JSON.stringify(body),
+			headers: { "Content-Type": "application/json" },
+		});
+		return jsonResponse(response);
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
 
 export async function deleteVolume(params: DeleteVolumeParams) {
 	try {
-		const config = loadAuthConfig();
-		const client = createScalewayClient(config);
+		const client = getClient();
 		const zone = resolveZone(params.zone);
 
-		await client.fetch(
-			{
-				method: "DELETE",
-				path: getBlockStorageUrl(zone, `volumes/${params.volumeId}`),
-			},
-			undefined,
-		);
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify({ success: true, volumeId: params.volumeId }, null, 2),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		await client.fetch<void>({
+			method: "DELETE",
+			path: blockPath(zone, `volumes/${params.volumeId}`),
+		});
+		return jsonResponse({ success: true, volumeId: params.volumeId });
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
@@ -221,72 +166,52 @@ export async function deleteVolume(params: DeleteVolumeParams) {
 
 export async function listSnapshots(params: ListSnapshotsParams) {
 	try {
-		const config = loadAuthConfig();
-		const client = createScalewayClient(config);
+		const client = getClient();
 		const zone = resolveZone(params.zone);
 
-		const queryObj: Record<string, unknown> = {
-			...paginationToQuery(params.page, params.pageSize),
-		};
-		if (params.projectId) queryObj.project_id = params.projectId;
-		if (params.name) queryObj.name = params.name;
-		if (params.volumeId) queryObj.volume_id = params.volumeId;
-		if (params.status) queryObj.status = params.status;
+		const response = await client.fetch<{
+			snapshots: unknown[];
+			total_count: number;
+		}>({
+			method: "GET",
+			path: blockPath(zone, "snapshots"),
+			urlParams: urlParams(
+				["page", params.page],
+				["page_size", params.pageSize],
+				["project_id", params.projectId],
+				["organization_id", params.organizationId],
+				["name", params.name],
+				["order_by", params.orderBy],
+				["volume_id", params.volumeId],
+				["tags", params.tags],
+				["include_deleted", params.includeDeleted],
+			),
+		});
 
-		const response = (await client.fetch(
-			{
-				method: "GET",
-				path: getBlockStorageUrl(zone, "snapshots"),
-				urlParams: toUrlParams(queryObj),
-			},
-			undefined,
-		)) as { snapshots: unknown[]; total_count: number };
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify(
-						buildPaginatedResponse(
-							response.snapshots,
-							response.total_count,
-							params.page,
-							params.pageSize,
-						),
-						null,
-						2,
-					),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		return jsonResponse(
+			buildPaginatedResponse(
+				response.snapshots,
+				response.total_count,
+				params.page,
+				params.pageSize,
+			),
+		);
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
 
 export async function getSnapshot(params: GetSnapshotParams) {
 	try {
-		const config = loadAuthConfig();
-		const client = createScalewayClient(config);
+		const client = getClient();
 		const zone = resolveZone(params.zone);
 
-		const response = (await client.fetch(
-			{
-				method: "GET",
-				path: getBlockStorageUrl(zone, `snapshots/${params.snapshotId}`),
-			},
-			undefined,
-		)) as { snapshot: unknown };
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify(response.snapshot, null, 2),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		const response = await client.fetch<unknown>({
+			method: "GET",
+			path: blockPath(zone, `snapshots/${params.snapshotId}`),
+		});
+		return jsonResponse(response);
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
@@ -303,86 +228,53 @@ export async function createSnapshot(params: CreateSnapshotParams) {
 			volume_id: params.volumeId,
 		};
 		if (params.tags) body.tags = params.tags;
+		if (params.public !== undefined) body.public = params.public;
 
-		const response = (await client.fetch(
-			{
-				method: "POST",
-				path: getBlockStorageUrl(zone, "snapshots"),
-				body: JSON.stringify(body),
-				headers: { "Content-Type": "application/json" },
-			},
-			undefined,
-		)) as { snapshot: unknown };
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify(response.snapshot, null, 2),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		const response = await client.fetch<unknown>({
+			method: "POST",
+			path: blockPath(zone, "snapshots"),
+			body: JSON.stringify(body),
+			headers: { "Content-Type": "application/json" },
+		});
+		return jsonResponse(response);
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
 
 export async function updateSnapshot(params: UpdateSnapshotParams) {
 	try {
-		const config = loadAuthConfig();
-		const client = createScalewayClient(config);
+		const client = getClient();
 		const zone = resolveZone(params.zone);
 
 		const body: Record<string, unknown> = {};
 		if (params.name !== undefined) body.name = params.name;
 		if (params.tags !== undefined) body.tags = params.tags;
+		if (params.public !== undefined) body.public = params.public;
 
-		const response = (await client.fetch(
-			{
-				method: "PATCH",
-				path: getBlockStorageUrl(zone, `snapshots/${params.snapshotId}`),
-				body: JSON.stringify(body),
-				headers: { "Content-Type": "application/json" },
-			},
-			undefined,
-		)) as { snapshot: unknown };
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify(response.snapshot, null, 2),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		const response = await client.fetch<unknown>({
+			method: "PATCH",
+			path: blockPath(zone, `snapshots/${params.snapshotId}`),
+			body: JSON.stringify(body),
+			headers: { "Content-Type": "application/json" },
+		});
+		return jsonResponse(response);
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
 
 export async function deleteSnapshot(params: DeleteSnapshotParams) {
 	try {
-		const config = loadAuthConfig();
-		const client = createScalewayClient(config);
+		const client = getClient();
 		const zone = resolveZone(params.zone);
 
-		await client.fetch(
-			{
-				method: "DELETE",
-				path: getBlockStorageUrl(zone, `snapshots/${params.snapshotId}`),
-			},
-			undefined,
-		);
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify({ success: true, snapshotId: params.snapshotId }, null, 2),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		await client.fetch<void>({
+			method: "DELETE",
+			path: blockPath(zone, `snapshots/${params.snapshotId}`),
+		});
+		return jsonResponse({ success: true, snapshotId: params.snapshotId });
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
@@ -391,41 +283,27 @@ export async function deleteSnapshot(params: DeleteSnapshotParams) {
 
 export async function listVolumeTypes(params: ListVolumeTypesParams) {
 	try {
-		const config = loadAuthConfig();
-		const client = createScalewayClient(config);
+		const client = getClient();
 		const zone = resolveZone(params.zone);
 
-		const queryObj: Record<string, unknown> = {
-			...paginationToQuery(params.page, params.pageSize),
-		};
+		const response = await client.fetch<{
+			volume_types: unknown[];
+			total_count: number;
+		}>({
+			method: "GET",
+			path: blockPath(zone, "volume-types"),
+			urlParams: urlParams(["page", params.page], ["page_size", params.pageSize]),
+		});
 
-		const response = (await client.fetch(
-			{
-				method: "GET",
-				path: getBlockStorageUrl(zone, "volume-types"),
-				urlParams: toUrlParams(queryObj),
-			},
-			undefined,
-		)) as { volume_types: unknown[]; total_count: number };
-
-		return {
-			content: [
-				{
-					type: "text" as const,
-					text: JSON.stringify(
-						buildPaginatedResponse(
-							response.volume_types,
-							response.total_count,
-							params.page,
-							params.pageSize,
-						),
-						null,
-						2,
-					),
-				},
-			],
-		};
-	} catch (error: unknown) {
+		return jsonResponse(
+			buildPaginatedResponse(
+				response.volume_types,
+				response.total_count,
+				params.page,
+				params.pageSize,
+			),
+		);
+	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }

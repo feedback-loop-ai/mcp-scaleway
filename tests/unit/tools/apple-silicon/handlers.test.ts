@@ -437,6 +437,271 @@ describe("createAppleSiliconHandlers", () => {
 		});
 	});
 
+	describe("listServerPrivateNetworks", () => {
+		it("calls fetch with correct path and default pagination", async () => {
+			const response = { server_private_networks: [], total_count: 0 };
+			mockClient = createMockClient(response);
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			const result = await handlers.listServerPrivateNetworks({ page: 1, pageSize: 50 });
+
+			const call = vi.mocked(mockClient.fetch).mock.calls[0][0];
+			expect(call.method).toBe("GET");
+			expect(call.path).toBe("/apple-silicon/v1alpha1/zones/fr-par-1/server-private-networks");
+			expect(result.content[0].text).toContain('"total_count": 0');
+		});
+
+		it("uses provided zone", async () => {
+			mockClient = createMockClient({ server_private_networks: [], total_count: 0 });
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			await handlers.listServerPrivateNetworks({ zone: "fr-par-3", page: 1, pageSize: 50 });
+
+			const call = vi.mocked(mockClient.fetch).mock.calls[0][0];
+			expect(call.path).toContain("fr-par-3");
+		});
+
+		it("passes all scalar filter params and pagination", async () => {
+			mockClient = createMockClient({ server_private_networks: [], total_count: 0 });
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			await handlers.listServerPrivateNetworks({
+				page: 2,
+				pageSize: 10,
+				order_by: "updated_at_desc",
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+				organization_id: "org-1",
+				project_id: "proj-1",
+			});
+
+			const params = vi.mocked(mockClient.fetch).mock.calls[0][0].urlParams as URLSearchParams;
+			expect(params.get("order_by")).toBe("updated_at_desc");
+			expect(params.get("server_id")).toBe("srv-1");
+			expect(params.get("private_network_id")).toBe("pn-1");
+			expect(params.get("organization_id")).toBe("org-1");
+			expect(params.get("project_id")).toBe("proj-1");
+			expect(params.get("page")).toBe("2");
+			expect(params.get("page_size")).toBe("10");
+		});
+
+		it("appends each ipam_ip_ids value", async () => {
+			mockClient = createMockClient({ server_private_networks: [], total_count: 0 });
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			await handlers.listServerPrivateNetworks({
+				page: 1,
+				pageSize: 50,
+				ipam_ip_ids: ["ip-1", "ip-2"],
+			});
+
+			const params = vi.mocked(mockClient.fetch).mock.calls[0][0].urlParams as URLSearchParams;
+			expect(params.getAll("ipam_ip_ids")).toEqual(["ip-1", "ip-2"]);
+		});
+
+		it("omits undefined filter params", async () => {
+			mockClient = createMockClient({ server_private_networks: [], total_count: 0 });
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			await handlers.listServerPrivateNetworks({ page: 1, pageSize: 50 });
+
+			const params = vi.mocked(mockClient.fetch).mock.calls[0][0].urlParams as URLSearchParams;
+			expect(params.has("order_by")).toBe(false);
+			expect(params.has("server_id")).toBe(false);
+			expect(params.has("private_network_id")).toBe(false);
+			expect(params.has("organization_id")).toBe(false);
+			expect(params.has("project_id")).toBe(false);
+			expect(params.has("ipam_ip_ids")).toBe(false);
+		});
+
+		it("returns error response on failure", async () => {
+			mockClient = createErrorClient(makeStatusError(401, "Unauthorized"));
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			const result = await handlers.listServerPrivateNetworks({ page: 1, pageSize: 50 });
+
+			expect((result as { isError?: boolean }).isError).toBe(true);
+			expect(result.content[0].text).toContain("permission_denied");
+		});
+	});
+
+	describe("getServerPrivateNetwork", () => {
+		it("calls fetch with correct path", async () => {
+			mockClient = createMockClient({ id: "spn-1", private_network_id: "pn-1" });
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			const result = await handlers.getServerPrivateNetwork({
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+			});
+
+			const call = vi.mocked(mockClient.fetch).mock.calls[0][0];
+			expect(call.method).toBe("GET");
+			expect(call.path).toBe(
+				"/apple-silicon/v1alpha1/zones/fr-par-1/servers/srv-1/private-networks/pn-1",
+			);
+			expect(result.content[0].text).toContain("spn-1");
+		});
+
+		it("uses provided zone", async () => {
+			mockClient = createMockClient({});
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			await handlers.getServerPrivateNetwork({
+				zone: "fr-par-3",
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+			});
+
+			const call = vi.mocked(mockClient.fetch).mock.calls[0][0];
+			expect(call.path).toContain("fr-par-3");
+		});
+
+		it("returns not_found error for 404", async () => {
+			mockClient = createErrorClient(makeStatusError(404, "Not found"));
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			const result = await handlers.getServerPrivateNetwork({
+				server_id: "srv-1",
+				private_network_id: "missing",
+			});
+
+			expect((result as { isError?: boolean }).isError).toBe(true);
+			expect(result.content[0].text).toContain("not_found");
+		});
+	});
+
+	describe("addServerPrivateNetwork", () => {
+		it("sends POST with required private_network_id", async () => {
+			mockClient = createMockClient({ id: "spn-1", status: "vpc_updating" });
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			const result = await handlers.addServerPrivateNetwork({
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+			});
+
+			const call = vi.mocked(mockClient.fetch).mock.calls[0][0];
+			expect(call.method).toBe("POST");
+			expect(call.path).toBe(
+				"/apple-silicon/v1alpha1/zones/fr-par-1/servers/srv-1/private-networks",
+			);
+			expect(call.headers).toEqual({ "Content-Type": "application/json" });
+			const body = JSON.parse(call.body as string);
+			expect(body.private_network_id).toBe("pn-1");
+			expect(body).not.toHaveProperty("ipam_ip_ids");
+			expect(result.content[0].text).toContain("spn-1");
+		});
+
+		it("includes ipam_ip_ids when provided", async () => {
+			mockClient = createMockClient({});
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			await handlers.addServerPrivateNetwork({
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+				ipam_ip_ids: ["ip-1", "ip-2"],
+			});
+
+			const body = JSON.parse(vi.mocked(mockClient.fetch).mock.calls[0][0].body as string);
+			expect(body.ipam_ip_ids).toEqual(["ip-1", "ip-2"]);
+		});
+
+		it("returns error on 400", async () => {
+			mockClient = createErrorClient(makeStatusError(400, "Invalid"));
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			const result = await handlers.addServerPrivateNetwork({
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+			});
+
+			expect((result as { isError?: boolean }).isError).toBe(true);
+			expect(result.content[0].text).toContain("invalid_input");
+		});
+	});
+
+	describe("setServerPrivateNetworks", () => {
+		it("sends PUT with per_private_network_ipam_ip_ids body", async () => {
+			mockClient = createMockClient({ server_private_networks: [] });
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			const result = await handlers.setServerPrivateNetworks({
+				server_id: "srv-1",
+				per_private_network_ipam_ip_ids: { "pn-1": ["ip-1"], "pn-2": [] },
+			});
+
+			const call = vi.mocked(mockClient.fetch).mock.calls[0][0];
+			expect(call.method).toBe("PUT");
+			expect(call.path).toBe(
+				"/apple-silicon/v1alpha1/zones/fr-par-1/servers/srv-1/private-networks",
+			);
+			expect(call.headers).toEqual({ "Content-Type": "application/json" });
+			const body = JSON.parse(call.body as string);
+			expect(body.per_private_network_ipam_ip_ids).toEqual({ "pn-1": ["ip-1"], "pn-2": [] });
+			expect(result.content[0].text).toContain("server_private_networks");
+		});
+
+		it("uses provided zone", async () => {
+			mockClient = createMockClient({});
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			await handlers.setServerPrivateNetworks({
+				zone: "fr-par-3",
+				server_id: "srv-1",
+				per_private_network_ipam_ip_ids: {},
+			});
+
+			const call = vi.mocked(mockClient.fetch).mock.calls[0][0];
+			expect(call.path).toContain("fr-par-3");
+		});
+
+		it("returns error on failure", async () => {
+			mockClient = createErrorClient(makeStatusError(500, "Internal"));
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			const result = await handlers.setServerPrivateNetworks({
+				server_id: "srv-1",
+				per_private_network_ipam_ip_ids: {},
+			});
+
+			expect((result as { isError?: boolean }).isError).toBe(true);
+			expect(result.content[0].text).toContain("server_error");
+		});
+	});
+
+	describe("deleteServerPrivateNetwork", () => {
+		it("sends DELETE and returns success message", async () => {
+			mockClient = createMockClient(undefined);
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			const result = await handlers.deleteServerPrivateNetwork({
+				server_id: "srv-1",
+				private_network_id: "pn-1",
+			});
+
+			const call = vi.mocked(mockClient.fetch).mock.calls[0][0];
+			expect(call.method).toBe("DELETE");
+			expect(call.path).toBe(
+				"/apple-silicon/v1alpha1/zones/fr-par-1/servers/srv-1/private-networks/pn-1",
+			);
+			expect(result.content[0].text).toContain("detached successfully");
+		});
+
+		it("returns error on 404", async () => {
+			mockClient = createErrorClient(makeStatusError(404, "Not found"));
+			handlers = createAppleSiliconHandlers(mockClient, DEFAULT_ZONE);
+
+			const result = await handlers.deleteServerPrivateNetwork({
+				server_id: "srv-1",
+				private_network_id: "missing",
+			});
+
+			expect((result as { isError?: boolean }).isError).toBe(true);
+			expect(result.content[0].text).toContain("not_found");
+		});
+	});
+
 	describe("error handling edge cases", () => {
 		it("handles non-Error thrown values", async () => {
 			mockClient = {

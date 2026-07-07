@@ -59,10 +59,18 @@ Test organization:
 
 ## Architecture
 
-*To be updated once the codebase is developed.*
+Stateless MCP server exposing ~733 tools across 50 Scaleway product areas.
 
-Key directories:
-- `specs/scaleway-api/` - Full Scaleway API Reference Spec (request/response shapes, error codes, pagination patterns per product area)
+- `src/main.ts` - Entry point (stdio transport); `src/server.ts` - creates the MCP server and calls `registerAllTools`.
+- `src/tools/<area>/` - one directory per product area, each with three files:
+  - `types.ts` - Zod input schemas for the area's tools
+  - `handlers.ts` - Scaleway API call logic + response formatting
+  - `index.ts` - `register<Area>Tools(server)` registering each tool via `server.tool(name, description, schema.shape, handler)`
+- `src/tools/index.ts` - `registerAllTools(server)` invokes every area's register function.
+- `src/shared/` - cross-cutting helpers: `auth.ts` (env-var credential loading), `client.ts` (Scaleway SDK client singleton), `errors.ts` (HTTP error mapping), `pagination.ts` (pagination helpers), `s3-signer.ts` (AWS SigV4 signing for Object Storage/S3 requests), `types.ts` (shared Zod schemas).
+- `tests/` - `unit/` and `contract/` run in CI; `api/` are local-only integration tests. `tests/parity-matrix.json` maps every Scaleway API operation to its tool + contract test; `tests/unit/parity.test.ts` (run via `bun run test:parity`) gates that every matrix entry is covered.
+- `specs/scaleway-api/<area>/api-reference.md` - authoritative Scaleway API Reference Spec (request/response shapes, error codes, pagination patterns) per product area.
+- `specs/NNN-*/` - spec-kit feature directories (spec.md, plan.md, tasks.md) per feature.
 
 ## Active Technologies
 - TypeScript 5.x (strict mode) with Bun 1.x + @modelcontextprotocol/sdk ^1.25.x, @scaleway/sdk, zod ^3.25.x

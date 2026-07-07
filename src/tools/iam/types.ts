@@ -247,20 +247,24 @@ export type ListRulesInput = z.infer<typeof ListRulesInput>;
 export const CreateRuleInput = z.object({
 	policy_id: z.string().describe("Policy ID"),
 	permission_set_names: z.array(z.string()).describe("Permission set names"),
+	condition: z.string().optional().describe("Condition expression to evaluate"),
 	project_ids: z.array(z.string()).optional().describe("Project IDs"),
 	organization_id: z.string().optional().describe("Organization ID for this rule"),
 });
 export type CreateRuleInput = z.infer<typeof CreateRuleInput>;
 
 export const UpdateRuleInput = z.object({
+	policy_id: z.string().describe("Policy ID the rule belongs to"),
 	rule_id: z.string().describe("Rule ID"),
 	permission_set_names: z.array(z.string()).optional().describe("Permission set names"),
+	condition: z.string().optional().describe("Condition expression to evaluate"),
 	project_ids: z.array(z.string()).optional().describe("Project IDs"),
 	organization_id: z.string().optional().describe("Organization ID"),
 });
 export type UpdateRuleInput = z.infer<typeof UpdateRuleInput>;
 
 export const DeleteRuleInput = z.object({
+	policy_id: z.string().describe("Policy ID the rule belongs to"),
 	rule_id: z.string().describe("Rule ID"),
 });
 export type DeleteRuleInput = z.infer<typeof DeleteRuleInput>;

@@ -225,7 +225,7 @@ export async function handleCreateToken(input: CreateTokenInput) {
 			name: input.name,
 		};
 		if (input.scopes) {
-			body.scopes = input.scopes;
+			body.token_scopes = input.scopes;
 		}
 		const response = await client.fetch({
 			method: "POST",
@@ -271,7 +271,7 @@ export async function handleListGrafanaUsers(input: ListGrafanaUsersInput) {
 		}
 		const response = (await client.fetch({
 			method: "GET",
-			path: `/${COCKPIT_API_PREFIX}/grafana-users`,
+			path: `/${COCKPIT_API_PREFIX}/grafana/users`,
 			urlParams: params,
 		})) as {
 			grafana_users: unknown[];
@@ -303,7 +303,7 @@ export async function handleCreateGrafanaUser(input: CreateGrafanaUserInput) {
 		}
 		const response = await client.fetch({
 			method: "POST",
-			path: `/${COCKPIT_API_PREFIX}/grafana-users`,
+			path: `/${COCKPIT_API_PREFIX}/grafana/users`,
 			body: JSON.stringify(body),
 			headers: { "Content-Type": "application/json" },
 		});
@@ -319,7 +319,7 @@ export async function handleDeleteGrafanaUser(input: DeleteGrafanaUserInput) {
 		const client = createScalewayClient(config);
 		await client.fetch({
 			method: "DELETE",
-			path: `/${COCKPIT_API_PREFIX}/grafana-users/${encodeURIComponent(String(input.grafana_user_id))}`,
+			path: `/${COCKPIT_API_PREFIX}/grafana/users/${encodeURIComponent(String(input.grafana_user_id))}`,
 			urlParams: new URLSearchParams({ project_id: input.project_id }),
 		});
 		return formatSuccess({
@@ -337,7 +337,7 @@ export async function handleResetGrafanaUserPassword(input: ResetGrafanaUserPass
 		const client = createScalewayClient(config);
 		const response = await client.fetch({
 			method: "POST",
-			path: `/${COCKPIT_API_PREFIX}/grafana-users/${encodeURIComponent(String(input.grafana_user_id))}/reset-password`,
+			path: `/${COCKPIT_API_PREFIX}/grafana/users/${encodeURIComponent(String(input.grafana_user_id))}/reset-password`,
 			body: JSON.stringify({ project_id: input.project_id }),
 			headers: { "Content-Type": "application/json" },
 		});

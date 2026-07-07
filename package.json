@@ -17,7 +17,7 @@
 		"lint:fix": "biome check --write .",
 		"test": "vitest run --config tests/vitest.config.ts",
 		"test:watch": "vitest --config tests/vitest.config.ts",
-		"test:parity": "vitest run --config tests/vitest.config.ts -- parity",
+		"test:parity": "vitest run --config tests/vitest.config.ts tests/unit/parity.test.ts",
 		"build": "bun run bun.build.ts"
 	},
 	"dependencies": {

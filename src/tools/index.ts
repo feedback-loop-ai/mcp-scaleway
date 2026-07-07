@@ -48,6 +48,32 @@ import { registerAccountTools } from "./account/index.js";
 import { registerBillingTools } from "./billing/index.js";
 import { registerMarketplaceTools } from "./marketplace/index.js";
 
+// Extended catalog: bare metal & compute
+import { registerAutoscalingTools } from "./autoscaling/index.js";
+import { registerDediboxTools } from "./dedibox/index.js";
+
+// Extended catalog: storage
+import { registerFileStorageTools } from "./file-storage/index.js";
+
+// Extended catalog: networking
+import { registerInterlinkTools } from "./interlink/index.js";
+import { registerVpnTools } from "./vpn/index.js";
+
+// Extended catalog: data & analytics
+import { registerDataLabTools } from "./data-lab/index.js";
+import { registerDataWarehouseTools } from "./data-warehouse/index.js";
+import { registerKafkaTools } from "./kafka/index.js";
+import { registerOpensearchTools } from "./opensearch/index.js";
+import { registerRabbitmqTools } from "./rabbitmq/index.js";
+
+// Extended catalog: web & email
+import { registerMailboxTools } from "./mailbox/index.js";
+
+// Extended catalog: observability & governance
+import { registerAuditTrailTools } from "./audit-trail/index.js";
+import { registerEnvironmentalFootprintTools } from "./environmental-footprint/index.js";
+import { registerProductCatalogTools } from "./product-catalog/index.js";
+
 export function registerAllTools(server: McpServer): void {
 	// Compute
 	registerInstancesTools(server);
@@ -96,4 +122,30 @@ export function registerAllTools(server: McpServer): void {
 	registerAccountTools(server);
 	registerBillingTools(server);
 	registerMarketplaceTools(server);
+
+	// Extended catalog: bare metal & compute
+	registerAutoscalingTools(server);
+	registerDediboxTools(server);
+
+	// Extended catalog: storage
+	registerFileStorageTools(server);
+
+	// Extended catalog: networking
+	registerVpnTools(server);
+	registerInterlinkTools(server);
+
+	// Extended catalog: data & analytics
+	registerKafkaTools(server);
+	registerDataWarehouseTools(server);
+	registerDataLabTools(server);
+	registerOpensearchTools(server);
+	registerRabbitmqTools(server);
+
+	// Extended catalog: web & email
+	registerMailboxTools(server);
+
+	// Extended catalog: observability & governance
+	registerAuditTrailTools(server);
+	registerEnvironmentalFootprintTools(server);
+	registerProductCatalogTools(server);
 }

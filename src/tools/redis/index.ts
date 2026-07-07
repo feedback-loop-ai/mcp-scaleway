@@ -41,7 +41,7 @@ export function registerRedisTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_redis_list_clusters",
-		"List Redis clusters in a Scaleway region with filtering and pagination",
+		"List Redis clusters in a Scaleway zone with filtering and pagination",
 		ListClustersInput.shape,
 		async (params) => handleListClusters(ListClustersInput.parse(params)),
 	);
@@ -55,7 +55,7 @@ export function registerRedisTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_redis_create_cluster",
-		"Create a new Redis cluster in a Scaleway region",
+		"Create a new Redis cluster in a Scaleway zone",
 		CreateClusterInput.shape,
 		async (params) => handleCreateCluster(CreateClusterInput.parse(params)),
 	);
@@ -108,7 +108,7 @@ export function registerRedisTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_redis_delete_acl_rules",
-		"Delete ACL rules from a Redis cluster",
+		"Delete a single Redis ACL rule by its ID",
 		DeleteACLRulesInput.shape,
 		async (params) => handleDeleteACLRules(DeleteACLRulesInput.parse(params)),
 	);
@@ -147,14 +147,14 @@ export function registerRedisTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_redis_list_node_types",
-		"List available Redis node types in a region",
+		"List available Redis node types in a zone",
 		ListNodeTypesInput.shape,
 		async (params) => handleListNodeTypes(ListNodeTypesInput.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_redis_list_cluster_versions",
-		"List available Redis cluster versions in a region",
+		"List available Redis cluster versions in a zone",
 		ListClusterVersionsInput.shape,
 		async (params) => handleListClusterVersions(ListClusterVersionsInput.parse(params)),
 	);

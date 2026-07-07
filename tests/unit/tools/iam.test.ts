@@ -512,19 +512,61 @@ describe("iam handlers", () => {
 		});
 	});
 
+	// The Scaleway IAM API has no per-rule endpoints; create/update/delete are
+	// implemented as read (GET /rules?policy_id=) + full-set replace (PUT /rules).
+	// Existing rules exercise every toRuleSpec branch: project-scoped, org-scoped,
+	// unscoped, and a rule with null permission_set_names.
+	const existingRules = [
+		{ id: "r1", permission_set_names: ["ReadOnly"], project_ids: ["proj-1"] },
+		{ id: "r2", permission_set_names: null, condition: "cond", organization_id: "org-1" },
+		{ id: "r3", permission_set_names: ["Other"] },
+	];
+
 	describe("handleCreateRule", () => {
-		it("creates rule on success", async () => {
-			mockClient.fetch.mockResolvedValue({ id: "rule-new" });
+		it("appends a rule and PUTs the full set", async () => {
+			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			mockClient.fetch.mockResolvedValueOnce({ rules: [...existingRules, { id: "rule-new" }] });
 			const result = await handlersModule.handleCreateRule(mockClient as never, {
 				policy_id: "pol-1",
 				permission_set_names: ["InstancesFullAccess"],
-				project_ids: ["proj-1"],
+				condition: "expr",
+				project_ids: ["proj-2"],
+				organization_id: "org-2",
 			});
 			expect(result.content[0].text).toContain("rule-new");
+			const listCall = mockClient.fetch.mock.calls[0][0];
+			expect(listCall.method).toBe("GET");
+			expect(listCall.urlParams.get("policy_id")).toBe("pol-1");
+			const putCall = mockClient.fetch.mock.calls[1][0];
+			expect(putCall.method).toBe("PUT");
+			expect(putCall.path).toBe("/iam/v1alpha1/rules");
+			const body = JSON.parse(putCall.body);
+			expect(body.policy_id).toBe("pol-1");
+			// 3 existing + 1 new
+			expect(body.rules).toHaveLength(4);
+			expect(body.rules[3]).toMatchObject({
+				permission_set_names: ["InstancesFullAccess"],
+				condition: "expr",
+				project_ids: ["proj-2"],
+				organization_id: "org-2",
+			});
 		});
 
-		it("returns error on failure", async () => {
-			mockClient.fetch.mockRejectedValue(new Error("fail"));
+		it("appends a minimal rule with defaults when no scope/condition given", async () => {
+			mockClient.fetch.mockResolvedValueOnce({});
+			mockClient.fetch.mockResolvedValueOnce({ rules: [{ id: "rule-min" }] });
+			const result = await handlersModule.handleCreateRule(mockClient as never, {
+				policy_id: "pol-1",
+				permission_set_names: ["x"],
+			});
+			expect(result.content[0].text).toContain("rule-min");
+			const body = JSON.parse(mockClient.fetch.mock.calls[1][0].body);
+			expect(body.rules).toHaveLength(1);
+			expect(body.rules[0]).toEqual({ permission_set_names: ["x"], condition: "" });
+		});
+
+		it("returns error when listing fails", async () => {
+			mockClient.fetch.mockRejectedValueOnce(new Error("fail"));
 			const result = await handlersModule.handleCreateRule(mockClient as never, {
 				policy_id: "pol-1",
 				permission_set_names: ["x"],
@@ -534,37 +576,89 @@ describe("iam handlers", () => {
 	});
 
 	describe("handleUpdateRule", () => {
-		it("updates rule on success", async () => {
-			mockClient.fetch.mockResolvedValue({ id: "rule-1" });
+		it("replaces the matching rule and PUTs the full set", async () => {
+			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
 			const result = await handlersModule.handleUpdateRule(mockClient as never, {
-				rule_id: "rule-1",
+				policy_id: "pol-1",
+				rule_id: "r1",
 				permission_set_names: ["Updated"],
+				condition: "newcond",
+				organization_id: "org-9",
 			});
-			expect(result.content[0].text).toContain("rule-1");
+			expect(result.content[0].text).toContain("rules");
+			const body = JSON.parse(mockClient.fetch.mock.calls[1][0].body);
+			expect(body.rules[0]).toMatchObject({
+				permission_set_names: ["Updated"],
+				condition: "newcond",
+				organization_id: "org-9",
+			});
+			// switching to organization scope clears project_ids
+			expect(body.rules[0].project_ids).toBeUndefined();
 		});
 
-		it("returns error on failure", async () => {
-			mockClient.fetch.mockRejectedValue(new Error("fail"));
+		it("switches a rule to project scope and clears organization_id", async () => {
+			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			await handlersModule.handleUpdateRule(mockClient as never, {
+				policy_id: "pol-1",
+				rule_id: "r2",
+				project_ids: ["proj-9"],
+			});
+			const body = JSON.parse(mockClient.fetch.mock.calls[1][0].body);
+			expect(body.rules[1].project_ids).toEqual(["proj-9"]);
+			expect(body.rules[1].organization_id).toBeUndefined();
+		});
+
+		it("returns error when the rule is not found", async () => {
+			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
 			const result = await handlersModule.handleUpdateRule(mockClient as never, {
-				rule_id: "rule-1",
+				policy_id: "pol-1",
+				rule_id: "missing",
+			});
+			expect("isError" in result && result.isError).toBe(true);
+			expect(mockClient.fetch).toHaveBeenCalledTimes(1);
+		});
+
+		it("returns error when listing fails", async () => {
+			mockClient.fetch.mockRejectedValueOnce(new Error("fail"));
+			const result = await handlersModule.handleUpdateRule(mockClient as never, {
+				policy_id: "pol-1",
+				rule_id: "r1",
 			});
 			expect("isError" in result && result.isError).toBe(true);
 		});
 	});
 
 	describe("handleDeleteRule", () => {
-		it("deletes rule on success", async () => {
-			mockClient.fetch.mockResolvedValue(undefined);
+		it("removes the rule and PUTs the remaining set", async () => {
+			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			mockClient.fetch.mockResolvedValueOnce({ rules: [] });
 			const result = await handlersModule.handleDeleteRule(mockClient as never, {
-				rule_id: "rule-1",
+				policy_id: "pol-1",
+				rule_id: "r1",
 			});
 			expect(result.content[0].text).toContain("deleted");
+			const body = JSON.parse(mockClient.fetch.mock.calls[1][0].body);
+			// r1 removed, r2 and r3 remain as RuleSpecs (no id field)
+			expect(body.rules).toHaveLength(2);
 		});
 
-		it("returns error on failure", async () => {
-			mockClient.fetch.mockRejectedValue(new Error("fail"));
+		it("returns error when the rule is not found", async () => {
+			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
 			const result = await handlersModule.handleDeleteRule(mockClient as never, {
-				rule_id: "rule-1",
+				policy_id: "pol-1",
+				rule_id: "missing",
+			});
+			expect("isError" in result && result.isError).toBe(true);
+			expect(mockClient.fetch).toHaveBeenCalledTimes(1);
+		});
+
+		it("returns error when listing fails", async () => {
+			mockClient.fetch.mockRejectedValueOnce(new Error("fail"));
+			const result = await handlersModule.handleDeleteRule(mockClient as never, {
+				policy_id: "pol-1",
+				rule_id: "r1",
 			});
 			expect("isError" in result && result.isError).toBe(true);
 		});
@@ -678,7 +772,7 @@ describe("iam handlers", () => {
 			expect(mockClient.fetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "POST",
-					path: "/iam/v1alpha1/groups/grp-1/members",
+					path: "/iam/v1alpha1/groups/grp-1/add-member",
 				}),
 			);
 		});
@@ -703,8 +797,8 @@ describe("iam handlers", () => {
 			expect(result.content[0].text).toContain("grp-1");
 			expect(mockClient.fetch).toHaveBeenCalledWith(
 				expect.objectContaining({
-					method: "DELETE",
-					path: "/iam/v1alpha1/groups/grp-1/members",
+					method: "POST",
+					path: "/iam/v1alpha1/groups/grp-1/remove-member",
 				}),
 			);
 		});
@@ -877,15 +971,18 @@ describe("iam types", () => {
 
 	it("validates UpdateRuleInput", () => {
 		const parsed = typesModule.UpdateRuleInput.parse({
+			policy_id: "pol-1",
 			rule_id: "rule-1",
 			permission_set_names: ["Updated"],
 		});
 		expect(parsed.rule_id).toBe("rule-1");
+		expect(parsed.policy_id).toBe("pol-1");
 	});
 
 	it("validates DeleteRuleInput", () => {
-		const parsed = typesModule.DeleteRuleInput.parse({ rule_id: "rule-1" });
+		const parsed = typesModule.DeleteRuleInput.parse({ policy_id: "pol-1", rule_id: "rule-1" });
 		expect(parsed.rule_id).toBe("rule-1");
+		expect(parsed.policy_id).toBe("pol-1");
 	});
 
 	it("validates ListApplicationsInput with defaults", () => {

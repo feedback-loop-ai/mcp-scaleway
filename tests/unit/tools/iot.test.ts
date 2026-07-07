@@ -635,6 +635,9 @@ describe("handleRenewDeviceCertificate", () => {
 		});
 		const parsed = JSON.parse(result.content[0].text);
 		expect(parsed.certificate_pem).toBeDefined();
+		const url = mockFetch.mock.calls[0][0];
+		expect(url).toContain("/devices/11111111-1111-1111-1111-111111111111/renew-certificate");
+		expect(url).not.toContain("/certificate/renew");
 	});
 
 	it("handles errors", async () => {

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PaginationParams, ScalewayRegion } from "../../shared/types.js";
+import { PaginationParams, ScalewayZone } from "../../shared/types.js";
 
 // === Enums ===
 
@@ -65,7 +65,7 @@ export const RedisCluster = z.object({
 	name: z.string().describe("Cluster name"),
 	version: z.string().describe("Redis version"),
 	status: RedisClusterStatus.describe("Current cluster status"),
-	region: z.string().describe("Region where the cluster is deployed"),
+	zone: z.string().describe("Zone where the cluster is deployed (e.g., fr-par-1)"),
 	project_id: z.string().describe("Project ID"),
 	node_type: z.string().describe("Node type (e.g., RED1-XS)"),
 	cluster_size: z.number().describe("Number of nodes in the cluster"),
@@ -131,7 +131,7 @@ export type RedisClusterMetrics = z.infer<typeof RedisClusterMetrics>;
 // === Input Schemas ===
 
 export const ListClustersInput = PaginationParams.extend({
-	region: ScalewayRegion.optional().describe("Region to list clusters in (e.g., fr-par)"),
+	zone: ScalewayZone.optional().describe("Zone to list clusters in (e.g., fr-par-1)"),
 	project_id: z.string().optional().describe("Filter by project ID"),
 	tags: z.array(z.string()).optional().describe("Filter by tags"),
 	name: z.string().optional().describe("Filter by cluster name"),
@@ -144,13 +144,13 @@ export const ListClustersInput = PaginationParams.extend({
 export type ListClustersInput = z.infer<typeof ListClustersInput>;
 
 export const GetClusterInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
 	cluster_id: z.string().describe("ID of the cluster to retrieve"),
 });
 export type GetClusterInput = z.infer<typeof GetClusterInput>;
 
 export const CreateClusterInput = z.object({
-	region: ScalewayRegion.optional().describe("Region to create the cluster in"),
+	zone: ScalewayZone.optional().describe("Zone to create the cluster in (e.g., fr-par-1)"),
 	project_id: z.string().describe("Project ID"),
 	name: z.string().describe("Cluster name"),
 	version: z.string().describe("Redis version"),
@@ -167,7 +167,7 @@ export const CreateClusterInput = z.object({
 export type CreateClusterInput = z.infer<typeof CreateClusterInput>;
 
 export const UpdateClusterInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
 	cluster_id: z.string().describe("ID of the cluster to update"),
 	name: z.string().optional().describe("New cluster name"),
 	tags: z.array(z.string()).optional().describe("New tags"),
@@ -177,13 +177,13 @@ export const UpdateClusterInput = z.object({
 export type UpdateClusterInput = z.infer<typeof UpdateClusterInput>;
 
 export const DeleteClusterInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
 	cluster_id: z.string().describe("ID of the cluster to delete"),
 });
 export type DeleteClusterInput = z.infer<typeof DeleteClusterInput>;
 
 export const GetClusterMetricsInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
 	cluster_id: z.string().describe("ID of the cluster"),
 	start_at: z.string().optional().describe("Start of the time range (ISO 8601)"),
 	end_at: z.string().optional().describe("End of the time range (ISO 8601)"),
@@ -192,67 +192,65 @@ export const GetClusterMetricsInput = z.object({
 export type GetClusterMetricsInput = z.infer<typeof GetClusterMetricsInput>;
 
 export const GetClusterCertificateInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
 	cluster_id: z.string().describe("ID of the cluster"),
 });
 export type GetClusterCertificateInput = z.infer<typeof GetClusterCertificateInput>;
 
 export const RenewClusterCertificateInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
 	cluster_id: z.string().describe("ID of the cluster"),
 });
 export type RenewClusterCertificateInput = z.infer<typeof RenewClusterCertificateInput>;
 
 export const AddACLRulesInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
 	cluster_id: z.string().describe("ID of the cluster"),
 	acl_rules: z.array(RedisACLRuleSpec).describe("ACL rules to add"),
 });
 export type AddACLRulesInput = z.infer<typeof AddACLRulesInput>;
 
 export const DeleteACLRulesInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
-	cluster_id: z.string().describe("ID of the cluster"),
-	acl_rule_ids: z.array(z.string()).describe("IDs of ACL rules to delete"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
+	acl_id: z.string().describe("ID of the ACL rule to delete"),
 });
 export type DeleteACLRulesInput = z.infer<typeof DeleteACLRulesInput>;
 
 export const SetACLRulesInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
 	cluster_id: z.string().describe("ID of the cluster"),
 	acl_rules: z.array(RedisACLRuleSpec).describe("ACL rules to set (replaces all existing)"),
 });
 export type SetACLRulesInput = z.infer<typeof SetACLRulesInput>;
 
 export const AddEndpointsInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
 	cluster_id: z.string().describe("ID of the cluster"),
 	endpoints: z.array(RedisEndpointSpec).describe("Endpoints to add"),
 });
 export type AddEndpointsInput = z.infer<typeof AddEndpointsInput>;
 
 export const DeleteEndpointsInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
-	cluster_id: z.string().describe("ID of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the endpoint (e.g., fr-par-1)"),
 	endpoint_id: z.string().describe("ID of the endpoint to delete"),
 });
 export type DeleteEndpointsInput = z.infer<typeof DeleteEndpointsInput>;
 
 export const SetEndpointsInput = z.object({
-	region: ScalewayRegion.optional().describe("Region of the cluster"),
+	zone: ScalewayZone.optional().describe("Zone of the cluster (e.g., fr-par-1)"),
 	cluster_id: z.string().describe("ID of the cluster"),
 	endpoints: z.array(RedisEndpointSpec).describe("Endpoints to set (replaces all existing)"),
 });
 export type SetEndpointsInput = z.infer<typeof SetEndpointsInput>;
 
 export const ListNodeTypesInput = PaginationParams.extend({
-	region: ScalewayRegion.optional().describe("Region to list node types in"),
+	zone: ScalewayZone.optional().describe("Zone to list node types in (e.g., fr-par-1)"),
 	include_disabled_types: z.boolean().optional().describe("Include disabled node types"),
 });
 export type ListNodeTypesInput = z.infer<typeof ListNodeTypesInput>;
 
 export const ListClusterVersionsInput = PaginationParams.extend({
-	region: ScalewayRegion.optional().describe("Region to list versions in"),
+	zone: ScalewayZone.optional().describe("Zone to list versions in (e.g., fr-par-1)"),
 	include_disabled: z.boolean().optional().describe("Include disabled versions"),
 	include_beta: z.boolean().optional().describe("Include beta versions"),
 	include_deprecated: z.boolean().optional().describe("Include deprecated versions"),

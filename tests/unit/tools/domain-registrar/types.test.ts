@@ -1,13 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
 	AutoRenewStatus,
+	AvailableDomain,
 	CheckDomainAvailabilityInput,
 	Contact,
-	CreateContactInput,
 	DisableAutoRenewInput,
 	DnssecStatus,
 	Domain,
-	DomainAvailability,
 	DomainStatus,
 	EnableAutoRenewInput,
 	GetContactInput,
@@ -126,7 +125,7 @@ const validContact = {
 	firstname: "John",
 	lastname: "Doe",
 	email: "john@example.com",
-	phone: "+33612345678",
+	phone_number: "+33612345678",
 	address_line_1: "1 Rue de Paris",
 	city: "Paris",
 	zip: "75001",
@@ -151,29 +150,45 @@ describe("Contact", () => {
 	});
 });
 
-describe("DomainAvailability", () => {
+const validTld = {
+	name: "com",
+	dnssec_support: true,
+	duration_in_years_min: 1,
+	duration_in_years_max: 10,
+	idn_support: true,
+	offers: {
+		create: {
+			action: "create",
+			operation_path: "create",
+			price: { currency_code: "EUR", units: 9, nanos: 990000000 },
+		},
+	},
+	specifications: { grace_period: "30d" },
+};
+
+describe("AvailableDomain", () => {
 	it("accepts valid availability", () => {
-		const result = DomainAvailability.parse({
+		const result = AvailableDomain.parse({
 			domain: "example.com",
 			available: true,
-			tld: "com",
+			tld: validTld,
 		});
 		expect(result.available).toBe(true);
 	});
+	it("accepts availability without tld details", () => {
+		const result = AvailableDomain.parse({ domain: "example.com", available: false });
+		expect(result.available).toBe(false);
+	});
 	it("rejects missing fields", () => {
-		expect(() => DomainAvailability.parse({ domain: "example.com" })).toThrow();
+		expect(() => AvailableDomain.parse({ domain: "example.com" })).toThrow();
 	});
 });
 
 describe("Tld", () => {
 	it("accepts a valid TLD", () => {
-		const result = Tld.parse({
-			name: "com",
-			dnssec_support: true,
-			offers: [{ action: "register", price: 9.99 }],
-		});
+		const result = Tld.parse(validTld);
 		expect(result.name).toBe("com");
-		expect(result.offers).toHaveLength(1);
+		expect(result.offers.create.price.units).toBe(9);
 	});
 	it("rejects invalid TLD", () => {
 		expect(() => Tld.parse({ name: "com" })).toThrow();
@@ -356,65 +371,6 @@ describe("GetContactInput", () => {
 	});
 });
 
-describe("CreateContactInput", () => {
-	it("accepts valid input", () => {
-		const result = CreateContactInput.parse({
-			firstname: "John",
-			lastname: "Doe",
-			email: "john@example.com",
-			phone: "+33612345678",
-			address_line_1: "1 Rue de Paris",
-			city: "Paris",
-			zip: "75001",
-			country: "FR",
-		});
-		expect(result.firstname).toBe("John");
-	});
-	it("accepts with optional fields", () => {
-		const result = CreateContactInput.parse({
-			firstname: "John",
-			lastname: "Doe",
-			email: "john@example.com",
-			phone: "+33612345678",
-			address_line_1: "1 Rue de Paris",
-			city: "Paris",
-			zip: "75001",
-			country: "FR",
-			company_name: "ACME",
-			state: "IDF",
-		});
-		expect(result.company_name).toBe("ACME");
-	});
-	it("rejects invalid email", () => {
-		expect(() =>
-			CreateContactInput.parse({
-				firstname: "John",
-				lastname: "Doe",
-				email: "not-email",
-				phone: "+33612345678",
-				address_line_1: "1 Rue de Paris",
-				city: "Paris",
-				zip: "75001",
-				country: "FR",
-			}),
-		).toThrow();
-	});
-	it("rejects country code not 2 chars", () => {
-		expect(() =>
-			CreateContactInput.parse({
-				firstname: "John",
-				lastname: "Doe",
-				email: "john@example.com",
-				phone: "+33612345678",
-				address_line_1: "1 Rue de Paris",
-				city: "Paris",
-				zip: "75001",
-				country: "FRA",
-			}),
-		).toThrow();
-	});
-});
-
 describe("UpdateContactInput", () => {
 	it("accepts minimal input", () => {
 		const result = UpdateContactInput.parse({ contact_id: "c-1" });
@@ -423,18 +379,18 @@ describe("UpdateContactInput", () => {
 	it("accepts all optional fields", () => {
 		const result = UpdateContactInput.parse({
 			contact_id: "c-1",
-			firstname: "Jane",
-			lastname: "Doe",
 			email: "jane@example.com",
-			phone: "+33612345678",
-			company_name: "Corp",
+			phone_number: "+33612345678",
 			address_line_1: "2 Rue",
 			city: "Lyon",
 			zip: "69001",
 			country: "FR",
 			state: "ARA",
 		});
-		expect(result.firstname).toBe("Jane");
+		expect(result.phone_number).toBe("+33612345678");
+	});
+	it("rejects invalid email", () => {
+		expect(() => UpdateContactInput.parse({ contact_id: "c-1", email: "not-email" })).toThrow();
 	});
 	it("rejects invalid country length", () => {
 		expect(() => UpdateContactInput.parse({ contact_id: "c-1", country: "FRA" })).toThrow();

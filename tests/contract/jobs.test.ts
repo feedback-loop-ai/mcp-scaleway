@@ -5,7 +5,7 @@
  * against the Scaleway Jobs API v1alpha2.
  *
  * API Reference: https://www.scaleway.com/en/developers/api/serverless-jobs/
- * Spec entry: specs/scaleway-api/ (jobs section)
+ * Spec entry: specs/scaleway-api/jobs/api-reference.md
  * Parity matrix: tests/parity-matrix.json (jobs)
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -59,21 +59,21 @@ afterEach(() => {
 // ── Contract: Request shape ────────────────────────────────────────────────────
 
 describe("jobs contract: request shapes", () => {
-	it("ListJobDefinitions sends GET to /jobs/v1alpha2/regions/{region}/job-definitions", async () => {
+	it("ListJobDefinitions sends GET to /serverless-jobs/v1alpha2/regions/{region}/job-definitions", async () => {
 		mockFetch.mockResolvedValueOnce({ job_definitions: [], total_count: 0 });
 		await handleListJobDefinitions({ page: 1, pageSize: 50 });
 		expect(mockFetch.mock.calls[0][0].method).toBe("GET");
 		expect(mockFetch.mock.calls[0][0].path).toMatch(
-			/\/jobs\/v1alpha2\/regions\/fr-par\/job-definitions\?/,
+			/\/serverless-jobs\/v1alpha2\/regions\/fr-par\/job-definitions\?/,
 		);
 	});
 
-	it("GetJobDefinition sends GET to /jobs/v1alpha2/regions/{region}/job-definitions/{id}", async () => {
+	it("GetJobDefinition sends GET to /serverless-jobs/v1alpha2/regions/{region}/job-definitions/{id}", async () => {
 		mockFetch.mockResolvedValueOnce({ id: TEST_UUID });
 		await handleGetJobDefinition({ job_definition_id: TEST_UUID });
 		expect(mockFetch.mock.calls[0][0].method).toBe("GET");
 		expect(mockFetch.mock.calls[0][0].path).toBe(
-			`/jobs/v1alpha2/regions/fr-par/job-definitions/${TEST_UUID}`,
+			`/serverless-jobs/v1alpha2/regions/fr-par/job-definitions/${TEST_UUID}`,
 		);
 	});
 
@@ -87,7 +87,7 @@ describe("jobs contract: request shapes", () => {
 		});
 		const call = mockFetch.mock.calls[0][0];
 		expect(call.method).toBe("POST");
-		expect(call.path).toBe("/jobs/v1alpha2/regions/fr-par/job-definitions");
+		expect(call.path).toBe("/serverless-jobs/v1alpha2/regions/fr-par/job-definitions");
 		const body = JSON.parse(call.body);
 		expect(body).toEqual(
 			expect.objectContaining({
@@ -104,7 +104,7 @@ describe("jobs contract: request shapes", () => {
 		await handleUpdateJobDefinition({ job_definition_id: TEST_UUID, name: "renamed" });
 		const call = mockFetch.mock.calls[0][0];
 		expect(call.method).toBe("PATCH");
-		expect(call.path).toBe(`/jobs/v1alpha2/regions/fr-par/job-definitions/${TEST_UUID}`);
+		expect(call.path).toBe(`/serverless-jobs/v1alpha2/regions/fr-par/job-definitions/${TEST_UUID}`);
 		const body = JSON.parse(call.body);
 		expect(body).toEqual({ name: "renamed" });
 	});
@@ -114,17 +114,31 @@ describe("jobs contract: request shapes", () => {
 		await handleDeleteJobDefinition({ job_definition_id: TEST_UUID });
 		const call = mockFetch.mock.calls[0][0];
 		expect(call.method).toBe("DELETE");
-		expect(call.path).toBe(`/jobs/v1alpha2/regions/fr-par/job-definitions/${TEST_UUID}`);
+		expect(call.path).toBe(`/serverless-jobs/v1alpha2/regions/fr-par/job-definitions/${TEST_UUID}`);
 	});
 
-	it("StartJob sends POST to /job-runs with job_definition_id", async () => {
+	it("StartJob sends POST to /job-definitions/{id}/start (job_definition_id in path, not body)", async () => {
 		mockFetch.mockResolvedValueOnce({ id: "run-id" });
 		await handleStartJob({ job_definition_id: TEST_UUID });
 		const call = mockFetch.mock.calls[0][0];
 		expect(call.method).toBe("POST");
-		expect(call.path).toBe("/jobs/v1alpha2/regions/fr-par/job-runs");
+		expect(call.path).toBe(
+			`/serverless-jobs/v1alpha2/regions/fr-par/job-definitions/${TEST_UUID}/start`,
+		);
 		const body = JSON.parse(call.body);
-		expect(body.job_definition_id).toBe(TEST_UUID);
+		expect(body.job_definition_id).toBeUndefined();
+	});
+
+	it("StartJob sends command and environment_variables overrides in body", async () => {
+		mockFetch.mockResolvedValueOnce({ id: "run-id" });
+		await handleStartJob({
+			job_definition_id: TEST_UUID,
+			command: "override.sh",
+			environment_variables: { RUN: "1" },
+		});
+		const body = JSON.parse(mockFetch.mock.calls[0][0].body);
+		expect(body.command).toBe("override.sh");
+		expect(body.environment_variables).toEqual({ RUN: "1" });
 	});
 
 	it("ListJobRuns sends GET to /job-runs with pagination", async () => {
@@ -132,7 +146,7 @@ describe("jobs contract: request shapes", () => {
 		await handleListJobRuns({ page: 2, pageSize: 25 });
 		const call = mockFetch.mock.calls[0][0];
 		expect(call.method).toBe("GET");
-		expect(call.path).toContain("/jobs/v1alpha2/regions/fr-par/job-runs?");
+		expect(call.path).toContain("/serverless-jobs/v1alpha2/regions/fr-par/job-runs?");
 		expect(call.path).toContain("page=2");
 		expect(call.path).toContain("page_size=25");
 	});
@@ -142,7 +156,7 @@ describe("jobs contract: request shapes", () => {
 		await handleGetJobRun({ job_run_id: TEST_UUID });
 		expect(mockFetch.mock.calls[0][0].method).toBe("GET");
 		expect(mockFetch.mock.calls[0][0].path).toBe(
-			`/jobs/v1alpha2/regions/fr-par/job-runs/${TEST_UUID}`,
+			`/serverless-jobs/v1alpha2/regions/fr-par/job-runs/${TEST_UUID}`,
 		);
 	});
 
@@ -151,7 +165,7 @@ describe("jobs contract: request shapes", () => {
 		await handleStopJobRun({ job_run_id: TEST_UUID });
 		const call = mockFetch.mock.calls[0][0];
 		expect(call.method).toBe("POST");
-		expect(call.path).toBe(`/jobs/v1alpha2/regions/fr-par/job-runs/${TEST_UUID}/stop`);
+		expect(call.path).toBe(`/serverless-jobs/v1alpha2/regions/fr-par/job-runs/${TEST_UUID}/stop`);
 	});
 });
 

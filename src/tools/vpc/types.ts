@@ -8,7 +8,7 @@ export const ListVpcsInput = z.object({
 	...PaginationParams.shape,
 	name: z.string().optional().describe("Filter by VPC name"),
 	tags: z.array(z.string()).optional().describe("Filter by tags"),
-	project: z.string().uuid().optional().describe("Filter by project ID"),
+	project_id: z.string().uuid().optional().describe("Filter by project ID"),
 });
 export type ListVpcsInput = z.infer<typeof ListVpcsInput>;
 
@@ -21,7 +21,7 @@ export type GetVpcInput = z.infer<typeof GetVpcInput>;
 export const CreateVpcInput = z.object({
 	region: ScalewayRegion.describe("Region (e.g., fr-par)"),
 	name: z.string().min(1).describe("VPC name"),
-	project: z.string().uuid().describe("Project ID"),
+	project_id: z.string().uuid().describe("Project ID"),
 	tags: z.array(z.string()).optional().describe("Tags for the VPC"),
 });
 export type CreateVpcInput = z.infer<typeof CreateVpcInput>;
@@ -89,7 +89,7 @@ export interface Vpc {
 	id: string;
 	name: string;
 	region: string;
-	project: string;
+	project_id: string;
 	tags: string[];
 	is_default: boolean;
 	private_network_count: number;

@@ -4,7 +4,7 @@
  * Validates request/response shapes, pagination, auth, and error codes
  * against the Scaleway TEM v1alpha1 API.
  *
- * API Reference: specs/scaleway-api/tem/
+ * API Reference: specs/scaleway-api/tem/api-reference.md
  * Parity Matrix: tests/parity-matrix.json (tem section)
  */
 import { describe, expect, it } from "vitest";

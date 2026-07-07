@@ -4,12 +4,15 @@ import { describe, expect, it, vi } from "vitest";
 import {
 	handleDownloadInvoice,
 	handleGetInvoice,
+	handleListCharges,
 	handleListConsumptions,
 	handleListDiscounts,
 	handleListInvoices,
 } from "../../../src/tools/billing/handlers.js";
 import { registerBillingTools } from "../../../src/tools/billing/index.js";
 import {
+	Charge,
+	ChargeOrderBy,
 	Consumption,
 	ConsumptionOrderBy,
 	Discount,
@@ -24,6 +27,8 @@ import {
 	InvoiceOrderBy,
 	InvoiceState,
 	InvoiceType,
+	ListChargesParams,
+	ListChargesResponse,
 	ListConsumptionsParams,
 	ListConsumptionsResponse,
 	ListDiscountsParams,
@@ -252,6 +257,100 @@ describe("billing types", () => {
 			for (const v of ["creation_date_desc", "creation_date_asc"]) {
 				expect(DiscountOrderBy.parse(v)).toBe(v);
 			}
+		});
+	});
+
+	describe("ChargeOrderBy", () => {
+		it("accepts all valid values", () => {
+			for (const v of ["start_date_asc", "start_date_desc"]) {
+				expect(ChargeOrderBy.parse(v)).toBe(v);
+			}
+		});
+
+		it("rejects invalid value", () => {
+			expect(() => ChargeOrderBy.parse("value_desc")).toThrow();
+		});
+	});
+
+	describe("Charge", () => {
+		const validCharge = {
+			category_name: "Compute",
+			resource_name: "my-instance",
+			resource_id: "res-123",
+			project_id: "proj-456",
+			value: { currency_code: "EUR", units: 3, nanos: 250000000 },
+			discount_value: { currency_code: "EUR", units: 0, nanos: 0 },
+			begin_date: "2025-06-01T00:00:00Z",
+			end_date: "2025-06-30T23:59:59Z",
+			unit: "hour",
+			billed_quantity: 720,
+		};
+
+		it("parses valid charge", () => {
+			const result = Charge.parse(validCharge);
+			expect(result.resource_id).toBe("res-123");
+			expect(result.billed_quantity).toBe(720);
+			expect(result.value.currency_code).toBe("EUR");
+		});
+
+		it("rejects missing resource_id", () => {
+			const { resource_id, ...rest } = validCharge;
+			expect(() => Charge.parse(rest)).toThrow();
+		});
+	});
+
+	describe("ListChargesParams", () => {
+		it("requires organization_id", () => {
+			expect(() => ListChargesParams.parse({})).toThrow();
+		});
+
+		it("parses with only organization_id", () => {
+			const result = ListChargesParams.parse({ organization_id: "org-123" });
+			expect(result.organization_id).toBe("org-123");
+			expect(result.page_token).toBeUndefined();
+		});
+
+		it("parses with all optional params", () => {
+			const result = ListChargesParams.parse({
+				organization_id: "org-123",
+				order_by: "start_date_desc",
+				page_size: 100,
+				page_token: "tok-abc",
+				start_date_after: "2025-06-01T00:00:00Z",
+				end_date_before: "2025-06-30T00:00:00Z",
+				clamp_to_time_range: true,
+				invoice_ids: ["inv-1"],
+				project_ids: ["proj-1", "proj-2"],
+				resource_ids: ["res-1"],
+				resource_names: ["name-1"],
+				skus: ["sku-1"],
+			});
+			expect(result.order_by).toBe("start_date_desc");
+			expect(result.clamp_to_time_range).toBe(true);
+			expect(result.project_ids).toEqual(["proj-1", "proj-2"]);
+		});
+
+		it("rejects page_size above 100", () => {
+			expect(() =>
+				ListChargesParams.parse({ organization_id: "org-123", page_size: 101 }),
+			).toThrow();
+		});
+	});
+
+	describe("ListChargesResponse", () => {
+		it("parses valid response", () => {
+			const result = ListChargesResponse.parse({
+				charges: [],
+				total_count: 0,
+				next_page_token: "next-tok",
+			});
+			expect(result.total_count).toBe(0);
+			expect(result.next_page_token).toBe("next-tok");
+		});
+
+		it("parses response without next_page_token", () => {
+			const result = ListChargesResponse.parse({ charges: [], total_count: 0 });
+			expect(result.next_page_token).toBeUndefined();
 		});
 	});
 
@@ -649,6 +748,73 @@ describe("billing handlers", () => {
 			expect(parsed.error.type).toBe("permission_denied");
 		});
 	});
+
+	describe("handleListCharges", () => {
+		it("returns charge data on success", async () => {
+			const mockResponse = {
+				charges: [{ resource_id: "res-1", value: { currency_code: "EUR", units: 1, nanos: 0 } }],
+				total_count: 1,
+				next_page_token: "next-tok",
+			};
+			const client = createMockClient(mockResponse);
+			const result = await handleListCharges(client, { organization_id: "org-123" });
+
+			expect(result.content).toHaveLength(1);
+			expect(JSON.parse(result.content[0].text)).toEqual(mockResponse);
+		});
+
+		it("passes all parameters to the API, appending array filters", async () => {
+			const client = createMockClient({ charges: [], total_count: 0 });
+			await handleListCharges(client, {
+				organization_id: "org-123",
+				order_by: "start_date_desc",
+				page_size: 100,
+				page_token: "tok-abc",
+				start_date_after: "2025-06-01T00:00:00Z",
+				end_date_before: "2025-06-30T00:00:00Z",
+				clamp_to_time_range: true,
+				invoice_ids: ["inv-1"],
+				project_ids: ["proj-1", "proj-2"],
+				resource_ids: ["res-1"],
+				resource_names: ["name-1"],
+				skus: ["sku-1"],
+			});
+
+			const fetchCall = (client.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0];
+			expect(fetchCall.method).toBe("GET");
+			expect(fetchCall.path).toBe("/billing/v2beta1/charges");
+			expect(fetchCall.urlParams.get("organization_id")).toBe("org-123");
+			expect(fetchCall.urlParams.get("order_by")).toBe("start_date_desc");
+			expect(fetchCall.urlParams.get("page_size")).toBe("100");
+			expect(fetchCall.urlParams.get("page_token")).toBe("tok-abc");
+			expect(fetchCall.urlParams.get("clamp_to_time_range")).toBe("true");
+			expect(fetchCall.urlParams.getAll("project_ids")).toEqual(["proj-1", "proj-2"]);
+			expect(fetchCall.urlParams.getAll("resource_ids")).toEqual(["res-1"]);
+			expect(fetchCall.urlParams.getAll("skus")).toEqual(["sku-1"]);
+		});
+
+		it("omits undefined optional parameters", async () => {
+			const client = createMockClient({ charges: [], total_count: 0 });
+			await handleListCharges(client, { organization_id: "org-123" });
+
+			const fetchCall = (client.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0];
+			expect(fetchCall.urlParams.has("order_by")).toBe(false);
+			expect(fetchCall.urlParams.has("page_token")).toBe(false);
+			expect(fetchCall.urlParams.has("resource_ids")).toBe(false);
+			expect(fetchCall.urlParams.has("clamp_to_time_range")).toBe(false);
+		});
+
+		it("returns error response on failure", async () => {
+			const error = new Error("forbidden");
+			(error as Error & { statusCode: number }).statusCode = 403;
+			const client = createFailingClient(error);
+			const result = await handleListCharges(client, { organization_id: "org-123" });
+
+			expect(result).toHaveProperty("isError", true);
+			const parsed = JSON.parse(result.content[0].text);
+			expect(parsed.error.type).toBe("permission_denied");
+		});
+	});
 });
 
 // --- Registration Tests ---
@@ -676,18 +842,19 @@ describe("billing module registration", () => {
 		expect(() => registerBillingTools(server)).not.toThrow();
 	});
 
-	it("registers all five billing tools", () => {
+	it("registers all six billing tools", () => {
 		const server = new McpServer({ name: "test", version: "0.0.1" });
 		const toolSpy = vi.spyOn(server, "tool");
 		registerBillingTools(server);
 
-		expect(toolSpy).toHaveBeenCalledTimes(5);
+		expect(toolSpy).toHaveBeenCalledTimes(6);
 
 		const toolNames = toolSpy.mock.calls.map((call) => call[0]);
 		expect(toolNames).toContain("scaleway_billing_list_consumptions");
 		expect(toolNames).toContain("scaleway_billing_list_invoices");
 		expect(toolNames).toContain("scaleway_billing_get_invoice");
 		expect(toolNames).toContain("scaleway_billing_download_invoice");
+		expect(toolNames).toContain("scaleway_billing_list_charges");
 		expect(toolNames).toContain("scaleway_billing_list_discounts");
 	});
 });
@@ -739,6 +906,17 @@ describe("billing tool callbacks", () => {
 		const call = toolSpy.mock.calls.find((c) => c[0] === "scaleway_billing_download_invoice");
 		const callback = call?.[3] as (params: Record<string, unknown>) => Promise<unknown>;
 		const result = await callback({ invoice_id: "inv-123" });
+		expect(result).toHaveProperty("content");
+	});
+
+	it("list_charges callback invokes auth, client, and handler", async () => {
+		const server = new McpServer({ name: "test", version: "0.0.1" });
+		const toolSpy = vi.spyOn(server, "tool");
+		registerBillingTools(server);
+
+		const call = toolSpy.mock.calls.find((c) => c[0] === "scaleway_billing_list_charges");
+		const callback = call?.[3] as (params: Record<string, unknown>) => Promise<unknown>;
+		const result = await callback({ organization_id: "org-123" });
 		expect(result).toHaveProperty("content");
 	});
 

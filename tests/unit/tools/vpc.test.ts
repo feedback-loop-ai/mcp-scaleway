@@ -35,7 +35,7 @@ const SAMPLE_VPC = {
 	id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
 	name: "my-vpc",
 	region: "fr-par",
-	project: "11111111-1111-1111-1111-111111111111",
+	project_id: "11111111-1111-1111-1111-111111111111",
 	tags: ["env:test"],
 	is_default: false,
 	private_network_count: 2,
@@ -170,11 +170,11 @@ describe("vpc module", () => {
 			const handler = getToolHandler(server, "scaleway_vpc_list_vpcs");
 			await handler({
 				region: "fr-par",
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 			});
 
 			const req = getRequest();
-			expect(req.urlParams?.get("project")).toBe("11111111-1111-1111-1111-111111111111");
+			expect(req.urlParams?.get("project_id")).toBe("11111111-1111-1111-1111-111111111111");
 		});
 
 		it("handles API errors", async () => {
@@ -271,7 +271,7 @@ describe("vpc module", () => {
 			const result = await handler({
 				region: "fr-par",
 				name: "my-vpc",
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 				tags: ["env:test"],
 			});
 
@@ -287,7 +287,7 @@ describe("vpc module", () => {
 			await handler({
 				region: "fr-par",
 				name: "my-vpc",
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 				tags: ["env:test"],
 			});
 
@@ -296,7 +296,7 @@ describe("vpc module", () => {
 			expect(req.method).toBe("POST");
 			const body = JSON.parse(req.body as string);
 			expect(body.name).toBe("my-vpc");
-			expect(body.project).toBe("11111111-1111-1111-1111-111111111111");
+			expect(body.project_id).toBe("11111111-1111-1111-1111-111111111111");
 			expect(body.tags).toEqual(["env:test"]);
 		});
 
@@ -308,7 +308,7 @@ describe("vpc module", () => {
 			await handler({
 				region: "fr-par",
 				name: "my-vpc",
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 			});
 
 			const body = JSON.parse(getRequest().body as string);
@@ -325,7 +325,7 @@ describe("vpc module", () => {
 			const result = await handler({
 				region: "fr-par",
 				name: "my-vpc",
-				project: "11111111-1111-1111-1111-111111111111",
+				project_id: "11111111-1111-1111-1111-111111111111",
 			});
 
 			expect(result.isError).toBe(true);
