@@ -3724,5 +3724,25 @@
 			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
 			"tool": "scaleway_webhosting_update_hosting"
 		}
+	},
+	"meta": {
+		"gateway_tools": [
+			{
+				"tool": "scaleway_search",
+				"contract_test": "tests/contract/gateway.test.ts"
+			},
+			{
+				"tool": "scaleway_describe",
+				"contract_test": "tests/contract/gateway.test.ts"
+			},
+			{
+				"tool": "scaleway_read",
+				"contract_test": "tests/contract/gateway.test.ts"
+			},
+			{
+				"tool": "scaleway_call",
+				"contract_test": "tests/contract/gateway.test.ts"
+			}
+		]
 	}
 }
