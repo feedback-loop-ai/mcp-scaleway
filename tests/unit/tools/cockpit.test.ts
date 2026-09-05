@@ -87,6 +87,38 @@ describe("cockpit module", () => {
 		expect(() => registerCockpitTools(server)).not.toThrow();
 	});
 
+	it("marks upstream-deprecated tools in their descriptions", () => {
+		const descriptions = new Map<string, string>();
+		const server = {
+			tool: (name: string, description: string) => {
+				descriptions.set(name, description);
+			},
+		} as unknown as McpServer;
+		registerCockpitTools(server);
+
+		expect(descriptions.size).toBe(22);
+
+		// Global /cockpit/v1/grafana/users endpoints: "(Deprecated) EOL 2026-01-20"
+		// in the official schema; managed-alerts enable/disable: deprecated: true.
+		const deprecated = [
+			"scaleway_cockpit_list_grafana_users",
+			"scaleway_cockpit_create_grafana_user",
+			"scaleway_cockpit_delete_grafana_user",
+			"scaleway_cockpit_reset_grafana_user_password",
+			"scaleway_cockpit_enable_managed_alerts",
+			"scaleway_cockpit_disable_managed_alerts",
+		];
+		for (const name of deprecated) {
+			expect(descriptions.get(name), name).toMatch(/ \(deprecated upstream\)$/);
+		}
+
+		const flagged = [...descriptions.entries()]
+			.filter(([, d]) => d.includes("(deprecated upstream)"))
+			.map(([n]) => n)
+			.sort();
+		expect(flagged).toEqual([...deprecated].sort());
+	});
+
 	// --- Zod Schema Tests ---
 	describe("types", () => {
 		it("validates CockpitStatus enum", () => {

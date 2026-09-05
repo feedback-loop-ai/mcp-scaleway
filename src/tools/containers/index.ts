@@ -4,13 +4,10 @@ import {
 	handleCreateCron,
 	handleCreateDomain,
 	handleCreateNamespace,
-	handleCreateToken,
 	handleDeleteContainer,
 	handleDeleteCron,
 	handleDeleteDomain,
 	handleDeleteNamespace,
-	handleDeleteToken,
-	handleDeployContainer,
 	handleGetContainer,
 	handleGetNamespace,
 	handleListContainers,
@@ -26,13 +23,10 @@ import {
 	CreateCronParams,
 	CreateDomainParams,
 	CreateNamespaceParams,
-	CreateTokenParams,
 	DeleteContainerParams,
 	DeleteCronParams,
 	DeleteDomainParams,
 	DeleteNamespaceParams,
-	DeleteTokenParams,
-	DeployContainerParams,
 	GetContainerParams,
 	GetNamespaceParams,
 	ListContainersParams,
@@ -93,7 +87,7 @@ export function registerContainersTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_containers_get_container",
-		"Get details of a serverless container",
+		"Get details of a serverless container (raw v1 fields: image, memory_limit_bytes, mvcpu_limit, public_endpoint)",
 		GetContainerParams.shape,
 		async (params) => handleGetContainer(GetContainerParams.parse(params)),
 	);
@@ -119,13 +113,6 @@ export function registerContainersTools(server: McpServer): void {
 		async (params) => handleDeleteContainer(DeleteContainerParams.parse(params)),
 	);
 
-	server.tool(
-		"scaleway_containers_deploy_container",
-		"Deploy a serverless container (trigger deployment of latest config)",
-		DeployContainerParams.shape,
-		async (params) => handleDeployContainer(DeployContainerParams.parse(params)),
-	);
-
 	// ─── Cron Tools ───────────────────────────────────────────────
 
 	server.tool(
@@ -137,14 +124,14 @@ export function registerContainersTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_containers_create_cron",
-		"Create a cron trigger for a serverless container",
+		"Create a v1 cron trigger; JSON args are POSTed to / in UTC unless timezone is specified",
 		CreateCronParams.shape,
 		async (params) => handleCreateCron(CreateCronParams.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_containers_update_cron",
-		"Update a cron trigger for a serverless container",
+		"Update a v1 cron trigger by trigger ID; retargeting containerId is unsupported",
 		UpdateCronParams.shape,
 		async (params) => handleUpdateCron(UpdateCronParams.parse(params)),
 	);
@@ -177,21 +164,5 @@ export function registerContainersTools(server: McpServer): void {
 		"Delete a custom domain mapping for a serverless container",
 		DeleteDomainParams.shape,
 		async (params) => handleDeleteDomain(DeleteDomainParams.parse(params)),
-	);
-
-	// ─── Token Tools ──────────────────────────────────────────────
-
-	server.tool(
-		"scaleway_containers_create_token",
-		"Create an authentication token for a serverless container or namespace",
-		CreateTokenParams.shape,
-		async (params) => handleCreateToken(CreateTokenParams.parse(params)),
-	);
-
-	server.tool(
-		"scaleway_containers_delete_token",
-		"Delete an authentication token for a serverless container",
-		DeleteTokenParams.shape,
-		async (params) => handleDeleteToken(DeleteTokenParams.parse(params)),
 	);
 }

@@ -120,6 +120,7 @@ describe("iam handlers", () => {
 				expect.objectContaining({
 					method: "POST",
 					path: "/iam/v1alpha1/users",
+					headers: { "Content-Type": "application/json" },
 					body: expect.stringContaining("new@test.com"),
 				}),
 			);

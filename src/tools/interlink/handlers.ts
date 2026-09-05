@@ -29,7 +29,7 @@ import type {
 	UpdateRoutingPolicyParams,
 } from "./types.js";
 
-const INTERLINK_API_PREFIX = "interlink/v1beta1/regions";
+const INTERLINK_API_PREFIX = "/interlink/v1beta1/regions";
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
 function getClient() {
@@ -358,11 +358,11 @@ export async function handleUpdateRoutingPolicy(params: UpdateRoutingPolicyParam
 export async function handleDeleteRoutingPolicy(params: DeleteRoutingPolicyParams) {
 	try {
 		const client = getClient();
-		const response = await client.fetch<unknown>({
+		await client.fetch<void>({
 			method: "DELETE",
 			path: `${INTERLINK_API_PREFIX}/${params.region}/routing-policies/${params.routingPolicyId}`,
 		});
-		return jsonResponse(response);
+		return jsonResponse({ message: "Routing policy deleted successfully" });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}

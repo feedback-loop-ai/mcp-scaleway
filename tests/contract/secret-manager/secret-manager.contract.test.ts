@@ -9,8 +9,13 @@
  * plus the documented response shapes (Secret, SecretVersion, AccessSecretVersionResponse,
  * ListSecrets/ListSecretVersions/ListTags responses) taken from the SDK type definitions.
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { z } from "zod";
+import {
+	handleListSecretVersions,
+	handleListSecrets,
+	handleListTags,
+} from "../../../src/tools/secret-manager/handlers.js";
 import {
 	AccessSecretVersionInput,
 	AddSecretOwnerInput,
@@ -36,6 +41,38 @@ import {
 	UnprotectSecretInput,
 	UpdateSecretInput,
 } from "../../../src/tools/secret-manager/types.js";
+
+// Wire-level fixtures: the real @scaleway/sdk-secret marshaller runs against a
+// fake client so the query string it builds can be asserted directly.
+vi.mock("../../../src/shared/auth.js", () => ({
+	loadAuthConfig: () => ({
+		accessKey: "SCW-ACCESS",
+		secretKey: "SCW-SECRET",
+		defaultProjectId: "00000000-0000-0000-0000-000000000001",
+		defaultRegion: "fr-par",
+		defaultZone: "fr-par-1",
+	}),
+}));
+
+const mockFetch = vi.fn();
+vi.mock("../../../src/shared/client.js", () => ({
+	createScalewayClient: () => ({
+		fetch: mockFetch,
+		settings: {
+			defaultRegion: "fr-par",
+			defaultZone: "fr-par-1",
+			defaultProjectId: "00000000-0000-0000-0000-000000000001",
+		},
+	}),
+}));
+
+function lastRequest(): { method: string; path: string; urlParams: URLSearchParams } {
+	return mockFetch.mock.lastCall?.[0] as {
+		method: string;
+		path: string;
+		urlParams: URLSearchParams;
+	};
+}
 
 // --- Shared fixtures ---
 
@@ -728,5 +765,53 @@ describe("contract: region targeting", () => {
 		expect(() => GetSecretInput.parse({ region: "nl-ams", secretId: VALID_UUID })).not.toThrow();
 		expect(() => GetSecretInput.parse({ region: "pl-waw", secretId: VALID_UUID })).not.toThrow();
 		expect(() => GetSecretInput.parse({ region: "not-a-region", secretId: VALID_UUID })).toThrow();
+	});
+});
+
+// ── Wire contract: pagination reaches the Scaleway API ───────────────────
+// specs/scaleway-api/secret-manager/api-reference.md — "Pagination": list
+// endpoints accept `page` and `page_size`. The handlers must hand the SDK
+// camelCase `pageSize` so @scaleway/sdk-secret marshals it to `page_size`.
+
+describe("contract: list endpoints marshal page/page_size to the wire", () => {
+	it("GET /secrets sends page, page_size and scheduled_for_deletion=false", async () => {
+		mockFetch.mockResolvedValueOnce({ secrets: [], totalCount: 0 });
+
+		await handleListSecrets({ page: 2, pageSize: 9 });
+
+		const request = lastRequest();
+		expect(request.method).toBe("GET");
+		expect(request.path).toBe("/secret-manager/v1beta1/regions/fr-par/secrets");
+		expect(request.urlParams).toBeInstanceOf(URLSearchParams);
+		expect(request.urlParams.get("page")).toBe("2");
+		expect(request.urlParams.get("page_size")).toBe("9");
+		expect(request.urlParams.get("scheduled_for_deletion")).toBe("false");
+	});
+
+	it("GET /secrets/{secret_id}/versions sends page and page_size", async () => {
+		mockFetch.mockResolvedValueOnce({ versions: [], totalCount: 0 });
+
+		await handleListSecretVersions({ secretId: VALID_UUID, page: 4, pageSize: 3 });
+
+		const request = lastRequest();
+		expect(request.method).toBe("GET");
+		expect(request.path).toBe(
+			`/secret-manager/v1beta1/regions/fr-par/secrets/${VALID_UUID}/versions`,
+		);
+		expect(request.urlParams.get("page")).toBe("4");
+		expect(request.urlParams.get("page_size")).toBe("3");
+	});
+
+	it("GET /tags sends page, page_size and the caller's project_id", async () => {
+		mockFetch.mockResolvedValueOnce({ tags: [], totalCount: 0 });
+
+		await handleListTags({ region: "nl-ams", projectId: VALID_UUID, page: 5, pageSize: 11 });
+
+		const request = lastRequest();
+		expect(request.method).toBe("GET");
+		expect(request.path).toBe("/secret-manager/v1beta1/regions/nl-ams/tags");
+		expect(request.urlParams.get("page")).toBe("5");
+		expect(request.urlParams.get("page_size")).toBe("11");
+		expect(request.urlParams.get("project_id")).toBe(VALID_UUID);
 	});
 });

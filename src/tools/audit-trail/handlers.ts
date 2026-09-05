@@ -11,7 +11,7 @@ import type {
 	ListAuditTrailProductsParams,
 } from "./types.js";
 
-const AUDIT_TRAIL_API_PREFIX = "audit-trail/v1alpha1/regions";
+const AUDIT_TRAIL_API_PREFIX = "/audit-trail/v1alpha1/regions";
 
 function getClient() {
 	const config = loadAuthConfig();

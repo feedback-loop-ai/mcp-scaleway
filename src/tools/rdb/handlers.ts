@@ -1,3 +1,4 @@
+import type { Client } from "@scaleway/sdk-client";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
@@ -32,8 +33,28 @@ import type {
 	UpgradeInstanceInput,
 } from "./types.js";
 
-function getApiUrl(region: string): string {
-	return `https://api.scaleway.com/rdb/v1/regions/${region}`;
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+/**
+ * Mirrors `ScwRequest` from `@scaleway/sdk-client` (not re-exported by the
+ * package). `path` is appended verbatim to `https://api.scaleway.com`, so it
+ * MUST start with `/`; `urlParams` is serialised as the query string.
+ */
+interface RdbRequest {
+	method: HttpMethod;
+	path: string;
+	headers?: Record<string, string>;
+	body?: string;
+	urlParams?: URLSearchParams;
+}
+
+interface ApiRequestOptions {
+	body?: unknown;
+	urlParams?: URLSearchParams;
+}
+
+function basePath(region: string): string {
+	return `/rdb/v1/regions/${region}`;
 }
 
 function getConfig() {
@@ -48,28 +69,30 @@ function successResponse(data: unknown) {
 	};
 }
 
+/**
+ * Issue a request through the Scaleway SDK client.
+ *
+ * The SDK resolves with the already-parsed JSON body (or `undefined` on 204)
+ * and throws `ScalewayError` (carrying `.status`) on non-2xx responses, which
+ * the callers map via `mapScalewayError`. Empty responses resolve to `{}` so
+ * delete handlers keep returning a JSON object.
+ */
 async function apiRequest(
-	client: ReturnType<typeof createScalewayClient>,
-	method: string,
-	url: string,
-	body?: unknown,
+	client: Client,
+	method: HttpMethod,
+	path: string,
+	options: ApiRequestOptions = {},
 ): Promise<unknown> {
-	const response = await (client as unknown as { fetch: typeof fetch }).fetch(
-		new Request(url, {
-			method,
-			headers: { "Content-Type": "application/json" },
-			body: body ? JSON.stringify(body) : undefined,
-		}),
-	);
-	if (!response.ok) {
-		const error = new Error(`HTTP ${response.status}: ${response.statusText}`);
-		(error as unknown as { statusCode: number }).statusCode = response.status;
-		throw error;
+	const request: RdbRequest = { method, path };
+	if (options.body !== undefined) {
+		request.body = JSON.stringify(options.body);
+		request.headers = { "Content-Type": "application/json" };
 	}
-	if (response.status === 204) {
-		return {};
+	if (options.urlParams) {
+		request.urlParams = options.urlParams;
 	}
-	return response.json();
+	const data = await client.fetch<unknown>(request);
+	return data ?? {};
 }
 
 // --- Instance Handlers ---
@@ -78,19 +101,21 @@ export async function handleListInstances(input: ListInstancesInput) {
 	try {
 		const { config, client } = getConfig();
 		const region = input.region ?? config.defaultRegion;
-		const url = new URL(`${getApiUrl(region)}/instances`);
+		const params = new URLSearchParams();
 		const pagination = paginationToQuery(input.page ?? 1, input.pageSize ?? 50);
-		url.searchParams.set("page", String(pagination.page));
-		url.searchParams.set("page_size", String(pagination.page_size));
-		if (input.project_id) url.searchParams.set("project_id", input.project_id);
-		if (input.name) url.searchParams.set("name", input.name);
-		if (input.order_by) url.searchParams.set("order_by", input.order_by);
+		params.set("page", String(pagination.page));
+		params.set("page_size", String(pagination.page_size));
+		if (input.project_id) params.set("project_id", input.project_id);
+		if (input.name) params.set("name", input.name);
+		if (input.order_by) params.set("order_by", input.order_by);
 		if (input.tags) {
 			for (const tag of input.tags) {
-				url.searchParams.append("tags", tag);
+				params.append("tags", tag);
 			}
 		}
-		const data = (await apiRequest(client, "GET", url.toString())) as {
+		const data = (await apiRequest(client, "GET", `${basePath(region)}/instances`, {
+			urlParams: params,
+		})) as {
 			instances: unknown[];
 			total_count: number;
 		};
@@ -114,7 +139,7 @@ export async function handleGetInstance(input: GetInstanceInput) {
 		const data = await apiRequest(
 			client,
 			"GET",
-			`${getApiUrl(region)}/instances/${input.instance_id}`,
+			`${basePath(region)}/instances/${input.instance_id}`,
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -141,7 +166,7 @@ export async function handleCreateInstance(input: CreateInstanceInput) {
 		if (input.tags) body.tags = input.tags;
 		if (input.backup_same_region !== undefined) body.backup_same_region = input.backup_same_region;
 		if (input.init_endpoints) body.init_endpoints = input.init_endpoints;
-		const data = await apiRequest(client, "POST", `${getApiUrl(region)}/instances`, body);
+		const data = await apiRequest(client, "POST", `${basePath(region)}/instances`, { body });
 		return successResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -165,8 +190,8 @@ export async function handleUpdateInstance(input: UpdateInstanceInput) {
 		const data = await apiRequest(
 			client,
 			"PATCH",
-			`${getApiUrl(region)}/instances/${input.instance_id}`,
-			body,
+			`${basePath(region)}/instances/${input.instance_id}`,
+			{ body },
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -181,7 +206,7 @@ export async function handleDeleteInstance(input: DeleteInstanceInput) {
 		const data = await apiRequest(
 			client,
 			"DELETE",
-			`${getApiUrl(region)}/instances/${input.instance_id}`,
+			`${basePath(region)}/instances/${input.instance_id}`,
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -203,8 +228,8 @@ export async function handleUpgradeInstance(input: UpgradeInstanceInput) {
 		const data = await apiRequest(
 			client,
 			"POST",
-			`${getApiUrl(region)}/instances/${input.instance_id}/upgrade`,
-			body,
+			`${basePath(region)}/instances/${input.instance_id}/upgrade`,
+			{ body },
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -218,15 +243,20 @@ export async function handleListDatabases(input: ListDatabasesInput) {
 	try {
 		const { config, client } = getConfig();
 		const region = input.region ?? config.defaultRegion;
-		const url = new URL(`${getApiUrl(region)}/instances/${input.instance_id}/databases`);
+		const params = new URLSearchParams();
 		const pagination = paginationToQuery(input.page ?? 1, input.pageSize ?? 50);
-		url.searchParams.set("page", String(pagination.page));
-		url.searchParams.set("page_size", String(pagination.page_size));
-		if (input.name) url.searchParams.set("name", input.name);
-		if (input.managed !== undefined) url.searchParams.set("managed", String(input.managed));
-		if (input.owner) url.searchParams.set("owner", input.owner);
-		if (input.order_by) url.searchParams.set("order_by", input.order_by);
-		const data = (await apiRequest(client, "GET", url.toString())) as {
+		params.set("page", String(pagination.page));
+		params.set("page_size", String(pagination.page_size));
+		if (input.name) params.set("name", input.name);
+		if (input.managed !== undefined) params.set("managed", String(input.managed));
+		if (input.owner) params.set("owner", input.owner);
+		if (input.order_by) params.set("order_by", input.order_by);
+		const data = (await apiRequest(
+			client,
+			"GET",
+			`${basePath(region)}/instances/${input.instance_id}/databases`,
+			{ urlParams: params },
+		)) as {
 			databases: unknown[];
 			total_count: number;
 		};
@@ -250,8 +280,8 @@ export async function handleCreateDatabase(input: CreateDatabaseInput) {
 		const data = await apiRequest(
 			client,
 			"POST",
-			`${getApiUrl(region)}/instances/${input.instance_id}/databases`,
-			{ name: input.name },
+			`${basePath(region)}/instances/${input.instance_id}/databases`,
+			{ body: { name: input.name } },
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -266,7 +296,7 @@ export async function handleDeleteDatabase(input: DeleteDatabaseInput) {
 		const data = await apiRequest(
 			client,
 			"DELETE",
-			`${getApiUrl(region)}/instances/${input.instance_id}/databases/${input.name}`,
+			`${basePath(region)}/instances/${input.instance_id}/databases/${input.name}`,
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -280,13 +310,18 @@ export async function handleListUsers(input: ListUsersInput) {
 	try {
 		const { config, client } = getConfig();
 		const region = input.region ?? config.defaultRegion;
-		const url = new URL(`${getApiUrl(region)}/instances/${input.instance_id}/users`);
+		const params = new URLSearchParams();
 		const pagination = paginationToQuery(input.page ?? 1, input.pageSize ?? 50);
-		url.searchParams.set("page", String(pagination.page));
-		url.searchParams.set("page_size", String(pagination.page_size));
-		if (input.name) url.searchParams.set("name", input.name);
-		if (input.order_by) url.searchParams.set("order_by", input.order_by);
-		const data = (await apiRequest(client, "GET", url.toString())) as {
+		params.set("page", String(pagination.page));
+		params.set("page_size", String(pagination.page_size));
+		if (input.name) params.set("name", input.name);
+		if (input.order_by) params.set("order_by", input.order_by);
+		const data = (await apiRequest(
+			client,
+			"GET",
+			`${basePath(region)}/instances/${input.instance_id}/users`,
+			{ urlParams: params },
+		)) as {
 			users: unknown[];
 			total_count: number;
 		};
@@ -310,8 +345,8 @@ export async function handleCreateUser(input: CreateUserInput) {
 		const data = await apiRequest(
 			client,
 			"POST",
-			`${getApiUrl(region)}/instances/${input.instance_id}/users`,
-			body,
+			`${basePath(region)}/instances/${input.instance_id}/users`,
+			{ body },
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -329,8 +364,8 @@ export async function handleUpdateUser(input: UpdateUserInput) {
 		const data = await apiRequest(
 			client,
 			"PATCH",
-			`${getApiUrl(region)}/instances/${input.instance_id}/users/${input.name}`,
-			body,
+			`${basePath(region)}/instances/${input.instance_id}/users/${input.name}`,
+			{ body },
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -345,7 +380,7 @@ export async function handleDeleteUser(input: DeleteUserInput) {
 		const data = await apiRequest(
 			client,
 			"DELETE",
-			`${getApiUrl(region)}/instances/${input.instance_id}/users/${input.name}`,
+			`${basePath(region)}/instances/${input.instance_id}/users/${input.name}`,
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -359,15 +394,17 @@ export async function handleListBackups(input: ListBackupsInput) {
 	try {
 		const { config, client } = getConfig();
 		const region = input.region ?? config.defaultRegion;
-		const url = new URL(`${getApiUrl(region)}/backups`);
+		const params = new URLSearchParams();
 		const pagination = paginationToQuery(input.page ?? 1, input.pageSize ?? 50);
-		url.searchParams.set("page", String(pagination.page));
-		url.searchParams.set("page_size", String(pagination.page_size));
-		if (input.instance_id) url.searchParams.set("instance_id", input.instance_id);
-		if (input.name) url.searchParams.set("name", input.name);
-		if (input.order_by) url.searchParams.set("order_by", input.order_by);
-		if (input.project_id) url.searchParams.set("project_id", input.project_id);
-		const data = (await apiRequest(client, "GET", url.toString())) as {
+		params.set("page", String(pagination.page));
+		params.set("page_size", String(pagination.page_size));
+		if (input.instance_id) params.set("instance_id", input.instance_id);
+		if (input.name) params.set("name", input.name);
+		if (input.order_by) params.set("order_by", input.order_by);
+		if (input.project_id) params.set("project_id", input.project_id);
+		const data = (await apiRequest(client, "GET", `${basePath(region)}/backups`, {
+			urlParams: params,
+		})) as {
 			database_backups: unknown[];
 			total_count: number;
 		};
@@ -394,7 +431,7 @@ export async function handleCreateBackup(input: CreateBackupInput) {
 		};
 		if (input.database_name) body.database_name = input.database_name;
 		if (input.expires_at) body.expires_at = input.expires_at;
-		const data = await apiRequest(client, "POST", `${getApiUrl(region)}/backups`, body);
+		const data = await apiRequest(client, "POST", `${basePath(region)}/backups`, { body });
 		return successResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -412,8 +449,8 @@ export async function handleRestoreBackup(input: RestoreBackupInput) {
 		const data = await apiRequest(
 			client,
 			"POST",
-			`${getApiUrl(region)}/backups/${input.backup_id}/restore`,
-			body,
+			`${basePath(region)}/backups/${input.backup_id}/restore`,
+			{ body },
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -430,7 +467,7 @@ export async function handleListEndpoints(input: ListEndpointsInput) {
 		const data = (await apiRequest(
 			client,
 			"GET",
-			`${getApiUrl(region)}/instances/${input.instance_id}`,
+			`${basePath(region)}/instances/${input.instance_id}`,
 		)) as { endpoints?: unknown[] };
 		return successResponse({ endpoints: data.endpoints ?? [] });
 	} catch (error) {
@@ -445,8 +482,8 @@ export async function handleCreateEndpoint(input: CreateEndpointInput) {
 		const data = await apiRequest(
 			client,
 			"POST",
-			`${getApiUrl(region)}/instances/${input.instance_id}/endpoints`,
-			{ endpoint_spec: input.endpoint_spec },
+			`${basePath(region)}/instances/${input.instance_id}/endpoints`,
+			{ body: { endpoint_spec: input.endpoint_spec } },
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -461,7 +498,7 @@ export async function handleDeleteEndpoint(input: DeleteEndpointInput) {
 		const data = await apiRequest(
 			client,
 			"DELETE",
-			`${getApiUrl(region)}/endpoints/${input.endpoint_id}`,
+			`${basePath(region)}/endpoints/${input.endpoint_id}`,
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -475,11 +512,16 @@ export async function handleListAclRules(input: ListAclRulesInput) {
 	try {
 		const { config, client } = getConfig();
 		const region = input.region ?? config.defaultRegion;
-		const url = new URL(`${getApiUrl(region)}/instances/${input.instance_id}/acls`);
+		const params = new URLSearchParams();
 		const pagination = paginationToQuery(input.page ?? 1, input.pageSize ?? 50);
-		url.searchParams.set("page", String(pagination.page));
-		url.searchParams.set("page_size", String(pagination.page_size));
-		const data = (await apiRequest(client, "GET", url.toString())) as {
+		params.set("page", String(pagination.page));
+		params.set("page_size", String(pagination.page_size));
+		const data = (await apiRequest(
+			client,
+			"GET",
+			`${basePath(region)}/instances/${input.instance_id}/acls`,
+			{ urlParams: params },
+		)) as {
 			rules: unknown[];
 			total_count: number;
 		};
@@ -498,8 +540,8 @@ export async function handleAddAclRules(input: AddAclRulesInput) {
 		const data = await apiRequest(
 			client,
 			"POST",
-			`${getApiUrl(region)}/instances/${input.instance_id}/acls`,
-			{ rules: input.rules },
+			`${basePath(region)}/instances/${input.instance_id}/acls`,
+			{ body: { rules: input.rules } },
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -514,8 +556,8 @@ export async function handleDeleteAclRules(input: DeleteAclRulesInput) {
 		const data = await apiRequest(
 			client,
 			"DELETE",
-			`${getApiUrl(region)}/instances/${input.instance_id}/acls`,
-			{ acl_rule_ips: input.acl_rule_ips },
+			`${basePath(region)}/instances/${input.instance_id}/acls`,
+			{ body: { acl_rule_ips: input.acl_rule_ips } },
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -529,15 +571,17 @@ export async function handleListSnapshots(input: ListSnapshotsInput) {
 	try {
 		const { config, client } = getConfig();
 		const region = input.region ?? config.defaultRegion;
-		const url = new URL(`${getApiUrl(region)}/snapshots`);
+		const params = new URLSearchParams();
 		const pagination = paginationToQuery(input.page ?? 1, input.pageSize ?? 50);
-		url.searchParams.set("page", String(pagination.page));
-		url.searchParams.set("page_size", String(pagination.page_size));
-		if (input.instance_id) url.searchParams.set("instance_id", input.instance_id);
-		if (input.name) url.searchParams.set("name", input.name);
-		if (input.order_by) url.searchParams.set("order_by", input.order_by);
-		if (input.project_id) url.searchParams.set("project_id", input.project_id);
-		const data = (await apiRequest(client, "GET", url.toString())) as {
+		params.set("page", String(pagination.page));
+		params.set("page_size", String(pagination.page_size));
+		if (input.instance_id) params.set("instance_id", input.instance_id);
+		if (input.name) params.set("name", input.name);
+		if (input.order_by) params.set("order_by", input.order_by);
+		if (input.project_id) params.set("project_id", input.project_id);
+		const data = (await apiRequest(client, "GET", `${basePath(region)}/snapshots`, {
+			urlParams: params,
+		})) as {
 			snapshots: unknown[];
 			total_count: number;
 		};
@@ -563,7 +607,7 @@ export async function handleCreateSnapshot(input: CreateSnapshotInput) {
 			name: input.name,
 		};
 		if (input.expires_at) body.expires_at = input.expires_at;
-		const data = await apiRequest(client, "POST", `${getApiUrl(region)}/snapshots`, body);
+		const data = await apiRequest(client, "POST", `${basePath(region)}/snapshots`, { body });
 		return successResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -582,8 +626,8 @@ export async function handleRestoreSnapshot(input: RestoreSnapshotInput) {
 		const data = await apiRequest(
 			client,
 			"POST",
-			`${getApiUrl(region)}/snapshots/${input.snapshot_id}/create-instance-from-snapshot`,
-			body,
+			`${basePath(region)}/snapshots/${input.snapshot_id}/create-instance-from-snapshot`,
+			{ body },
 		);
 		return successResponse(data);
 	} catch (error) {
@@ -597,10 +641,12 @@ export async function handleListNodeTypes(input: ListNodeTypesInput) {
 	try {
 		const { config, client } = getConfig();
 		const region = input.region ?? config.defaultRegion;
-		const url = new URL(`${getApiUrl(region)}/node-types`);
+		const params = new URLSearchParams();
 		if (input.include_disabled_types !== undefined)
-			url.searchParams.set("include_disabled_types", String(input.include_disabled_types));
-		const data = (await apiRequest(client, "GET", url.toString())) as {
+			params.set("include_disabled_types", String(input.include_disabled_types));
+		const data = (await apiRequest(client, "GET", `${basePath(region)}/node-types`, {
+			urlParams: params,
+		})) as {
 			node_types: unknown[];
 			total_count: number;
 		};
@@ -617,10 +663,12 @@ export async function handleListDatabaseEngines(input: ListDatabaseEnginesInput)
 	try {
 		const { config, client } = getConfig();
 		const region = input.region ?? config.defaultRegion;
-		const url = new URL(`${getApiUrl(region)}/database-engines`);
-		if (input.name) url.searchParams.set("name", input.name);
-		if (input.version) url.searchParams.set("version", input.version);
-		const data = (await apiRequest(client, "GET", url.toString())) as {
+		const params = new URLSearchParams();
+		if (input.name) params.set("name", input.name);
+		if (input.version) params.set("version", input.version);
+		const data = (await apiRequest(client, "GET", `${basePath(region)}/database-engines`, {
+			urlParams: params,
+		})) as {
 			engines: unknown[];
 			total_count: number;
 		};

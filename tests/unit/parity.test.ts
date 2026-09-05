@@ -31,12 +31,6 @@ const matrix: ParityMatrix = JSON.parse(
 );
 
 function registeredToolNames(): string[] {
-	// apple-silicon builds its client eagerly at registration time, so
-	// registration requires credentials to be present (any syntactically
-	// valid values will do — no network calls happen here).
-	process.env.SCW_ACCESS_KEY ??= "SCWXXXXXXXXXXXXXXXXX";
-	process.env.SCW_SECRET_KEY ??= "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
-	process.env.SCW_DEFAULT_PROJECT_ID ??= "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
 	const names: string[] = [];
 	const server = {
 		tool: (name: string) => {

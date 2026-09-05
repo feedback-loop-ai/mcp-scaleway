@@ -9,8 +9,10 @@
  * Spec: specs/scaleway-api/functions/api-reference.md
  * Parity Matrix: tests/parity-matrix.json#functions
  */
+import { type Client, createAdvancedClient, withProfile } from "@scaleway/sdk-client";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
+import * as httpHandlers from "../../../../src/tools/functions/handlers.js";
 import {
 	CreateCronInput,
 	CreateDomainInput,
@@ -534,6 +536,287 @@ describe("functions contract tests", () => {
 
 		it("rejects non-uuid token_id", () => {
 			expect(() => DeleteTokenInput.parse({ region: VALID_REGION, token_id: "bad" })).toThrow();
+		});
+	});
+});
+
+// Exercise the installed SDK's Request construction, JSON parsing, and real HTTP errors.
+// Only the HTTP transport is replaced: no environment credentials or network calls.
+describe("SDK HTTP request contracts", () => {
+	function recordingClient(
+		response: unknown = { id: "http-response", status: "ready" },
+		status = 200,
+	) {
+		const requests: Request[] = [];
+		const client = createAdvancedClient(
+			withProfile({
+				accessKey: "SCWXXXXXXXXXXXXXXXXX",
+				secretKey: "00000000-0000-0000-0000-000000000000",
+			}),
+			(settings) => ({
+				...settings,
+				apiURL: "https://scaleway.invalid",
+				httpClient: (async (input: RequestInfo | URL, init?: RequestInit) => {
+					requests.push(new Request(input, init));
+					return new Response(status === 204 ? null : JSON.stringify(response), {
+						status,
+						headers: { "Content-Type": "application/json" },
+					});
+				}) as typeof fetch,
+			}),
+		);
+		return { client, requests };
+	}
+
+	const jsonCases = [
+		{
+			name: "CreateNamespace",
+			method: "POST",
+			path: "/functions/v1beta1/regions/fr-par/namespaces",
+			call: (client: Client) =>
+				httpHandlers.handleCreateNamespace(client, {
+					region: "fr-par",
+					name: "test",
+					environment_variables: { MODE: "test" },
+				}),
+			body: { name: "test", environment_variables: { MODE: "test" } },
+		},
+		{
+			name: "UpdateNamespace",
+			method: "PATCH",
+			path: "/functions/v1beta1/regions/fr-par/namespaces/11111111-1111-1111-1111-111111111111",
+			call: (client: Client) =>
+				httpHandlers.handleUpdateNamespace(client, {
+					region: "fr-par",
+					namespace_id: "11111111-1111-1111-1111-111111111111",
+					description: "",
+					environment_variables: {},
+				}),
+			body: { description: "", environment_variables: {} },
+		},
+		{
+			name: "CreateFunction",
+			method: "POST",
+			path: "/functions/v1beta1/regions/fr-par/functions",
+			call: (client: Client) =>
+				httpHandlers.handleCreateFunction(client, {
+					region: "fr-par",
+					namespace_id: "11111111-1111-1111-1111-111111111111",
+					name: "test",
+					runtime: "node22",
+					handler: "index.handle",
+					privacy: "private",
+					min_scale: 0,
+				}),
+			body: {
+				namespace_id: "11111111-1111-1111-1111-111111111111",
+				name: "test",
+				runtime: "node22",
+				handler: "index.handle",
+				privacy: "private",
+				min_scale: 0,
+			},
+		},
+		{
+			name: "UpdateFunction",
+			method: "PATCH",
+			path: "/functions/v1beta1/regions/fr-par/functions/11111111-1111-1111-1111-111111111111",
+			call: (client: Client) =>
+				httpHandlers.handleUpdateFunction(client, {
+					region: "fr-par",
+					function_id: "11111111-1111-1111-1111-111111111111",
+					min_scale: 0,
+					environment_variables: {},
+				}),
+			body: { min_scale: 0, environment_variables: {} },
+		},
+		{
+			name: "DeployFunction",
+			method: "POST",
+			path: "/functions/v1beta1/regions/fr-par/functions/11111111-1111-1111-1111-111111111111/deploy",
+			call: (client: Client) =>
+				httpHandlers.handleDeployFunction(client, {
+					region: "fr-par",
+					function_id: "11111111-1111-1111-1111-111111111111",
+				}),
+			body: {},
+		},
+		{
+			name: "CreateCron",
+			method: "POST",
+			path: "/functions/v1beta1/regions/fr-par/crons",
+			call: (client: Client) =>
+				httpHandlers.handleCreateCron(client, {
+					region: "fr-par",
+					function_id: "11111111-1111-1111-1111-111111111111",
+					schedule: "5 * * * *",
+					args: { enabled: false },
+				}),
+			body: {
+				function_id: "11111111-1111-1111-1111-111111111111",
+				schedule: "5 * * * *",
+				args: { enabled: false },
+			},
+		},
+		{
+			name: "UpdateCron",
+			method: "PATCH",
+			path: "/functions/v1beta1/regions/fr-par/crons/11111111-1111-1111-1111-111111111111",
+			call: (client: Client) =>
+				httpHandlers.handleUpdateCron(client, {
+					region: "fr-par",
+					cron_id: "11111111-1111-1111-1111-111111111111",
+					args: {},
+				}),
+			body: { args: {} },
+		},
+		{
+			name: "CreateDomain",
+			method: "POST",
+			path: "/functions/v1beta1/regions/fr-par/domains",
+			call: (client: Client) =>
+				httpHandlers.handleCreateDomain(client, {
+					region: "fr-par",
+					function_id: "11111111-1111-1111-1111-111111111111",
+					hostname: "example.test",
+				}),
+			body: { function_id: "11111111-1111-1111-1111-111111111111", hostname: "example.test" },
+		},
+		{
+			name: "CreateToken",
+			method: "POST",
+			path: "/functions/v1beta1/regions/fr-par/tokens",
+			call: (client: Client) =>
+				httpHandlers.handleCreateToken(client, {
+					region: "fr-par",
+					function_id: "11111111-1111-1111-1111-111111111111",
+					description: "test",
+				}),
+			body: { function_id: "11111111-1111-1111-1111-111111111111", description: "test" },
+		},
+	];
+
+	it.each(jsonCases)(
+		"$name: $method $path sends application/json",
+		async ({ call, method, path, body }) => {
+			const response = { id: "http-response", status: "ready" };
+			const { client, requests } = recordingClient(response);
+			const result = await call(client);
+			expect(requests).toHaveLength(1);
+			const [request] = requests;
+			expect(request.url).toBe(`https://scaleway.invalid${path}`);
+			expect(request.method).toBe(method);
+			expect(request.headers.get("Content-Type")).toBe("application/json");
+			expect(request.headers.get("Accept")).toBe("application/json");
+			expect(request.headers.get("X-Auth-Token")).toBe("00000000-0000-0000-0000-000000000000");
+			expect(JSON.parse(await request.text())).toEqual(body);
+			expect(result).toEqual({
+				content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+			});
+		},
+	);
+
+	it.each([
+		[400, "invalid_input"],
+		[401, "permission_denied"],
+		[403, "permission_denied"],
+		[404, "not_found"],
+		[429, "rate_limited"],
+		[500, "server_error"],
+	] as const)("maps SDK HTTP %i errors to %s", async (status, type) => {
+		const { client, requests } = recordingClient({ message: "HTTP contract error" }, status);
+		const result = await jsonCases[0].call(client);
+		expect(requests).toHaveLength(1);
+		expect(result).toMatchObject({ isError: true });
+		expect(JSON.parse(result.content[0].text)).toMatchObject({
+			error: { type, statusCode: status },
+		});
+	});
+
+	// These DELETE endpoints return HTTP 200 JSON resource bodies, not HTTP 204.
+	it("DeleteNamespace preserves the HTTP 200 resource response", async () => {
+		const response = { id: "11111111-1111-1111-1111-111111111111", status: "deleting" };
+		const { client, requests } = recordingClient(response);
+		const result = await httpHandlers.handleDeleteNamespace(client, {
+			region: "fr-par",
+			namespace_id: "11111111-1111-1111-1111-111111111111",
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(new URL(requests[0].url).pathname).toBe(
+			"/functions/v1beta1/regions/fr-par/namespaces/11111111-1111-1111-1111-111111111111",
+		);
+		expect(requests[0].body).toBeNull();
+		expect(result).toEqual({
+			content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+		});
+	});
+	it("DeleteFunction preserves the HTTP 200 resource response", async () => {
+		const response = { id: "11111111-1111-1111-1111-111111111111", status: "deleting" };
+		const { client, requests } = recordingClient(response);
+		const result = await httpHandlers.handleDeleteFunction(client, {
+			region: "fr-par",
+			function_id: "11111111-1111-1111-1111-111111111111",
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(new URL(requests[0].url).pathname).toBe(
+			"/functions/v1beta1/regions/fr-par/functions/11111111-1111-1111-1111-111111111111",
+		);
+		expect(requests[0].body).toBeNull();
+		expect(result).toEqual({
+			content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+		});
+	});
+	it("DeleteCron preserves the HTTP 200 resource response", async () => {
+		const response = { id: "11111111-1111-1111-1111-111111111111", status: "deleting" };
+		const { client, requests } = recordingClient(response);
+		const result = await httpHandlers.handleDeleteCron(client, {
+			region: "fr-par",
+			cron_id: "11111111-1111-1111-1111-111111111111",
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(new URL(requests[0].url).pathname).toBe(
+			"/functions/v1beta1/regions/fr-par/crons/11111111-1111-1111-1111-111111111111",
+		);
+		expect(requests[0].body).toBeNull();
+		expect(result).toEqual({
+			content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+		});
+	});
+	it("DeleteDomain preserves the HTTP 200 resource response", async () => {
+		const response = { id: "11111111-1111-1111-1111-111111111111", status: "deleting" };
+		const { client, requests } = recordingClient(response);
+		const result = await httpHandlers.handleDeleteDomain(client, {
+			region: "fr-par",
+			domain_id: "11111111-1111-1111-1111-111111111111",
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(new URL(requests[0].url).pathname).toBe(
+			"/functions/v1beta1/regions/fr-par/domains/11111111-1111-1111-1111-111111111111",
+		);
+		expect(requests[0].body).toBeNull();
+		expect(result).toEqual({
+			content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+		});
+	});
+	it("DeleteToken preserves the HTTP 200 resource response", async () => {
+		const response = { id: "11111111-1111-1111-1111-111111111111", status: "deleting" };
+		const { client, requests } = recordingClient(response);
+		const result = await httpHandlers.handleDeleteToken(client, {
+			region: "fr-par",
+			token_id: "11111111-1111-1111-1111-111111111111",
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(new URL(requests[0].url).pathname).toBe(
+			"/functions/v1beta1/regions/fr-par/tokens/11111111-1111-1111-1111-111111111111",
+		);
+		expect(requests[0].body).toBeNull();
+		expect(result).toEqual({
+			content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
 		});
 	});
 });

@@ -1,11 +1,13 @@
 # Scaleway Elastic Metal (Bare Metal) API Reference
 
-Base URL: `https://api.scaleway.com/baremetal/v1/zones/{zone}`
+Base URLs:
+- Servers, offers, OS, BMC and private networks: `https://api.scaleway.com/baremetal/v1/zones/{zone}`
+- Flexible IPs: `https://api.scaleway.com/flexible-ip/v1alpha1/zones/{zone}`
 
 - Official docs: https://www.scaleway.com/en/developers/api/elastic-metal/
-- API version: **v1**
+- API versions: Bare Metal **v1**; Flexible IP **v1alpha1**
 - Scope: **zonal**. Zones include `fr-par-1`, `fr-par-2`, `nl-ams-1`, `nl-ams-2`, `pl-waw-2`, `pl-waw-3` (validated by `ScalewayZone`).
-- Transport note: this area's handlers call the raw `client.fetch(url, init)` overload with an absolute URL (`https://api.scaleway.com/baremetal/v1/zones/{zone}/...`) rather than the structured `{ method, path }` form used elsewhere. A `204 No Content` is normalized to `{}`.
+- Transport note: handlers call `client.fetch({ method, path, urlParams?, body?, headers? })` from `@scaleway/sdk-client` with a **relative** `path` (`/baremetal/v1/zones/{zone}/...` or `/flexible-ip/v1alpha1/zones/{zone}/...`) — the SDK prefixes `https://api.scaleway.com` verbatim, so the path must start with `/`. Query strings are passed as `URLSearchParams` via `urlParams`; JSON bodies are pre-serialised strings sent with `Content-Type: application/json`. The SDK resolves with the parsed JSON body, resolves `undefined` on `204 No Content` (normalized to `{}` by the handlers), and throws `ScalewayError` (`.status`) on non-2xx, which `mapScalewayError` turns into the error types below.
 
 ## Authentication
 
@@ -80,7 +82,7 @@ The Bare Metal API exposes **separate** action endpoints (not a single `/action`
 `GET /baremetal/v1/zones/{zone}/os`
 - Tool: `scaleway_elastic_metal_list_oss`
 - Query: `offer_id`, `page`, `page_size`
-- Response: `{ oss: OS[], total_count: number }` — note the API/tool wrapper key is `oss`
+- Response: `{ os: OS[], total_count: number }` — the API wrapper key is `os` (`ListOSResponse` in the official OpenAPI schema and `unmarshalListOSResponse` in `@scaleway/sdk-js`); the tool name keeps the historical `list_oss` spelling
 
 ## BMC Access
 
@@ -91,22 +93,56 @@ The Bare Metal API exposes **separate** action endpoints (not a single `/action`
 
 ## Flexible IPs
 
+Flexible IPs for Elastic Metal use a **separate API**, not `/baremetal/v1/.../ips`.
+
+- Official docs: https://www.scaleway.com/en/developers/api/elastic-metal/flexible-ip/
+- Verified against the official Flexible IP OpenAPI schema, version `v1alpha1`
+  (`scaleway.flexible_ip.v1alpha1.ListFlexibleIPsResponse` / `FlexibleIP`).
+- Operations: `ListFlexibleIPs`, `CreateFlexibleIP`, `DeleteFlexibleIP`.
+- Compatibility: tool names and inputs remain unchanged. List input `server_id` maps to
+  the API's one-element `server_ids` array; delete input `ip_id` supplies path `fip_id`.
+- Transport contracts: `tests/contract/tools/elastic-metal/flexible-ip.transport.test.ts`
+  exercises these handlers with the real SDK client and an in-memory HTTP transport
+  (no real credentials or network), including URL, auth, query/body, responses and errors.
+
+### FlexibleIP object
+
+Fields: `id`, `organization_id`, `project_id`, `description`, `tags`, `created_at`,
+`updated_at`, `status`, `ip_address` (CIDR), `mac_address`, `server_id` (nullable),
+`reverse`, `zone`. Status is `unknown` | `ready` | `updating` | `attached` | `error` |
+`detaching` | `locked`. Create returns this object directly, with no `ip` wrapper.
+
 ### List IPs
-`GET /baremetal/v1/zones/{zone}/ips`
+`GET /flexible-ip/v1alpha1/zones/{zone}/fips`
 - Tool: `scaleway_elastic_metal_list_ips`
-- Query: `project_id`, `server_id`, `order_by`, `page`, `page_size`
-- Response: `{ ips: IP[], total_count: number }`
+- Query sent by the tool: `project_id`, `server_ids` (repeatable array query parameter,
+  one occurrence for the compatible singular `server_id` input), `order_by`, `page`,
+  `page_size`. Never sends the unsupported singular query parameter `server_id`.
+- `order_by`: `created_at_asc` | `created_at_desc` (API default `created_at_asc`). The
+  existing string input is retained for compatibility; unsupported values are rejected
+  by the API.
+- API also accepts `organization_id`, `tags`, `status`; not exposed by this tool.
+- Response (`200`): `{ flexible_ips: FlexibleIP[], total_count: number }`, **not** `ips`.
+  The tool returns the `flexible_ips` collection as `items` with `totalCount`, `page`,
+  `pageSize` from `buildPaginatedResponse()`. An empty collection stays `[]`.
 
 ### Create IP
-`POST /baremetal/v1/zones/{zone}/ips`
+`POST /flexible-ip/v1alpha1/zones/{zone}/fips`
 - Tool: `scaleway_elastic_metal_create_ip`
-- Body: `{ project_id (required), description, tags, server_id? }`
-- Response: `IP` object
+- JSON body: `{ project_id (required), description, tags, server_id? }`.
+  Tool defaults: `description: ""`, `tags: []`; omitted `server_id` is not sent.
+  The API also accepts `reverse`, `is_ipv6`; not exposed by this tool.
+- Response (`200`): `FlexibleIP` object.
 
 ### Delete IP
-`DELETE /baremetal/v1/zones/{zone}/ips/{ip_id}`
-- Tool: `scaleway_elastic_metal_delete_ip`
-- Response: empty body
+`DELETE /flexible-ip/v1alpha1/zones/{zone}/fips/{fip_id}`
+- Tool: `scaleway_elastic_metal_delete_ip` (input `ip_id` supplies `{fip_id}`).
+- No request body or query parameters.
+- Response: `204 No Content`. SDK resolves `undefined`; the tool normalizes this to
+  an empty JSON object (`{}`) in a valid MCP text result.
+
+All three operations use `X-Auth-Token` authentication. Non-2xx SDK errors expose
+`.status` and are mapped using the Error Codes table below.
 
 ## Private Networks
 

@@ -111,7 +111,7 @@ describe("mailbox domain handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "mailbox/v1alpha1/domains",
+					path: "/mailbox/v1alpha1/domains",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -162,7 +162,7 @@ describe("mailbox domain handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `mailbox/v1alpha1/domains/${DOMAIN_ID}`,
+				path: `/mailbox/v1alpha1/domains/${DOMAIN_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("example.com");
 		});
@@ -186,7 +186,7 @@ describe("mailbox domain handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "mailbox/v1alpha1/domains",
+				path: "/mailbox/v1alpha1/domains",
 				body: JSON.stringify({ name: "example.com", project_id: PROJECT_ID }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -200,7 +200,7 @@ describe("mailbox domain handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "mailbox/v1alpha1/domains",
+				path: "/mailbox/v1alpha1/domains",
 				body: JSON.stringify({ name: "example.com" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -225,7 +225,7 @@ describe("mailbox domain handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `mailbox/v1alpha1/domains/${DOMAIN_ID}`,
+				path: `/mailbox/v1alpha1/domains/${DOMAIN_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("deleting");
 		});
@@ -249,7 +249,7 @@ describe("mailbox domain handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `mailbox/v1alpha1/domains/${DOMAIN_ID}/records`,
+				path: `/mailbox/v1alpha1/domains/${DOMAIN_ID}/records`,
 			});
 			expect(JSON.parse(result.content[0].text).mx.id).toBe("r1");
 		});
@@ -275,7 +275,7 @@ describe("mailbox domain handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `mailbox/v1alpha1/domains/${DOMAIN_ID}/validate-records`,
+				path: `/mailbox/v1alpha1/domains/${DOMAIN_ID}/validate-records`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.validated).toBe(true);
@@ -316,7 +316,7 @@ describe("mailbox mailbox handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "mailbox/v1alpha1/batch-create-mailboxes",
+				path: "/mailbox/v1alpha1/batch-create-mailboxes",
 				body: JSON.stringify({
 					domain_id: DOMAIN_ID,
 					subscription_period: "monthly",
@@ -357,7 +357,7 @@ describe("mailbox mailbox handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "mailbox/v1alpha1/mailboxes",
+					path: "/mailbox/v1alpha1/mailboxes",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -405,7 +405,7 @@ describe("mailbox mailbox handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
+				path: `/mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).email).toBe("john@example.com");
 		});
@@ -433,7 +433,7 @@ describe("mailbox mailbox handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
+				path: `/mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
 				body: JSON.stringify({ subscription_period: "yearly", new_password: "n3wp4ss!" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -447,7 +447,7 @@ describe("mailbox mailbox handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
+				path: `/mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
 				body: JSON.stringify({ new_password: "n3wp4ss!" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -461,7 +461,7 @@ describe("mailbox mailbox handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
+				path: `/mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
 				body: JSON.stringify({ subscription_period: "canceled" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -475,7 +475,7 @@ describe("mailbox mailbox handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
+				path: `/mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -500,7 +500,7 @@ describe("mailbox mailbox handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
+				path: `/mailbox/v1alpha1/mailboxes/${MAILBOX_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("deletion_scheduled");
 		});
@@ -524,7 +524,7 @@ describe("mailbox mailbox handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `mailbox/v1alpha1/mailboxes/${MAILBOX_ID}/restore`,
+				path: `/mailbox/v1alpha1/mailboxes/${MAILBOX_ID}/restore`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("restoring");
 		});
@@ -558,7 +558,7 @@ describe("mailbox alias handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "mailbox/v1alpha1/aliases",
+				path: "/mailbox/v1alpha1/aliases",
 				body: JSON.stringify({
 					mailbox_id: MAILBOX_ID,
 					local_part: "sales",
@@ -576,7 +576,7 @@ describe("mailbox alias handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "mailbox/v1alpha1/aliases",
+				path: "/mailbox/v1alpha1/aliases",
 				body: JSON.stringify({ mailbox_id: MAILBOX_ID, local_part: "sales" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -608,7 +608,7 @@ describe("mailbox alias handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "mailbox/v1alpha1/aliases",
+					path: "/mailbox/v1alpha1/aliases",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -656,7 +656,7 @@ describe("mailbox alias handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `mailbox/v1alpha1/aliases/${ALIAS_ID}`,
+				path: `/mailbox/v1alpha1/aliases/${ALIAS_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).email).toBe("sales@example.com");
 		});
@@ -680,7 +680,7 @@ describe("mailbox alias handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `mailbox/v1alpha1/aliases/${ALIAS_ID}`,
+				path: `/mailbox/v1alpha1/aliases/${ALIAS_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("deleting");
 		});

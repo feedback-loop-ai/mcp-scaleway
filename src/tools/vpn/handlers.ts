@@ -32,7 +32,7 @@ import type {
 	UpdateVpnGatewayParams,
 } from "./types.js";
 
-const VPN_API_PREFIX = "s2s-vpn/v1alpha1/regions";
+const VPN_API_PREFIX = "/s2s-vpn/v1alpha1/regions";
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
 function getClient() {

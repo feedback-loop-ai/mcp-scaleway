@@ -2,7 +2,7 @@ import { Mnqv1beta1 } from "@scaleway/sdk-mnq";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
-import { buildPaginatedResponse, paginationToQuery } from "../../shared/pagination.js";
+import { buildPaginatedResponse } from "../../shared/pagination.js";
 import type {
 	ActivateSnsInput,
 	CreateSnsCredentialsInput,
@@ -120,7 +120,8 @@ export async function handleListSnsCredentials(input: ListSnsCredentialsInput) {
 			region: input.region,
 			projectId: input.projectId,
 			orderBy: input.orderBy,
-			...paginationToQuery(input.page, input.pageSize),
+			page: input.page,
+			pageSize: input.pageSize,
 		});
 		const formatted = result.snsCredentials.map(formatSnsCredentials);
 		return jsonResponse(

@@ -1,28 +1,23 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-	handleCreateDHCP,
 	handleCreateGateway,
 	handleCreateGatewayNetwork,
 	handleCreateIP,
 	handleCreatePatRule,
-	handleDeleteDHCP,
 	handleDeleteGateway,
 	handleDeleteGatewayNetwork,
 	handleDeleteIP,
 	handleDeletePatRule,
-	handleGetDHCP,
 	handleGetGateway,
 	handleGetGatewayNetwork,
 	handleGetIP,
 	handleGetPatRule,
-	handleListDHCPs,
 	handleListGatewayNetworks,
 	handleListGatewayTypes,
 	handleListGateways,
 	handleListIPs,
 	handleListPatRules,
-	handleUpdateDHCP,
 	handleUpdateGateway,
 	handleUpdateGatewayNetwork,
 	handleUpdateIP,
@@ -31,25 +26,20 @@ import {
 } from "../../../src/tools/public-gateway/handlers.js";
 import { registerPublicGatewayTools } from "../../../src/tools/public-gateway/index.js";
 import {
-	CreateDHCPParams,
 	CreateGatewayNetworkParams,
 	CreateGatewayParams,
 	CreateIPParams,
 	CreatePatRuleParams,
-	DeleteDHCPParams,
 	DeleteGatewayNetworkParams,
 	DeleteGatewayParams,
 	DeleteIPParams,
 	DeletePatRuleParams,
 	GatewayNetworkStatus,
 	GatewayStatus,
-	GetDHCPParams,
 	GetGatewayNetworkParams,
 	GetGatewayParams,
 	GetIPParams,
 	GetPatRuleParams,
-	ListDHCPsOrderBy,
-	ListDHCPsParams,
 	ListGatewayNetworksOrderBy,
 	ListGatewayNetworksParams,
 	ListGatewayTypesParams,
@@ -60,7 +50,6 @@ import {
 	ListPatRulesOrderBy,
 	ListPatRulesParams,
 	PatRuleProtocol,
-	UpdateDHCPParams,
 	UpdateGatewayNetworkParams,
 	UpdateGatewayParams,
 	UpdateIPParams,
@@ -160,11 +149,6 @@ describe("public-gateway types", () => {
 		it("ListIPsOrderBy accepts valid values", () => {
 			expect(ListIPsOrderBy.parse("address_asc")).toBe("address_asc");
 			expect(ListIPsOrderBy.parse("reverse_desc")).toBe("reverse_desc");
-		});
-
-		it("ListDHCPsOrderBy accepts valid values", () => {
-			expect(ListDHCPsOrderBy.parse("subnet_asc")).toBe("subnet_asc");
-			expect(ListDHCPsOrderBy.parse("created_at_desc")).toBe("created_at_desc");
 		});
 	});
 
@@ -322,80 +306,6 @@ describe("public-gateway types", () => {
 
 		it("DeleteGatewayNetworkParams requires gatewayNetworkId", () => {
 			expect(() => DeleteGatewayNetworkParams.parse({})).toThrow();
-		});
-	});
-
-	describe("DHCP Params", () => {
-		it("ListDHCPsParams parses with defaults", () => {
-			const result = ListDHCPsParams.parse({});
-			expect(result.page).toBe(1);
-		});
-
-		it("ListDHCPsParams accepts all filters", () => {
-			const result = ListDHCPsParams.parse({
-				orderBy: "subnet_asc",
-				organizationId: "00000000-0000-0000-0000-000000000001",
-				projectId: "00000000-0000-0000-0000-000000000002",
-				address: "192.168.1.1",
-				hasAddress: "192.168.1.0",
-			});
-			expect(result.address).toBe("192.168.1.1");
-		});
-
-		it("GetDHCPParams requires dhcpId", () => {
-			expect(() => GetDHCPParams.parse({})).toThrow();
-			expect(GetDHCPParams.parse({ dhcpId: "00000000-0000-0000-0000-000000000001" })).toBeTruthy();
-		});
-
-		it("CreateDHCPParams requires subnet", () => {
-			expect(() => CreateDHCPParams.parse({})).toThrow();
-			const result = CreateDHCPParams.parse({ subnet: "192.168.1.0/24" });
-			expect(result.subnet).toBe("192.168.1.0/24");
-		});
-
-		it("CreateDHCPParams accepts all optional fields", () => {
-			const result = CreateDHCPParams.parse({
-				subnet: "192.168.1.0/24",
-				projectId: "00000000-0000-0000-0000-000000000001",
-				address: "192.168.1.1",
-				poolLow: "192.168.1.10",
-				poolHigh: "192.168.1.200",
-				enableDynamic: true,
-				validLifetime: "3600s",
-				renewTimer: "3000s",
-				rebindTimer: "3060s",
-				pushDefaultRoute: true,
-				pushDnsServer: true,
-				dnsServersOverride: ["8.8.8.8"],
-				dnsSearch: ["example.com"],
-				dnsLocalName: "priv",
-			});
-			expect(result.poolLow).toBe("192.168.1.10");
-		});
-
-		it("UpdateDHCPParams requires dhcpId", () => {
-			expect(() => UpdateDHCPParams.parse({})).toThrow();
-			const result = UpdateDHCPParams.parse({
-				dhcpId: "00000000-0000-0000-0000-000000000001",
-				subnet: "10.0.0.0/16",
-				address: "10.0.0.1",
-				poolLow: "10.0.0.10",
-				poolHigh: "10.0.0.200",
-				enableDynamic: false,
-				validLifetime: "7200s",
-				renewTimer: "6000s",
-				rebindTimer: "6060s",
-				pushDefaultRoute: false,
-				pushDnsServer: false,
-				dnsServersOverride: ["1.1.1.1"],
-				dnsSearch: ["test.local"],
-				dnsLocalName: "local",
-			});
-			expect(result.subnet).toBe("10.0.0.0/16");
-		});
-
-		it("DeleteDHCPParams requires dhcpId", () => {
-			expect(() => DeleteDHCPParams.parse({})).toThrow();
 		});
 	});
 
@@ -889,176 +799,6 @@ describe("public-gateway handlers", () => {
 			mockFetch.mockRejectedValue(new Error("fail"));
 			const result = await handleDeleteGatewayNetwork({
 				gatewayNetworkId: "00000000-0000-0000-0000-000000000001",
-			});
-			expect(result.isError).toBe(true);
-		});
-	});
-
-	// ─── DHCP Handlers ───────────────────────────────────────────────────
-
-	describe("handleListDHCPs", () => {
-		it("returns paginated DHCPs", async () => {
-			mockFetch.mockResolvedValue({
-				dhcps: [{ id: "dhcp-1", subnet: "192.168.1.0/24" }],
-				total_count: 1,
-			});
-
-			const result = await handleListDHCPs({ page: 1, pageSize: 50 });
-			expect(result.content[0].text).toContain("dhcp-1");
-		});
-
-		it("passes all filters", async () => {
-			mockFetch.mockResolvedValue({ dhcps: [], total_count: 0 });
-
-			await handleListDHCPs({
-				page: 1,
-				pageSize: 50,
-				zone: "fr-par-1",
-				orderBy: "subnet_asc",
-				organizationId: "00000000-0000-0000-0000-000000000001",
-				projectId: "00000000-0000-0000-0000-000000000002",
-				address: "192.168.1.1",
-				hasAddress: "192.168.1.0",
-			});
-
-			const call = mockFetch.mock.calls[0][0];
-			expect(call.path).toContain("/v1/");
-			expect(call.urlParams.get("address")).toBe("192.168.1.1");
-			expect(call.urlParams.get("has_address")).toBe("192.168.1.0");
-		});
-
-		it("handles errors", async () => {
-			mockFetch.mockRejectedValue(new Error("fail"));
-			const result = await handleListDHCPs({ page: 1, pageSize: 50 });
-			expect(result.isError).toBe(true);
-		});
-	});
-
-	describe("handleGetDHCP", () => {
-		it("returns DHCP details", async () => {
-			mockFetch.mockResolvedValue({ id: "dhcp-1", subnet: "10.0.0.0/16" });
-
-			const result = await handleGetDHCP({
-				dhcpId: "00000000-0000-0000-0000-000000000001",
-			});
-			expect(result.content[0].text).toContain("10.0.0.0/16");
-		});
-
-		it("handles errors", async () => {
-			mockFetch.mockRejectedValue(new Error("fail"));
-			const result = await handleGetDHCP({
-				dhcpId: "00000000-0000-0000-0000-000000000001",
-			});
-			expect(result.isError).toBe(true);
-		});
-	});
-
-	describe("handleCreateDHCP", () => {
-		it("creates with required fields", async () => {
-			mockFetch.mockResolvedValue({ id: "dhcp-new" });
-
-			await handleCreateDHCP({ subnet: "192.168.1.0/24" });
-
-			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
-			expect(body.subnet).toBe("192.168.1.0/24");
-			expect(mockFetch.mock.calls[0][0].path).toContain("/v1/");
-		});
-
-		it("creates with all optional fields", async () => {
-			mockFetch.mockResolvedValue({ id: "dhcp-new" });
-
-			await handleCreateDHCP({
-				subnet: "192.168.1.0/24",
-				projectId: "00000000-0000-0000-0000-000000000001",
-				address: "192.168.1.1",
-				poolLow: "192.168.1.10",
-				poolHigh: "192.168.1.200",
-				enableDynamic: true,
-				validLifetime: "3600s",
-				renewTimer: "3000s",
-				rebindTimer: "3060s",
-				pushDefaultRoute: true,
-				pushDnsServer: true,
-				dnsServersOverride: ["8.8.8.8"],
-				dnsSearch: ["example.com"],
-				dnsLocalName: "priv",
-			});
-
-			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
-			expect(body.pool_low).toBe("192.168.1.10");
-			expect(body.push_dns_server).toBe(true);
-			expect(body.dns_servers_override).toEqual(["8.8.8.8"]);
-			expect(body.dns_local_name).toBe("priv");
-		});
-
-		it("handles errors", async () => {
-			mockFetch.mockRejectedValue(new Error("fail"));
-			const result = await handleCreateDHCP({ subnet: "x" });
-			expect(result.isError).toBe(true);
-		});
-	});
-
-	describe("handleUpdateDHCP", () => {
-		it("updates with all fields", async () => {
-			mockFetch.mockResolvedValue({ id: "dhcp-1" });
-
-			await handleUpdateDHCP({
-				dhcpId: "00000000-0000-0000-0000-000000000001",
-				subnet: "10.0.0.0/16",
-				address: "10.0.0.1",
-				poolLow: "10.0.0.10",
-				poolHigh: "10.0.0.200",
-				enableDynamic: false,
-				validLifetime: "7200s",
-				renewTimer: "6000s",
-				rebindTimer: "6060s",
-				pushDefaultRoute: false,
-				pushDnsServer: false,
-				dnsServersOverride: ["1.1.1.1"],
-				dnsSearch: ["test.local"],
-				dnsLocalName: "local",
-			});
-
-			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
-			expect(body.subnet).toBe("10.0.0.0/16");
-			expect(body.enable_dynamic).toBe(false);
-			expect(body.dns_search).toEqual(["test.local"]);
-		});
-
-		it("sends empty body when no updates", async () => {
-			mockFetch.mockResolvedValue({ id: "dhcp-1" });
-
-			await handleUpdateDHCP({
-				dhcpId: "00000000-0000-0000-0000-000000000001",
-			});
-
-			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
-			expect(body).toEqual({});
-		});
-
-		it("handles errors", async () => {
-			mockFetch.mockRejectedValue(new Error("fail"));
-			const result = await handleUpdateDHCP({
-				dhcpId: "00000000-0000-0000-0000-000000000001",
-			});
-			expect(result.isError).toBe(true);
-		});
-	});
-
-	describe("handleDeleteDHCP", () => {
-		it("deletes DHCP and returns success", async () => {
-			mockFetch.mockResolvedValue(undefined);
-
-			const result = await handleDeleteDHCP({
-				dhcpId: "00000000-0000-0000-0000-000000000001",
-			});
-			expect(result.content[0].text).toContain("success");
-		});
-
-		it("handles errors", async () => {
-			mockFetch.mockRejectedValue(new Error("fail"));
-			const result = await handleDeleteDHCP({
-				dhcpId: "00000000-0000-0000-0000-000000000001",
 			});
 			expect(result.isError).toBe(true);
 		});

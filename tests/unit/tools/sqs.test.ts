@@ -1,4 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { Errors } from "@scaleway/sdk-client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { registerSqsTools } from "../../../src/tools/sqs/index.js";
 import {
@@ -36,8 +37,10 @@ vi.mock("../../../src/shared/client.js", () => ({
 	resetClient: vi.fn(),
 }));
 
-function mockJsonResponse(data: unknown, status = 200) {
-	return { json: () => Promise.resolve(data), status, ok: status < 400 };
+// @scaleway/sdk-client `client.fetch` resolves to the parsed JSON body (or `undefined`
+// on 204) and throws on non-2xx, so the mock resolves the body object directly.
+function mockJsonResponse(data: unknown) {
+	return data;
 }
 
 describe("sqs module", () => {
@@ -360,9 +363,13 @@ describe("sqs handlers", () => {
 				expect.objectContaining({
 					method: "POST",
 					path: "/mnq/v1beta1/regions/fr-par/activate-sqs",
+					headers: { "Content-Type": "application/json" },
 				}),
 			);
+			const body = JSON.parse((mockFetch.mock.calls[0][0] as { body: string }).body);
+			expect(body).toEqual({ project_id: "11111111-1111-1111-1111-111111111111" });
 			expect(result.content[0].text).toContain('"status": "enabled"');
+			expect(JSON.parse(result.content[0].text)).toEqual(sqsInfo);
 		});
 
 		it("uses provided region and project_id", async () => {
@@ -407,12 +414,18 @@ describe("sqs handlers", () => {
 		it("uses provided region", async () => {
 			mockFetch.mockResolvedValue(mockJsonResponse({ status: "disabled" }));
 
-			await handleDeactivateSqs({ region: "pl-waw" });
+			await handleDeactivateSqs({
+				region: "pl-waw",
+				project_id: "22222222-2222-2222-2222-222222222222",
+			});
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					path: "/mnq/v1beta1/regions/pl-waw/deactivate-sqs",
+					headers: { "Content-Type": "application/json" },
 				}),
 			);
+			const body = JSON.parse((mockFetch.mock.calls[0][0] as { body: string }).body);
+			expect(body.project_id).toBe("22222222-2222-2222-2222-222222222222");
 		});
 
 		it("returns error on failure", async () => {
@@ -437,9 +450,12 @@ describe("sqs handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "/mnq/v1beta1/regions/fr-par/sqs-info?project_id=11111111-1111-1111-1111-111111111111",
+					path: "/mnq/v1beta1/regions/fr-par/sqs-info",
 				}),
 			);
+			const urlParams = (mockFetch.mock.calls[0][0] as { urlParams: URLSearchParams }).urlParams;
+			expect(urlParams).toBeInstanceOf(URLSearchParams);
+			expect(urlParams.toString()).toBe("project_id=11111111-1111-1111-1111-111111111111");
 			expect(result.content[0].text).toContain("sqs_endpoint_url");
 		});
 
@@ -452,9 +468,11 @@ describe("sqs handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
-					path: "/mnq/v1beta1/regions/nl-ams/sqs-info?project_id=22222222-2222-2222-2222-222222222222",
+					path: "/mnq/v1beta1/regions/nl-ams/sqs-info",
 				}),
 			);
+			const urlParams = (mockFetch.mock.calls[0][0] as { urlParams: URLSearchParams }).urlParams;
+			expect(urlParams.get("project_id")).toBe("22222222-2222-2222-2222-222222222222");
 		});
 
 		it("returns error on 404", async () => {
@@ -483,6 +501,7 @@ describe("sqs handlers", () => {
 				expect.objectContaining({
 					method: "POST",
 					path: "/mnq/v1beta1/regions/fr-par/sqs-credentials",
+					headers: { "Content-Type": "application/json" },
 				}),
 			);
 			const body = JSON.parse((mockFetch.mock.calls[0][0] as { body: string }).body);
@@ -523,7 +542,8 @@ describe("sqs handlers", () => {
 
 	describe("handleDeleteSqsCredentials", () => {
 		it("deletes credentials by ID", async () => {
-			mockFetch.mockResolvedValue(mockJsonResponse(null));
+			// DELETE .../sqs-credentials/{id} returns 204 -> client.fetch resolves undefined
+			mockFetch.mockResolvedValue(undefined);
 
 			const result = await handleDeleteSqsCredentials({
 				credential_id: "33333333-3333-3333-3333-333333333333",
@@ -538,7 +558,7 @@ describe("sqs handlers", () => {
 		});
 
 		it("uses provided region", async () => {
-			mockFetch.mockResolvedValue(mockJsonResponse(null));
+			mockFetch.mockResolvedValue(undefined);
 
 			await handleDeleteSqsCredentials({
 				region: "nl-ams",
@@ -597,6 +617,18 @@ describe("sqs handlers", () => {
 			);
 		});
 
+		it("maps a ScalewayError thrown by client.fetch (status 404) to not_found", async () => {
+			mockFetch.mockRejectedValue(
+				new Errors.ScalewayError(404, { message: "resource is not found", type: "not_found" }),
+			);
+
+			const result = await handleGetSqsCredentials({
+				credential_id: "33333333-3333-3333-3333-333333333333",
+			});
+			expect((result as Record<string, unknown>).isError).toBe(true);
+			expect(result.content[0].text).toContain("not_found");
+		});
+
 		it("returns error on failure", async () => {
 			mockFetch.mockRejectedValue(new Error("Network error"));
 
@@ -623,13 +655,16 @@ describe("sqs handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
+					path: "/mnq/v1beta1/regions/fr-par/sqs-credentials",
 				}),
 			);
-			const path = (mockFetch.mock.calls[0][0] as { path: string }).path;
-			expect(path).toContain("/sqs-credentials?");
-			expect(path).toContain("page=1");
-			expect(path).toContain("page_size=50");
+			const urlParams = (mockFetch.mock.calls[0][0] as { urlParams: URLSearchParams }).urlParams;
+			expect(urlParams).toBeInstanceOf(URLSearchParams);
+			expect(urlParams.get("project_id")).toBe("11111111-1111-1111-1111-111111111111");
+			expect(urlParams.get("page")).toBe("1");
+			expect(urlParams.get("page_size")).toBe("50");
 			expect(result.content[0].text).toContain('"totalCount": 2');
+			expect(result.content[0].text).toContain('"id": "cred-1"');
 		});
 
 		it("uses custom pagination", async () => {
@@ -640,10 +675,10 @@ describe("sqs handlers", () => {
 				page_size: 10,
 				order_by: "name_desc",
 			});
-			const path = (mockFetch.mock.calls[0][0] as { path: string }).path;
-			expect(path).toContain("page=3");
-			expect(path).toContain("page_size=10");
-			expect(path).toContain("order_by=name_desc");
+			const urlParams = (mockFetch.mock.calls[0][0] as { urlParams: URLSearchParams }).urlParams;
+			expect(urlParams.get("page")).toBe("3");
+			expect(urlParams.get("page_size")).toBe("10");
+			expect(urlParams.get("order_by")).toBe("name_desc");
 		});
 
 		it("handles missing sqs_credentials in response", async () => {
@@ -662,8 +697,8 @@ describe("sqs handlers", () => {
 			mockFetch.mockResolvedValue(mockJsonResponse({ sqs_credentials: [], total_count: 0 }));
 
 			await handleListSqsCredentials({ page: 1, page_size: 50, order_by: "created_at_asc" });
-			const path = (mockFetch.mock.calls[0][0] as { path: string }).path;
-			expect(path).toContain("order_by=created_at_asc");
+			const urlParams = (mockFetch.mock.calls[0][0] as { urlParams: URLSearchParams }).urlParams;
+			expect(urlParams.get("order_by")).toBe("created_at_asc");
 		});
 
 		it("returns error on failure", async () => {
@@ -693,6 +728,7 @@ describe("sqs handlers", () => {
 				expect.objectContaining({
 					method: "PATCH",
 					path: "/mnq/v1beta1/regions/fr-par/sqs-credentials/33333333-3333-3333-3333-333333333333",
+					headers: { "Content-Type": "application/json" },
 				}),
 			);
 			const body = JSON.parse((mockFetch.mock.calls[0][0] as { body: string }).body);

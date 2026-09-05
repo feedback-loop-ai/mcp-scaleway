@@ -95,7 +95,7 @@ describe("file-storage handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "file/v1alpha1/regions/fr-par/filesystems",
+					path: "/file/v1alpha1/regions/fr-par/filesystems",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -161,7 +161,7 @@ describe("file-storage handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `file/v1alpha1/regions/fr-par/filesystems/${FS_ID}`,
+				path: `/file/v1alpha1/regions/fr-par/filesystems/${FS_ID}`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.name).toBe("my-fs");
@@ -201,7 +201,7 @@ describe("file-storage handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "file/v1alpha1/regions/fr-par/filesystems",
+				path: "/file/v1alpha1/regions/fr-par/filesystems",
 				body: JSON.stringify({
 					name: "my-fs",
 					size: 100000000000,
@@ -228,7 +228,7 @@ describe("file-storage handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "file/v1alpha1/regions/fr-par/filesystems",
+				path: "/file/v1alpha1/regions/fr-par/filesystems",
 				body: JSON.stringify({ name: "my-fs", size: 100000000000 }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -271,7 +271,7 @@ describe("file-storage handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `file/v1alpha1/regions/fr-par/filesystems/${FS_ID}`,
+				path: `/file/v1alpha1/regions/fr-par/filesystems/${FS_ID}`,
 				body: JSON.stringify({
 					name: "renamed",
 					size: 200000000000,
@@ -296,7 +296,7 @@ describe("file-storage handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `file/v1alpha1/regions/fr-par/filesystems/${FS_ID}`,
+				path: `/file/v1alpha1/regions/fr-par/filesystems/${FS_ID}`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -334,7 +334,7 @@ describe("file-storage handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `file/v1alpha1/regions/fr-par/filesystems/${FS_ID}`,
+				path: `/file/v1alpha1/regions/fr-par/filesystems/${FS_ID}`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);
@@ -377,7 +377,7 @@ describe("file-storage handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "file/v1alpha1/regions/fr-par/attachments",
+					path: "/file/v1alpha1/regions/fr-par/attachments",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);

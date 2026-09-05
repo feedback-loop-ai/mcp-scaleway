@@ -3,7 +3,7 @@ import type { z } from "zod";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
-import { buildPaginatedResponse, paginationToQuery } from "../../shared/pagination.js";
+import { buildPaginatedResponse } from "../../shared/pagination.js";
 import type {
 	CreateBackendStageParams,
 	CreateCacheStageParams,
@@ -55,7 +55,8 @@ export async function handleListPipelines(
 	try {
 		const api = getApi();
 		const response = await api.listPipelines({
-			...paginationToQuery(params.page, params.pageSize),
+			page: params.page,
+			pageSize: params.pageSize,
 			name: params.name,
 			projectId: params.projectId,
 			organizationId: params.organizationId,
@@ -134,7 +135,8 @@ export async function handleListDNSStages(
 		const api = getApi();
 		const response = await api.listDNSStages({
 			pipelineId: params.pipelineId,
-			...paginationToQuery(params.page, params.pageSize),
+			page: params.page,
+			pageSize: params.pageSize,
 			orderBy: params.orderBy,
 			fqdn: params.fqdn,
 		});
@@ -215,7 +217,8 @@ export async function handleListTLSStages(
 		const api = getApi();
 		const response = await api.listTLSStages({
 			pipelineId: params.pipelineId,
-			...paginationToQuery(params.page, params.pageSize),
+			page: params.page,
+			pageSize: params.pageSize,
 			orderBy: params.orderBy,
 			secretId: params.secretId,
 			secretRegion: params.secretRegion,
@@ -301,7 +304,8 @@ export async function handleListCacheStages(
 		const api = getApi();
 		const response = await api.listCacheStages({
 			pipelineId: params.pipelineId,
-			...paginationToQuery(params.page, params.pageSize),
+			page: params.page,
+			pageSize: params.pageSize,
 			orderBy: params.orderBy,
 		});
 		return successResponse(
@@ -383,7 +387,8 @@ export async function handleListBackendStages(
 		const api = getApi();
 		const response = await api.listBackendStages({
 			pipelineId: params.pipelineId,
-			...paginationToQuery(params.page, params.pageSize),
+			page: params.page,
+			pageSize: params.pageSize,
 			orderBy: params.orderBy,
 			bucketName: params.bucketName,
 			bucketRegion: params.bucketRegion,
@@ -478,7 +483,8 @@ export async function handleListPurgeRequests(
 	try {
 		const api = getApi();
 		const response = await api.listPurgeRequests({
-			...paginationToQuery(params.page, params.pageSize),
+			page: params.page,
+			pageSize: params.pageSize,
 			pipelineId: params.pipelineId,
 			projectId: params.projectId,
 			organizationId: params.organizationId,

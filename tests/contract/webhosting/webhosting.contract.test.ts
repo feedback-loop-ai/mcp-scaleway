@@ -9,7 +9,11 @@
  * MCP tools plus the documented response entity shapes (Hosting, Offer, ControlPanel,
  * DnsRecord) defined in src/tools/webhosting/types.ts.
  */
-import { describe, expect, it } from "vitest";
+import { createAdvancedClient, withProfile } from "@scaleway/sdk-client";
+import { createScalewayClient } from "../../../src/shared/client.js";
+import * as httpHandlers from "../../../src/tools/webhosting/handlers.js";
+
+import { describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 import {
 	ControlPanel,
@@ -30,6 +34,11 @@ import {
 	RestoreHostingInput,
 	UpdateHostingInput,
 } from "../../../src/tools/webhosting/types.js";
+
+vi.mock("../../../src/shared/auth.js", () => ({
+	loadAuthConfig: vi.fn(() => ({ defaultRegion: "fr-par" })),
+}));
+vi.mock("../../../src/shared/client.js", () => ({ createScalewayClient: vi.fn() }));
 
 // --- Shared fixtures ---
 
@@ -568,5 +577,124 @@ describe("contract: region targeting", () => {
 	it("validates region format when supplied (xx-xxx)", () => {
 		expect(() => ListHostingsInput.parse({ region: "fr-par" })).not.toThrow();
 		expect(() => ListHostingsInput.parse({ region: "not-a-region" })).toThrow();
+	});
+});
+
+// Exercise the installed SDK's Request construction, JSON parsing, and real HTTP errors.
+// Only the HTTP transport is replaced: no environment credentials or network calls.
+describe("SDK HTTP request contracts", () => {
+	function recordingClient(
+		response: unknown = { id: "http-response", status: "ready" },
+		status = 200,
+	) {
+		const requests: Request[] = [];
+		const client = createAdvancedClient(
+			withProfile({
+				accessKey: "SCWXXXXXXXXXXXXXXXXX",
+				secretKey: "00000000-0000-0000-0000-000000000000",
+			}),
+			(settings) => ({
+				...settings,
+				apiURL: "https://scaleway.invalid",
+				httpClient: (async (input: RequestInfo | URL, init?: RequestInit) => {
+					requests.push(new Request(input, init));
+					return new Response(status === 204 ? null : JSON.stringify(response), {
+						status,
+						headers: { "Content-Type": "application/json" },
+					});
+				}) as typeof fetch,
+			}),
+		);
+		vi.mocked(createScalewayClient).mockReturnValue(client);
+		return { client, requests };
+	}
+
+	const jsonCases = [
+		{
+			name: "CreateHosting",
+			method: "POST",
+			path: "/webhosting/v1/regions/fr-par/hostings",
+			call: () =>
+				httpHandlers.handleCreateHosting({
+					region: "fr-par",
+					offer_id: "11111111-1111-1111-1111-111111111111",
+					domain: "example.test",
+					skip_welcome_email: false,
+				}),
+			body: {
+				offer_id: "11111111-1111-1111-1111-111111111111",
+				domain: "example.test",
+				skip_welcome_email: false,
+			},
+		},
+		{
+			name: "UpdateHosting",
+			method: "PATCH",
+			path: "/webhosting/v1/regions/fr-par/hostings/11111111-1111-1111-1111-111111111111",
+			call: () =>
+				httpHandlers.handleUpdateHosting({
+					region: "fr-par",
+					hosting_id: "11111111-1111-1111-1111-111111111111",
+					protected: false,
+					tags: [],
+				}),
+			body: { protected: false, tags: [] },
+		},
+	];
+
+	it.each(jsonCases)(
+		"$name: $method $path sends application/json",
+		async ({ call, method, path, body }) => {
+			const response = { id: "http-response", status: "ready" };
+			const { requests } = recordingClient(response);
+			const result = await call();
+			expect(requests).toHaveLength(1);
+			const [request] = requests;
+			expect(request.url).toBe(`https://scaleway.invalid${path}`);
+			expect(request.method).toBe(method);
+			expect(request.headers.get("Content-Type")).toBe("application/json");
+			expect(request.headers.get("Accept")).toBe("application/json");
+			expect(request.headers.get("X-Auth-Token")).toBe("00000000-0000-0000-0000-000000000000");
+			expect(JSON.parse(await request.text())).toEqual(body);
+			expect(result).toEqual({
+				content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+			});
+		},
+	);
+
+	it.each([
+		[400, "invalid_input"],
+		[401, "permission_denied"],
+		[403, "permission_denied"],
+		[404, "not_found"],
+		[429, "rate_limited"],
+		[500, "server_error"],
+	] as const)("maps SDK HTTP %i errors to %s", async (status, type) => {
+		const { requests } = recordingClient({ message: "HTTP contract error" }, status);
+		const result = await jsonCases[0].call();
+		expect(requests).toHaveLength(1);
+		expect(result).toMatchObject({ isError: true });
+		expect(JSON.parse(result.content[0].text)).toMatchObject({
+			error: { type, statusCode: status },
+		});
+	});
+
+	// These DELETE endpoints return HTTP 200 JSON resource bodies, not HTTP 204.
+	it("DeleteHosting preserves the HTTP 200 resource response", async () => {
+		const response = { id: "11111111-1111-1111-1111-111111111111", status: "deleting" };
+		const { requests } = recordingClient(response);
+		const result = await httpHandlers.handleDeleteHosting({
+			region: "fr-par",
+			hosting_id: "11111111-1111-1111-1111-111111111111",
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(new URL(requests[0].url).pathname).toBe(
+			"/webhosting/v1/regions/fr-par/hostings/11111111-1111-1111-1111-111111111111",
+		);
+		expect(requests[0].body).toBeNull();
+		expect(result).toEqual({
+			content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+		});
 	});
 });

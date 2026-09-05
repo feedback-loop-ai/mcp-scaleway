@@ -7,7 +7,17 @@
  * API slug: interlink, version v1beta1, region-scoped.
  * Source: https://www.scaleway.com/en/developers/api/interlink/
  */
-import { describe, expect, it } from "vitest";
+import { CallToolResultSchema } from "@modelcontextprotocol/sdk/types.js";
+
+vi.mock("../../../src/shared/auth.js", () => ({
+	loadAuthConfig: vi.fn(() => ({ defaultRegion: "fr-par" })),
+}));
+vi.mock("../../../src/shared/client.js", () => ({ createScalewayClient: vi.fn() }));
+import { createAdvancedClient, withProfile } from "@scaleway/sdk-client";
+import { createScalewayClient } from "../../../src/shared/client.js";
+import * as httpHandlers from "../../../src/tools/interlink/handlers.js";
+
+import { describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 import {
 	AttachRoutingPolicyParams,
@@ -687,5 +697,140 @@ describe("contract: authentication / region", () => {
 		expect(() => ListLinksParams.parse({ region: "fr-par" })).not.toThrow();
 		expect(() => ListLinksParams.parse({ region: "nl-ams" })).not.toThrow();
 		expect(() => ListLinksParams.parse({ region: "invalid" })).toThrow();
+	});
+});
+
+// Exercise the installed SDK's Request construction, JSON parsing, and real HTTP errors.
+// Only the HTTP transport is replaced: no environment credentials or network calls.
+describe("SDK HTTP request contracts", () => {
+	function recordingClient(
+		response: unknown = { id: "http-response", status: "ready" },
+		status = 200,
+	) {
+		const requests: Request[] = [];
+		const client = createAdvancedClient(
+			withProfile({
+				accessKey: "SCWXXXXXXXXXXXXXXXXX",
+				secretKey: "00000000-0000-0000-0000-000000000000",
+			}),
+			(settings) => ({
+				...settings,
+				apiURL: "https://scaleway.invalid",
+				httpClient: (async (input: RequestInfo | URL, init?: RequestInit) => {
+					requests.push(new Request(input, init));
+					return new Response(status === 204 ? null : JSON.stringify(response), {
+						status,
+						headers: { "Content-Type": "application/json" },
+					});
+				}) as typeof fetch,
+			}),
+		);
+		vi.mocked(createScalewayClient).mockReturnValue(client);
+		return { client, requests };
+	}
+
+	const jsonCases = [
+		{
+			name: "CreateRoutingPolicy",
+			method: "POST",
+			path: "/interlink/v1beta1/regions/fr-par/routing-policies",
+			call: () =>
+				httpHandlers.handleCreateRoutingPolicy({
+					region: "fr-par",
+					name: "test",
+					isIpv6: false,
+					prefixFilterIn: [],
+					prefixFilterOut: [],
+				}),
+			body: { name: "test", is_ipv6: false, prefix_filter_in: [], prefix_filter_out: [] },
+		},
+	];
+
+	it.each(jsonCases)(
+		"$name: $method $path sends application/json",
+		async ({ call, method, path, body }) => {
+			const response = { id: "http-response", status: "ready" };
+			const { requests } = recordingClient(response);
+			const result = await call();
+			expect(requests).toHaveLength(1);
+			const [request] = requests;
+			expect(request.url).toBe(`https://scaleway.invalid${path}`);
+			expect(request.method).toBe(method);
+			expect(request.headers.get("Content-Type")).toBe("application/json");
+			expect(request.headers.get("Accept")).toBe("application/json");
+			expect(request.headers.get("X-Auth-Token")).toBe("00000000-0000-0000-0000-000000000000");
+			expect(JSON.parse(await request.text())).toEqual(body);
+			expect(result).toEqual({
+				content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+			});
+		},
+	);
+
+	it.each([
+		[400, "invalid_input"],
+		[401, "permission_denied"],
+		[403, "permission_denied"],
+		[404, "not_found"],
+		[429, "rate_limited"],
+		[500, "server_error"],
+	] as const)("maps SDK HTTP %i errors to %s", async (status, type) => {
+		const { requests } = recordingClient({ message: "HTTP contract error" }, status);
+		const result = await jsonCases[0].call();
+		expect(requests).toHaveLength(1);
+		expect(result).toMatchObject({ isError: true });
+		expect(JSON.parse(result.content[0].text)).toMatchObject({
+			error: { type, statusCode: status },
+		});
+	});
+
+	// Official InterLink v1beta1 OpenAPI: DeleteRoutingPolicy has only a 204 response.
+	// DELETE /interlink/v1beta1/regions/{region}/routing-policies/{routing_policy_id}
+	it("DeleteRoutingPolicy returns valid MCP text after SDK parses HTTP 204 as undefined", async () => {
+		const { requests } = recordingClient(undefined, 204);
+		const result = await httpHandlers.handleDeleteRoutingPolicy({
+			region: VALID_REGION,
+			routingPolicyId: VALID_UUID,
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(requests[0].url).toBe(
+			`https://scaleway.invalid/interlink/v1beta1/regions/fr-par/routing-policies/${VALID_UUID}`,
+		);
+		expect(requests[0].body).toBeNull();
+		expect(CallToolResultSchema.parse(result)).toEqual({
+			content: [{ type: "text", text: '{\n  "message": "Routing policy deleted successfully"\n}' }],
+		});
+	});
+
+	it("DeleteRoutingPolicy propagates SDK HTTP 403 instead of acknowledging deletion", async () => {
+		const { requests } = recordingClient({ message: "Denied" }, 403);
+		const result = await httpHandlers.handleDeleteRoutingPolicy({
+			region: VALID_REGION,
+			routingPolicyId: VALID_UUID,
+		});
+		expect(requests).toHaveLength(1);
+		expect(result).toMatchObject({ isError: true });
+		expect(JSON.parse(result.content[0].text)).toMatchObject({
+			error: { type: "permission_denied", statusCode: 403 },
+		});
+	});
+
+	// These DELETE endpoints return HTTP 200 JSON resource bodies, not HTTP 204.
+	it("DeleteLink preserves the HTTP 200 resource response", async () => {
+		const response = { id: "11111111-1111-1111-1111-111111111111", status: "deleting" };
+		const { requests } = recordingClient(response);
+		const result = await httpHandlers.handleDeleteLink({
+			region: "fr-par",
+			linkId: "11111111-1111-1111-1111-111111111111",
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(new URL(requests[0].url).pathname).toBe(
+			"/interlink/v1beta1/regions/fr-par/links/11111111-1111-1111-1111-111111111111",
+		);
+		expect(requests[0].body).toBeNull();
+		expect(result).toEqual({
+			content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+		});
 	});
 });

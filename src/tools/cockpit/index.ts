@@ -118,28 +118,28 @@ export function registerCockpitTools(server: McpServer): void {
 	// --- Grafana Users ---
 	server.tool(
 		"scaleway_cockpit_list_grafana_users",
-		"List Grafana users for a project",
+		"List Grafana users for a project (deprecated upstream)",
 		ListGrafanaUsersInput.shape,
 		async (params) => handleListGrafanaUsers(ListGrafanaUsersInput.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_cockpit_create_grafana_user",
-		"Create a new Grafana user",
+		"Create a new Grafana user (deprecated upstream)",
 		CreateGrafanaUserInput.shape,
 		async (params) => handleCreateGrafanaUser(CreateGrafanaUserInput.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_cockpit_delete_grafana_user",
-		"Delete a Grafana user",
+		"Delete a Grafana user (deprecated upstream)",
 		DeleteGrafanaUserInput.shape,
 		async (params) => handleDeleteGrafanaUser(DeleteGrafanaUserInput.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_cockpit_reset_grafana_user_password",
-		"Reset a Grafana user's password",
+		"Reset a Grafana user's password (deprecated upstream)",
 		ResetGrafanaUserPasswordInput.shape,
 		async (params) => handleResetGrafanaUserPassword(ResetGrafanaUserPasswordInput.parse(params)),
 	);
@@ -199,14 +199,14 @@ export function registerCockpitTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_cockpit_enable_managed_alerts",
-		"Enable managed alerts for a project",
+		"Enable managed alerts for a project (deprecated upstream)",
 		EnableManagedAlertsInput.shape,
 		async (params) => handleEnableManagedAlerts(EnableManagedAlertsInput.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_cockpit_disable_managed_alerts",
-		"Disable managed alerts for a project",
+		"Disable managed alerts for a project (deprecated upstream)",
 		DisableManagedAlertsInput.shape,
 		async (params) => handleDisableManagedAlerts(DisableManagedAlertsInput.parse(params)),
 	);

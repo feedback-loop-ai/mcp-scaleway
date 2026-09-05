@@ -149,7 +149,7 @@ describe("audit-trail handlers", () => {
 
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(callArgs.method).toBe("GET");
-			expect(callArgs.path).toBe("audit-trail/v1alpha1/regions/fr-par/events");
+			expect(callArgs.path).toBe("/audit-trail/v1alpha1/regions/fr-par/events");
 			expect(callArgs.urlParams.get("organization_id")).toBe(ORG_ID);
 			expect(callArgs.urlParams.get("resource_type")).toBeNull();
 			const parsed = JSON.parse(result.content[0].text);
@@ -242,7 +242,7 @@ describe("audit-trail handlers", () => {
 
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(callArgs.method).toBe("GET");
-			expect(callArgs.path).toBe("audit-trail/v1alpha1/regions/fr-par/products");
+			expect(callArgs.path).toBe("/audit-trail/v1alpha1/regions/fr-par/products");
 			expect(callArgs.urlParams.get("organization_id")).toBe(ORG_ID);
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.total_count).toBe(1);
@@ -293,7 +293,7 @@ describe("audit-trail handlers", () => {
 			});
 
 			const callArgs = mockFetch.mock.calls[0][0];
-			expect(callArgs.path).toBe("audit-trail/v1alpha1/regions/fr-par/export-jobs");
+			expect(callArgs.path).toBe("/audit-trail/v1alpha1/regions/fr-par/export-jobs");
 			expect(callArgs.urlParams.get("organization_id")).toBe(ORG_ID);
 			expect(callArgs.urlParams.get("page")).toBe("1");
 			expect(callArgs.urlParams.get("page_size")).toBe("50");
@@ -367,7 +367,7 @@ describe("audit-trail handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "audit-trail/v1alpha1/regions/fr-par/export-jobs",
+				path: "/audit-trail/v1alpha1/regions/fr-par/export-jobs",
 				body: JSON.stringify({
 					organization_id: ORG_ID,
 					name: "nightly",
@@ -401,7 +401,7 @@ describe("audit-trail handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "audit-trail/v1alpha1/regions/fr-par/export-jobs",
+				path: "/audit-trail/v1alpha1/regions/fr-par/export-jobs",
 				body: JSON.stringify({
 					organization_id: ORG_ID,
 					name: "minimal",
@@ -447,7 +447,7 @@ describe("audit-trail handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `audit-trail/v1alpha1/regions/fr-par/export-jobs/${EXPORT_JOB_ID}`,
+				path: `/audit-trail/v1alpha1/regions/fr-par/export-jobs/${EXPORT_JOB_ID}`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);

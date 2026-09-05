@@ -79,6 +79,7 @@ export async function handleCreateDnsZone(params: CreateDnsZoneParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/dns-zones`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				domain: params.domain,
 				subdomain: params.subdomain,
@@ -101,6 +102,7 @@ export async function handleUpdateDnsZone(params: UpdateDnsZoneParams) {
 		const response = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${API_PREFIX}/dns-zones/${encodeURIComponent(params.dns_zone)}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(response);
@@ -138,6 +140,7 @@ export async function handleCloneDnsZone(params: CloneDnsZoneParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/dns-zones/${encodeURIComponent(params.dns_zone)}/clone`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(response);
@@ -152,6 +155,7 @@ export async function handleRefreshDnsZone(params: RefreshDnsZoneParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/dns-zones/${encodeURIComponent(params.dns_zone)}/refresh`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				recreate_dns_zone: params.recreate_dns_zone,
 				recreate_sub_dns_zone: params.recreate_sub_dns_zone,
@@ -201,6 +205,7 @@ export async function handleUpdateDnsRecords(params: UpdateDnsRecordsParams) {
 		const response = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${API_PREFIX}/dns-zones/${encodeURIComponent(params.dns_zone)}/records`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				changes: params.changes,
 				disallow_new_zone_creation: params.disallow_new_zone_creation,
@@ -258,6 +263,7 @@ export async function handleImportRawDnsZone(params: ImportRawDnsZoneParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/dns-zones/${encodeURIComponent(params.dns_zone)}/raw`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(response);
@@ -293,6 +299,7 @@ export async function handleUpdateNameservers(params: UpdateNameserversParams) {
 		const response = await client.fetch<unknown>({
 			method: "PUT",
 			path: `${API_PREFIX}/dns-zones/${encodeURIComponent(params.dns_zone)}/nameservers`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ ns: params.ns }),
 		});
 		return jsonResponse(response);
@@ -322,6 +329,7 @@ export async function handleCreateSslCertificate(params: CreateSslCertificatePar
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/ssl-certificates`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				dns_zone: params.dns_zone,
 				alternative_dns_zones: params.alternative_dns_zones,

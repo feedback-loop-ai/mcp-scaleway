@@ -88,7 +88,7 @@ describe("data-lab handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "datalab/v1beta1/regions/fr-par/datalabs",
+					path: "/datalab/v1beta1/regions/fr-par/datalabs",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -146,7 +146,7 @@ describe("data-lab handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `datalab/v1beta1/regions/fr-par/datalabs/${CLUSTER_ID}`,
+				path: `/datalab/v1beta1/regions/fr-par/datalabs/${CLUSTER_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("my-lab");
 		});
@@ -188,7 +188,7 @@ describe("data-lab handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "datalab/v1beta1/regions/fr-par/datalabs",
+				path: "/datalab/v1beta1/regions/fr-par/datalabs",
 				body: JSON.stringify({
 					name: "my-lab",
 					spark_version: "3.5.2",
@@ -219,7 +219,7 @@ describe("data-lab handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "datalab/v1beta1/regions/fr-par/datalabs",
+				path: "/datalab/v1beta1/regions/fr-par/datalabs",
 				body: JSON.stringify({
 					name: "minimal",
 					spark_version: "3.5.2",
@@ -263,7 +263,7 @@ describe("data-lab handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `datalab/v1beta1/regions/fr-par/datalabs/${CLUSTER_ID}`,
+				path: `/datalab/v1beta1/regions/fr-par/datalabs/${CLUSTER_ID}`,
 				body: JSON.stringify({
 					name: "renamed",
 					description: "new desc",
@@ -283,7 +283,7 @@ describe("data-lab handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `datalab/v1beta1/regions/fr-par/datalabs/${CLUSTER_ID}`,
+				path: `/datalab/v1beta1/regions/fr-par/datalabs/${CLUSTER_ID}`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -312,7 +312,7 @@ describe("data-lab handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `datalab/v1beta1/regions/fr-par/datalabs/${CLUSTER_ID}`,
+				path: `/datalab/v1beta1/regions/fr-par/datalabs/${CLUSTER_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("deleting");
 		});
@@ -363,7 +363,7 @@ describe("data-lab handlers", () => {
 
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(callArgs.method).toBe("GET");
-			expect(callArgs.path).toBe("datalab/v1beta1/regions/fr-par/node-types");
+			expect(callArgs.path).toBe("/datalab/v1beta1/regions/fr-par/node-types");
 			expect(callArgs.urlParams.get("order_by")).toBe("vcpus_desc");
 			expect(JSON.parse(result.content[0].text).items[0].name).toBe("DL2S");
 		});
@@ -408,7 +408,7 @@ describe("data-lab handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "datalab/v1beta1/regions/fr-par/cluster-versions",
+					path: "/datalab/v1beta1/regions/fr-par/cluster-versions",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -448,7 +448,7 @@ describe("data-lab handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "datalab/v1beta1/regions/fr-par/notebook-versions",
+					path: "/datalab/v1beta1/regions/fr-par/notebook-versions",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);

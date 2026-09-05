@@ -60,13 +60,6 @@ export const ListIPsOrderBy = z.enum([
 	"reverse_desc",
 ]);
 
-export const ListDHCPsOrderBy = z.enum([
-	"created_at_asc",
-	"created_at_desc",
-	"subnet_asc",
-	"subnet_desc",
-]);
-
 // ─── Gateway Schemas ─────────────────────────────────────────────────────────
 
 export const ListGatewaysParams = PaginationParams.extend({
@@ -161,69 +154,6 @@ export const UpdateGatewayNetworkParams = z.object({
 export const DeleteGatewayNetworkParams = z.object({
 	zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-1)"),
 	gatewayNetworkId: z.string().uuid().describe("ID of the GatewayNetwork to delete"),
-});
-
-// ─── DHCP Schemas (v1 API) ───────────────────────────────────────────────────
-
-export const ListDHCPsParams = PaginationParams.extend({
-	zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-1)"),
-	orderBy: ListDHCPsOrderBy.optional().describe("Order in which to return results"),
-	organizationId: z.string().uuid().optional().describe("Filter by Organization ID"),
-	projectId: z.string().uuid().optional().describe("Filter by Project ID"),
-	address: z.string().optional().describe("Filter by DHCP server IP address"),
-	hasAddress: z.string().optional().describe("Filter for subnets containing this IP"),
-});
-
-export const GetDHCPParams = z.object({
-	zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-1)"),
-	dhcpId: z.string().uuid().describe("ID of the DHCP configuration to fetch"),
-});
-
-export const CreateDHCPParams = z.object({
-	zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-1)"),
-	projectId: z.string().uuid().optional().describe("Project to create the DHCP configuration in"),
-	subnet: z.string().describe("Subnet for the DHCP server (CIDR notation)"),
-	address: z.string().optional().describe("IP address of the DHCP server in the Private Network"),
-	poolLow: z.string().optional().describe("Low IP (inclusive) of the dynamic address pool"),
-	poolHigh: z.string().optional().describe("High IP (inclusive) of the dynamic address pool"),
-	enableDynamic: z.boolean().optional().describe("Enable dynamic pooling of IPs"),
-	validLifetime: z.string().optional().describe("How long DHCP entries will be valid for"),
-	renewTimer: z.string().optional().describe("After how long a renew will be attempted"),
-	rebindTimer: z
-		.string()
-		.optional()
-		.describe("After how long a DHCP client will query for a new lease"),
-	pushDefaultRoute: z.boolean().optional().describe("Push a default route to DHCP clients"),
-	pushDnsServer: z.boolean().optional().describe("Push custom DNS servers to clients"),
-	dnsServersOverride: z
-		.array(z.string())
-		.optional()
-		.describe("DNS server IPs to override the default list"),
-	dnsSearch: z.array(z.string()).optional().describe("Search paths for DNS configuration"),
-	dnsLocalName: z.string().optional().describe("TLD for hostnames in Private Networks"),
-});
-
-export const UpdateDHCPParams = z.object({
-	zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-1)"),
-	dhcpId: z.string().uuid().describe("ID of the DHCP configuration to update"),
-	subnet: z.string().optional().describe("Subnet for the DHCP server"),
-	address: z.string().optional().describe("IP address of the DHCP server"),
-	poolLow: z.string().optional().describe("Low IP of the dynamic address pool"),
-	poolHigh: z.string().optional().describe("High IP of the dynamic address pool"),
-	enableDynamic: z.boolean().optional().describe("Enable dynamic pooling"),
-	validLifetime: z.string().optional().describe("DHCP entry validity duration"),
-	renewTimer: z.string().optional().describe("Renew attempt interval"),
-	rebindTimer: z.string().optional().describe("Rebind query interval"),
-	pushDefaultRoute: z.boolean().optional().describe("Push default route to clients"),
-	pushDnsServer: z.boolean().optional().describe("Push DNS servers to clients"),
-	dnsServersOverride: z.array(z.string()).optional().describe("Override DNS server list"),
-	dnsSearch: z.array(z.string()).optional().describe("DNS search paths"),
-	dnsLocalName: z.string().optional().describe("TLD for Private Network hostnames"),
-});
-
-export const DeleteDHCPParams = z.object({
-	zone: ScalewayZone.optional().describe("Zone to target (e.g., fr-par-1)"),
-	dhcpId: z.string().uuid().describe("ID of the DHCP configuration to delete"),
 });
 
 // ─── PAT Rule Schemas ────────────────────────────────────────────────────────

@@ -12,7 +12,7 @@ import type {
 	UpdateFileSystemParams,
 } from "./types.js";
 
-const FILE_API_PREFIX = "file/v1alpha1/regions";
+const FILE_API_PREFIX = "/file/v1alpha1/regions";
 
 function getClient() {
 	const config = loadAuthConfig();

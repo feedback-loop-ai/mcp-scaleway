@@ -10,8 +10,11 @@
  *
  * Each test references its corresponding Scaleway API endpoint.
  */
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { describe, expect, it } from "vitest";
+import { createAdvancedClient, withProfile } from "@scaleway/sdk-client";
+import { createScalewayClient } from "../../../../src/shared/client.js";
+import * as httpHandlers from "../../../../src/tools/k8s/handlers.js";
+
+import { describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 import { registerK8sTools } from "../../../../src/tools/k8s/index.js";
 import {
@@ -33,6 +36,12 @@ import {
 	UpgradeClusterInput,
 	UpgradePoolInput,
 } from "../../../../src/tools/k8s/types.js";
+
+vi.mock("../../../../src/shared/auth.js", () => ({
+	loadAuthConfig: vi.fn(() => ({ defaultRegion: "fr-par" })),
+}));
+vi.mock("../../../../src/shared/client.js", () => ({ createScalewayClient: vi.fn() }));
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 const VALID_UUID = "11111111-1111-1111-1111-111111111111";
 
@@ -489,6 +498,180 @@ describe("k8s contract tests", () => {
 
 		it("rejects zone format (k8s is regional, not zonal)", () => {
 			expect(() => GetClusterInput.parse({ region: "fr-par-1", cluster_id: VALID_UUID })).toThrow();
+		});
+	});
+});
+
+// Exercise the installed SDK's Request construction, JSON parsing, and real HTTP errors.
+// Only the HTTP transport is replaced: no environment credentials or network calls.
+describe("SDK HTTP request contracts", () => {
+	function recordingClient(
+		response: unknown = { id: "http-response", status: "ready" },
+		status = 200,
+	) {
+		const requests: Request[] = [];
+		const client = createAdvancedClient(
+			withProfile({
+				accessKey: "SCWXXXXXXXXXXXXXXXXX",
+				secretKey: "00000000-0000-0000-0000-000000000000",
+			}),
+			(settings) => ({
+				...settings,
+				apiURL: "https://scaleway.invalid",
+				httpClient: (async (input: RequestInfo | URL, init?: RequestInit) => {
+					requests.push(new Request(input, init));
+					return new Response(status === 204 ? null : JSON.stringify(response), {
+						status,
+						headers: { "Content-Type": "application/json" },
+					});
+				}) as typeof fetch,
+			}),
+		);
+		vi.mocked(createScalewayClient).mockReturnValue(client);
+		return { client, requests };
+	}
+
+	const jsonCases = [
+		{
+			name: "CreateCluster",
+			method: "POST",
+			path: "/k8s/v1/regions/fr-par/clusters",
+			call: () =>
+				httpHandlers.handleCreateCluster({
+					region: "fr-par",
+					name: "test",
+					version: "1.32.0",
+					cni: "cilium",
+					tags: [],
+				}),
+			body: { name: "test", version: "1.32.0", cni: "cilium", tags: [] },
+		},
+		{
+			name: "UpgradeCluster",
+			method: "POST",
+			path: "/k8s/v1/regions/fr-par/clusters/11111111-1111-1111-1111-111111111111/upgrade",
+			call: () =>
+				httpHandlers.handleUpgradeCluster({
+					region: "fr-par",
+					cluster_id: "11111111-1111-1111-1111-111111111111",
+					version: "1.33.0",
+					upgrade_pools: false,
+				}),
+			body: { version: "1.33.0", upgrade_pools: false },
+		},
+		{
+			name: "CreatePool",
+			method: "POST",
+			path: "/k8s/v1/regions/fr-par/clusters/11111111-1111-1111-1111-111111111111/pools",
+			call: () =>
+				httpHandlers.handleCreatePool({
+					region: "fr-par",
+					cluster_id: "11111111-1111-1111-1111-111111111111",
+					name: "test",
+					node_type: "DEV1-M",
+					size: 1,
+					autoscaling: false,
+				}),
+			body: { name: "test", node_type: "DEV1-M", size: 1, autoscaling: false },
+		},
+		{
+			name: "UpdatePool",
+			method: "PATCH",
+			path: "/k8s/v1/regions/fr-par/pools/11111111-1111-1111-1111-111111111111",
+			call: () =>
+				httpHandlers.handleUpdatePool({
+					region: "fr-par",
+					pool_id: "11111111-1111-1111-1111-111111111111",
+					size: 0,
+					autoscaling: false,
+					tags: [],
+				}),
+			body: { size: 0, autoscaling: false, tags: [] },
+		},
+		{
+			name: "UpgradePool",
+			method: "POST",
+			path: "/k8s/v1/regions/fr-par/pools/11111111-1111-1111-1111-111111111111/upgrade",
+			call: () =>
+				httpHandlers.handleUpgradePool({
+					region: "fr-par",
+					pool_id: "11111111-1111-1111-1111-111111111111",
+					version: "1.33.0",
+				}),
+			body: { version: "1.33.0" },
+		},
+	];
+
+	it.each(jsonCases)(
+		"$name: $method $path sends application/json",
+		async ({ call, method, path, body }) => {
+			const response = { id: "http-response", status: "ready" };
+			const { requests } = recordingClient(response);
+			const result = await call();
+			expect(requests).toHaveLength(1);
+			const [request] = requests;
+			expect(request.url).toBe(`https://scaleway.invalid${path}`);
+			expect(request.method).toBe(method);
+			expect(request.headers.get("Content-Type")).toBe("application/json");
+			expect(request.headers.get("Accept")).toBe("application/json");
+			expect(request.headers.get("X-Auth-Token")).toBe("00000000-0000-0000-0000-000000000000");
+			expect(JSON.parse(await request.text())).toEqual(body);
+			expect(result).toEqual({
+				content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+			});
+		},
+	);
+
+	it.each([
+		[400, "invalid_input"],
+		[401, "permission_denied"],
+		[403, "permission_denied"],
+		[404, "not_found"],
+		[429, "rate_limited"],
+		[500, "server_error"],
+	] as const)("maps SDK HTTP %i errors to %s", async (status, type) => {
+		const { requests } = recordingClient({ message: "HTTP contract error" }, status);
+		const result = await jsonCases[0].call();
+		expect(requests).toHaveLength(1);
+		expect(result).toMatchObject({ isError: true });
+		expect(JSON.parse(result.content[0].text)).toMatchObject({
+			error: { type, statusCode: status },
+		});
+	});
+
+	// These DELETE endpoints return HTTP 200 JSON resource bodies, not HTTP 204.
+	it("DeleteCluster preserves the HTTP 200 resource response", async () => {
+		const response = { id: "11111111-1111-1111-1111-111111111111", status: "deleting" };
+		const { requests } = recordingClient(response);
+		const result = await httpHandlers.handleDeleteCluster({
+			region: "fr-par",
+			cluster_id: "11111111-1111-1111-1111-111111111111",
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(new URL(requests[0].url).pathname).toBe(
+			"/k8s/v1/regions/fr-par/clusters/11111111-1111-1111-1111-111111111111",
+		);
+		expect(requests[0].body).toBeNull();
+		expect(result).toEqual({
+			content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+		});
+	});
+	it("DeletePool preserves the HTTP 200 resource response", async () => {
+		const response = { id: "11111111-1111-1111-1111-111111111111", status: "deleting" };
+		const { requests } = recordingClient(response);
+		const result = await httpHandlers.handleDeletePool({
+			region: "fr-par",
+			pool_id: "11111111-1111-1111-1111-111111111111",
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(new URL(requests[0].url).pathname).toBe(
+			"/k8s/v1/regions/fr-par/pools/11111111-1111-1111-1111-111111111111",
+		);
+		expect(requests[0].body).toBeNull();
+		expect(result).toEqual({
+			content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
 		});
 	});
 });

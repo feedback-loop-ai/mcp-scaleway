@@ -16,7 +16,8 @@
  *   PATCH  /mnq/v1beta1/regions/{region}/sns-credentials/{id} -> scaleway_sns_update_credentials
  *   DELETE /mnq/v1beta1/regions/{region}/sns-credentials/{id} -> scaleway_sns_delete_credentials
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { handleListSnsCredentials } from "../../src/tools/sns/handlers.js";
 import {
 	ActivateSnsSchema,
 	CreateSnsCredentialsSchema,
@@ -32,6 +33,30 @@ import {
 	SnsPermissionsSchema,
 	UpdateSnsCredentialsSchema,
 } from "../../src/tools/sns/types.js";
+
+// Wire-level fixtures: the real @scaleway/sdk-mnq SnsAPI marshaller runs
+// against a fake client so the query string it builds can be asserted directly.
+vi.mock("../../src/shared/auth.js", () => ({
+	loadAuthConfig: () => ({
+		accessKey: "SCW-ACCESS",
+		secretKey: "SCW-SECRET",
+		defaultProjectId: "00000000-0000-0000-0000-000000000001",
+		defaultRegion: "fr-par",
+		defaultZone: "fr-par-1",
+	}),
+}));
+
+const mockFetch = vi.fn();
+vi.mock("../../src/shared/client.js", () => ({
+	createScalewayClient: () => ({
+		fetch: mockFetch,
+		settings: {
+			defaultRegion: "fr-par",
+			defaultZone: "fr-par-1",
+			defaultProjectId: "00000000-0000-0000-0000-000000000001",
+		},
+	}),
+}));
 
 describe("SNS contract tests", () => {
 	describe("SnsInfo response shape", () => {
@@ -366,5 +391,37 @@ describe("SNS contract tests", () => {
 			expect(() => UpdateSnsCredentialsSchema.parse({})).toThrow();
 			expect(() => DeleteSnsCredentialsSchema.parse({})).toThrow();
 		});
+	});
+});
+
+// ── Wire contract: pagination reaches the Scaleway API ───────────────────
+// specs/scaleway-api/sns/api-reference.md — GET /sns-credentials accepts
+// `page` and `page_size`. The handler must hand the SDK camelCase `pageSize`
+// so @scaleway/sdk-mnq marshals it to `page_size`.
+
+describe("contract: GET /mnq/v1beta1/regions/{region}/sns-credentials pagination", () => {
+	it("sends page, page_size, order_by and project_id query parameters", async () => {
+		mockFetch.mockResolvedValueOnce({ snsCredentials: [], totalCount: 0 });
+
+		await handleListSnsCredentials({
+			region: "nl-ams",
+			projectId: "00000000-0000-0000-0000-000000000002",
+			orderBy: "name_asc",
+			page: 2,
+			pageSize: 7,
+		});
+
+		const request = mockFetch.mock.lastCall?.[0] as {
+			method: string;
+			path: string;
+			urlParams: URLSearchParams;
+		};
+		expect(request.method).toBe("GET");
+		expect(request.path).toBe("/mnq/v1beta1/regions/nl-ams/sns-credentials");
+		expect(request.urlParams).toBeInstanceOf(URLSearchParams);
+		expect(request.urlParams.get("page")).toBe("2");
+		expect(request.urlParams.get("page_size")).toBe("7");
+		expect(request.urlParams.get("order_by")).toBe("name_asc");
+		expect(request.urlParams.get("project_id")).toBe("00000000-0000-0000-0000-000000000002");
 	});
 });
