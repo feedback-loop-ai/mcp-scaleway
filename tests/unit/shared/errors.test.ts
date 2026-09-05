@@ -1,3 +1,4 @@
+import { Errors } from "@scaleway/sdk-client";
 import { describe, expect, it } from "vitest";
 import { formatErrorResponse, mapScalewayError } from "../../../src/shared/errors.js";
 
@@ -69,6 +70,33 @@ describe("mapScalewayError", () => {
 			message: "teapot",
 			statusCode: 418,
 		});
+	});
+
+	it("maps @scaleway/sdk-client ScalewayError (.status) to the right type", () => {
+		const result = mapScalewayError(
+			new Errors.ScalewayError(404, { message: "resource not found" }),
+		);
+		expect(result.type).toBe("not_found");
+		expect(result.statusCode).toBe(404);
+		expect(result.message).toContain("resource not found");
+	});
+
+	it("maps a sdk-client 403 to permission_denied", () => {
+		const result = mapScalewayError(new Errors.ScalewayError(403, "forbidden"));
+		expect(result).toMatchObject({ type: "permission_denied", statusCode: 403 });
+	});
+
+	it("prefers statusCode over status when both are present", () => {
+		const err = new Error("mixed") as Error & { status: number; statusCode: number };
+		err.status = 500;
+		err.statusCode = 429;
+		expect(mapScalewayError(err)).toMatchObject({ type: "rate_limited", statusCode: 429 });
+	});
+
+	it("ignores non-numeric status fields", () => {
+		const err = new Error("weird") as Error & { status: string };
+		err.status = "418";
+		expect(mapScalewayError(err)).toMatchObject({ type: "server_error", statusCode: 500 });
 	});
 
 	it("handles plain Error without statusCode", () => {
