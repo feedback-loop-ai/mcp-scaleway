@@ -1,6 +1,6 @@
 {
 	"name": "mcp-scaleway",
-	"version": "0.3.1",
+	"version": "0.4.0-beta.0",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -8,11 +8,11 @@
 	},
 	"description": "MCP server for Scaleway cloud provider",
 	"type": "module",
-	"main": "src/server.ts",
+	"main": "./dist/server.js",
 	"bin": {
 		"mcp-scaleway": "./dist/index.js"
 	},
-	"files": ["dist/", "README.md", "LICENSE"],
+	"files": ["dist/", "README.md", "CHANGELOG.md", "LICENSE"],
 	"engines": {
 		"node": ">=20.20.2"
 	},
@@ -23,7 +23,9 @@
 		"test": "vitest run --config tests/vitest.config.ts",
 		"test:watch": "vitest --config tests/vitest.config.ts",
 		"test:parity": "vitest run --config tests/vitest.config.ts tests/unit/parity.test.ts",
-		"build": "bun run bun.build.ts"
+		"build": "bun run bun.build.ts",
+		"gen:operations": "bun run scripts/gen-operations.ts",
+		"measure:discovery": "bun run scripts/measure-discovery.ts"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.25.0",
@@ -33,7 +35,8 @@
 		"@scaleway/sdk-key-manager": "^2.3.1",
 		"@scaleway/sdk-mnq": "^2.3.1",
 		"@scaleway/sdk-secret": "^2.3.1",
-		"zod": "^3.25.0"
+		"zod": "^3.25.0",
+		"zod-to-json-schema": "3.25.1"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.0",

@@ -23,6 +23,20 @@ if (!result.success) {
 	process.exit(1);
 }
 
+// Library import must resolve to a bundled server module, not an unshipped src/ tree.
+const library = await Bun.build({
+	entrypoints: ["./src/server.ts"],
+	outdir: "./dist",
+	target: "node",
+	format: "esm",
+	external: externalPackages,
+	naming: "server.[ext]",
+});
+if (!library.success) {
+	console.error("Library build failed:", ...library.logs);
+	process.exit(1);
+}
+
 // Prepend shebang to dist/index.js
 const outputPath = "./dist/index.js";
 const content = readFileSync(outputPath, "utf-8");

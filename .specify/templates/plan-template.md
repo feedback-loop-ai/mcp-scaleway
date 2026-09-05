@@ -33,6 +33,9 @@
 
 [Gates determined based on constitution file]
 
+For gateway changes, include exact meta-tool contract mappings, stable underlying operation
+IDs, generated-metadata parity, filter enforcement and 100% line/branch coverage checks.
+
 ## Project Structure
 
 ### Documentation (this feature)

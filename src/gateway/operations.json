@@ -1,0 +1,4346 @@
+[
+	{
+		"tool": "scaleway_account_create_project",
+		"api": "POST /account/v3/projects",
+		"area": "account",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_account_delete_project",
+		"api": "DELETE /account/v3/projects/{project_id}",
+		"area": "account",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_account_get_project",
+		"api": "GET /account/v3/projects/{project_id}",
+		"area": "account",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_account_list_projects",
+		"api": "GET /account/v3/projects",
+		"area": "account",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_account_update_project",
+		"api": "PATCH /account/v3/projects/{project_id}",
+		"area": "account",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_apple_silicon_add_server_private_network",
+		"api": "POST /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks",
+		"area": "apple-silicon",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_apple_silicon_create_server",
+		"api": "POST /apple-silicon/v1alpha1/zones/{zone}/servers",
+		"area": "apple-silicon",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_apple_silicon_delete_server",
+		"api": "DELETE /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}",
+		"area": "apple-silicon",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_apple_silicon_delete_server_private_network",
+		"api": "DELETE /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks/{private_network_id}",
+		"area": "apple-silicon",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_apple_silicon_get_server",
+		"api": "GET /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}",
+		"area": "apple-silicon",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_apple_silicon_get_server_private_network",
+		"api": "GET /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks/{private_network_id}",
+		"area": "apple-silicon",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_apple_silicon_list_os",
+		"api": "GET /apple-silicon/v1alpha1/zones/{zone}/os",
+		"area": "apple-silicon",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_apple_silicon_list_server_private_networks",
+		"api": "GET /apple-silicon/v1alpha1/zones/{zone}/server-private-networks",
+		"area": "apple-silicon",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_apple_silicon_list_server_types",
+		"api": "GET /apple-silicon/v1alpha1/zones/{zone}/server-types",
+		"area": "apple-silicon",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_apple_silicon_list_servers",
+		"api": "GET /apple-silicon/v1alpha1/zones/{zone}/servers",
+		"area": "apple-silicon",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_apple_silicon_reboot_server",
+		"api": "POST /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/reboot",
+		"area": "apple-silicon",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_apple_silicon_reinstall_server",
+		"api": "POST /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/reinstall",
+		"area": "apple-silicon",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_apple_silicon_set_server_private_networks",
+		"api": "PUT /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/private-networks",
+		"area": "apple-silicon",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_audit_trail_create_export_job",
+		"api": "POST /audit-trail/v1alpha1/regions/{region}/export-jobs",
+		"area": "audit-trail",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_audit_trail_delete_export_job",
+		"api": "DELETE /audit-trail/v1alpha1/regions/{region}/export-jobs/{export_job_id}",
+		"area": "audit-trail",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_audit_trail_list_events",
+		"api": "GET /audit-trail/v1alpha1/regions/{region}/events",
+		"area": "audit-trail",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_audit_trail_list_export_jobs",
+		"api": "GET /audit-trail/v1alpha1/regions/{region}/export-jobs",
+		"area": "audit-trail",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_audit_trail_list_products",
+		"api": "GET /audit-trail/v1alpha1/regions/{region}/products",
+		"area": "audit-trail",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_autoscaling_create_instance_group",
+		"api": "POST /autoscaling/v1alpha2/zones/{zone}/groups",
+		"area": "autoscaling",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_autoscaling_create_instance_template",
+		"api": "POST /instance/v2alpha1/zones/{zone}/templates",
+		"area": "autoscaling",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_autoscaling_delete_instance_group",
+		"api": "DELETE /autoscaling/v1alpha2/zones/{zone}/groups/{group_id}",
+		"area": "autoscaling",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_autoscaling_delete_instance_template",
+		"api": "DELETE /instance/v2alpha1/zones/{zone}/templates/{template_id}",
+		"area": "autoscaling",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_autoscaling_get_instance_group",
+		"api": "GET /autoscaling/v1alpha2/zones/{zone}/groups/{group_id}",
+		"area": "autoscaling",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_autoscaling_get_instance_template",
+		"api": "GET /instance/v2alpha1/zones/{zone}/templates/{template_id}",
+		"area": "autoscaling",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_autoscaling_get_instance_template_cloud_init",
+		"api": "GET /instance/v2alpha1/zones/{zone}/templates/{template_id}/user-data/cloud-init",
+		"area": "autoscaling",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_autoscaling_list_instance_group_alerts",
+		"api": "GET /autoscaling/v1alpha2/zones/{zone}/alerts",
+		"area": "autoscaling",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_autoscaling_list_instance_group_events",
+		"api": "GET /autoscaling/v1alpha2/zones/{zone}/logs",
+		"area": "autoscaling",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_autoscaling_list_instance_group_servers",
+		"api": "GET /autoscaling/v1alpha2/zones/{zone}/servers",
+		"area": "autoscaling",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_autoscaling_list_instance_groups",
+		"api": "GET /autoscaling/v1alpha2/zones/{zone}/groups",
+		"area": "autoscaling",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_autoscaling_list_instance_templates",
+		"api": "GET /instance/v2alpha1/zones/{zone}/templates",
+		"area": "autoscaling",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_autoscaling_set_instance_template_cloud_init",
+		"api": "PUT /instance/v2alpha1/zones/{zone}/templates/{template_id}/user-data/cloud-init",
+		"area": "autoscaling",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_autoscaling_update_instance_group",
+		"api": "PATCH /autoscaling/v1alpha2/zones/{zone}/groups/{group_id}",
+		"area": "autoscaling",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_autoscaling_update_instance_template",
+		"api": "PATCH /instance/v2alpha1/zones/{zone}/templates/{template_id}",
+		"area": "autoscaling",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_billing_download_invoice",
+		"api": "GET /billing/v2beta1/invoices/{invoice_id}/download",
+		"area": "billing",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_billing_get_invoice",
+		"api": "GET /billing/v2beta1/invoices/{invoice_id}",
+		"area": "billing",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_billing_list_charges",
+		"api": "GET /billing/v2beta1/charges",
+		"area": "billing",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_billing_list_consumptions",
+		"api": "GET /billing/v2beta1/consumptions",
+		"area": "billing",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_billing_list_discounts",
+		"api": "GET /billing/v2beta1/discounts",
+		"area": "billing",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_billing_list_invoices",
+		"api": "GET /billing/v2beta1/invoices",
+		"area": "billing",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_block_storage_create_snapshot",
+		"api": "POST /block/v1/zones/{zone}/snapshots",
+		"area": "block-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_block_storage_create_volume",
+		"api": "POST /block/v1/zones/{zone}/volumes",
+		"area": "block-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_block_storage_delete_snapshot",
+		"api": "DELETE /block/v1/zones/{zone}/snapshots/{snapshot_id}",
+		"area": "block-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_block_storage_delete_volume",
+		"api": "DELETE /block/v1/zones/{zone}/volumes/{volume_id}",
+		"area": "block-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_block_storage_get_snapshot",
+		"api": "GET /block/v1/zones/{zone}/snapshots/{snapshot_id}",
+		"area": "block-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_block_storage_get_volume",
+		"api": "GET /block/v1/zones/{zone}/volumes/{volume_id}",
+		"area": "block-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_block_storage_list_snapshots",
+		"api": "GET /block/v1/zones/{zone}/snapshots",
+		"area": "block-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_block_storage_list_volume_types",
+		"api": "GET /block/v1/zones/{zone}/volume-types",
+		"area": "block-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_block_storage_list_volumes",
+		"api": "GET /block/v1/zones/{zone}/volumes",
+		"area": "block-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_block_storage_update_snapshot",
+		"api": "PATCH /block/v1/zones/{zone}/snapshots/{snapshot_id}",
+		"area": "block-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_block_storage_update_volume",
+		"api": "PATCH /block/v1/zones/{zone}/volumes/{volume_id}",
+		"area": "block-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_activate_cockpit",
+		"api": "POST /cockpit/v1/regions/{region}/activate-cockpit",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_create_contact_point",
+		"api": "POST /cockpit/v1/regions/{region}/alert-manager/contact-points",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_create_data_source",
+		"api": "POST /cockpit/v1/regions/{region}/data-sources",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_create_grafana_user",
+		"api": "POST /cockpit/v1/grafana/users",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_create_token",
+		"api": "POST /cockpit/v1/regions/{region}/tokens",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_deactivate_cockpit",
+		"api": "POST /cockpit/v1/regions/{region}/deactivate-cockpit",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_delete_contact_point",
+		"api": "DELETE /cockpit/v1/regions/{region}/alert-manager/contact-points",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_delete_data_source",
+		"api": "DELETE /cockpit/v1/regions/{region}/data-sources/{data_source_id}",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_delete_grafana_user",
+		"api": "DELETE /cockpit/v1/grafana/users/{grafana_user_id}",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_delete_token",
+		"api": "DELETE /cockpit/v1/regions/{region}/tokens/{token_id}",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_disable_alert_manager",
+		"api": "POST /cockpit/v1/regions/{region}/alert-manager/disable",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_disable_managed_alerts",
+		"api": "POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/disable",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_enable_alert_manager",
+		"api": "POST /cockpit/v1/regions/{region}/alert-manager/enable",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_enable_managed_alerts",
+		"api": "POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/enable",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_cockpit_get_alert_manager",
+		"api": "GET /cockpit/v1/regions/{region}/alert-manager",
+		"area": "cockpit",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_cockpit_get_cockpit",
+		"api": "GET /cockpit/v1/regions/{region}/cockpit",
+		"area": "cockpit",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_cockpit_list_contact_points",
+		"api": "GET /cockpit/v1/regions/{region}/alert-manager/contact-points",
+		"area": "cockpit",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_cockpit_list_data_sources",
+		"api": "GET /cockpit/v1/regions/{region}/data-sources",
+		"area": "cockpit",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_cockpit_list_grafana_users",
+		"api": "GET /cockpit/v1/grafana/users",
+		"area": "cockpit",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_cockpit_list_managed_alerts_contact_points",
+		"api": "GET /cockpit/v1/regions/{region}/alert-manager/managed-alerts-contact-points",
+		"area": "cockpit",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_cockpit_list_tokens",
+		"api": "GET /cockpit/v1/regions/{region}/tokens",
+		"area": "cockpit",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_cockpit_reset_grafana_user_password",
+		"api": "POST /cockpit/v1/grafana/users/{grafana_user_id}/reset-password",
+		"area": "cockpit",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_create_container",
+		"api": "POST /containers/v1/regions/{region}/containers",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_create_cron",
+		"api": "POST /containers/v1/regions/{region}/triggers",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_create_domain",
+		"api": "POST /containers/v1/regions/{region}/domains",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_create_namespace",
+		"api": "POST /containers/v1/regions/{region}/namespaces",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_delete_container",
+		"api": "DELETE /containers/v1/regions/{region}/containers/{container_id}",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_delete_cron",
+		"api": "DELETE /containers/v1/regions/{region}/triggers/{trigger_id}",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_delete_domain",
+		"api": "DELETE /containers/v1/regions/{region}/domains/{domain_id}",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_delete_namespace",
+		"api": "DELETE /containers/v1/regions/{region}/namespaces/{namespace_id}",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_get_container",
+		"api": "GET /containers/v1/regions/{region}/containers/{container_id}",
+		"area": "containers",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_containers_get_namespace",
+		"api": "GET /containers/v1/regions/{region}/namespaces/{namespace_id}",
+		"area": "containers",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_containers_list_containers",
+		"api": "GET /containers/v1/regions/{region}/containers",
+		"area": "containers",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_containers_list_crons",
+		"api": "GET /containers/v1/regions/{region}/triggers",
+		"area": "containers",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_containers_list_domains",
+		"api": "GET /containers/v1/regions/{region}/domains",
+		"area": "containers",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_containers_list_namespaces",
+		"api": "GET /containers/v1/regions/{region}/namespaces",
+		"area": "containers",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_containers_update_container",
+		"api": "PATCH /containers/v1/regions/{region}/containers/{container_id}",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_update_cron",
+		"api": "PATCH /containers/v1/regions/{region}/triggers/{trigger_id}",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_containers_update_namespace",
+		"api": "PATCH /containers/v1/regions/{region}/namespaces/{namespace_id}",
+		"area": "containers",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_lab_create_cluster",
+		"api": "POST /datalab/v1beta1/regions/{region}/datalabs",
+		"area": "data-lab",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_lab_delete_cluster",
+		"api": "DELETE /datalab/v1beta1/regions/{region}/datalabs/{datalab_id}",
+		"area": "data-lab",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_lab_get_cluster",
+		"api": "GET /datalab/v1beta1/regions/{region}/datalabs/{datalab_id}",
+		"area": "data-lab",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_lab_list_cluster_versions",
+		"api": "GET /datalab/v1beta1/regions/{region}/cluster-versions",
+		"area": "data-lab",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_lab_list_clusters",
+		"api": "GET /datalab/v1beta1/regions/{region}/datalabs",
+		"area": "data-lab",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_lab_list_node_types",
+		"api": "GET /datalab/v1beta1/regions/{region}/node-types",
+		"area": "data-lab",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_lab_list_notebook_versions",
+		"api": "GET /datalab/v1beta1/regions/{region}/notebook-versions",
+		"area": "data-lab",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_lab_update_cluster",
+		"api": "PATCH /datalab/v1beta1/regions/{region}/datalabs/{datalab_id}",
+		"area": "data-lab",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_create_database",
+		"api": "POST /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/databases",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_create_deployment",
+		"api": "POST /datawarehouse/v1beta1/regions/{region}/deployments",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_create_endpoint",
+		"api": "POST /datawarehouse/v1beta1/regions/{region}/endpoints",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_create_user",
+		"api": "POST /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/users",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_delete_database",
+		"api": "DELETE /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/databases/{name}",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_delete_deployment",
+		"api": "DELETE /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_delete_endpoint",
+		"api": "DELETE /datawarehouse/v1beta1/regions/{region}/endpoints/{endpoint_id}",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_delete_user",
+		"api": "DELETE /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/users/{name}",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_get_deployment",
+		"api": "GET /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}",
+		"area": "data-warehouse",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_warehouse_get_deployment_certificate",
+		"api": "GET /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/certificate",
+		"area": "data-warehouse",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_warehouse_list_databases",
+		"api": "GET /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/databases",
+		"area": "data-warehouse",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_warehouse_list_deployments",
+		"api": "GET /datawarehouse/v1beta1/regions/{region}/deployments",
+		"area": "data-warehouse",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_warehouse_list_presets",
+		"api": "GET /datawarehouse/v1beta1/regions/{region}/presets",
+		"area": "data-warehouse",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_warehouse_list_users",
+		"api": "GET /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/users",
+		"area": "data-warehouse",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_warehouse_list_versions",
+		"api": "GET /datawarehouse/v1beta1/regions/{region}/versions",
+		"area": "data-warehouse",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_data_warehouse_start_deployment",
+		"api": "POST /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/start",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_stop_deployment",
+		"api": "POST /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/stop",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_update_deployment",
+		"api": "PATCH /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_data_warehouse_update_user",
+		"api": "PATCH /datawarehouse/v1beta1/regions/{region}/deployments/{deployment_id}/users/{name}",
+		"area": "data-warehouse",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dedibox_cancel_server_install",
+		"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/cancel-install",
+		"area": "dedibox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dedibox_delete_server",
+		"api": "DELETE /dedibox/v1/zones/{zone}/servers/{server_id}",
+		"area": "dedibox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dedibox_get_bmc_access",
+		"api": "GET /dedibox/v1/zones/{zone}/servers/{server_id}/bmc-access",
+		"area": "dedibox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dedibox_get_offer",
+		"api": "GET /dedibox/v1/zones/{zone}/offers/{offer_id}",
+		"area": "dedibox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dedibox_get_os",
+		"api": "GET /dedibox/v1/zones/{zone}/os/{os_id}",
+		"area": "dedibox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dedibox_get_server",
+		"api": "GET /dedibox/v1/zones/{zone}/servers/{server_id}",
+		"area": "dedibox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dedibox_get_server_install",
+		"api": "GET /dedibox/v1/zones/{zone}/servers/{server_id}/install",
+		"area": "dedibox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dedibox_install_server",
+		"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/install",
+		"area": "dedibox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dedibox_list_offers",
+		"api": "GET /dedibox/v1/zones/{zone}/offers",
+		"area": "dedibox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dedibox_list_os",
+		"api": "GET /dedibox/v1/zones/{zone}/os",
+		"area": "dedibox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dedibox_list_servers",
+		"api": "GET /dedibox/v1/zones/{zone}/servers",
+		"area": "dedibox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dedibox_reboot_server",
+		"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/reboot",
+		"area": "dedibox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dedibox_start_bmc_access",
+		"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/bmc-access",
+		"area": "dedibox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dedibox_start_server",
+		"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/start",
+		"area": "dedibox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dedibox_stop_bmc_access",
+		"api": "DELETE /dedibox/v1/zones/{zone}/servers/{server_id}/bmc-access",
+		"area": "dedibox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dedibox_stop_server",
+		"api": "POST /dedibox/v1/zones/{zone}/servers/{server_id}/stop",
+		"area": "dedibox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dedibox_update_server",
+		"api": "PATCH /dedibox/v1/zones/{zone}/servers/{server_id}",
+		"area": "dedibox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_clear_records",
+		"api": "DELETE /domain/v2beta1/dns-zones/{dns_zone}/records",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_clone_zone",
+		"api": "POST /domain/v2beta1/dns-zones/{dns_zone}/clone",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_create_ssl_certificate",
+		"api": "POST /domain/v2beta1/ssl-certificates",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_create_zone",
+		"api": "POST /domain/v2beta1/dns-zones",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_delete_ssl_certificate",
+		"api": "DELETE /domain/v2beta1/ssl-certificates/{dns_zone}",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_delete_tsig_key",
+		"api": "DELETE /domain/v2beta1/dns-zones/{dns_zone}/tsig-key",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_delete_zone",
+		"api": "DELETE /domain/v2beta1/dns-zones/{dns_zone}",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_export_raw_zone",
+		"api": "GET /domain/v2beta1/dns-zones/{dns_zone}/raw",
+		"area": "dns",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dns_get_ssl_certificate",
+		"api": "GET /domain/v2beta1/ssl-certificates/{dns_zone}",
+		"area": "dns",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dns_get_tsig_key",
+		"api": "GET /domain/v2beta1/dns-zones/{dns_zone}/tsig-key",
+		"area": "dns",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dns_import_raw_zone",
+		"api": "POST /domain/v2beta1/dns-zones/{dns_zone}/raw",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_list_nameservers",
+		"api": "GET /domain/v2beta1/dns-zones/{dns_zone}/nameservers",
+		"area": "dns",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dns_list_records",
+		"api": "GET /domain/v2beta1/dns-zones/{dns_zone}/records",
+		"area": "dns",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dns_list_zones",
+		"api": "GET /domain/v2beta1/dns-zones",
+		"area": "dns",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_dns_refresh_zone",
+		"api": "POST /domain/v2beta1/dns-zones/{dns_zone}/refresh",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_update_nameservers",
+		"api": "PUT /domain/v2beta1/dns-zones/{dns_zone}/nameservers",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_update_records",
+		"api": "PATCH /domain/v2beta1/dns-zones/{dns_zone}/records",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_dns_update_zone",
+		"api": "PATCH /domain/v2beta1/dns-zones/{dns_zone}",
+		"area": "dns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_domain_registrar_check_domain_availability",
+		"api": "GET /domain/v2beta1/search-domains",
+		"area": "domain-registrar",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_domain_registrar_disable_auto_renew",
+		"api": "POST /domain/v2beta1/domains/{domain}/disable-auto-renew",
+		"area": "domain-registrar",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_domain_registrar_enable_auto_renew",
+		"api": "POST /domain/v2beta1/domains/{domain}/enable-auto-renew",
+		"area": "domain-registrar",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_domain_registrar_get_contact",
+		"api": "GET /domain/v2beta1/contacts/{contact_id}",
+		"area": "domain-registrar",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_domain_registrar_get_domain",
+		"api": "GET /domain/v2beta1/domains/{domain}",
+		"area": "domain-registrar",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_domain_registrar_get_tld",
+		"api": "GET /domain/v2beta1/tlds?tlds={tld_name}",
+		"area": "domain-registrar",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_domain_registrar_list_contacts",
+		"api": "GET /domain/v2beta1/contacts",
+		"area": "domain-registrar",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_domain_registrar_list_domains",
+		"api": "GET /domain/v2beta1/domains",
+		"area": "domain-registrar",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_domain_registrar_list_tlds",
+		"api": "GET /domain/v2beta1/tlds",
+		"area": "domain-registrar",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_domain_registrar_register_domain",
+		"api": "POST /domain/v2beta1/buy-domains",
+		"area": "domain-registrar",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_domain_registrar_renew_domain",
+		"api": "POST /domain/v2beta1/renew-domains",
+		"area": "domain-registrar",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_domain_registrar_transfer_domain",
+		"api": "POST /domain/v2beta1/domains/transfer-domains",
+		"area": "domain-registrar",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_domain_registrar_update_contact",
+		"api": "PATCH /domain/v2beta1/contacts/{contact_id}",
+		"area": "domain-registrar",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_domain_registrar_update_domain",
+		"api": "PATCH /domain/v2beta1/domains/{domain}",
+		"area": "domain-registrar",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_create_backend_stage",
+		"api": "POST /edge-services/v1beta1/pipelines/{pipeline_id}/backend-stages",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_create_cache_stage",
+		"api": "POST /edge-services/v1beta1/pipelines/{pipeline_id}/cache-stages",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_create_dns_stage",
+		"api": "POST /edge-services/v1beta1/pipelines/{pipeline_id}/dns-stages",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_create_pipeline",
+		"api": "POST /edge-services/v1beta1/pipelines",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_create_tls_stage",
+		"api": "POST /edge-services/v1beta1/pipelines/{pipeline_id}/tls-stages",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_delete_backend_stage",
+		"api": "DELETE /edge-services/v1beta1/backend-stages/{backend_stage_id}",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_delete_cache_stage",
+		"api": "DELETE /edge-services/v1beta1/cache-stages/{cache_stage_id}",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_delete_dns_stage",
+		"api": "DELETE /edge-services/v1beta1/dns-stages/{dns_stage_id}",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_delete_pipeline",
+		"api": "DELETE /edge-services/v1beta1/pipelines/{pipeline_id}",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_delete_tls_stage",
+		"api": "DELETE /edge-services/v1beta1/tls-stages/{tls_stage_id}",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_get_backend_stage",
+		"api": "GET /edge-services/v1beta1/backend-stages/{backend_stage_id}",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_get_cache_stage",
+		"api": "GET /edge-services/v1beta1/cache-stages/{cache_stage_id}",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_get_dns_stage",
+		"api": "GET /edge-services/v1beta1/dns-stages/{dns_stage_id}",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_get_pipeline",
+		"api": "GET /edge-services/v1beta1/pipelines/{pipeline_id}",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_get_purge_request",
+		"api": "GET /edge-services/v1beta1/purge-requests/{purge_request_id}",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_get_tls_stage",
+		"api": "GET /edge-services/v1beta1/tls-stages/{tls_stage_id}",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_list_backend_stages",
+		"api": "GET /edge-services/v1beta1/pipelines/{pipeline_id}/backend-stages",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_list_cache_stages",
+		"api": "GET /edge-services/v1beta1/pipelines/{pipeline_id}/cache-stages",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_list_dns_stages",
+		"api": "GET /edge-services/v1beta1/pipelines/{pipeline_id}/dns-stages",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_list_pipelines",
+		"api": "GET /edge-services/v1beta1/pipelines",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_list_purge_requests",
+		"api": "GET /edge-services/v1beta1/purge-requests",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_list_tls_stages",
+		"api": "GET /edge-services/v1beta1/pipelines/{pipeline_id}/tls-stages",
+		"area": "edge-services",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_edge_services_purge_cache",
+		"api": "POST /edge-services/v1beta1/purge-requests",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_update_backend_stage",
+		"api": "PATCH /edge-services/v1beta1/backend-stages/{backend_stage_id}",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_update_cache_stage",
+		"api": "PATCH /edge-services/v1beta1/cache-stages/{cache_stage_id}",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_update_dns_stage",
+		"api": "PATCH /edge-services/v1beta1/dns-stages/{dns_stage_id}",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_update_pipeline",
+		"api": "PATCH /edge-services/v1beta1/pipelines/{pipeline_id}",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_edge_services_update_tls_stage",
+		"api": "PATCH /edge-services/v1beta1/tls-stages/{tls_stage_id}",
+		"area": "edge-services",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_add_server_private_network",
+		"api": "POST /baremetal/v1/zones/{zone}/servers/{server_id}/private-networks",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_create_ip",
+		"api": "POST /flexible-ip/v1alpha1/zones/{zone}/fips",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_create_server",
+		"api": "POST /baremetal/v1/zones/{zone}/servers",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_delete_ip",
+		"api": "DELETE /flexible-ip/v1alpha1/zones/{zone}/fips/{fip_id}",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_delete_server",
+		"api": "DELETE /baremetal/v1/zones/{zone}/servers/{server_id}",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_delete_server_private_network",
+		"api": "DELETE /baremetal/v1/zones/{zone}/servers/{server_id}/private-networks/{private_network_id}",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_get_bmc_access",
+		"api": "GET /baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access",
+		"area": "elastic-metal",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_elastic_metal_get_server",
+		"api": "GET /baremetal/v1/zones/{zone}/servers/{server_id}",
+		"area": "elastic-metal",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_elastic_metal_install_server",
+		"api": "POST /baremetal/v1/zones/{zone}/servers/{server_id}/install",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_list_ips",
+		"api": "GET /flexible-ip/v1alpha1/zones/{zone}/fips",
+		"area": "elastic-metal",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_elastic_metal_list_offers",
+		"api": "GET /baremetal/v1/zones/{zone}/offers",
+		"area": "elastic-metal",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_elastic_metal_list_oss",
+		"api": "GET /baremetal/v1/zones/{zone}/os",
+		"area": "elastic-metal",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_elastic_metal_list_server_private_networks",
+		"api": "GET /baremetal/v1/zones/{zone}/server-private-networks",
+		"area": "elastic-metal",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_elastic_metal_list_servers",
+		"api": "GET /baremetal/v1/zones/{zone}/servers",
+		"area": "elastic-metal",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_elastic_metal_reboot_server",
+		"api": "POST /baremetal/v1/zones/{zone}/servers/{server_id}/reboot",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_set_server_private_networks",
+		"api": "PUT /baremetal/v1/zones/{zone}/servers/{server_id}/private-networks",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_start_server",
+		"api": "POST /baremetal/v1/zones/{zone}/servers/{server_id}/start",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_elastic_metal_stop_server",
+		"api": "POST /baremetal/v1/zones/{zone}/servers/{server_id}/stop",
+		"area": "elastic-metal",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_environmental_footprint_download_impact_report",
+		"api": "POST /environmental-footprint/v1alpha1/reports/download",
+		"area": "environmental-footprint",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_environmental_footprint_get_impact_data",
+		"api": "GET /environmental-footprint/v1alpha1/data/query",
+		"area": "environmental-footprint",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_environmental_footprint_get_report_availability",
+		"api": "GET /environmental-footprint/v1alpha1/reports/availability",
+		"area": "environmental-footprint",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_file_storage_create_filesystem",
+		"api": "POST /file/v1alpha1/regions/{region}/filesystems",
+		"area": "file-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_file_storage_delete_filesystem",
+		"api": "DELETE /file/v1alpha1/regions/{region}/filesystems/{filesystem_id}",
+		"area": "file-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_file_storage_get_filesystem",
+		"api": "GET /file/v1alpha1/regions/{region}/filesystems/{filesystem_id}",
+		"area": "file-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_file_storage_list_attachments",
+		"api": "GET /file/v1alpha1/regions/{region}/attachments",
+		"area": "file-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_file_storage_list_filesystems",
+		"api": "GET /file/v1alpha1/regions/{region}/filesystems",
+		"area": "file-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_file_storage_update_filesystem",
+		"api": "PATCH /file/v1alpha1/regions/{region}/filesystems/{filesystem_id}",
+		"area": "file-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_create_cron",
+		"api": "POST /functions/v1beta1/regions/{region}/crons",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_create_domain",
+		"api": "POST /functions/v1beta1/regions/{region}/domains",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_create_function",
+		"api": "POST /functions/v1beta1/regions/{region}/functions",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_create_namespace",
+		"api": "POST /functions/v1beta1/regions/{region}/namespaces",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_create_token",
+		"api": "POST /functions/v1beta1/regions/{region}/tokens",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_delete_cron",
+		"api": "DELETE /functions/v1beta1/regions/{region}/crons/{cron_id}",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_delete_domain",
+		"api": "DELETE /functions/v1beta1/regions/{region}/domains/{domain_id}",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_delete_function",
+		"api": "DELETE /functions/v1beta1/regions/{region}/functions/{function_id}",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_delete_namespace",
+		"api": "DELETE /functions/v1beta1/regions/{region}/namespaces/{namespace_id}",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_delete_token",
+		"api": "DELETE /functions/v1beta1/regions/{region}/tokens/{token_id}",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_deploy_function",
+		"api": "POST /functions/v1beta1/regions/{region}/functions/{function_id}/deploy",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_get_function",
+		"api": "GET /functions/v1beta1/regions/{region}/functions/{function_id}",
+		"area": "functions",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_functions_get_namespace",
+		"api": "GET /functions/v1beta1/regions/{region}/namespaces/{namespace_id}",
+		"area": "functions",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_functions_list_crons",
+		"api": "GET /functions/v1beta1/regions/{region}/crons",
+		"area": "functions",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_functions_list_domains",
+		"api": "GET /functions/v1beta1/regions/{region}/domains",
+		"area": "functions",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_functions_list_functions",
+		"api": "GET /functions/v1beta1/regions/{region}/functions",
+		"area": "functions",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_functions_list_namespaces",
+		"api": "GET /functions/v1beta1/regions/{region}/namespaces",
+		"area": "functions",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_functions_update_cron",
+		"api": "PATCH /functions/v1beta1/regions/{region}/crons/{cron_id}",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_update_function",
+		"api": "PATCH /functions/v1beta1/regions/{region}/functions/{function_id}",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_functions_update_namespace",
+		"api": "PATCH /functions/v1beta1/regions/{region}/namespaces/{namespace_id}",
+		"area": "functions",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_generative_apis_chat_completion",
+		"api": "POST https://api.scaleway.ai/{region}/v1/chat/completions",
+		"area": "generative-apis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_generative_apis_create_embedding",
+		"api": "POST https://api.scaleway.ai/{region}/v1/embeddings",
+		"area": "generative-apis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_generative_apis_get_model",
+		"api": "GET https://api.scaleway.ai/{region}/v1/models (client-side filter by id)",
+		"area": "generative-apis",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_generative_apis_list_models",
+		"api": "GET https://api.scaleway.ai/{region}/v1/models",
+		"area": "generative-apis",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_add_group_member",
+		"api": "POST /iam/v1alpha1/groups/{group_id}/add-member",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_create_api_key",
+		"api": "POST /iam/v1alpha1/api-keys",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_create_application",
+		"api": "POST /iam/v1alpha1/applications",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_create_group",
+		"api": "POST /iam/v1alpha1/groups",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_create_policy",
+		"api": "POST /iam/v1alpha1/policies",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_create_rule",
+		"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_create_user",
+		"api": "POST /iam/v1alpha1/users",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_delete_api_key",
+		"api": "DELETE /iam/v1alpha1/api-keys/{access_key}",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_delete_application",
+		"api": "DELETE /iam/v1alpha1/applications/{application_id}",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_delete_group",
+		"api": "DELETE /iam/v1alpha1/groups/{group_id}",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_delete_policy",
+		"api": "DELETE /iam/v1alpha1/policies/{policy_id}",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_delete_rule",
+		"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_delete_user",
+		"api": "DELETE /iam/v1alpha1/users/{user_id}",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_get_api_key",
+		"api": "GET /iam/v1alpha1/api-keys/{access_key}",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_get_application",
+		"api": "GET /iam/v1alpha1/applications/{application_id}",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_get_group",
+		"api": "GET /iam/v1alpha1/groups/{group_id}",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_get_policy",
+		"api": "GET /iam/v1alpha1/policies/{policy_id}",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_get_user",
+		"api": "GET /iam/v1alpha1/users/{user_id}",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_list_api_keys",
+		"api": "GET /iam/v1alpha1/api-keys",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_list_applications",
+		"api": "GET /iam/v1alpha1/applications",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_list_groups",
+		"api": "GET /iam/v1alpha1/groups",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_list_permission_sets",
+		"api": "GET /iam/v1alpha1/permission-sets",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_list_policies",
+		"api": "GET /iam/v1alpha1/policies",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_list_rules",
+		"api": "GET /iam/v1alpha1/rules",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_list_users",
+		"api": "GET /iam/v1alpha1/users",
+		"area": "iam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iam_remove_group_member",
+		"api": "POST /iam/v1alpha1/groups/{group_id}/remove-member",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_update_api_key",
+		"api": "PATCH /iam/v1alpha1/api-keys/{access_key}",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_update_application",
+		"api": "PATCH /iam/v1alpha1/applications/{application_id}",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_update_group",
+		"api": "PATCH /iam/v1alpha1/groups/{group_id}",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_update_policy",
+		"api": "PATCH /iam/v1alpha1/policies/{policy_id}",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_update_rule",
+		"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iam_update_user",
+		"api": "PATCH /iam/v1alpha1/users/{user_id}",
+		"area": "iam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_inference_accept_eula",
+		"api": "POST /inference/v1/regions/{region}/models/{model_id}/eula",
+		"area": "inference",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_inference_create_deployment",
+		"api": "POST /inference/v1/regions/{region}/deployments",
+		"area": "inference",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_inference_create_endpoint",
+		"api": "POST /inference/v1/regions/{region}/endpoints",
+		"area": "inference",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_inference_delete_deployment",
+		"api": "DELETE /inference/v1/regions/{region}/deployments/{deployment_id}",
+		"area": "inference",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_inference_delete_endpoint",
+		"api": "DELETE /inference/v1/regions/{region}/endpoints/{endpoint_id}",
+		"area": "inference",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_inference_get_deployment",
+		"api": "GET /inference/v1/regions/{region}/deployments/{deployment_id}",
+		"area": "inference",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_inference_get_eula",
+		"api": "GET /inference/v1/regions/{region}/models/{model_id}/eula",
+		"area": "inference",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_inference_get_model",
+		"api": "GET /inference/v1/regions/{region}/models/{model_id}",
+		"area": "inference",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_inference_list_deployment_events",
+		"api": "GET /inference/v1/regions/{region}/deployments/{deployment_id}/events",
+		"area": "inference",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_inference_list_deployments",
+		"api": "GET /inference/v1/regions/{region}/deployments",
+		"area": "inference",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_inference_list_endpoints",
+		"api": "GET /inference/v1/regions/{region}/endpoints",
+		"area": "inference",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_inference_list_models",
+		"api": "GET /inference/v1/regions/{region}/models",
+		"area": "inference",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_inference_list_node_types",
+		"api": "GET /inference/v1/regions/{region}/node-types",
+		"area": "inference",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_inference_update_deployment",
+		"api": "PATCH /inference/v1/regions/{region}/deployments/{deployment_id}",
+		"area": "inference",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_inference_update_endpoint",
+		"api": "PATCH /inference/v1/regions/{region}/endpoints/{endpoint_id}",
+		"area": "inference",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_attach_ip",
+		"api": "PATCH /instance/v1/zones/{zone}/ips/{ip_id}",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_create_ip",
+		"api": "POST /instance/v1/zones/{zone}/ips",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_create_security_group",
+		"api": "POST /instance/v1/zones/{zone}/security_groups",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_create_server",
+		"api": "POST /instance/v1/zones/{zone}/servers",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_create_snapshot",
+		"api": "POST /instance/v1/zones/{zone}/snapshots",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_create_volume",
+		"api": "POST /instance/v1/zones/{zone}/volumes",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_delete_ip",
+		"api": "DELETE /instance/v1/zones/{zone}/ips/{ip_id}",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_delete_security_group",
+		"api": "DELETE /instance/v1/zones/{zone}/security_groups/{security_group_id}",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_delete_server",
+		"api": "DELETE /instance/v1/zones/{zone}/servers/{server_id}",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_delete_snapshot",
+		"api": "DELETE /instance/v1/zones/{zone}/snapshots/{snapshot_id}",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_delete_volume",
+		"api": "DELETE /instance/v1/zones/{zone}/volumes/{volume_id}",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_instances_get_security_group",
+		"api": "GET /instance/v1/zones/{zone}/security_groups/{security_group_id}",
+		"area": "instances",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_instances_get_server",
+		"api": "GET /instance/v1/zones/{zone}/servers/{server_id}",
+		"area": "instances",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_instances_get_volume",
+		"api": "GET /instance/v1/zones/{zone}/volumes/{volume_id}",
+		"area": "instances",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_instances_list_ips",
+		"api": "GET /instance/v1/zones/{zone}/ips",
+		"area": "instances",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_instances_list_security_groups",
+		"api": "GET /instance/v1/zones/{zone}/security_groups",
+		"area": "instances",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_instances_list_servers",
+		"api": "GET /instance/v1/zones/{zone}/servers",
+		"area": "instances",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_instances_list_snapshots",
+		"api": "GET /instance/v1/zones/{zone}/snapshots",
+		"area": "instances",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_instances_list_volumes",
+		"api": "GET /instance/v1/zones/{zone}/volumes",
+		"area": "instances",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_instances_server_action",
+		"api": "POST /instance/v1/zones/{zone}/servers/{server_id}/action",
+		"area": "instances",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_attach_routing_policy",
+		"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/attach-routing-policy",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_attach_vpc",
+		"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/attach-vpc",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_create_link",
+		"api": "POST /interlink/v1beta1/regions/{region}/links",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_create_routing_policy",
+		"api": "POST /interlink/v1beta1/regions/{region}/routing-policies",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_delete_link",
+		"api": "DELETE /interlink/v1beta1/regions/{region}/links/{link_id}",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_delete_routing_policy",
+		"api": "DELETE /interlink/v1beta1/regions/{region}/routing-policies/{routing_policy_id}",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_detach_routing_policy",
+		"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/detach-routing-policy",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_detach_vpc",
+		"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/detach-vpc",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_disable_route_propagation",
+		"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/disable-route-propagation",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_enable_route_propagation",
+		"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/enable-route-propagation",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_get_dedicated_connection",
+		"api": "GET /interlink/v1beta1/regions/{region}/dedicated-connections/{connection_id}",
+		"area": "interlink",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_interlink_get_link",
+		"api": "GET /interlink/v1beta1/regions/{region}/links/{link_id}",
+		"area": "interlink",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_interlink_get_partner",
+		"api": "GET /interlink/v1beta1/regions/{region}/partners/{partner_id}",
+		"area": "interlink",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_interlink_get_pop",
+		"api": "GET /interlink/v1beta1/regions/{region}/pops/{pop_id}",
+		"area": "interlink",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_interlink_get_routing_policy",
+		"api": "GET /interlink/v1beta1/regions/{region}/routing-policies/{routing_policy_id}",
+		"area": "interlink",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_interlink_list_dedicated_connections",
+		"api": "GET /interlink/v1beta1/regions/{region}/dedicated-connections",
+		"area": "interlink",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_interlink_list_links",
+		"api": "GET /interlink/v1beta1/regions/{region}/links",
+		"area": "interlink",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_interlink_list_partners",
+		"api": "GET /interlink/v1beta1/regions/{region}/partners",
+		"area": "interlink",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_interlink_list_pops",
+		"api": "GET /interlink/v1beta1/regions/{region}/pops",
+		"area": "interlink",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_interlink_list_routing_policies",
+		"api": "GET /interlink/v1beta1/regions/{region}/routing-policies",
+		"area": "interlink",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_interlink_set_routing_policy",
+		"api": "POST /interlink/v1beta1/regions/{region}/links/{link_id}/set-routing-policy",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_update_link",
+		"api": "PATCH /interlink/v1beta1/regions/{region}/links/{link_id}",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_interlink_update_routing_policy",
+		"api": "PATCH /interlink/v1beta1/regions/{region}/routing-policies/{routing_policy_id}",
+		"area": "interlink",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_create_device",
+		"api": "POST /iot/v1/regions/{region}/devices",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_create_hub",
+		"api": "POST /iot/v1/regions/{region}/hubs",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_create_network",
+		"api": "POST /iot/v1/regions/{region}/networks",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_create_route",
+		"api": "POST /iot/v1/regions/{region}/routes",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_delete_device",
+		"api": "DELETE /iot/v1/regions/{region}/devices/{device_id}",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_delete_hub",
+		"api": "DELETE /iot/v1/regions/{region}/hubs/{hub_id}",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_delete_network",
+		"api": "DELETE /iot/v1/regions/{region}/networks/{network_id}",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_delete_route",
+		"api": "DELETE /iot/v1/regions/{region}/routes/{route_id}",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_disable_device",
+		"api": "POST /iot/v1/regions/{region}/devices/{device_id}/disable",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_disable_hub",
+		"api": "POST /iot/v1/regions/{region}/hubs/{hub_id}/disable",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_enable_device",
+		"api": "POST /iot/v1/regions/{region}/devices/{device_id}/enable",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_enable_hub",
+		"api": "POST /iot/v1/regions/{region}/hubs/{hub_id}/enable",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_get_device",
+		"api": "GET /iot/v1/regions/{region}/devices/{device_id}",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_get_device_certificate",
+		"api": "GET /iot/v1/regions/{region}/devices/{device_id}/certificate",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_get_device_metrics",
+		"api": "GET /iot/v1/regions/{region}/devices/{device_id}/metrics",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_get_hub",
+		"api": "GET /iot/v1/regions/{region}/hubs/{hub_id}",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_get_hub_ca",
+		"api": "GET /iot/v1/regions/{region}/hubs/{hub_id}/ca",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_get_network",
+		"api": "GET /iot/v1/regions/{region}/networks/{network_id}",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_get_route",
+		"api": "GET /iot/v1/regions/{region}/routes/{route_id}",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_list_devices",
+		"api": "GET /iot/v1/regions/{region}/devices",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_list_hubs",
+		"api": "GET /iot/v1/regions/{region}/hubs",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_list_networks",
+		"api": "GET /iot/v1/regions/{region}/networks",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_list_routes",
+		"api": "GET /iot/v1/regions/{region}/routes",
+		"area": "iot",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_iot_renew_device_certificate",
+		"api": "POST /iot/v1/regions/{region}/devices/{device_id}/renew-certificate",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_set_device_certificate",
+		"api": "PUT /iot/v1/regions/{region}/devices/{device_id}/certificate",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_set_hub_ca",
+		"api": "POST /iot/v1/regions/{region}/hubs/{hub_id}/ca",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_update_device",
+		"api": "PATCH /iot/v1/regions/{region}/devices/{device_id}",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_update_hub",
+		"api": "PATCH /iot/v1/regions/{region}/hubs/{hub_id}",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_iot_update_route",
+		"api": "PATCH /iot/v1/regions/{region}/routes/{route_id}",
+		"area": "iot",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_ipam_book_ip",
+		"api": "POST /ipam/v1/regions/{region}/ips",
+		"area": "ipam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_ipam_get_ip",
+		"api": "GET /ipam/v1/regions/{region}/ips/{ip_id}",
+		"area": "ipam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_ipam_list_ips",
+		"api": "GET /ipam/v1/regions/{region}/ips",
+		"area": "ipam",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_ipam_release_ip",
+		"api": "DELETE /ipam/v1/regions/{region}/ips/{ip_id}",
+		"area": "ipam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_ipam_update_ip",
+		"api": "PATCH /ipam/v1/regions/{region}/ips/{ip_id}",
+		"area": "ipam",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_jobs_create_definition",
+		"api": "POST /serverless-jobs/v1alpha2/regions/{region}/job-definitions",
+		"area": "jobs",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_jobs_delete_definition",
+		"api": "DELETE /serverless-jobs/v1alpha2/regions/{region}/job-definitions/{job_definition_id}",
+		"area": "jobs",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_jobs_get_definition",
+		"api": "GET /serverless-jobs/v1alpha2/regions/{region}/job-definitions/{job_definition_id}",
+		"area": "jobs",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_jobs_get_run",
+		"api": "GET /serverless-jobs/v1alpha2/regions/{region}/job-runs/{job_run_id}",
+		"area": "jobs",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_jobs_list_definitions",
+		"api": "GET /serverless-jobs/v1alpha2/regions/{region}/job-definitions",
+		"area": "jobs",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_jobs_list_runs",
+		"api": "GET /serverless-jobs/v1alpha2/regions/{region}/job-runs",
+		"area": "jobs",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_jobs_start",
+		"api": "POST /serverless-jobs/v1alpha2/regions/{region}/job-definitions/{job_definition_id}/start",
+		"area": "jobs",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_jobs_stop_run",
+		"api": "POST /serverless-jobs/v1alpha2/regions/{region}/job-runs/{job_run_id}/stop",
+		"area": "jobs",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_jobs_update_definition",
+		"api": "PATCH /serverless-jobs/v1alpha2/regions/{region}/job-definitions/{job_definition_id}",
+		"area": "jobs",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_k8s_create_cluster",
+		"api": "POST /k8s/v1/regions/{region}/clusters",
+		"area": "k8s",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_k8s_create_pool",
+		"api": "POST /k8s/v1/regions/{region}/clusters/{cluster_id}/pools",
+		"area": "k8s",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_k8s_delete_cluster",
+		"api": "DELETE /k8s/v1/regions/{region}/clusters/{cluster_id}",
+		"area": "k8s",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_k8s_delete_pool",
+		"api": "DELETE /k8s/v1/regions/{region}/pools/{pool_id}",
+		"area": "k8s",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_k8s_get_cluster",
+		"api": "GET /k8s/v1/regions/{region}/clusters/{cluster_id}",
+		"area": "k8s",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_k8s_get_cluster_kubeconfig",
+		"api": "GET /k8s/v1/regions/{region}/clusters/{cluster_id}/kubeconfig",
+		"area": "k8s",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_k8s_get_pool",
+		"api": "GET /k8s/v1/regions/{region}/pools/{pool_id}",
+		"area": "k8s",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_k8s_list_cluster_available_versions",
+		"api": "GET /k8s/v1/regions/{region}/clusters/{cluster_id}/available-versions",
+		"area": "k8s",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_k8s_list_clusters",
+		"api": "GET /k8s/v1/regions/{region}/clusters",
+		"area": "k8s",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_k8s_list_pools",
+		"api": "GET /k8s/v1/regions/{region}/clusters/{cluster_id}/pools",
+		"area": "k8s",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_k8s_update_pool",
+		"api": "PATCH /k8s/v1/regions/{region}/pools/{pool_id}",
+		"area": "k8s",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_k8s_upgrade_cluster",
+		"api": "POST /k8s/v1/regions/{region}/clusters/{cluster_id}/upgrade",
+		"area": "k8s",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_k8s_upgrade_pool",
+		"api": "POST /k8s/v1/regions/{region}/pools/{pool_id}/upgrade",
+		"area": "k8s",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_kafka_create_cluster",
+		"api": "POST /kafka/v1alpha1/regions/{region}/clusters",
+		"area": "kafka",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_kafka_create_endpoint",
+		"api": "POST /kafka/v1alpha1/regions/{region}/endpoints",
+		"area": "kafka",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_kafka_delete_cluster",
+		"api": "DELETE /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}",
+		"area": "kafka",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_kafka_delete_endpoint",
+		"api": "DELETE /kafka/v1alpha1/regions/{region}/endpoints/{endpoint_id}",
+		"area": "kafka",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_kafka_get_cluster",
+		"api": "GET /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}",
+		"area": "kafka",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_kafka_get_cluster_certificate_authority",
+		"api": "GET /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/certificate-authority",
+		"area": "kafka",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_kafka_list_clusters",
+		"api": "GET /kafka/v1alpha1/regions/{region}/clusters",
+		"area": "kafka",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_kafka_list_node_types",
+		"api": "GET /kafka/v1alpha1/regions/{region}/node-types",
+		"area": "kafka",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_kafka_list_users",
+		"api": "GET /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/users",
+		"area": "kafka",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_kafka_list_versions",
+		"api": "GET /kafka/v1alpha1/regions/{region}/versions",
+		"area": "kafka",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_kafka_renew_cluster_certificate_authority",
+		"api": "POST /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/renew-certificate-authority",
+		"area": "kafka",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_kafka_update_cluster",
+		"api": "PATCH /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}",
+		"area": "kafka",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_kafka_update_user",
+		"api": "PATCH /kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/users/{username}",
+		"area": "kafka",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_create_key",
+		"api": "POST /key-manager/v1alpha1/regions/{region}/keys",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_decrypt",
+		"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/decrypt",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_delete_key",
+		"api": "DELETE /key-manager/v1alpha1/regions/{region}/keys/{key_id}",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_disable_key",
+		"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/disable",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_enable_key",
+		"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/enable",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_encrypt",
+		"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/encrypt",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_generate_data_key",
+		"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/generate-data-key",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_get_key",
+		"api": "GET /key-manager/v1alpha1/regions/{region}/keys/{key_id}",
+		"area": "key-manager",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_key_manager_list_keys",
+		"api": "GET /key-manager/v1alpha1/regions/{region}/keys",
+		"area": "key-manager",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_key_manager_protect_key",
+		"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/protect",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_rotate_key",
+		"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/rotate",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_unprotect_key",
+		"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/unprotect",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_key_manager_update_key",
+		"api": "PATCH /key-manager/v1alpha1/regions/{region}/keys/{key_id}",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_add_backend_servers",
+		"api": "POST /lb/v1/zones/{zone}/backends/{backend_id}/servers",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_create_backend",
+		"api": "POST /lb/v1/zones/{zone}/lbs/{lb_id}/backends",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_create_certificate",
+		"api": "POST /lb/v1/zones/{zone}/lbs/{lb_id}/certificates",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_create_frontend",
+		"api": "POST /lb/v1/zones/{zone}/lbs/{lb_id}/frontends",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_create_lb",
+		"api": "POST /lb/v1/zones/{zone}/lbs",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_create_route",
+		"api": "POST /lb/v1/zones/{zone}/routes",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_delete_backend",
+		"api": "DELETE /lb/v1/zones/{zone}/backends/{backend_id}",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_delete_certificate",
+		"api": "DELETE /lb/v1/zones/{zone}/certificates/{certificate_id}",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_delete_frontend",
+		"api": "DELETE /lb/v1/zones/{zone}/frontends/{frontend_id}",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_delete_lb",
+		"api": "DELETE /lb/v1/zones/{zone}/lbs/{lb_id}",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_delete_route",
+		"api": "DELETE /lb/v1/zones/{zone}/routes/{route_id}",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_get_backend",
+		"api": "GET /lb/v1/zones/{zone}/backends/{backend_id}",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_get_certificate",
+		"api": "GET /lb/v1/zones/{zone}/certificates/{certificate_id}",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_get_frontend",
+		"api": "GET /lb/v1/zones/{zone}/frontends/{frontend_id}",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_get_lb",
+		"api": "GET /lb/v1/zones/{zone}/lbs/{lb_id}",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_get_lb_stats",
+		"api": "GET /lb/v1/zones/{zone}/lbs/{lb_id}/stats",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_get_route",
+		"api": "GET /lb/v1/zones/{zone}/routes/{route_id}",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_list_backends",
+		"api": "GET /lb/v1/zones/{zone}/lbs/{lb_id}/backends",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_list_certificates",
+		"api": "GET /lb/v1/zones/{zone}/lbs/{lb_id}/certificates",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_list_frontends",
+		"api": "GET /lb/v1/zones/{zone}/lbs/{lb_id}/frontends",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_list_lb_types",
+		"api": "GET /lb/v1/zones/{zone}/lb-types",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_list_lbs",
+		"api": "GET /lb/v1/zones/{zone}/lbs",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_list_routes",
+		"api": "GET /lb/v1/zones/{zone}/routes",
+		"area": "lb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_lb_migrate_lb",
+		"api": "POST /lb/v1/zones/{zone}/lbs/{lb_id}/migrate",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_remove_backend_servers",
+		"api": "DELETE /lb/v1/zones/{zone}/backends/{backend_id}/servers",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_set_backend_servers",
+		"api": "PUT /lb/v1/zones/{zone}/backends/{backend_id}/servers",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_update_backend",
+		"api": "PUT /lb/v1/zones/{zone}/backends/{backend_id}",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_update_certificate",
+		"api": "PUT /lb/v1/zones/{zone}/certificates/{certificate_id}",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_update_frontend",
+		"api": "PUT /lb/v1/zones/{zone}/frontends/{frontend_id}",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_update_lb",
+		"api": "PUT /lb/v1/zones/{zone}/lbs/{lb_id}",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_lb_update_route",
+		"api": "PUT /lb/v1/zones/{zone}/routes/{route_id}",
+		"area": "lb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mailbox_create_alias",
+		"api": "POST /mailbox/v1alpha1/aliases",
+		"area": "mailbox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mailbox_create_domain",
+		"api": "POST /mailbox/v1alpha1/domains",
+		"area": "mailbox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mailbox_create_mailboxes",
+		"api": "POST /mailbox/v1alpha1/batch-create-mailboxes",
+		"area": "mailbox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mailbox_delete_alias",
+		"api": "DELETE /mailbox/v1alpha1/aliases/{alias_id}",
+		"area": "mailbox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mailbox_delete_domain",
+		"api": "DELETE /mailbox/v1alpha1/domains/{domain_id}",
+		"area": "mailbox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mailbox_delete_mailbox",
+		"api": "DELETE /mailbox/v1alpha1/mailboxes/{mailbox_id}",
+		"area": "mailbox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mailbox_get_alias",
+		"api": "GET /mailbox/v1alpha1/aliases/{alias_id}",
+		"area": "mailbox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mailbox_get_domain",
+		"api": "GET /mailbox/v1alpha1/domains/{domain_id}",
+		"area": "mailbox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mailbox_get_domain_records",
+		"api": "GET /mailbox/v1alpha1/domains/{domain_id}/records",
+		"area": "mailbox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mailbox_get_mailbox",
+		"api": "GET /mailbox/v1alpha1/mailboxes/{mailbox_id}",
+		"area": "mailbox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mailbox_list_aliases",
+		"api": "GET /mailbox/v1alpha1/aliases",
+		"area": "mailbox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mailbox_list_domains",
+		"api": "GET /mailbox/v1alpha1/domains",
+		"area": "mailbox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mailbox_list_mailboxes",
+		"api": "GET /mailbox/v1alpha1/mailboxes",
+		"area": "mailbox",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mailbox_restore_mailbox",
+		"api": "POST /mailbox/v1alpha1/mailboxes/{mailbox_id}/restore",
+		"area": "mailbox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mailbox_update_mailbox",
+		"api": "PATCH /mailbox/v1alpha1/mailboxes/{mailbox_id}",
+		"area": "mailbox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mailbox_validate_domain_records",
+		"api": "POST /mailbox/v1alpha1/domains/{domain_id}/validate-records",
+		"area": "mailbox",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_marketplace_get_category",
+		"api": "GET /marketplace/v2/categories/{category_id}",
+		"area": "marketplace",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_marketplace_get_image",
+		"api": "GET /marketplace/v2/images/{image_id}",
+		"area": "marketplace",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_marketplace_get_local_image",
+		"api": "GET /marketplace/v2/local-images/{local_image_id}",
+		"area": "marketplace",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_marketplace_get_version",
+		"api": "GET /marketplace/v2/versions/{version_id}",
+		"area": "marketplace",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_marketplace_list_categories",
+		"api": "GET /marketplace/v2/categories",
+		"area": "marketplace",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_marketplace_list_images",
+		"api": "GET /marketplace/v2/images",
+		"area": "marketplace",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_marketplace_list_local_images",
+		"api": "GET /marketplace/v2/local-images",
+		"area": "marketplace",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_marketplace_list_versions",
+		"api": "GET /marketplace/v2/versions",
+		"area": "marketplace",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mongodb_create_instance",
+		"api": "POST /mongodb/v1/regions/{region}/instances",
+		"area": "mongodb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mongodb_create_snapshot",
+		"api": "POST /mongodb/v1/regions/{region}/snapshots",
+		"area": "mongodb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mongodb_create_user",
+		"api": "POST /mongodb/v1/regions/{region}/instances/{instance_id}/users",
+		"area": "mongodb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mongodb_delete_instance",
+		"api": "DELETE /mongodb/v1/regions/{region}/instances/{instance_id}",
+		"area": "mongodb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mongodb_delete_snapshot",
+		"api": "DELETE /mongodb/v1/regions/{region}/snapshots/{snapshot_id}",
+		"area": "mongodb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mongodb_delete_user",
+		"api": "DELETE /mongodb/v1/regions/{region}/instances/{instance_id}/users/{user_name}",
+		"area": "mongodb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mongodb_get_instance",
+		"api": "GET /mongodb/v1/regions/{region}/instances/{instance_id}",
+		"area": "mongodb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mongodb_list_instances",
+		"api": "GET /mongodb/v1/regions/{region}/instances",
+		"area": "mongodb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mongodb_list_node_types",
+		"api": "GET /mongodb/v1/regions/{region}/node-types",
+		"area": "mongodb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mongodb_list_snapshots",
+		"api": "GET /mongodb/v1/regions/{region}/snapshots",
+		"area": "mongodb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mongodb_list_users",
+		"api": "GET /mongodb/v1/regions/{region}/instances/{instance_id}/users",
+		"area": "mongodb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mongodb_list_versions",
+		"api": "GET /mongodb/v1/regions/{region}/versions",
+		"area": "mongodb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_mongodb_restore_snapshot",
+		"api": "POST /mongodb/v1/regions/{region}/snapshots/{snapshot_id}/restore",
+		"area": "mongodb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mongodb_update_instance",
+		"api": "PATCH /mongodb/v1/regions/{region}/instances/{instance_id}",
+		"area": "mongodb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_mongodb_update_user",
+		"api": "PATCH /mongodb/v1/regions/{region}/instances/{instance_id}/users/{user_name}",
+		"area": "mongodb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_nats_create_account",
+		"api": "POST /mnq/v1beta1/regions/{region}/nats-accounts",
+		"area": "nats",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_nats_create_credentials",
+		"api": "POST /mnq/v1beta1/regions/{region}/nats-credentials",
+		"area": "nats",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_nats_delete_account",
+		"api": "DELETE /mnq/v1beta1/regions/{region}/nats-accounts/{nats_account_id}",
+		"area": "nats",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_nats_delete_credentials",
+		"api": "DELETE /mnq/v1beta1/regions/{region}/nats-credentials/{nats_credentials_id}",
+		"area": "nats",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_nats_get_account",
+		"api": "GET /mnq/v1beta1/regions/{region}/nats-accounts/{nats_account_id}",
+		"area": "nats",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_nats_get_credentials",
+		"api": "GET /mnq/v1beta1/regions/{region}/nats-credentials/{nats_credentials_id}",
+		"area": "nats",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_nats_list_accounts",
+		"api": "GET /mnq/v1beta1/regions/{region}/nats-accounts",
+		"area": "nats",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_nats_list_credentials",
+		"api": "GET /mnq/v1beta1/regions/{region}/nats-credentials?nats_account_id={id}",
+		"area": "nats",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_nats_update_account",
+		"api": "PATCH /mnq/v1beta1/regions/{region}/nats-accounts/{nats_account_id}",
+		"area": "nats",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_object_storage_create_bucket",
+		"api": "PUT https://s3.{region}.scw.cloud/{bucket} (S3 CreateBucket)",
+		"area": "object-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_object_storage_delete_bucket",
+		"api": "DELETE https://s3.{region}.scw.cloud/{bucket} (S3 DeleteBucket)",
+		"area": "object-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_object_storage_delete_object",
+		"api": "DELETE https://s3.{region}.scw.cloud/{bucket}/{key} (S3 DeleteObject)",
+		"area": "object-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_object_storage_get_bucket_info",
+		"api": "HEAD /{bucket} + GET /{bucket}?versioning + GET /{bucket}?list-type=2&max-keys=0 (S3 HeadBucket/GetBucketVersioning/ListObjectsV2)",
+		"area": "object-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_object_storage_get_bucket_lifecycle",
+		"api": "GET https://s3.{region}.scw.cloud/{bucket}?lifecycle (S3 GetBucketLifecycleConfiguration)",
+		"area": "object-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_object_storage_get_bucket_policy",
+		"api": "GET https://s3.{region}.scw.cloud/{bucket}?policy (S3 GetBucketPolicy)",
+		"area": "object-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_object_storage_get_bucket_versioning",
+		"api": "GET https://s3.{region}.scw.cloud/{bucket}?versioning (S3 GetBucketVersioning)",
+		"area": "object-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_object_storage_get_object_info",
+		"api": "HEAD https://s3.{region}.scw.cloud/{bucket}/{key} (S3 HeadObject)",
+		"area": "object-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_object_storage_list_buckets",
+		"api": "GET https://s3.{region}.scw.cloud/ (S3 ListBuckets)",
+		"area": "object-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_object_storage_list_objects",
+		"api": "GET https://s3.{region}.scw.cloud/{bucket}?list-type=2 (S3 ListObjectsV2)",
+		"area": "object-storage",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_object_storage_put_object",
+		"api": "PUT https://s3.{region}.scw.cloud/{bucket}/{key} (S3 PutObject)",
+		"area": "object-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_object_storage_set_bucket_lifecycle",
+		"api": "PUT https://s3.{region}.scw.cloud/{bucket}?lifecycle (S3 PutBucketLifecycleConfiguration)",
+		"area": "object-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_object_storage_set_bucket_policy",
+		"api": "PUT https://s3.{region}.scw.cloud/{bucket}?policy (S3 PutBucketPolicy)",
+		"area": "object-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_object_storage_set_bucket_versioning",
+		"api": "PUT https://s3.{region}.scw.cloud/{bucket}?versioning (S3 PutBucketVersioning)",
+		"area": "object-storage",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_opensearch_create_deployment",
+		"api": "POST /searchdb/v1alpha1/regions/{region}/deployments",
+		"area": "opensearch",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_opensearch_create_endpoint",
+		"api": "POST /searchdb/v1alpha1/regions/{region}/endpoints",
+		"area": "opensearch",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_opensearch_create_user",
+		"api": "POST /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/users",
+		"area": "opensearch",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_opensearch_delete_deployment",
+		"api": "DELETE /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}",
+		"area": "opensearch",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_opensearch_delete_endpoint",
+		"api": "DELETE /searchdb/v1alpha1/regions/{region}/endpoints/{endpoint_id}",
+		"area": "opensearch",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_opensearch_delete_user",
+		"api": "DELETE /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/users/{username}",
+		"area": "opensearch",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_opensearch_get_certificate_authority",
+		"api": "GET /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/certificate-authority",
+		"area": "opensearch",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_opensearch_get_deployment",
+		"api": "GET /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}",
+		"area": "opensearch",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_opensearch_list_deployments",
+		"api": "GET /searchdb/v1alpha1/regions/{region}/deployments",
+		"area": "opensearch",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_opensearch_list_node_types",
+		"api": "GET /searchdb/v1alpha1/regions/{region}/node-types",
+		"area": "opensearch",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_opensearch_list_users",
+		"api": "GET /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/users",
+		"area": "opensearch",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_opensearch_list_versions",
+		"api": "GET /searchdb/v1alpha1/regions/{region}/versions",
+		"area": "opensearch",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_opensearch_update_deployment",
+		"api": "PATCH /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}",
+		"area": "opensearch",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_opensearch_update_user",
+		"api": "PATCH /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/users/{username}",
+		"area": "opensearch",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_opensearch_upgrade_deployment",
+		"api": "POST /searchdb/v1alpha1/regions/{region}/deployments/{deployment_id}/upgrade",
+		"area": "opensearch",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_product_catalog_list_categories",
+		"api": "GET /product-catalog/v2alpha1/public-catalog/products (aggregated client-side)",
+		"area": "product-catalog",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_product_catalog_list_products",
+		"api": "GET /product-catalog/v2alpha1/public-catalog/products",
+		"area": "product-catalog",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_public_gateway_create_gateway",
+		"api": "POST /vpc-gw/v2/zones/{zone}/gateways",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_create_gateway_network",
+		"api": "POST /vpc-gw/v2/zones/{zone}/gateway-networks",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_create_ip",
+		"api": "POST /vpc-gw/v2/zones/{zone}/ips",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_create_pat_rule",
+		"api": "POST /vpc-gw/v2/zones/{zone}/pat-rules",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_delete_gateway",
+		"api": "DELETE /vpc-gw/v2/zones/{zone}/gateways/{gateway_id}",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_delete_gateway_network",
+		"api": "DELETE /vpc-gw/v2/zones/{zone}/gateway-networks/{gateway_network_id}",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_delete_ip",
+		"api": "DELETE /vpc-gw/v2/zones/{zone}/ips/{ip_id}",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_delete_pat_rule",
+		"api": "DELETE /vpc-gw/v2/zones/{zone}/pat-rules/{pat_rule_id}",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_get_gateway",
+		"api": "GET /vpc-gw/v2/zones/{zone}/gateways/{gateway_id}",
+		"area": "public-gateway",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_public_gateway_get_gateway_network",
+		"api": "GET /vpc-gw/v2/zones/{zone}/gateway-networks/{gateway_network_id}",
+		"area": "public-gateway",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_public_gateway_get_ip",
+		"api": "GET /vpc-gw/v2/zones/{zone}/ips/{ip_id}",
+		"area": "public-gateway",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_public_gateway_get_pat_rule",
+		"api": "GET /vpc-gw/v2/zones/{zone}/pat-rules/{pat_rule_id}",
+		"area": "public-gateway",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_public_gateway_list_gateway_networks",
+		"api": "GET /vpc-gw/v2/zones/{zone}/gateway-networks",
+		"area": "public-gateway",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_public_gateway_list_gateway_types",
+		"api": "GET /vpc-gw/v2/zones/{zone}/gateway-types",
+		"area": "public-gateway",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_public_gateway_list_gateways",
+		"api": "GET /vpc-gw/v2/zones/{zone}/gateways",
+		"area": "public-gateway",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_public_gateway_list_ips",
+		"api": "GET /vpc-gw/v2/zones/{zone}/ips",
+		"area": "public-gateway",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_public_gateway_list_pat_rules",
+		"api": "GET /vpc-gw/v2/zones/{zone}/pat-rules",
+		"area": "public-gateway",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_public_gateway_update_gateway",
+		"api": "PATCH /vpc-gw/v2/zones/{zone}/gateways/{gateway_id}",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_update_gateway_network",
+		"api": "PATCH /vpc-gw/v2/zones/{zone}/gateway-networks/{gateway_network_id}",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_update_ip",
+		"api": "PATCH /vpc-gw/v2/zones/{zone}/ips/{ip_id}",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_public_gateway_update_pat_rule",
+		"api": "PATCH /vpc-gw/v2/zones/{zone}/pat-rules/{pat_rule_id}",
+		"area": "public-gateway",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rabbitmq_create_deployment",
+		"api": "POST /messageq/v1alpha1/regions/{region}/deployments",
+		"area": "rabbitmq",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rabbitmq_create_endpoint",
+		"api": "POST /messageq/v1alpha1/regions/{region}/endpoints",
+		"area": "rabbitmq",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rabbitmq_create_user",
+		"api": "POST /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/users",
+		"area": "rabbitmq",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rabbitmq_delete_deployment",
+		"api": "DELETE /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}",
+		"area": "rabbitmq",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rabbitmq_delete_endpoint",
+		"api": "DELETE /messageq/v1alpha1/regions/{region}/endpoints/{endpoint_id}",
+		"area": "rabbitmq",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rabbitmq_delete_user",
+		"api": "DELETE /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/users/{username}",
+		"area": "rabbitmq",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rabbitmq_get_deployment",
+		"api": "GET /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}",
+		"area": "rabbitmq",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rabbitmq_get_deployment_certificate",
+		"api": "GET /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/certificate-authority",
+		"area": "rabbitmq",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rabbitmq_list_deployments",
+		"api": "GET /messageq/v1alpha1/regions/{region}/deployments",
+		"area": "rabbitmq",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rabbitmq_list_node_types",
+		"api": "GET /messageq/v1alpha1/regions/{region}/node-types",
+		"area": "rabbitmq",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rabbitmq_list_users",
+		"api": "GET /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/users",
+		"area": "rabbitmq",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rabbitmq_list_versions",
+		"api": "GET /messageq/v1alpha1/regions/{region}/versions",
+		"area": "rabbitmq",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rabbitmq_update_deployment",
+		"api": "PATCH /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}",
+		"area": "rabbitmq",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rabbitmq_update_user",
+		"api": "PATCH /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/users/{username}",
+		"area": "rabbitmq",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rabbitmq_upgrade_deployment",
+		"api": "POST /messageq/v1alpha1/regions/{region}/deployments/{deployment_id}/upgrade",
+		"area": "rabbitmq",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_add_acl_rules",
+		"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/acls",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_create_backup",
+		"api": "POST /rdb/v1/regions/{region}/backups",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_create_database",
+		"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/databases",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_create_endpoint",
+		"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/endpoints",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_create_instance",
+		"api": "POST /rdb/v1/regions/{region}/instances",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_create_snapshot",
+		"api": "POST /rdb/v1/regions/{region}/snapshots",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_create_user",
+		"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/users",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_delete_acl_rules",
+		"api": "DELETE /rdb/v1/regions/{region}/instances/{instance_id}/acls",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_delete_database",
+		"api": "DELETE /rdb/v1/regions/{region}/instances/{instance_id}/databases/{name}",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_delete_endpoint",
+		"api": "DELETE /rdb/v1/regions/{region}/endpoints/{endpoint_id}",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_delete_instance",
+		"api": "DELETE /rdb/v1/regions/{region}/instances/{instance_id}",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_delete_user",
+		"api": "DELETE /rdb/v1/regions/{region}/instances/{instance_id}/users/{name}",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_get_instance",
+		"api": "GET /rdb/v1/regions/{region}/instances/{instance_id}",
+		"area": "rdb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rdb_list_acl_rules",
+		"api": "GET /rdb/v1/regions/{region}/instances/{instance_id}/acls",
+		"area": "rdb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rdb_list_backups",
+		"api": "GET /rdb/v1/regions/{region}/backups",
+		"area": "rdb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rdb_list_database_engines",
+		"api": "GET /rdb/v1/regions/{region}/database-engines",
+		"area": "rdb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rdb_list_databases",
+		"api": "GET /rdb/v1/regions/{region}/instances/{instance_id}/databases",
+		"area": "rdb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rdb_list_endpoints",
+		"api": "GET /rdb/v1/regions/{region}/instances/{instance_id}",
+		"area": "rdb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rdb_list_instances",
+		"api": "GET /rdb/v1/regions/{region}/instances",
+		"area": "rdb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rdb_list_node_types",
+		"api": "GET /rdb/v1/regions/{region}/node-types",
+		"area": "rdb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rdb_list_snapshots",
+		"api": "GET /rdb/v1/regions/{region}/snapshots",
+		"area": "rdb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rdb_list_users",
+		"api": "GET /rdb/v1/regions/{region}/instances/{instance_id}/users",
+		"area": "rdb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_rdb_restore_backup",
+		"api": "POST /rdb/v1/regions/{region}/backups/{backup_id}/restore",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_restore_snapshot",
+		"api": "POST /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance-from-snapshot",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_update_instance",
+		"api": "PATCH /rdb/v1/regions/{region}/instances/{instance_id}",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_update_user",
+		"api": "PATCH /rdb/v1/regions/{region}/instances/{instance_id}/users/{name}",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_rdb_upgrade_instance",
+		"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/upgrade",
+		"area": "rdb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_redis_add_acl_rules",
+		"api": "POST /redis/v1/zones/{zone}/clusters/{cluster_id}/acls",
+		"area": "redis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_redis_add_endpoints",
+		"api": "POST /redis/v1/zones/{zone}/clusters/{cluster_id}/endpoints",
+		"area": "redis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_redis_create_cluster",
+		"api": "POST /redis/v1/zones/{zone}/clusters",
+		"area": "redis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_redis_delete_acl_rules",
+		"api": "DELETE /redis/v1/zones/{zone}/acls/{acl_id}",
+		"area": "redis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_redis_delete_cluster",
+		"api": "DELETE /redis/v1/zones/{zone}/clusters/{cluster_id}",
+		"area": "redis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_redis_delete_endpoints",
+		"api": "DELETE /redis/v1/zones/{zone}/endpoints/{endpoint_id}",
+		"area": "redis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_redis_get_cluster",
+		"api": "GET /redis/v1/zones/{zone}/clusters/{cluster_id}",
+		"area": "redis",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_redis_get_cluster_certificate",
+		"api": "GET /redis/v1/zones/{zone}/clusters/{cluster_id}/certificate",
+		"area": "redis",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_redis_list_cluster_metrics",
+		"api": "GET /redis/v1/zones/{zone}/clusters/{cluster_id}/metrics",
+		"area": "redis",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_redis_list_cluster_versions",
+		"api": "GET /redis/v1/zones/{zone}/cluster-versions",
+		"area": "redis",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_redis_list_clusters",
+		"api": "GET /redis/v1/zones/{zone}/clusters",
+		"area": "redis",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_redis_list_node_types",
+		"api": "GET /redis/v1/zones/{zone}/node-types",
+		"area": "redis",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_redis_renew_cluster_certificate",
+		"api": "POST /redis/v1/zones/{zone}/clusters/{cluster_id}/renew-certificate",
+		"area": "redis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_redis_set_acl_rules",
+		"api": "PUT /redis/v1/zones/{zone}/clusters/{cluster_id}/acls",
+		"area": "redis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_redis_set_endpoints",
+		"api": "PUT /redis/v1/zones/{zone}/clusters/{cluster_id}/endpoints",
+		"area": "redis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_redis_update_cluster",
+		"api": "PATCH /redis/v1/zones/{zone}/clusters/{cluster_id}",
+		"area": "redis",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_registry_create_namespace",
+		"api": "POST /registry/v1/regions/{region}/namespaces",
+		"area": "registry",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_registry_delete_image",
+		"api": "DELETE /registry/v1/regions/{region}/images/{image_id}",
+		"area": "registry",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_registry_delete_namespace",
+		"api": "DELETE /registry/v1/regions/{region}/namespaces/{namespace_id}",
+		"area": "registry",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_registry_delete_tag",
+		"api": "DELETE /registry/v1/regions/{region}/tags/{tag_id}",
+		"area": "registry",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_registry_get_image",
+		"api": "GET /registry/v1/regions/{region}/images/{image_id}",
+		"area": "registry",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_registry_get_namespace",
+		"api": "GET /registry/v1/regions/{region}/namespaces/{namespace_id}",
+		"area": "registry",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_registry_get_tag",
+		"api": "GET /registry/v1/regions/{region}/tags/{tag_id}",
+		"area": "registry",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_registry_list_images",
+		"api": "GET /registry/v1/regions/{region}/images",
+		"area": "registry",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_registry_list_namespaces",
+		"api": "GET /registry/v1/regions/{region}/namespaces",
+		"area": "registry",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_registry_list_tags",
+		"api": "GET /registry/v1/regions/{region}/images/{image_id}/tags",
+		"area": "registry",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_registry_update_image",
+		"api": "PATCH /registry/v1/regions/{region}/images/{image_id}",
+		"area": "registry",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_registry_update_namespace",
+		"api": "PATCH /registry/v1/regions/{region}/namespaces/{namespace_id}",
+		"area": "registry",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_access_secret_version",
+		"api": "GET /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions/{revision}/access",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_add_secret_owner",
+		"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/add-owner",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_create_secret",
+		"api": "POST /secret-manager/v1beta1/regions/{region}/secrets",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_create_secret_version",
+		"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_delete_secret",
+		"api": "DELETE /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_destroy_secret_version",
+		"api": "DELETE /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions/{revision}",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_disable_secret_version",
+		"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions/{revision}/disable",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_enable_secret_version",
+		"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions/{revision}/enable",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_get_secret",
+		"api": "GET /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}",
+		"area": "secret-manager",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_secret_manager_get_secret_version",
+		"api": "GET /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions/{revision}",
+		"area": "secret-manager",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_secret_manager_list_secret_versions",
+		"api": "GET /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/versions",
+		"area": "secret-manager",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_secret_manager_list_secrets",
+		"api": "GET /secret-manager/v1beta1/regions/{region}/secrets",
+		"area": "secret-manager",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_secret_manager_list_tags",
+		"api": "GET /secret-manager/v1beta1/regions/{region}/tags",
+		"area": "secret-manager",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_secret_manager_protect_secret",
+		"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/protect",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_unprotect_secret",
+		"api": "POST /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}/unprotect",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_secret_manager_update_secret",
+		"api": "PATCH /secret-manager/v1beta1/regions/{region}/secrets/{secret_id}",
+		"area": "secret-manager",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_serverless_sqldb_create_database",
+		"api": "POST /serverless-sqldb/v1alpha1/regions/{region}/databases",
+		"area": "serverless-sqldb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_serverless_sqldb_delete_database",
+		"api": "DELETE /serverless-sqldb/v1alpha1/regions/{region}/databases/{database_id}",
+		"area": "serverless-sqldb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_serverless_sqldb_export_database_backup",
+		"api": "POST /serverless-sqldb/v1alpha1/regions/{region}/backups/{backup_id}/export",
+		"area": "serverless-sqldb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_serverless_sqldb_get_database",
+		"api": "GET /serverless-sqldb/v1alpha1/regions/{region}/databases/{database_id}",
+		"area": "serverless-sqldb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_serverless_sqldb_get_database_backup",
+		"api": "GET /serverless-sqldb/v1alpha1/regions/{region}/backups/{backup_id}",
+		"area": "serverless-sqldb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_serverless_sqldb_list_database_backups",
+		"api": "GET /serverless-sqldb/v1alpha1/regions/{region}/backups",
+		"area": "serverless-sqldb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_serverless_sqldb_list_databases",
+		"api": "GET /serverless-sqldb/v1alpha1/regions/{region}/databases",
+		"area": "serverless-sqldb",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_serverless_sqldb_restore_database",
+		"api": "POST /serverless-sqldb/v1alpha1/regions/{region}/databases/{database_id}/restore",
+		"area": "serverless-sqldb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_serverless_sqldb_update_database",
+		"api": "PATCH /serverless-sqldb/v1alpha1/regions/{region}/databases/{database_id}",
+		"area": "serverless-sqldb",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_sns_activate",
+		"api": "POST /mnq/v1beta1/regions/{region}/activate-sns",
+		"area": "sns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_sns_create_credentials",
+		"api": "POST /mnq/v1beta1/regions/{region}/sns-credentials",
+		"area": "sns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_sns_deactivate",
+		"api": "POST /mnq/v1beta1/regions/{region}/deactivate-sns",
+		"area": "sns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_sns_delete_credentials",
+		"api": "DELETE /mnq/v1beta1/regions/{region}/sns-credentials/{sns_credentials_id}",
+		"area": "sns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_sns_get_credentials",
+		"api": "GET /mnq/v1beta1/regions/{region}/sns-credentials/{sns_credentials_id}",
+		"area": "sns",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_sns_get_info",
+		"api": "GET /mnq/v1beta1/regions/{region}/sns-info",
+		"area": "sns",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_sns_list_credentials",
+		"api": "GET /mnq/v1beta1/regions/{region}/sns-credentials",
+		"area": "sns",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_sns_update_credentials",
+		"api": "PATCH /mnq/v1beta1/regions/{region}/sns-credentials/{sns_credentials_id}",
+		"area": "sns",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_sqs_activate",
+		"api": "POST /mnq/v1beta1/regions/{region}/activate-sqs",
+		"area": "sqs",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_sqs_create_credentials",
+		"api": "POST /mnq/v1beta1/regions/{region}/sqs-credentials",
+		"area": "sqs",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_sqs_deactivate",
+		"api": "POST /mnq/v1beta1/regions/{region}/deactivate-sqs",
+		"area": "sqs",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_sqs_delete_credentials",
+		"api": "DELETE /mnq/v1beta1/regions/{region}/sqs-credentials/{credential_id}",
+		"area": "sqs",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_sqs_get_credentials",
+		"api": "GET /mnq/v1beta1/regions/{region}/sqs-credentials/{credential_id}",
+		"area": "sqs",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_sqs_get_info",
+		"api": "GET /mnq/v1beta1/regions/{region}/sqs-info",
+		"area": "sqs",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_sqs_list_credentials",
+		"api": "GET /mnq/v1beta1/regions/{region}/sqs-credentials",
+		"area": "sqs",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_sqs_update_credentials",
+		"api": "PATCH /mnq/v1beta1/regions/{region}/sqs-credentials/{credential_id}",
+		"area": "sqs",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_tem_cancel_email",
+		"api": "POST /transactional-email/v1alpha1/regions/{region}/emails/{email_id}/cancel",
+		"area": "tem",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_tem_check_domain",
+		"api": "POST /transactional-email/v1alpha1/regions/{region}/domains/{domain_id}/check",
+		"area": "tem",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_tem_create_domain",
+		"api": "POST /transactional-email/v1alpha1/regions/{region}/domains",
+		"area": "tem",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_tem_create_email",
+		"api": "POST /transactional-email/v1alpha1/regions/{region}/emails",
+		"area": "tem",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_tem_create_webhook",
+		"api": "POST /transactional-email/v1alpha1/regions/{region}/webhooks",
+		"area": "tem",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_tem_delete_webhook",
+		"api": "DELETE /transactional-email/v1alpha1/regions/{region}/webhooks/{webhook_id}",
+		"area": "tem",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_tem_get_domain",
+		"api": "GET /transactional-email/v1alpha1/regions/{region}/domains/{domain_id}",
+		"area": "tem",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_tem_get_domain_last_status",
+		"api": "GET /transactional-email/v1alpha1/regions/{region}/domains/{domain_id}/verification",
+		"area": "tem",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_tem_get_email",
+		"api": "GET /transactional-email/v1alpha1/regions/{region}/emails/{email_id}",
+		"area": "tem",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_tem_get_statistics",
+		"api": "GET /transactional-email/v1alpha1/regions/{region}/statistics",
+		"area": "tem",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_tem_list_domains",
+		"api": "GET /transactional-email/v1alpha1/regions/{region}/domains",
+		"area": "tem",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_tem_list_emails",
+		"api": "GET /transactional-email/v1alpha1/regions/{region}/emails",
+		"area": "tem",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_tem_list_webhooks",
+		"api": "GET /transactional-email/v1alpha1/regions/{region}/webhooks",
+		"area": "tem",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_tem_revoke_domain",
+		"api": "POST /transactional-email/v1alpha1/regions/{region}/domains/{domain_id}/revoke",
+		"area": "tem",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_tem_update_webhook",
+		"api": "PATCH /transactional-email/v1alpha1/regions/{region}/webhooks/{webhook_id}",
+		"area": "tem",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpc_create_private_network",
+		"api": "POST /vpc/v2/regions/{region}/private-networks",
+		"area": "vpc",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpc_create_vpc",
+		"api": "POST /vpc/v2/regions/{region}/vpcs",
+		"area": "vpc",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpc_delete_private_network",
+		"api": "DELETE /vpc/v2/regions/{region}/private-networks/{private_network_id}",
+		"area": "vpc",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpc_delete_vpc",
+		"api": "DELETE /vpc/v2/regions/{region}/vpcs/{vpc_id}",
+		"area": "vpc",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpc_get_private_network",
+		"api": "GET /vpc/v2/regions/{region}/private-networks/{private_network_id}",
+		"area": "vpc",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpc_get_vpc",
+		"api": "GET /vpc/v2/regions/{region}/vpcs/{vpc_id}",
+		"area": "vpc",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpc_list_private_networks",
+		"api": "GET /vpc/v2/regions/{region}/private-networks",
+		"area": "vpc",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpc_list_vpcs",
+		"api": "GET /vpc/v2/regions/{region}/vpcs",
+		"area": "vpc",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpc_update_private_network",
+		"api": "PATCH /vpc/v2/regions/{region}/private-networks/{private_network_id}",
+		"area": "vpc",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpc_update_vpc",
+		"api": "PATCH /vpc/v2/regions/{region}/vpcs/{vpc_id}",
+		"area": "vpc",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_change_connection_psk",
+		"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/change-psk",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_create_connection",
+		"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_create_customer_gateway",
+		"api": "POST /s2s-vpn/v1alpha1/regions/{region}/customer-gateways",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_create_gateway",
+		"api": "POST /s2s-vpn/v1alpha1/regions/{region}/vpn-gateways",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_create_routing_policy",
+		"api": "POST /s2s-vpn/v1alpha1/regions/{region}/routing-policies",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_delete_connection",
+		"api": "DELETE /s2s-vpn/v1alpha1/regions/{region}/connections/{id}",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_delete_customer_gateway",
+		"api": "DELETE /s2s-vpn/v1alpha1/regions/{region}/customer-gateways/{id}",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_delete_gateway",
+		"api": "DELETE /s2s-vpn/v1alpha1/regions/{region}/vpn-gateways/{id}",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_delete_routing_policy",
+		"api": "DELETE /s2s-vpn/v1alpha1/regions/{region}/routing-policies/{id}",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_detach_connection_routing_policy",
+		"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/detach-routing-policy",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_disable_route_propagation",
+		"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/disable-route-propagation",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_enable_route_propagation",
+		"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/enable-route-propagation",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_get_connection",
+		"api": "GET /s2s-vpn/v1alpha1/regions/{region}/connections/{id}",
+		"area": "vpn",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpn_get_customer_gateway",
+		"api": "GET /s2s-vpn/v1alpha1/regions/{region}/customer-gateways/{id}",
+		"area": "vpn",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpn_get_gateway",
+		"api": "GET /s2s-vpn/v1alpha1/regions/{region}/vpn-gateways/{id}",
+		"area": "vpn",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpn_get_routing_policy",
+		"api": "GET /s2s-vpn/v1alpha1/regions/{region}/routing-policies/{id}",
+		"area": "vpn",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpn_list_connections",
+		"api": "GET /s2s-vpn/v1alpha1/regions/{region}/connections",
+		"area": "vpn",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpn_list_customer_gateways",
+		"api": "GET /s2s-vpn/v1alpha1/regions/{region}/customer-gateways",
+		"area": "vpn",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpn_list_gateway_types",
+		"api": "GET /s2s-vpn/v1alpha1/regions/{region}/vpn-gateway-types",
+		"area": "vpn",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpn_list_gateways",
+		"api": "GET /s2s-vpn/v1alpha1/regions/{region}/vpn-gateways",
+		"area": "vpn",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpn_list_routing_policies",
+		"api": "GET /s2s-vpn/v1alpha1/regions/{region}/routing-policies",
+		"area": "vpn",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_vpn_renew_connection_psk",
+		"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/renew-psk",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_set_connection_routing_policy",
+		"api": "POST /s2s-vpn/v1alpha1/regions/{region}/connections/{id}/set-routing-policy",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_update_connection",
+		"api": "PATCH /s2s-vpn/v1alpha1/regions/{region}/connections/{id}",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_update_customer_gateway",
+		"api": "PATCH /s2s-vpn/v1alpha1/regions/{region}/customer-gateways/{id}",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_update_gateway",
+		"api": "PATCH /s2s-vpn/v1alpha1/regions/{region}/vpn-gateways/{id}",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_vpn_update_routing_policy",
+		"api": "PATCH /s2s-vpn/v1alpha1/regions/{region}/routing-policies/{id}",
+		"area": "vpn",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_webhosting_create_hosting",
+		"api": "POST /webhosting/v1/regions/{region}/hostings",
+		"area": "webhosting",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_webhosting_delete_hosting",
+		"api": "DELETE /webhosting/v1/regions/{region}/hostings/{hosting_id}",
+		"area": "webhosting",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_webhosting_get_dns_records",
+		"api": "GET /webhosting/v1/regions/{region}/hostings/{hosting_id}/dns-records",
+		"area": "webhosting",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_webhosting_get_hosting",
+		"api": "GET /webhosting/v1/regions/{region}/hostings/{hosting_id}",
+		"area": "webhosting",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_webhosting_list_control_panels",
+		"api": "GET /webhosting/v1/regions/{region}/control-panels",
+		"area": "webhosting",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_webhosting_list_hostings",
+		"api": "GET /webhosting/v1/regions/{region}/hostings",
+		"area": "webhosting",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_webhosting_list_offers",
+		"api": "GET /webhosting/v1/regions/{region}/offers",
+		"area": "webhosting",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_webhosting_restore_hosting",
+		"api": "POST /webhosting/v1/regions/{region}/hostings/{hosting_id}/restore",
+		"area": "webhosting",
+		"readOnly": false
+	},
+	{
+		"tool": "scaleway_webhosting_update_hosting",
+		"api": "PATCH /webhosting/v1/regions/{region}/hostings/{hosting_id}",
+		"area": "webhosting",
+		"readOnly": false
+	}
+]

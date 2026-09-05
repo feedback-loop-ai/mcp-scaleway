@@ -9,6 +9,40 @@ Official docs: https://www.scaleway.com/en/developers/api/iam/
 
 IAM is a global (non-regional, organization-scoped) product.
 
+## MCP Identifier Confinement
+
+Before invoking an IAM handler, the MCP server validates every input field named
+`user_id`, `application_id`, `access_key`, `policy_id`, `group_id`, or `rule_id`
+with the same safe-path-segment schema. These identifiers must be nonempty and
+contain only ASCII letters, digits, `-`, `_`, `.`, or `~`; the exact values `.`
+and `..` are forbidden. UUIDs, API access keys and simple IDs such as `user-1`
+remain valid. Optional and nullable fields retain their existing semantics.
+This is a local MCP input contract, not a claim that every such ID exists upstream.
+
+Slashes, backslashes, percent escapes (including double-encoded traversal), query
+and fragment delimiters, whitespace and control characters are rejected, not
+normalized, decoded or silently rewritten. An identifier cannot change the
+selected operation's URL path or escape `/iam/v1alpha1`. This applies uniformly
+in `gateway`, `flat` and `both` modes, including read-only IAM configurations
+with individual operations excluded. Malformed identifiers fail validation
+before handler invocation or any HTTP request, so an allowed get-user operation
+cannot be used to reach an excluded get-group or a different product endpoint.
+
+The same identifier constraint applies to these named input fields when used in
+queries, JSON bodies or rule matching, keeping their contracts consistent.
+It does **not** constrain free-form names/descriptions, CEL `condition`
+expressions, permission-set names, or other non-identifier input text. Those
+fields continue to be transmitted unchanged in their existing query/body slots.
+Response schemas are unchanged.
+
+Regression coverage: `tests/unit/tools/iam.test.ts`,
+`tests/contract/iam/iam.contract.test.ts` and
+`tests/contract/iam-path-confinement.test.ts`. Protocol regressions use the real
+`createServer` and an in-memory MCP transport, with fail-closed mocked `fetch`
+(no real network or live credentials), and assert zero outbound calls for
+rejected identifiers. Positive controls verify honest IDs still address the
+original endpoints and body text is not restricted or rewritten.
+
 ## Users
 
 ### List Users

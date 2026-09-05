@@ -13,8 +13,12 @@
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { describe, expect, it } from "vitest";
+import generatedMetadata from "../../src/gateway/operations.json";
+import { createServer } from "../../src/server.js";
 import { registerAllTools } from "../../src/tools/index.js";
 
 interface ParityEntry {
@@ -42,9 +46,9 @@ function registeredToolNames(): string[] {
 }
 
 const registered = registeredToolNames();
-const matrixEntries = Object.entries(matrix).flatMap(([area, ops]) =>
-	Object.entries(ops).map(([op, entry]) => ({ area, op, entry })),
-);
+const matrixEntries = Object.entries(matrix)
+	.filter(([area]) => area !== "meta")
+	.flatMap(([area, ops]) => Object.entries(ops).map(([op, entry]) => ({ area, op, entry })));
 
 describe("parity matrix completeness", () => {
 	it("registers at least one tool", () => {
@@ -92,5 +96,29 @@ describe("parity matrix completeness", () => {
 				entry.tool.length === 0,
 		);
 		expect(malformed.map(({ area, op }) => `${area}.${op}`)).toEqual([]);
+	});
+});
+
+describe("gateway traceability", () => {
+	it("keeps all underlying operations in generated runtime metadata", () => {
+		expect(generatedMetadata.map((entry) => entry.tool).sort()).toEqual([...registered].sort());
+	});
+	it("maps every gateway tool to its contract test", async () => {
+		const meta = JSON.parse(readFileSync(resolve(repoRoot, "tests/parity-matrix.json"), "utf8"))
+			.meta.gateway_tools as Array<{ tool: string; contract_test: string }>;
+		expect(meta).toHaveLength(4);
+		for (const entry of meta) expect(existsSync(resolve(repoRoot, entry.contract_test))).toBe(true);
+		const server = createServer();
+		const client = new Client({ name: "parity", version: "1" });
+		const [ct, st] = InMemoryTransport.createLinkedPair();
+		try {
+			await Promise.all([client.connect(ct), server.connect(st)]);
+			expect((await client.listTools()).tools.map((t) => t.name).sort()).toEqual(
+				meta.map((t) => t.tool).sort(),
+			);
+		} finally {
+			await client.close();
+			await server.close();
+		}
 	});
 });

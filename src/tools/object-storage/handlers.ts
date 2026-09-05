@@ -1,5 +1,6 @@
 import { loadAuthConfig } from "../../shared/auth.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
+import { guardedFetch } from "../../shared/route-guard.js";
 import { signS3Request } from "../../shared/s3-signer.js";
 import type {
 	CreateBucketInput,
@@ -69,7 +70,7 @@ export async function handleListBuckets(input: {
 			region,
 		});
 
-		const response = await fetch(url, { method: "GET", headers });
+		const response = await guardedFetch(url, { method: "GET", headers });
 
 		if (!response.ok) {
 			const errText = await response.text();
@@ -108,7 +109,7 @@ export async function handleCreateBucket(input: {
 			extraHeaders,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "PUT",
 			headers,
 		});
@@ -142,7 +143,7 @@ export async function handleDeleteBucket(input: {
 			region,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "DELETE",
 			headers,
 		});
@@ -177,7 +178,7 @@ export async function handleGetBucketInfo(input: {
 			secretKey: config.secretKey,
 			region,
 		});
-		const headResponse = await fetch(baseUrl, {
+		const headResponse = await guardedFetch(baseUrl, {
 			method: "HEAD",
 			headers: headHeaders,
 		});
@@ -198,7 +199,7 @@ export async function handleGetBucketInfo(input: {
 			secretKey: config.secretKey,
 			region,
 		});
-		const versioningResponse = await fetch(versioningUrl, {
+		const versioningResponse = await guardedFetch(versioningUrl, {
 			method: "GET",
 			headers: versioningHeaders,
 		});
@@ -214,7 +215,7 @@ export async function handleGetBucketInfo(input: {
 			secretKey: config.secretKey,
 			region,
 		});
-		const listResponse = await fetch(listUrl, {
+		const listResponse = await guardedFetch(listUrl, {
 			method: "GET",
 			headers: listHeaders,
 		});
@@ -263,7 +264,7 @@ export async function handleListObjects(input: {
 			region,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "GET",
 			headers,
 		});
@@ -300,7 +301,7 @@ export async function handleGetObjectInfo(input: {
 			region,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "HEAD",
 			headers,
 		});
@@ -363,7 +364,7 @@ export async function handlePutObject(input: {
 			body,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "PUT",
 			headers,
 			body,
@@ -403,7 +404,7 @@ export async function handleDeleteObject(input: {
 			region,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "DELETE",
 			headers,
 		});
@@ -439,7 +440,7 @@ export async function handleGetBucketPolicy(input: {
 			region,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "GET",
 			headers,
 		});
@@ -480,7 +481,7 @@ export async function handleSetBucketPolicy(input: {
 			body: input.policy,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "PUT",
 			headers,
 			body: input.policy,
@@ -515,7 +516,7 @@ export async function handleGetBucketLifecycle(input: {
 			region,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "GET",
 			headers,
 		});
@@ -564,7 +565,7 @@ export async function handleSetBucketLifecycle(input: {
 			body: xml,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "PUT",
 			headers,
 			body: xml,
@@ -601,7 +602,7 @@ export async function handleGetBucketVersioning(input: {
 			region,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "GET",
 			headers,
 		});
@@ -641,7 +642,7 @@ export async function handleSetBucketVersioning(input: {
 			body: xml,
 		});
 
-		const response = await fetch(url, {
+		const response = await guardedFetch(url, {
 			method: "PUT",
 			headers,
 			body: xml,

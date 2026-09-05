@@ -1,28 +1,12 @@
 <!--
-================================================================================
 SYNC IMPACT REPORT
-================================================================================
-Version change: 1.0.0 → 1.1.0 (New principle + expanded contract guidance)
-
-Modified principles:
-- III. Contract-First API Design → expanded with full Scaleway API shape spec
-  requirement and 100% contract test parity mandate
-
-Added sections:
-- VIII. 100% Test Coverage & API Parity (NON-NEGOTIABLE) - new principle
-
-Modified sections:
-- Quality Gates: added Coverage gate (100% line+branch) and API Parity gate
-- Technology Stack: added Scaleway API Reference Spec row
-
-Templates requiring updates:
-- .specify/templates/plan-template.md ✅ (compatible - no stack-specific content)
-- .specify/templates/spec-template.md ✅ (compatible - no stack-specific content)
-- .specify/templates/tasks-template.md ✅ (compatible - no stack-specific content)
-- CLAUDE.md ⚠ (pending - update to reflect 100% coverage and API parity gates)
-
-Follow-up TODOs: None
-================================================================================
+Version change: 1.1.0 -> 1.2.0 (approved gateway exposure guidance)
+Modified: III. Contract-First API Design; VIII. 100% Test Coverage & API Parity
+Added/removed sections: none
+Templates: plan-template.md updated; tasks-template.md updated;
+spec-template.md compatible; commands directory absent.
+Runtime guidance: CLAUDE.md and README.md updated with gateway integration.
+Deferred placeholders: none. Existing coverage requirements unchanged.
 -->
 
 # MCP Scaleway Constitution
@@ -60,12 +44,16 @@ All MCP tools MUST be designed contract-first before implementation:
 - Tool schemas MUST be defined in `contracts/` before any code is written
 - Input/output types MUST use Zod schemas with strict validation
 - Breaking changes to tool signatures MUST be versioned and documented
-- Tools MUST map cleanly to Scaleway API operations—no invented abstractions
+- Operations MUST map cleanly to documented Scaleway API endpoints—no invented API operations
+- Tools MAY expose operations through search/describe/read/call gateway tools when each
+  underlying operation has a stable identifier mapping one-to-one to its parity-matrix entry.
+  Gateway meta-tools MUST be specified in `contracts/` before implementation. Filtering MUST
+  apply equally to discovery and execution; original input validation MUST remain enforced.
 - Error codes and messages MUST be consistent across all tools
 - A **Scaleway API Reference Spec** MUST be maintained in `specs/scaleway-api/` documenting the full shape of every Scaleway API surface exposed by this server:
   - Every product area (Instances, Block Storage, VPC, Kubernetes, Serverless, Databases, IAM, DNS, Load Balancers, Object Storage, Registry, etc.) MUST have its request/response shapes, error codes, pagination patterns, and authentication flows documented
   - The reference spec MUST be detailed enough to generate contract tests automatically
-  - Every MCP tool MUST trace back to a specific Scaleway API endpoint documented in the reference spec
+  - Every underlying operation MUST trace back to a specific Scaleway API endpoint documented in the reference spec; gateway meta-tools trace to their explicit discovery/execution contracts
   - Any new Scaleway API surface added to the server MUST first be documented in the reference spec before implementation
 
 **Rationale**: MCP clients depend on stable, predictable tool contracts. A comprehensive Scaleway API reference spec ensures every tool is backed by a verified, testable contract—eliminating guesswork and enabling 100% validation coverage.
@@ -132,6 +120,10 @@ Every MCP tool and every Scaleway API surface MUST be tested with full coverage 
   - Rate limiting and error code handling
 - **Contract Test Traceability**: Every contract test MUST reference the specific Scaleway API endpoint and the Scaleway API Reference Spec entry it validates
 - **Parity Matrix**: A machine-readable parity matrix (`tests/parity-matrix.json`) MUST be maintained mapping every Scaleway API operation to its contract test. CI MUST fail if any operation lacks a corresponding test
+- **Gateway Traceability**: Each gateway meta-tool MUST carry a `contract_test` entry in
+  the parity matrix `meta` section. CI MUST assert the registered gateway surface matches
+  those entries exactly and that every underlying operation remains represented in the
+  generated runtime metadata. Meta-tools MUST NOT use fabricated endpoint placeholders.
 - **No Tool Without Tests**: It MUST be impossible to merge an MCP tool that lacks 100% contract test coverage. CI MUST enforce this gate
 - **Regression Safety**: Any Scaleway API behavior change (detected via contract test failure) MUST be triaged, documented, and either adapted or reported upstream
 
@@ -220,4 +212,4 @@ This Constitution is the supreme governance document for MCP Scaleway. All pract
 - Agent-specific instructions: `.specify/templates/agent-file-template.md`
 - Command definitions: `.claude/commands/` (speckit commands)
 
-**Version**: 1.1.0 | **Ratified**: 2026-03-06 | **Last Amended**: 2026-03-06
+**Version**: 1.2.0 | **Ratified**: 2026-03-06 | **Last Amended**: 2026-09-05

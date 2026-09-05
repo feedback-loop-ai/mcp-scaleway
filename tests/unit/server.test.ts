@@ -1,113 +1,86 @@
-import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import pkg from "../../package.json";
 import { createServer, startServer } from "../../src/server.js";
-import { resetClient } from "../../src/shared/client.js";
+import type { ServerOptions } from "../../src/shared/mode.js";
 
-const TEST_ENV = {
-	SCW_ACCESS_KEY: "SCWXXXXXXXXXXXXXXXXX",
-	SCW_SECRET_KEY: "11111111-1111-1111-1111-111111111111",
-	SCW_DEFAULT_PROJECT_ID: "22222222-2222-2222-2222-222222222222",
-};
-
-const SCW_ENV_KEYS = [...Object.keys(TEST_ENV), "SCW_DEFAULT_ORGANIZATION_ID"];
-
-const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-const packageVersion: string = JSON.parse(
-	readFileSync(resolve(repoRoot, "package.json"), "utf-8"),
-).version;
-
-describe("createServer", () => {
-	beforeEach(() => {
-		Object.assign(process.env, TEST_ENV);
-	});
-
-	afterEach(() => {
-		for (const key of Object.keys(TEST_ENV)) {
-			delete process.env[key];
-		}
-		resetClient();
-	});
-
-	it("returns an McpServer instance", () => {
-		const server = createServer();
-		expect(server).toBeInstanceOf(McpServer);
-	});
-
-	it("registers all tools without throwing", () => {
-		expect(() => createServer()).not.toThrow();
-	});
-
-	it("registers all tools without credentials in the environment", () => {
-		const saved = new Map<string, string | undefined>();
-		for (const key of SCW_ENV_KEYS) {
-			saved.set(key, process.env[key]);
-			delete process.env[key];
-		}
-		try {
-			expect(() => createServer()).not.toThrow();
-		} finally {
-			for (const [key, value] of saved) {
-				if (value !== undefined) {
-					process.env[key] = value;
-				}
-			}
-		}
-	});
-
-	describe("serverInfo over a real MCP handshake", () => {
-		let client: Client;
-
-		beforeEach(async () => {
-			const server = createServer();
-			const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
-			client = new Client({ name: "test-client", version: "0.0.1" });
-			await Promise.all([client.connect(clientTransport), server.connect(serverTransport)]);
-		});
-
-		afterEach(async () => {
+const connections: Array<{ client: Client; server: McpServer }> = [];
+async function connect(options?: ServerOptions) {
+	const server = createServer(options);
+	const client = new Client({ name: "test", version: "1" });
+	const [ct, st] = InMemoryTransport.createLinkedPair();
+	await Promise.all([client.connect(ct), server.connect(st)]);
+	connections.push({ client, server });
+	return client;
+}
+afterEach(async () => {
+	await Promise.all(
+		connections.splice(0).map(async ({ client, server }) => {
 			await client.close();
-		});
-
-		it("advertises the package.json version and the mcp-scaleway name", () => {
-			const info = client.getServerVersion();
-			expect(info).toBeDefined();
-			expect(info?.name).toBe("mcp-scaleway");
-			expect(info?.version).toBe(packageVersion);
-			expect(info?.version).toMatch(/^\d+\.\d+\.\d+/);
-		});
-
-		it("exposes tools through the connected client", async () => {
-			const { tools } = await client.listTools();
-			expect(tools.length).toBeGreaterThan(0);
-			expect(tools.map((t) => t.name)).toContain("scaleway_apple_silicon_list_servers");
-		});
-	});
+			await server.close();
+		}),
+	);
+	vi.restoreAllMocks();
+	vi.unstubAllEnvs();
 });
 
-describe("startServer", () => {
-	beforeEach(() => {
-		Object.assign(process.env, TEST_ENV);
+describe("server surface modes", () => {
+	it("defaults to four compact tools without credentials", async () => {
+		for (const name of ["SCW_ACCESS_KEY", "SCW_SECRET_KEY", "SCW_DEFAULT_PROJECT_ID"])
+			vi.stubEnv(name, undefined);
+		const client = await connect();
+		const { tools } = await client.listTools();
+		expect(tools.map((t) => t.name)).toEqual([
+			"scaleway_search",
+			"scaleway_describe",
+			"scaleway_read",
+			"scaleway_call",
+		]);
+		expect(Buffer.byteLength(JSON.stringify(tools))).toBeLessThan(12000);
+		expect(client.getServerVersion()).toMatchObject({ name: "mcp-scaleway", version: pkg.version });
+		expect(client.getInstructions()).toContain("Use scaleway_search");
+		expect(Buffer.byteLength(client.getInstructions() ?? "")).toBeLessThan(2048);
 	});
-
-	afterEach(() => {
-		for (const key of Object.keys(TEST_ENV)) {
-			delete process.env[key];
-		}
-		resetClient();
+	it("keeps explicit createServer independent of shell filters", async () => {
+		vi.stubEnv("SCW_MCP_MODE", "flat");
+		vi.stubEnv("SCW_TOOLSETS", "invalid");
+		const client = await connect();
+		expect((await client.listTools()).tools).toHaveLength(4);
 	});
-
-	it("creates server and connects transport", async () => {
-		const mockConnect = vi.fn().mockResolvedValue(undefined);
-		vi.spyOn(McpServer.prototype, "connect").mockImplementation(mockConnect);
-
+	it("flat mode lists only configured operations and retains SDK validation", async () => {
+		const client = await connect({ mode: "flat", filters: { toolsets: ["rdb"] } });
+		const { tools } = await client.listTools();
+		expect(tools).toHaveLength(27);
+		expect(tools.every((t) => t.name.startsWith("scaleway_rdb_"))).toBe(true);
+		expect(client.getInstructions()).toContain("Use the listed tools directly");
+		const invalid = await client.callTool({ name: "scaleway_rdb_get_instance", arguments: {} });
+		expect(invalid.isError).toBe(true);
+	});
+	it("both mode exposes gateway and selected legacy tools", async () => {
+		const client = await connect({ mode: "both", filters: { toolsets: ["rdb"], readOnly: true } });
+		const { tools } = await client.listTools();
+		expect(tools.slice(0, 4).map((t) => t.name)).toContain("scaleway_search");
+		expect(tools.length).toBeGreaterThan(4);
+		expect(tools.some((t) => t.name === "scaleway_rdb_create_instance")).toBe(false);
+		const result = await client.callTool({
+			name: "scaleway_call",
+			arguments: { op: "rdb_create_instance", params: {} },
+		});
+		expect(result.isError).toBe(true);
+	});
+	it("rejects invalid explicit modes and filters", () => {
+		expect(() => createServer({ mode: "invalid" as ServerOptions["mode"] })).toThrow(
+			"Invalid SCW_MCP_MODE",
+		);
+		expect(() => createServer({ filters: { toolsets: ["invalid"] } })).toThrow("Unknown toolset");
+	});
+	it("startServer reads environment only at startup", async () => {
+		vi.stubEnv("SCW_MCP_MODE", "flat");
+		vi.stubEnv("SCW_TOOLSETS", "rdb");
+		const spy = vi.spyOn(McpServer.prototype, "connect").mockResolvedValue(undefined);
 		await startServer();
-
-		expect(mockConnect).toHaveBeenCalledOnce();
-		vi.restoreAllMocks();
+		expect(spy).toHaveBeenCalledOnce();
 	});
 });

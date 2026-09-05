@@ -1120,3 +1120,86 @@ describe("iam types", () => {
 		expect(parsed.user_id).toBe("usr-1");
 	});
 });
+
+// Spec: specs/scaleway-api/iam/api-reference.md#mcp-identifier-confinement
+// Every occurrence is checked, including optional body/query identifiers and rule matching.
+describe("IAM input identifier confinement", () => {
+	const fields = new Set([
+		"user_id",
+		"application_id",
+		"access_key",
+		"policy_id",
+		"group_id",
+		"rule_id",
+	]);
+	const identifiers = Object.entries(typesModule)
+		.filter(([name]) => name.endsWith("Input"))
+		.flatMap(([name, schema]) =>
+			Object.entries(schema.shape)
+				.filter(([field]) => fields.has(field))
+				.map(([field, input]) => ({ name, field, input })),
+		);
+	const forbidden = [
+		"",
+		".",
+		"..",
+		"../groups/group-1",
+		"../../../secret-manager/v1beta1/regions/fr-par/secrets/secret-1/versions/1/access",
+		"/group-1",
+		"user/other",
+		"user\\other",
+		"..\\groups\\group-1",
+		"%2e%2e",
+		"%2E%2E%2Fgroups%2Fgroup-1",
+		"%252e%252e%252fgroups",
+		"user%2fother",
+		"user%5cother",
+		"user?x=1",
+		"user#fragment",
+		" user",
+		"user ",
+		"user\n",
+		"user\r\n",
+		"user\u2028",
+		"user\u2029",
+		"usér",
+		"user／other",
+		"user％2fother",
+		...Array.from({ length: 33 }, (_, code) => `user${String.fromCharCode(code)}other`),
+		...Array.from({ length: 33 }, (_, code) => `user${String.fromCharCode(127 + code)}other`),
+	];
+	it("covers every named identifier occurrence", () => {
+		expect(identifiers).toHaveLength(37);
+		expect(new Set(identifiers.map(({ field }) => field))).toEqual(fields);
+	});
+	it.each(identifiers)("$name.$field rejects URL syntax without normalization", ({ input }) => {
+		for (const value of forbidden)
+			expect(input.safeParse(value).success, JSON.stringify(value)).toBe(false);
+	});
+	it.each(identifiers)("$name.$field preserves honest ASCII IDs", ({ input }) => {
+		for (const value of [
+			"user-1",
+			"app-1",
+			"SCWTESTONLY",
+			"policy_1",
+			"rule.1~",
+			"11111111-1111-4111-8111-111111111111",
+			"...",
+			".user",
+			"user..",
+			"0",
+		])
+			expect(input.parse(value)).toBe(value);
+	});
+	it("preserves optional identifiers and nullable policy principals", () => {
+		expect(typesModule.CreateApiKeyInput.parse({})).toEqual({ description: "" });
+		expect(
+			typesModule.UpdatePolicyInput.parse({
+				policy_id: "policy-1",
+				user_id: null,
+				group_id: null,
+				application_id: null,
+			}),
+		).toEqual({ policy_id: "policy-1", user_id: null, group_id: null, application_id: null });
+	});
+});
