@@ -62,6 +62,8 @@ Supports 50 Scaleway service areas organized across 8 categories:
 | **Managed Services** | NATS, SQS, SNS, TEM (Transactional Email), Mailbox, Kafka, RabbitMQ, IoT Hub, Container Registry, Marketplace |
 | **Account & Billing** | Account, Billing, Web Hosting, Product Catalog, Environmental Footprint |
 
+> **Prerelease status:** this branch describes `0.4.0-beta.0`, which has not been published by this change. After that prerelease is published, use `npx mcp-scaleway@0.4.0-beta.0` or set MCP args to `["mcp-scaleway@0.4.0-beta.0"]` to try the gateway. Unqualified package commands below resolve the stable `latest` tag and will not opt into `beta`. To test before publication, build this checkout with `bun run build` and launch its local `dist/index.js`. No existing MCP process changes until you reconnect.
+
 ## Quick Start
 
 ```bash
