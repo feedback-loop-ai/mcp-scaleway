@@ -22,7 +22,7 @@ import type {
 	ValidateDomainRecordsParams,
 } from "./types.js";
 
-const MAILBOX_API_PREFIX = "mailbox/v1alpha1";
+const MAILBOX_API_PREFIX = "/mailbox/v1alpha1";
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
 function getClient() {

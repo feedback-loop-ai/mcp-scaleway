@@ -1,654 +1,228 @@
-import { type Mock, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import * as handlers from "../../../src/tools/containers/handlers.js";
 import {
 	handleCreateContainer,
 	handleCreateCron,
-	handleCreateDomain,
 	handleCreateNamespace,
-	handleCreateToken,
-	handleDeleteContainer,
-	handleDeleteCron,
-	handleDeleteDomain,
-	handleDeleteNamespace,
-	handleDeleteToken,
-	handleDeployContainer,
-	handleGetContainer,
-	handleGetNamespace,
 	handleListContainers,
-	handleListCrons,
-	handleListDomains,
 	handleListNamespaces,
 	handleUpdateContainer,
 	handleUpdateCron,
 	handleUpdateNamespace,
 } from "../../../src/tools/containers/handlers.js";
 
-// Mock the shared modules
-vi.mock("../../../src/shared/auth.js", () => ({
-	loadAuthConfig: () => ({
-		accessKey: "SCWXXXXXXXXXXXXXXXXX",
-		secretKey: "00000000-0000-0000-0000-000000000000",
-		defaultProjectId: "00000000-0000-0000-0000-000000000001",
-		defaultRegion: "fr-par",
-		defaultZone: "fr-par-1",
-	}),
-}));
-
-vi.mock("../../../src/shared/client.js", () => ({
-	createScalewayClient: () => ({}),
-}));
-
-const UUID1 = "00000000-0000-0000-0000-000000000001";
-const UUID2 = "00000000-0000-0000-0000-000000000002";
-
-let mockFetch: Mock;
-
-function mockOkResponse(body: unknown) {
-	return {
-		ok: true,
-		status: 200,
-		text: async () => JSON.stringify(body),
-	};
+const { fetch, auth } = vi.hoisted(() => ({ fetch: vi.fn(), auth: vi.fn() }));
+vi.mock("../../../src/shared/auth.js", () => ({ loadAuthConfig: auth }));
+vi.mock("../../../src/shared/client.js", () => ({ createScalewayClient: () => ({ fetch }) }));
+const ID = "00000000-0000-0000-0000-000000000001";
+const PROJECT = "00000000-0000-0000-0000-000000000002";
+const minimal = { namespaceId: ID, name: "app", registryImage: "example/app:1" };
+function body() {
+	expect(fetch).toHaveBeenCalledTimes(1);
+	const request = fetch.mock.calls[0][0];
+	expect(typeof request.body).toBe("string");
+	expect(request.headers).toEqual({ "Content-Type": "application/json" });
+	return JSON.parse(request.body);
 }
-
-function mockErrorResponse(status: number, message: string) {
-	return {
-		ok: false,
-		status,
-		text: async () => message,
-	};
-}
-
 beforeEach(() => {
-	mockFetch = vi.fn();
-	vi.stubGlobal("fetch", mockFetch);
+	fetch.mockReset().mockResolvedValue({});
+	auth.mockReset().mockReturnValue({ defaultRegion: "fr-par", defaultProjectId: PROJECT });
 });
 
-afterEach(() => {
-	vi.restoreAllMocks();
+describe("removed container handlers", () => {
+	it.each(["handleDeployContainer", "handleCreateToken", "handleDeleteToken"])(
+		"does not export %s",
+		(handler) => {
+			expect(handlers).not.toHaveProperty(handler);
+		},
+	);
 });
 
-interface HandlerResult {
-	content: { type: string; text: string }[];
-	isError?: boolean;
-}
-
-function parseContent(result: HandlerResult) {
-	return JSON.parse(result.content[0].text);
-}
-
-async function expectError(promise: Promise<unknown>) {
-	const result = (await promise) as HandlerResult;
-	expect(result.isError).toBe(true);
-	return result;
-}
-
-describe("containers/handlers", () => {
-	// ─── Namespace Handlers ─────────────────────────────────────────
-
-	describe("handleListNamespaces", () => {
-		it("returns paginated namespaces", async () => {
-			mockFetch.mockResolvedValueOnce(
-				mockOkResponse({ namespaces: [{ id: UUID1, name: "ns1" }], total_count: 1 }),
-			);
-
-			const result = await handleListNamespaces({ page: 1, pageSize: 50 });
-			const data = parseContent(result);
-			expect(data.items).toHaveLength(1);
-			expect(data.totalCount).toBe(1);
-			expect(data.page).toBe(1);
-			expect(data.pageSize).toBe(50);
-		});
-
-		it("passes name filter in query", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ namespaces: [], total_count: 0 }));
-
-			await handleListNamespaces({ page: 1, pageSize: 50, name: "test" });
-			const url = mockFetch.mock.calls[0][0] as string;
-			expect(url).toContain("name=test");
-		});
-
-		it("passes projectId filter", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ namespaces: [], total_count: 0 }));
-
-			await handleListNamespaces({ page: 1, pageSize: 50, projectId: UUID1 });
-			const url = mockFetch.mock.calls[0][0] as string;
-			expect(url).toContain(`project_id=${UUID1}`);
-		});
-
-		it("passes organizationId filter", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ namespaces: [], total_count: 0 }));
-
-			await handleListNamespaces({ page: 1, pageSize: 50, organizationId: UUID2 });
-			const url = mockFetch.mock.calls[0][0] as string;
-			expect(url).toContain(`organization_id=${UUID2}`);
-		});
-
-		it("uses custom region", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ namespaces: [], total_count: 0 }));
-
-			await handleListNamespaces({ page: 1, pageSize: 50, region: "nl-ams" });
-			const url = mockFetch.mock.calls[0][0] as string;
-			expect(url).toContain("/regions/nl-ams/");
-		});
-
-		it("returns error on API failure", async () => {
-			mockFetch.mockResolvedValueOnce(mockErrorResponse(403, "Forbidden"));
-
-			const result = (await handleListNamespaces({ page: 1, pageSize: 50 })) as HandlerResult;
-			expect(result.isError).toBe(true);
-			const data = parseContent(result);
-			expect(data.error.type).toBe("permission_denied");
-		});
+describe("container v1 compatibility translations", () => {
+	it("omits unspecified creation fields rather than sending legacy defaults", async () => {
+		await handleCreateContainer({ ...minimal, description: undefined });
+		expect(body()).toEqual({ namespace_id: ID, name: "app", image: "example/app:1" });
 	});
-
-	describe("handleGetNamespace", () => {
-		it("returns namespace details", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, name: "ns1", status: "ready" }));
-
-			const result = await handleGetNamespace({ namespaceId: UUID1 });
-			const data = parseContent(result);
-			expect(data.id).toBe(UUID1);
-		});
-
-		it("returns 404 error", async () => {
-			mockFetch.mockResolvedValueOnce(mockErrorResponse(404, "Not found"));
-
-			const result = (await handleGetNamespace({ namespaceId: UUID1 })) as HandlerResult;
-			expect(result.isError).toBe(true);
-		});
+	it("keeps an empty PATCH empty", async () => {
+		await handleUpdateContainer({ containerId: ID });
+		expect(body()).toEqual({});
 	});
-
-	describe("handleCreateNamespace", () => {
-		it("creates namespace with required fields", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, name: "ns1" }));
-
-			const result = await handleCreateNamespace({ name: "ns1" });
-			const data = parseContent(result);
-			expect(data.id).toBe(UUID1);
-
-			const [url, opts] = mockFetch.mock.calls[0];
-			expect(url).toContain("/namespaces");
-			expect(opts.method).toBe("POST");
-			expect(JSON.parse(opts.body)).toEqual({ name: "ns1" });
-		});
-
-		it("sends snake_case body", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1 }));
-
-			await handleCreateNamespace({
-				name: "ns1",
-				projectId: UUID1,
-				environmentVariables: { FOO: "bar" },
+	it.each([true, false])(
+		"uses the exact singular PATCH boolean field for %s",
+		async (httpsConnectionsOnly) => {
+			await handleUpdateContainer({ containerId: ID, httpsConnectionsOnly });
+			expect(body()).toEqual({ https_connection_only: httpsConnectionsOnly });
+		},
+	);
+	it.each([true, false])(
+		"uses the exact plural create boolean field for %s",
+		async (httpsConnectionsOnly) => {
+			await handleCreateContainer({ ...minimal, httpsConnectionsOnly });
+			expect(body()).toEqual({
+				namespace_id: ID,
+				name: "app",
+				image: "example/app:1",
+				https_connections_only: httpsConnectionsOnly,
 			});
-
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-			expect(body.project_id).toBe(UUID1);
-			expect(body.environment_variables).toEqual({ FOO: "bar" });
-		});
+		},
+	);
+	it.each([undefined, false])(
+		"translates legacy enabled with explicit boolean %s",
+		async (httpsConnectionsOnly) => {
+			await handleCreateContainer({ ...minimal, httpOption: "enabled", httpsConnectionsOnly });
+			expect(body().https_connections_only).toBe(false);
+		},
+	);
+	it("translates legacy enabled in PATCH", async () => {
+		await handleUpdateContainer({ containerId: ID, httpOption: "enabled" });
+		expect(body()).toEqual({ https_connection_only: false });
 	});
-
-	describe("handleUpdateNamespace", () => {
-		it("updates namespace", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, description: "updated" }));
-
-			const result = await handleUpdateNamespace({
-				namespaceId: UUID1,
-				description: "updated",
+	it.each(["redirected", "doNotForce"] as const)(
+		"rejects %s before auth or transport",
+		async (httpOption) => {
+			const result = await handleCreateContainer({ ...minimal, httpOption });
+			expect(result).toHaveProperty("isError", true);
+			expect(JSON.parse(result.content[0].text).error).toMatchObject({
+				type: "invalid_input",
+				statusCode: 400,
 			});
-			const data = parseContent(result);
-			expect(data.description).toBe("updated");
+			expect(auth).not.toHaveBeenCalled();
+			expect(fetch).not.toHaveBeenCalled();
+		},
+	);
+	it("rejects conflicting HTTP semantics in PATCH before auth", async () => {
+		expect(
+			await handleUpdateContainer({
+				containerId: ID,
+				httpOption: "enabled",
+				httpsConnectionsOnly: true,
+			}),
+		).toHaveProperty("isError", true);
+		expect(auth).not.toHaveBeenCalled();
+		expect(fetch).not.toHaveBeenCalled();
+	});
+	it.each([256, 512, 1024])(
+		"converts %s MiB exactly, without changing CPU millicores",
+		async (memoryLimit) => {
+			await handleUpdateContainer({ containerId: ID, memoryLimit, cpuLimit: 140 });
+			expect(body()).toEqual({ memory_limit_bytes: memoryLimit * 1048576, mvcpu_limit: 140 });
+		},
+	);
+	it("uses the requested region", async () => {
+		await handleCreateContainer({ ...minimal, region: "it-mil" });
+		expect(fetch.mock.calls[0][0].path).toBe("/containers/v1/regions/it-mil/containers");
+	});
+});
 
-			const [url, opts] = mockFetch.mock.calls[0];
-			expect(url).toContain(`/namespaces/${UUID1}`);
-			expect(opts.method).toBe("PATCH");
+describe("namespace v1 defaults and nested maps", () => {
+	it("defaults projectId and omits unspecified values", async () => {
+		await handleCreateNamespace({ name: "ns", description: undefined });
+		expect(body()).toEqual({ name: "ns", project_id: PROJECT });
+	});
+	it("respects an explicit projectId", async () => {
+		await handleCreateNamespace({ name: "ns", projectId: ID });
+		expect(body()).toEqual({ name: "ns", project_id: ID });
+	});
+	it("leaves a namespace PATCH empty without resetting maps", async () => {
+		await handleUpdateNamespace({ namespaceId: ID });
+		expect(body()).toEqual({});
+	});
+	it("preserves arbitrary map keys while translating the secret array", async () => {
+		await handleUpdateNamespace({
+			namespaceId: ID,
+			environmentVariables: { keepCamel: "KeepValue" },
+			secretEnvironmentVariables: [
+				{ key: "keepCamel", value: "KeepValue" },
+				{ key: "OTHER", value: "" },
+			],
 		});
-
-		it("strips undefined values from body", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1 }));
-
-			await handleUpdateNamespace({
-				namespaceId: UUID1,
-				description: undefined,
-				environmentVariables: undefined,
-			});
-
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-			expect(body).not.toHaveProperty("description");
-			expect(body).not.toHaveProperty("environment_variables");
+		expect(body()).toEqual({
+			environment_variables: { keepCamel: "KeepValue" },
+			secret_environment_variables: { keepCamel: "KeepValue", OTHER: "" },
 		});
 	});
-
-	describe("handleDeleteNamespace", () => {
-		it("deletes namespace", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({}));
-
-			const result = await handleDeleteNamespace({ namespaceId: UUID1 });
-			const [url, opts] = mockFetch.mock.calls[0];
-			expect(url).toContain(`/namespaces/${UUID1}`);
-			expect(opts.method).toBe("DELETE");
-			expect(result.content).toBeDefined();
-		});
+	it.each([
+		() =>
+			handleCreateNamespace({
+				name: "ns",
+				secretEnvironmentVariables: [
+					{ key: "A", value: "x" },
+					{ key: "A", value: "y" },
+				],
+			}),
+		() =>
+			handleCreateContainer({
+				...minimal,
+				secretEnvironmentVariables: [
+					{ key: "A", value: "x" },
+					{ key: "A", value: "y" },
+				],
+			}),
+	])("rejects duplicate secret keys rather than losing a value", async (invoke) => {
+		const result = await invoke();
+		expect(result).toHaveProperty("isError", true);
+		expect(JSON.parse(result.content[0].text).error.statusCode).toBe(400);
+		expect(fetch).not.toHaveBeenCalled();
 	});
+});
 
-	// ─── Container Handlers ─────────────────────────────────────────
-
-	describe("handleListContainers", () => {
-		it("returns paginated containers", async () => {
-			mockFetch.mockResolvedValueOnce(
-				mockOkResponse({ containers: [{ id: UUID1 }], total_count: 1 }),
-			);
-
-			const result = await handleListContainers({
-				namespaceId: UUID1,
-				page: 1,
-				pageSize: 50,
-			});
-			const data = parseContent(result);
-			expect(data.items).toHaveLength(1);
-			expect(data.totalCount).toBe(1);
-		});
-
-		it("passes namespace_id and name filter", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ containers: [], total_count: 0 }));
-
-			await handleListContainers({
-				namespaceId: UUID1,
-				name: "web",
-				page: 1,
-				pageSize: 50,
-			});
-			const url = mockFetch.mock.calls[0][0] as string;
-			expect(url).toContain(`namespace_id=${UUID1}`);
-			expect(url).toContain("name=web");
-		});
-	});
-
-	describe("handleGetContainer", () => {
-		it("returns container details", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, name: "web", status: "ready" }));
-
-			const result = await handleGetContainer({ containerId: UUID1 });
-			const data = parseContent(result);
-			expect(data.name).toBe("web");
-		});
-	});
-
-	describe("handleCreateContainer", () => {
-		it("creates container", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, name: "web" }));
-
-			const result = await handleCreateContainer({
-				namespaceId: UUID1,
-				name: "web",
-				registryImage: "rg.fr-par.scw.cloud/ns/img:latest",
-			});
-			const data = parseContent(result);
-			expect(data.id).toBe(UUID1);
-
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-			expect(body.namespace_id).toBe(UUID1);
-			expect(body.registry_image).toBe("rg.fr-par.scw.cloud/ns/img:latest");
-		});
-
-		it("sends all optional fields as snake_case", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1 }));
-
-			await handleCreateContainer({
-				namespaceId: UUID1,
-				name: "web",
-				registryImage: "img",
-				minScale: 1,
-				maxScale: 10,
-				memoryLimit: 512,
-				cpuLimit: 1000,
-				httpOption: "redirected",
-			});
-
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-			expect(body.min_scale).toBe(1);
-			expect(body.max_scale).toBe(10);
-			expect(body.memory_limit).toBe(512);
-			expect(body.cpu_limit).toBe(1000);
-			expect(body.http_option).toBe("redirected");
-		});
-	});
-
-	describe("handleUpdateContainer", () => {
-		it("updates container", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, memory_limit: 1024 }));
-
-			const result = await handleUpdateContainer({
-				containerId: UUID1,
-				memoryLimit: 1024,
-			});
-			const data = parseContent(result);
-			expect(data.memory_limit).toBe(1024);
-
-			const [url, opts] = mockFetch.mock.calls[0];
-			expect(url).toContain(`/containers/${UUID1}`);
-			expect(opts.method).toBe("PATCH");
-		});
-	});
-
-	describe("handleDeleteContainer", () => {
-		it("deletes container", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({}));
-
-			await handleDeleteContainer({ containerId: UUID1 });
-			const [url, opts] = mockFetch.mock.calls[0];
-			expect(url).toContain(`/containers/${UUID1}`);
-			expect(opts.method).toBe("DELETE");
-		});
-	});
-
-	describe("handleDeployContainer", () => {
-		it("deploys container", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, status: "deploying" }));
-
-			const result = await handleDeployContainer({ containerId: UUID1 });
-			const data = parseContent(result);
-			expect(data.status).toBe("deploying");
-
-			const [url, opts] = mockFetch.mock.calls[0];
-			expect(url).toContain(`/containers/${UUID1}/deploy`);
-			expect(opts.method).toBe("POST");
-		});
-	});
-
-	// ─── Cron Handlers ──────────────────────────────────────────────
-
-	describe("handleListCrons", () => {
-		it("returns paginated crons", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ crons: [{ id: UUID1 }], total_count: 1 }));
-
-			const result = await handleListCrons({
-				containerId: UUID1,
-				page: 1,
-				pageSize: 50,
-			});
-			const data = parseContent(result);
-			expect(data.items).toHaveLength(1);
-		});
-
-		it("passes container_id in query", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ crons: [], total_count: 0 }));
-
-			await handleListCrons({ containerId: UUID1, page: 1, pageSize: 50 });
-			const url = mockFetch.mock.calls[0][0] as string;
-			expect(url).toContain(`container_id=${UUID1}`);
-		});
-	});
-
-	describe("handleCreateCron", () => {
-		it("creates cron", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, schedule: "0 * * * *" }));
-
-			const result = await handleCreateCron({
-				containerId: UUID1,
+describe("cron to trigger mapping", () => {
+	it("creates a UTC JSON POST trigger when optional values are omitted", async () => {
+		await handleCreateCron({ containerId: ID, schedule: "0 * * * *" });
+		expect(body()).toEqual({
+			container_id: ID,
+			name: expect.stringMatching(/^cron-[0-9a-f-]{36}$/),
+			destination_config: { http_path: "/", http_method: "post" },
+			cron_config: {
 				schedule: "0 * * * *",
-			});
-			const data = parseContent(result);
-			expect(data.schedule).toBe("0 * * * *");
-
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-			expect(body.container_id).toBe(UUID1);
+				timezone: "UTC",
+				body: "{}",
+				headers: { "Content-Type": "application/json" },
+			},
 		});
 	});
-
-	describe("handleUpdateCron", () => {
-		it("updates cron", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, schedule: "*/5 * * * *" }));
-
-			const result = await handleUpdateCron({
-				cronId: UUID1,
-				schedule: "*/5 * * * *",
-			});
-			const data = parseContent(result);
-			expect(data.schedule).toBe("*/5 * * * *");
-
-			const [url, opts] = mockFetch.mock.calls[0];
-			expect(url).toContain(`/crons/${UUID1}`);
-			expect(opts.method).toBe("PATCH");
+	it("name-only PATCH does not reset cron settings or headers", async () => {
+		await handleUpdateCron({ cronId: ID, name: "new" });
+		expect(body()).toEqual({ name: "new" });
+	});
+	it("empty PATCH does not materialize a cron_config", async () => {
+		await handleUpdateCron({ cronId: ID });
+		expect(body()).toEqual({});
+	});
+	it("schedule-only PATCH keeps timezone and body unchanged", async () => {
+		await handleUpdateCron({ cronId: ID, schedule: "5 * * * *" });
+		expect(body()).toEqual({ cron_config: { schedule: "5 * * * *" } });
+	});
+	it("args-only PATCH stringifies nested JSON without changing headers", async () => {
+		await handleUpdateCron({ cronId: ID, args: { keepCamel: { nested: [false, null, "value"] } } });
+		expect(body()).toEqual({
+			cron_config: { body: '{"keepCamel":{"nested":[false,null,"value"]}}' },
 		});
 	});
-
-	describe("handleDeleteCron", () => {
-		it("deletes cron", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({}));
-
-			await handleDeleteCron({ cronId: UUID1 });
-			const [url, opts] = mockFetch.mock.calls[0];
-			expect(url).toContain(`/crons/${UUID1}`);
-			expect(opts.method).toBe("DELETE");
-		});
+	it("timezone-only PATCH leaves everything else untouched", async () => {
+		await handleUpdateCron({ cronId: ID, timezone: "Europe/Paris" });
+		expect(body()).toEqual({ cron_config: { timezone: "Europe/Paris" } });
 	});
-
-	// ─── Domain Handlers ────────────────────────────────────────────
-
-	describe("handleListDomains", () => {
-		it("returns paginated domains", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ domains: [{ id: UUID1 }], total_count: 1 }));
-
-			const result = await handleListDomains({
-				containerId: UUID1,
-				page: 1,
-				pageSize: 50,
-			});
-			const data = parseContent(result);
-			expect(data.items).toHaveLength(1);
-		});
+	it("rejects retargeting instead of dropping containerId", async () => {
+		const result = await handleUpdateCron({ cronId: ID, containerId: PROJECT, name: "new" });
+		expect(result).toHaveProperty("isError", true);
+		expect(JSON.parse(result.content[0].text).error.type).toBe("unsupported_operation");
+		expect(auth).not.toHaveBeenCalled();
+		expect(fetch).not.toHaveBeenCalled();
 	});
+});
 
-	describe("handleCreateDomain", () => {
-		it("creates domain", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, hostname: "app.example.com" }));
-
-			const result = await handleCreateDomain({
-				containerId: UUID1,
-				hostname: "app.example.com",
-			});
-			const data = parseContent(result);
-			expect(data.hostname).toBe("app.example.com");
-
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-			expect(body.container_id).toBe(UUID1);
-		});
+describe("list query omission", () => {
+	it("omits absent namespace filters", async () => {
+		fetch.mockResolvedValueOnce({ namespaces: [], total_count: 0 });
+		await handleListNamespaces({ page: 1, pageSize: 50 });
+		expect(fetch.mock.calls[0][0].urlParams.toString()).toBe("page=1&page_size=50");
 	});
-
-	describe("handleDeleteDomain", () => {
-		it("deletes domain", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({}));
-
-			await handleDeleteDomain({ domainId: UUID1 });
-			const [url, opts] = mockFetch.mock.calls[0];
-			expect(url).toContain(`/domains/${UUID1}`);
-			expect(opts.method).toBe("DELETE");
-		});
-	});
-
-	// ─── Token Handlers ─────────────────────────────────────────────
-
-	describe("handleCreateToken", () => {
-		it("creates token with containerId", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1, token: "scw-token-xxx" }));
-
-			const result = await handleCreateToken({
-				containerId: UUID1,
-				description: "test",
-			});
-			const data = parseContent(result);
-			expect(data.token).toBe("scw-token-xxx");
-
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-			expect(body.container_id).toBe(UUID1);
-		});
-
-		it("creates token with namespaceId", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({ id: UUID1 }));
-
-			await handleCreateToken({ namespaceId: UUID2 });
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-			expect(body.namespace_id).toBe(UUID2);
-		});
-	});
-
-	describe("handleDeleteToken", () => {
-		it("deletes token", async () => {
-			mockFetch.mockResolvedValueOnce(mockOkResponse({}));
-
-			await handleDeleteToken({ tokenId: UUID1 });
-			const [url, opts] = mockFetch.mock.calls[0];
-			expect(url).toContain(`/tokens/${UUID1}`);
-			expect(opts.method).toBe("DELETE");
-		});
-	});
-
-	// ─── Error handling ─────────────────────────────────────────────
-
-	describe("error handling", () => {
-		it("handles 400 errors", async () => {
-			mockFetch.mockResolvedValueOnce(mockErrorResponse(400, "Bad request"));
-			const result = await expectError(handleGetContainer({ containerId: UUID1 }));
-			const data = parseContent(result);
-			expect(data.error.type).toBe("invalid_input");
-			expect(data.error.statusCode).toBe(400);
-		});
-
-		it("handles 401 errors", async () => {
-			mockFetch.mockResolvedValueOnce(mockErrorResponse(401, "Unauthorized"));
-			const result = await expectError(handleGetContainer({ containerId: UUID1 }));
-			const data = parseContent(result);
-			expect(data.error.type).toBe("permission_denied");
-		});
-
-		it("handles 404 errors", async () => {
-			mockFetch.mockResolvedValueOnce(mockErrorResponse(404, "Not found"));
-			const result = await expectError(handleGetContainer({ containerId: UUID1 }));
-			const data = parseContent(result);
-			expect(data.error.type).toBe("not_found");
-		});
-
-		it("handles 429 errors", async () => {
-			mockFetch.mockResolvedValueOnce(mockErrorResponse(429, "Rate limited"));
-			const result = await expectError(handleGetContainer({ containerId: UUID1 }));
-			const data = parseContent(result);
-			expect(data.error.type).toBe("rate_limited");
-		});
-
-		it("handles 500 errors", async () => {
-			mockFetch.mockResolvedValueOnce(mockErrorResponse(500, "Server error"));
-			const result = await expectError(handleGetContainer({ containerId: UUID1 }));
-			const data = parseContent(result);
-			expect(data.error.type).toBe("server_error");
-		});
-
-		it("handles network errors", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("Network error"));
-			await expectError(handleGetContainer({ containerId: UUID1 }));
-		});
-
-		it("handles non-Error throws", async () => {
-			mockFetch.mockRejectedValueOnce("string error");
-			await expectError(handleGetContainer({ containerId: UUID1 }));
-		});
-
-		it("handles empty response body", async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 204,
-				text: async () => "",
-			});
-			const result = await handleDeleteNamespace({ namespaceId: UUID1 });
-			const data = parseContent(result as HandlerResult);
-			expect(data).toEqual({});
-		});
-
-		// Cover catch blocks of every handler
-		it("handleCreateNamespace error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleCreateNamespace({ name: "ns" }));
-		});
-
-		it("handleUpdateNamespace error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleUpdateNamespace({ namespaceId: UUID1 }));
-		});
-
-		it("handleDeleteNamespace error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleDeleteNamespace({ namespaceId: UUID1 }));
-		});
-
-		it("handleListContainers error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleListContainers({ namespaceId: UUID1, page: 1, pageSize: 50 }));
-		});
-
-		it("handleCreateContainer error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(
-				handleCreateContainer({ namespaceId: UUID1, name: "c1", registryImage: "img" }),
-			);
-		});
-
-		it("handleUpdateContainer error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleUpdateContainer({ containerId: UUID1 }));
-		});
-
-		it("handleDeleteContainer error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleDeleteContainer({ containerId: UUID1 }));
-		});
-
-		it("handleDeployContainer error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleDeployContainer({ containerId: UUID1 }));
-		});
-
-		it("handleListCrons error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleListCrons({ containerId: UUID1, page: 1, pageSize: 50 }));
-		});
-
-		it("handleCreateCron error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleCreateCron({ containerId: UUID1, schedule: "* * * * *" }));
-		});
-
-		it("handleUpdateCron error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleUpdateCron({ cronId: UUID1 }));
-		});
-
-		it("handleDeleteCron error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleDeleteCron({ cronId: UUID1 }));
-		});
-
-		it("handleListDomains error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleListDomains({ containerId: UUID1, page: 1, pageSize: 50 }));
-		});
-
-		it("handleCreateDomain error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleCreateDomain({ containerId: UUID1, hostname: "app.example.com" }));
-		});
-
-		it("handleDeleteDomain error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleDeleteDomain({ domainId: UUID1 }));
-		});
-
-		it("handleCreateToken error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleCreateToken({ containerId: UUID1 }));
-		});
-
-		it("handleDeleteToken error", async () => {
-			mockFetch.mockRejectedValueOnce(new Error("fail"));
-			await expectError(handleDeleteToken({ tokenId: UUID1 }));
-		});
+	it("omits an absent container name", async () => {
+		fetch.mockResolvedValueOnce({ containers: [], total_count: 0 });
+		await handleListContainers({ namespaceId: ID, page: 1, pageSize: 50 });
+		expect(fetch.mock.calls[0][0].urlParams.toString()).toBe(
+			`page=1&page_size=50&namespace_id=${ID}`,
+		);
 	});
 });

@@ -2,31 +2,44 @@ import { urlParams } from "@scaleway/sdk-client";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
-import { buildPaginatedResponse } from "../../shared/pagination.js";
 import type {
 	CreateInstanceGroupParams,
-	CreateInstancePolicyParams,
 	CreateInstanceTemplateParams,
 	DeleteInstanceGroupParams,
-	DeleteInstancePolicyParams,
 	DeleteInstanceTemplateParams,
 	GetInstanceGroupParams,
-	GetInstancePolicyParams,
+	GetInstanceTemplateCloudInitParams,
 	GetInstanceTemplateParams,
+	ListInstanceGroupAlertsParams,
 	ListInstanceGroupEventsParams,
+	ListInstanceGroupServersParams,
 	ListInstanceGroupsParams,
-	ListInstancePoliciesParams,
 	ListInstanceTemplatesParams,
+	SetInstanceTemplateCloudInitParams,
 	UpdateInstanceGroupParams,
-	UpdateInstancePolicyParams,
 	UpdateInstanceTemplateParams,
 } from "./types.js";
 
-const API_PREFIX = "autoscaling/v1alpha1/zones";
+// Spec: specs/scaleway-api/autoscaling/api-reference.md
+// Paths must start with "/" — @scaleway/sdk-client concatenates them verbatim onto
+// https://api.scaleway.com.
+const AUTOSCALING_API_PREFIX = "/autoscaling/v1alpha2/zones";
+// Instance templates are managed by the Instance API v2alpha1, not by the autoscaling API.
+const INSTANCE_API_PREFIX = "/instance/v2alpha1/zones";
+
+const JSON_HEADERS = { "Content-Type": "application/json" };
 
 function getClient() {
 	const config = loadAuthConfig();
-	return createScalewayClient(config);
+	return { client: createScalewayClient(config), config };
+}
+
+function autoscalingPath(zone: string, resource: string): string {
+	return `${AUTOSCALING_API_PREFIX}/${zone}/${resource}`;
+}
+
+function templatesPath(zone: string, suffix = ""): string {
+	return `${INSTANCE_API_PREFIX}/${zone}/templates${suffix}`;
 }
 
 function jsonResponse(data: unknown) {
@@ -35,33 +48,24 @@ function jsonResponse(data: unknown) {
 	};
 }
 
-const JSON_HEADERS = { "Content-Type": "application/json" };
-
-// --- Instance Group Handlers ---
+// --- Autoscaling Group Handlers ---
 
 export async function handleListInstanceGroups(params: ListInstanceGroupsParams) {
 	try {
-		const client = getClient();
-		const response = await client.fetch<{
-			instance_groups: unknown[];
-			total_count: number;
-		}>({
+		const { client, config } = getClient();
+		const response = await client.fetch<unknown>({
 			method: "GET",
-			path: `${API_PREFIX}/${params.zone}/instance-groups`,
+			path: autoscalingPath(params.zone, "groups"),
 			urlParams: urlParams(
-				["page", params.page],
-				["page_size", params.pageSize],
+				["project_id", params.projectId ?? config.defaultProjectId],
 				["order_by", params.orderBy],
+				["template_id", params.templateId],
+				["load_balancer_id", params.loadBalancerId],
+				["page_size", params.pageSize],
+				["page_token", params.pageToken],
 			),
 		});
-		return jsonResponse(
-			buildPaginatedResponse(
-				response.instance_groups,
-				response.total_count,
-				params.page,
-				params.pageSize,
-			),
-		);
+		return jsonResponse(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
@@ -69,10 +73,10 @@ export async function handleListInstanceGroups(params: ListInstanceGroupsParams)
 
 export async function handleGetInstanceGroup(params: GetInstanceGroupParams) {
 	try {
-		const client = getClient();
+		const { client } = getClient();
 		const response = await client.fetch<unknown>({
 			method: "GET",
-			path: `${API_PREFIX}/${params.zone}/instance-groups/${params.instanceGroupId}`,
+			path: autoscalingPath(params.zone, `groups/${params.instanceGroupId}`),
 		});
 		return jsonResponse(response);
 	} catch (error) {
@@ -82,18 +86,18 @@ export async function handleGetInstanceGroup(params: GetInstanceGroupParams) {
 
 export async function handleCreateInstanceGroup(params: CreateInstanceGroupParams) {
 	try {
-		const client = getClient();
+		const { client, config } = getClient();
 		const body = {
+			project_id: params.projectId ?? config.defaultProjectId,
 			name: params.name,
-			template_id: params.templateId,
-			capacity: params.capacity,
-			project_id: params.projectId,
 			tags: params.tags,
-			loadbalancer: params.loadbalancer,
+			template_id: params.templateId,
+			scaling_policy_spec: params.scalingPolicySpec,
+			load_balancer_configuration_spec: params.loadBalancerConfigurationSpec,
 		};
 		const response = await client.fetch<unknown>({
 			method: "POST",
-			path: `${API_PREFIX}/${params.zone}/instance-groups`,
+			path: autoscalingPath(params.zone, "groups"),
 			body: JSON.stringify(body),
 			headers: JSON_HEADERS,
 		});
@@ -105,16 +109,17 @@ export async function handleCreateInstanceGroup(params: CreateInstanceGroupParam
 
 export async function handleUpdateInstanceGroup(params: UpdateInstanceGroupParams) {
 	try {
-		const client = getClient();
+		const { client } = getClient();
 		const body = {
 			name: params.name,
 			tags: params.tags,
-			capacity: params.capacity,
-			loadbalancer: params.loadbalancer,
+			template_id: params.templateId,
+			scaling_policy_spec: params.scalingPolicySpec,
+			load_balancer_configuration_spec: params.loadBalancerConfigurationSpec,
 		};
 		const response = await client.fetch<unknown>({
 			method: "PATCH",
-			path: `${API_PREFIX}/${params.zone}/instance-groups/${params.instanceGroupId}`,
+			path: autoscalingPath(params.zone, `groups/${params.instanceGroupId}`),
 			body: JSON.stringify(body),
 			headers: JSON_HEADERS,
 		});
@@ -126,12 +131,13 @@ export async function handleUpdateInstanceGroup(params: UpdateInstanceGroupParam
 
 export async function handleDeleteInstanceGroup(params: DeleteInstanceGroupParams) {
 	try {
-		const client = getClient();
-		await client.fetch<void>({
+		const { client } = getClient();
+		// v1alpha2 returns 200 with the Group in its `deleting` status (not 204).
+		const response = await client.fetch<unknown>({
 			method: "DELETE",
-			path: `${API_PREFIX}/${params.zone}/instance-groups/${params.instanceGroupId}`,
+			path: autoscalingPath(params.zone, `groups/${params.instanceGroupId}`),
 		});
-		return jsonResponse({ deleted: true, id: params.instanceGroupId });
+		return jsonResponse(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
@@ -139,57 +145,80 @@ export async function handleDeleteInstanceGroup(params: DeleteInstanceGroupParam
 
 export async function handleListInstanceGroupEvents(params: ListInstanceGroupEventsParams) {
 	try {
-		const client = getClient();
-		const response = await client.fetch<{
-			instance_events: unknown[];
-			total_count: number;
-		}>({
+		const { client } = getClient();
+		const response = await client.fetch<unknown>({
 			method: "GET",
-			path: `${API_PREFIX}/${params.zone}/instance-groups/${params.instanceGroupId}/events`,
+			path: autoscalingPath(params.zone, "logs"),
 			urlParams: urlParams(
-				["page", params.page],
+				["group_id", params.instanceGroupId],
+				["start_time", params.startTime],
+				["end_time", params.endTime],
 				["page_size", params.pageSize],
-				["order_by", params.orderBy],
+				["page_token", params.pageToken],
 			),
 		});
-		return jsonResponse(
-			buildPaginatedResponse(
-				response.instance_events,
-				response.total_count,
-				params.page,
-				params.pageSize,
-			),
-		);
+		return jsonResponse(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
 }
 
-// --- Instance Template Handlers ---
+export async function handleListInstanceGroupServers(params: ListInstanceGroupServersParams) {
+	try {
+		const { client } = getClient();
+		const response = await client.fetch<unknown>({
+			method: "GET",
+			path: autoscalingPath(params.zone, "servers"),
+			urlParams: urlParams(
+				["group_id", params.instanceGroupId],
+				["page_size", params.pageSize],
+				["page_token", params.pageToken],
+			),
+		});
+		return jsonResponse(response);
+	} catch (error) {
+		return formatErrorResponse(mapScalewayError(error));
+	}
+}
+
+export async function handleListInstanceGroupAlerts(params: ListInstanceGroupAlertsParams) {
+	try {
+		const { client, config } = getClient();
+		// one-of scope: group_id wins over project_id (same resolution as the official SDK).
+		const scope: [string, string] =
+			params.instanceGroupId !== undefined
+				? ["group_id", params.instanceGroupId]
+				: ["project_id", params.projectId ?? config.defaultProjectId];
+		const response = await client.fetch<unknown>({
+			method: "GET",
+			path: autoscalingPath(params.zone, "alerts"),
+			urlParams: urlParams(scope, ["page_size", params.pageSize], ["page_token", params.pageToken]),
+		});
+		return jsonResponse(response);
+	} catch (error) {
+		return formatErrorResponse(mapScalewayError(error));
+	}
+}
+
+// --- Instance Template Handlers (Instance API v2alpha1) ---
 
 export async function handleListInstanceTemplates(params: ListInstanceTemplatesParams) {
 	try {
-		const client = getClient();
-		const response = await client.fetch<{
-			instance_templates: unknown[];
-			total_count: number;
-		}>({
+		const { client, config } = getClient();
+		const response = await client.fetch<unknown>({
 			method: "GET",
-			path: `${API_PREFIX}/${params.zone}/instance-templates`,
+			path: templatesPath(params.zone),
 			urlParams: urlParams(
-				["page", params.page],
-				["page_size", params.pageSize],
+				["project_id", params.projectId ?? config.defaultProjectId],
 				["order_by", params.orderBy],
+				["name", params.name],
+				["tags", params.tags],
+				["template_ids", params.templateIds],
+				["page_size", params.pageSize],
+				["page_token", params.pageToken],
 			),
 		});
-		return jsonResponse(
-			buildPaginatedResponse(
-				response.instance_templates,
-				response.total_count,
-				params.page,
-				params.pageSize,
-			),
-		);
+		return jsonResponse(response);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
@@ -197,10 +226,10 @@ export async function handleListInstanceTemplates(params: ListInstanceTemplatesP
 
 export async function handleGetInstanceTemplate(params: GetInstanceTemplateParams) {
 	try {
-		const client = getClient();
+		const { client } = getClient();
 		const response = await client.fetch<unknown>({
 			method: "GET",
-			path: `${API_PREFIX}/${params.zone}/instance-templates/${params.instanceTemplateId}`,
+			path: templatesPath(params.zone, `/${params.instanceTemplateId}`),
 		});
 		return jsonResponse(response);
 	} catch (error) {
@@ -210,24 +239,25 @@ export async function handleGetInstanceTemplate(params: GetInstanceTemplateParam
 
 export async function handleCreateInstanceTemplate(params: CreateInstanceTemplateParams) {
 	try {
-		const client = getClient();
+		const { client, config } = getClient();
 		const body = {
+			project_id: params.projectId ?? config.defaultProjectId,
 			name: params.name,
-			commercial_type: params.commercialType,
-			image_id: params.imageId,
-			volumes: params.volumes,
 			tags: params.tags,
+			server_tags: params.serverTags,
+			server_type: params.serverType,
 			security_group_id: params.securityGroupId,
 			placement_group_id: params.placementGroupId,
-			public_ips_v4_count: params.publicIpsV4Count,
-			public_ips_v6_count: params.publicIpsV6Count,
-			project_id: params.projectId,
-			private_network_ids: params.privateNetworkIds,
-			cloud_init: params.cloudInit,
+			volumes: params.volumes,
+			private_networks: params.privateNetworks,
+			filesystem_ids: params.filesystemIds,
+			public_ip_v4_count: params.publicIpV4Count,
+			public_ip_v6_count: params.publicIpV6Count,
+			windows_rdp_ssh_key_id: params.windowsRdpSshKeyId,
 		};
 		const response = await client.fetch<unknown>({
 			method: "POST",
-			path: `${API_PREFIX}/${params.zone}/instance-templates`,
+			path: templatesPath(params.zone),
 			body: JSON.stringify(body),
 			headers: JSON_HEADERS,
 		});
@@ -239,23 +269,27 @@ export async function handleCreateInstanceTemplate(params: CreateInstanceTemplat
 
 export async function handleUpdateInstanceTemplate(params: UpdateInstanceTemplateParams) {
 	try {
-		const client = getClient();
+		const { client } = getClient();
 		const body = {
 			name: params.name,
-			commercial_type: params.commercialType,
-			image_id: params.imageId,
-			volumes: params.volumes,
 			tags: params.tags,
+			server_tags: params.serverTags,
+			server_type: params.serverType,
 			security_group_id: params.securityGroupId,
 			placement_group_id: params.placementGroupId,
-			public_ips_v4_count: params.publicIpsV4Count,
-			public_ips_v6_count: params.publicIpsV6Count,
-			private_network_ids: params.privateNetworkIds,
-			cloud_init: params.cloudInit,
+			update_volumes: params.volumes !== undefined ? { volumes: params.volumes } : undefined,
+			update_private_networks:
+				params.privateNetworks !== undefined
+					? { private_networks: params.privateNetworks }
+					: undefined,
+			filesystem_ids: params.filesystemIds,
+			public_ip_v4_count: params.publicIpV4Count,
+			public_ip_v6_count: params.publicIpV6Count,
+			windows_rdp_ssh_key_id: params.windowsRdpSshKeyId,
 		};
 		const response = await client.fetch<unknown>({
 			method: "PATCH",
-			path: `${API_PREFIX}/${params.zone}/instance-templates/${params.instanceTemplateId}`,
+			path: templatesPath(params.zone, `/${params.instanceTemplateId}`),
 			body: JSON.stringify(body),
 			headers: JSON_HEADERS,
 		});
@@ -267,10 +301,13 @@ export async function handleUpdateInstanceTemplate(params: UpdateInstanceTemplat
 
 export async function handleDeleteInstanceTemplate(params: DeleteInstanceTemplateParams) {
 	try {
-		const client = getClient();
+		const { client } = getClient();
+		// The endpoint declares a required (empty) JSON body and answers 204.
 		await client.fetch<void>({
 			method: "DELETE",
-			path: `${API_PREFIX}/${params.zone}/instance-templates/${params.instanceTemplateId}`,
+			path: templatesPath(params.zone, `/${params.instanceTemplateId}`),
+			body: "{}",
+			headers: JSON_HEADERS,
 		});
 		return jsonResponse({ deleted: true, id: params.instanceTemplateId });
 	} catch (error) {
@@ -278,38 +315,14 @@ export async function handleDeleteInstanceTemplate(params: DeleteInstanceTemplat
 	}
 }
 
-// --- Instance Policy Handlers ---
-
-export async function handleListInstancePolicies(params: ListInstancePoliciesParams) {
+export async function handleGetInstanceTemplateCloudInit(
+	params: GetInstanceTemplateCloudInitParams,
+) {
 	try {
-		const client = getClient();
-		const response = await client.fetch<{
-			policies: unknown[];
-			total_count: number;
-		}>({
-			method: "GET",
-			path: `${API_PREFIX}/${params.zone}/instance-policies`,
-			urlParams: urlParams(
-				["page", params.page],
-				["page_size", params.pageSize],
-				["order_by", params.orderBy],
-				["instance_group_id", params.instanceGroupId],
-			),
-		});
-		return jsonResponse(
-			buildPaginatedResponse(response.policies, response.total_count, params.page, params.pageSize),
-		);
-	} catch (error) {
-		return formatErrorResponse(mapScalewayError(error));
-	}
-}
-
-export async function handleGetInstancePolicy(params: GetInstancePolicyParams) {
-	try {
-		const client = getClient();
+		const { client } = getClient();
 		const response = await client.fetch<unknown>({
 			method: "GET",
-			path: `${API_PREFIX}/${params.zone}/instance-policies/${params.instancePolicyId}`,
+			path: templatesPath(params.zone, `/${params.instanceTemplateId}/user-data/cloud-init`),
 		});
 		return jsonResponse(response);
 	} catch (error) {
@@ -317,61 +330,18 @@ export async function handleGetInstancePolicy(params: GetInstancePolicyParams) {
 	}
 }
 
-export async function handleCreateInstancePolicy(params: CreateInstancePolicyParams) {
+export async function handleSetInstanceTemplateCloudInit(
+	params: SetInstanceTemplateCloudInitParams,
+) {
 	try {
-		const client = getClient();
-		const body = {
-			name: params.name,
-			metric: params.metric,
-			action: params.action,
-			type: params.type,
-			value: params.value,
-			priority: params.priority,
-			instance_group_id: params.instanceGroupId,
-		};
-		const response = await client.fetch<unknown>({
-			method: "POST",
-			path: `${API_PREFIX}/${params.zone}/instance-policies`,
-			body: JSON.stringify(body),
-			headers: JSON_HEADERS,
-		});
-		return jsonResponse(response);
-	} catch (error) {
-		return formatErrorResponse(mapScalewayError(error));
-	}
-}
-
-export async function handleUpdateInstancePolicy(params: UpdateInstancePolicyParams) {
-	try {
-		const client = getClient();
-		const body = {
-			name: params.name,
-			metric: params.metric,
-			action: params.action,
-			type: params.type,
-			value: params.value,
-			priority: params.priority,
-		};
-		const response = await client.fetch<unknown>({
-			method: "PATCH",
-			path: `${API_PREFIX}/${params.zone}/instance-policies/${params.instancePolicyId}`,
-			body: JSON.stringify(body),
-			headers: JSON_HEADERS,
-		});
-		return jsonResponse(response);
-	} catch (error) {
-		return formatErrorResponse(mapScalewayError(error));
-	}
-}
-
-export async function handleDeleteInstancePolicy(params: DeleteInstancePolicyParams) {
-	try {
-		const client = getClient();
+		const { client } = getClient();
 		await client.fetch<void>({
-			method: "DELETE",
-			path: `${API_PREFIX}/${params.zone}/instance-policies/${params.instancePolicyId}`,
+			method: "PUT",
+			path: templatesPath(params.zone, `/${params.instanceTemplateId}/user-data/cloud-init`),
+			body: JSON.stringify({ content: params.content }),
+			headers: JSON_HEADERS,
 		});
-		return jsonResponse({ deleted: true, id: params.instancePolicyId });
+		return jsonResponse({ updated: true, id: params.instanceTemplateId, key: "cloud-init" });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}

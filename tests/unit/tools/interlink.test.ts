@@ -100,7 +100,7 @@ describe("interlink handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "interlink/v1beta1/regions/fr-par/links",
+					path: "/interlink/v1beta1/regions/fr-par/links",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -172,7 +172,7 @@ describe("interlink handlers", () => {
 			const result = await handleGetLink({ region: REGION, linkId: LINK_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("active");
 		});
@@ -206,7 +206,7 @@ describe("interlink handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "interlink/v1beta1/regions/fr-par/links",
+				path: "/interlink/v1beta1/regions/fr-par/links",
 				body: JSON.stringify({
 					name: "new-link",
 					pop_id: POP_ID,
@@ -236,7 +236,7 @@ describe("interlink handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "interlink/v1beta1/regions/fr-par/links",
+				path: "/interlink/v1beta1/regions/fr-par/links",
 				body: JSON.stringify({
 					name: "min-link",
 					pop_id: POP_ID,
@@ -273,7 +273,7 @@ describe("interlink handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}`,
 				body: JSON.stringify({ name: "renamed", tags: ["a"], peer_asn: 64500 }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -285,7 +285,7 @@ describe("interlink handlers", () => {
 			await handleUpdateLink({ region: REGION, linkId: LINK_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -307,7 +307,7 @@ describe("interlink handlers", () => {
 			const result = await handleDeleteLink({ region: REGION, linkId: LINK_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("deleting");
 		});
@@ -328,7 +328,7 @@ describe("interlink handlers", () => {
 			await handleAttachVpc({ region: REGION, linkId: LINK_ID, vpcId: VPC_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}/attach-vpc`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}/attach-vpc`,
 				body: JSON.stringify({ vpc_id: VPC_ID }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -354,7 +354,7 @@ describe("interlink handlers", () => {
 			await handleDetachVpc({ region: REGION, linkId: LINK_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}/detach-vpc`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}/detach-vpc`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -382,7 +382,7 @@ describe("interlink handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}/attach-routing-policy`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}/attach-routing-policy`,
 				body: JSON.stringify({ routing_policy_id: POLICY_ID }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -415,7 +415,7 @@ describe("interlink handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}/detach-routing-policy`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}/detach-routing-policy`,
 				body: JSON.stringify({ routing_policy_id: POLICY_ID }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -446,7 +446,7 @@ describe("interlink handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}/set-routing-policy`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}/set-routing-policy`,
 				body: JSON.stringify({ routing_policy_id: POLICY_ID }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -473,7 +473,7 @@ describe("interlink handlers", () => {
 			await handleEnableRoutePropagation({ region: REGION, linkId: LINK_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}/enable-route-propagation`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}/enable-route-propagation`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -501,7 +501,7 @@ describe("interlink handlers", () => {
 			await handleDisableRoutePropagation({ region: REGION, linkId: LINK_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `interlink/v1beta1/regions/fr-par/links/${LINK_ID}/disable-route-propagation`,
+				path: `/interlink/v1beta1/regions/fr-par/links/${LINK_ID}/disable-route-propagation`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -533,7 +533,7 @@ describe("interlink handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "interlink/v1beta1/regions/fr-par/routing-policies",
+					path: "/interlink/v1beta1/regions/fr-par/routing-policies",
 				}),
 			);
 			expect(JSON.parse(result.content[0].text).items).toHaveLength(1);
@@ -588,7 +588,7 @@ describe("interlink handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `interlink/v1beta1/regions/fr-par/routing-policies/${POLICY_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/routing-policies/${POLICY_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).id).toBe(POLICY_ID);
 		});
@@ -621,7 +621,7 @@ describe("interlink handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "interlink/v1beta1/regions/fr-par/routing-policies",
+				path: "/interlink/v1beta1/regions/fr-par/routing-policies",
 				body: JSON.stringify({
 					name: "rp",
 					is_ipv6: true,
@@ -642,7 +642,7 @@ describe("interlink handlers", () => {
 			await handleCreateRoutingPolicy({ region: REGION, name: "rp", isIpv6: false });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "interlink/v1beta1/regions/fr-par/routing-policies",
+				path: "/interlink/v1beta1/regions/fr-par/routing-policies",
 				body: JSON.stringify({ name: "rp", is_ipv6: false }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -678,7 +678,7 @@ describe("interlink handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `interlink/v1beta1/regions/fr-par/routing-policies/${POLICY_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/routing-policies/${POLICY_ID}`,
 				body: JSON.stringify({
 					name: "rp2",
 					tags: ["y"],
@@ -697,7 +697,7 @@ describe("interlink handlers", () => {
 			await handleUpdateRoutingPolicy({ region: REGION, routingPolicyId: POLICY_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `interlink/v1beta1/regions/fr-par/routing-policies/${POLICY_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/routing-policies/${POLICY_ID}`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -721,16 +721,23 @@ describe("interlink handlers", () => {
 			const { handleDeleteRoutingPolicy } = await import(
 				"../../../src/tools/interlink/handlers.js"
 			);
-			mockFetch.mockResolvedValue({ id: POLICY_ID });
+			mockFetch.mockResolvedValue(undefined);
 			const result = await handleDeleteRoutingPolicy({
 				region: REGION,
 				routingPolicyId: POLICY_ID,
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `interlink/v1beta1/regions/fr-par/routing-policies/${POLICY_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/routing-policies/${POLICY_ID}`,
 			});
-			expect(JSON.parse(result.content[0].text).id).toBe(POLICY_ID);
+			expect(result).toEqual({
+				content: [
+					{
+						type: "text",
+						text: JSON.stringify({ message: "Routing policy deleted successfully" }, null, 2),
+					},
+				],
+			});
 		});
 
 		it("returns error on failure", async () => {
@@ -756,7 +763,7 @@ describe("interlink handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "interlink/v1beta1/regions/fr-par/partners",
+					path: "/interlink/v1beta1/regions/fr-par/partners",
 				}),
 			);
 			expect(JSON.parse(result.content[0].text).totalCount).toBe(1);
@@ -796,7 +803,7 @@ describe("interlink handlers", () => {
 			const result = await handleGetPartner({ region: REGION, partnerId: PARTNER_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `interlink/v1beta1/regions/fr-par/partners/${PARTNER_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/partners/${PARTNER_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("Equinix");
 		});
@@ -822,7 +829,7 @@ describe("interlink handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "interlink/v1beta1/regions/fr-par/pops",
+					path: "/interlink/v1beta1/regions/fr-par/pops",
 				}),
 			);
 			expect(JSON.parse(result.content[0].text).items).toHaveLength(1);
@@ -866,7 +873,7 @@ describe("interlink handlers", () => {
 			const result = await handleGetPop({ region: REGION, popId: POP_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `interlink/v1beta1/regions/fr-par/pops/${POP_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/pops/${POP_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("PAR1");
 		});
@@ -895,7 +902,7 @@ describe("interlink handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "interlink/v1beta1/regions/fr-par/dedicated-connections",
+					path: "/interlink/v1beta1/regions/fr-par/dedicated-connections",
 				}),
 			);
 			expect(JSON.parse(result.content[0].text).items).toHaveLength(1);
@@ -956,7 +963,7 @@ describe("interlink handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `interlink/v1beta1/regions/fr-par/dedicated-connections/${CONNECTION_ID}`,
+				path: `/interlink/v1beta1/regions/fr-par/dedicated-connections/${CONNECTION_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("active");
 		});

@@ -20,7 +20,7 @@ import type {
 	UpdateWebhookParams,
 } from "./types.js";
 
-const TEM_API_PREFIX = "transactional-email/v1alpha1";
+const TEM_API_PREFIX = "/transactional-email/v1alpha1";
 
 function getClient() {
 	const config = loadAuthConfig();
@@ -100,6 +100,7 @@ export async function handleCreateDomain(params: CreateDomainParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${TEM_API_PREFIX}/regions/${region}/domains`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				project_id: params.project_id,
 				domain_name: params.domain_name,
@@ -212,6 +213,7 @@ export async function handleCreateEmail(params: CreateEmailParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${TEM_API_PREFIX}/regions/${region}/emails`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				from: params.from,
 				to: params.to,
@@ -300,6 +302,7 @@ export async function handleCreateWebhook(params: CreateWebhookParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${TEM_API_PREFIX}/regions/${region}/webhooks`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				domain_id: params.domain_id,
 				name: params.name,
@@ -320,6 +323,7 @@ export async function handleUpdateWebhook(params: UpdateWebhookParams) {
 		const response = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${TEM_API_PREFIX}/regions/${region}/webhooks/${params.webhook_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				...(params.name !== undefined && { name: params.name }),
 				...(params.event_types !== undefined && { event_types: params.event_types }),

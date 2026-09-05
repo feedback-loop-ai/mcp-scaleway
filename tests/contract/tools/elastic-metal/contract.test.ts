@@ -1,19 +1,50 @@
 /**
  * Contract tests for Elastic Metal MCP tools.
  *
- * Validates: input schema shapes, tool registration, response structure,
- * pagination patterns, auth requirement, and error code mapping.
+ * Validates: input schema shapes, tool registration, request shapes sent to
+ * the Scaleway API through `@scaleway/sdk-client` (method, relative path,
+ * query params, JSON body), response structure, pagination patterns, auth
+ * requirement, and error code mapping.
  *
  * API Reference: Scaleway Elastic Metal (Bare Metal) API v1
+ *   - https://www.scaleway.com/en/developers/api/elastic-metal/
  *   - specs/scaleway-api/elastic-metal/api-reference.md
  *   - tests/parity-matrix.json (elastic-metal area)
  * Spec: specs/003-elastic-metal/contracts/tool-contract.md
  *       specs/057-elastic-metal-private-networks/contracts/private-networks.md
  * Endpoints: /baremetal/v1/zones/{zone}/* (incl. server-private-networks)
+ *   and /flexible-ip/v1alpha1/zones/{zone}/fips[/{fip_id}].
+ * Real SDK HTTP transport coverage: flexible-ip.transport.test.ts.
+ *
+ * Transport contract (`@scaleway/sdk-client` 1.x): `client.fetch(ScwRequest)`
+ * where `path` is appended verbatim to `https://api.scaleway.com` (so it must
+ * start with `/`), `urlParams` is a `URLSearchParams`, `body` is a JSON string,
+ * `204` resolves to `undefined`, and non-2xx throws `ScalewayError` (`.status`).
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { describe, expect, it } from "vitest";
+import { Errors } from "@scaleway/sdk-client";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { z } from "zod";
+import {
+	handleAddServerPrivateNetwork,
+	handleCreateIp,
+	handleCreateServer,
+	handleDeleteIp,
+	handleDeleteServer,
+	handleDeleteServerPrivateNetwork,
+	handleGetBmcAccess,
+	handleGetServer,
+	handleInstallServer,
+	handleListIps,
+	handleListOffers,
+	handleListOss,
+	handleListServerPrivateNetworks,
+	handleListServers,
+	handleRebootServer,
+	handleSetServerPrivateNetworks,
+	handleStartServer,
+	handleStopServer,
+} from "../../../../src/tools/elastic-metal/handlers.js";
 import { registerElasticMetalTools } from "../../../../src/tools/elastic-metal/index.js";
 import {
 	AddServerPrivateNetworkInput,
@@ -36,6 +67,47 @@ import {
 	StopServerInput,
 } from "../../../../src/tools/elastic-metal/types.js";
 
+// ── Mock setup ─────────────────────────────────────────────────────────────────
+
+const mockFetch = vi.fn();
+
+vi.mock("../../../../src/shared/client.js", () => ({
+	createScalewayClient: vi.fn(() => ({ fetch: mockFetch })),
+	resetClient: vi.fn(),
+}));
+
+vi.mock("../../../../src/shared/auth.js", () => ({
+	loadAuthConfig: vi.fn(() => ({
+		accessKey: "SCWXXXXXXXXXXXXXXXXX",
+		secretKey: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+		defaultProjectId: "00000000-0000-0000-0000-000000000000",
+		defaultRegion: "fr-par",
+		defaultZone: "fr-par-1",
+	})),
+}));
+
+interface ScwRequestShape {
+	method: string;
+	path: string;
+	headers?: Record<string, string>;
+	body?: string;
+	urlParams?: URLSearchParams;
+}
+
+interface ToolResult {
+	content: { type: string; text: string }[];
+	isError?: boolean;
+}
+
+function sentRequest(): ScwRequestShape {
+	expect(mockFetch).toHaveBeenCalledTimes(1);
+	return mockFetch.mock.calls[0][0] as ScwRequestShape;
+}
+
+function parseResult(result: unknown) {
+	return JSON.parse((result as ToolResult).content[0].text);
+}
+
 // Helper to check that a Zod schema correctly validates/rejects inputs
 function expectSchemaAccepts(schema: z.ZodTypeAny, input: unknown) {
 	expect(() => schema.parse(input)).not.toThrow();
@@ -47,6 +119,13 @@ function expectSchemaRejects(schema: z.ZodTypeAny, input: unknown) {
 
 const VALID_ZONE = "fr-par-1";
 const VALID_UUID = "11111111-1111-1111-1111-111111111111";
+const BASE_PATH = `/baremetal/v1/zones/${VALID_ZONE}`;
+const FIP_PATH = `/flexible-ip/v1alpha1/zones/${VALID_ZONE}/fips`;
+const JSON_HEADERS = { "Content-Type": "application/json" };
+
+beforeEach(() => {
+	mockFetch.mockReset();
+});
 
 describe("Elastic Metal contract tests", () => {
 	// --- Tool Registration ---
@@ -55,6 +134,295 @@ describe("Elastic Metal contract tests", () => {
 			const server = new McpServer({ name: "test", version: "0.0.1" });
 			expect(() => registerElasticMetalTools(server)).not.toThrow();
 		});
+	});
+
+	// --- Request shapes (ScwRequest sent through @scaleway/sdk-client) ---
+	describe("request shapes", () => {
+		it("ListServers: GET /baremetal/v1/zones/{zone}/servers with page/page_size + filters", async () => {
+			mockFetch.mockResolvedValueOnce({ servers: [], total_count: 0 });
+			await handleListServers({
+				zone: VALID_ZONE,
+				page: 2,
+				pageSize: 25,
+				project_id: VALID_UUID,
+				name: "web",
+				tags: ["a", "b"],
+				status: "ready",
+				order_by: "created_at_desc",
+			});
+			const request = sentRequest();
+			expect(request.method).toBe("GET");
+			expect(request.path).toBe(`${BASE_PATH}/servers`);
+			expect(request.body).toBeUndefined();
+			expect(request.urlParams).toBeInstanceOf(URLSearchParams);
+			expect(request.urlParams?.toString()).toBe(
+				`page=2&page_size=25&project_id=${VALID_UUID}&name=web&tags=a&tags=b&status=ready&order_by=created_at_desc`,
+			);
+		});
+
+		it("GetServer: GET /baremetal/v1/zones/{zone}/servers/{server_id}", async () => {
+			mockFetch.mockResolvedValueOnce({ id: VALID_UUID });
+			await handleGetServer({ zone: VALID_ZONE, server_id: VALID_UUID });
+			const request = sentRequest();
+			expect(request.method).toBe("GET");
+			expect(request.path).toBe(`${BASE_PATH}/servers/${VALID_UUID}`);
+			expect(request.body).toBeUndefined();
+			expect(request.urlParams).toBeUndefined();
+		});
+
+		it("CreateServer: POST /baremetal/v1/zones/{zone}/servers with JSON body", async () => {
+			mockFetch.mockResolvedValueOnce({ id: VALID_UUID });
+			await handleCreateServer({
+				zone: VALID_ZONE,
+				offer_id: VALID_UUID,
+				name: "srv",
+				project_id: VALID_UUID,
+			});
+			const request = sentRequest();
+			expect(request.method).toBe("POST");
+			expect(request.path).toBe(`${BASE_PATH}/servers`);
+			expect(request.headers).toEqual(JSON_HEADERS);
+			expect(JSON.parse(request.body as string)).toEqual({
+				offer_id: VALID_UUID,
+				name: "srv",
+				description: "",
+				tags: [],
+				project_id: VALID_UUID,
+			});
+		});
+
+		it("DeleteServer: DELETE /baremetal/v1/zones/{zone}/servers/{server_id}", async () => {
+			mockFetch.mockResolvedValueOnce({ id: VALID_UUID, status: "deleting" });
+			await handleDeleteServer({ zone: VALID_ZONE, server_id: VALID_UUID });
+			const request = sentRequest();
+			expect(request.method).toBe("DELETE");
+			expect(request.path).toBe(`${BASE_PATH}/servers/${VALID_UUID}`);
+			expect(request.body).toBeUndefined();
+		});
+
+		it("InstallServer: POST /baremetal/v1/zones/{zone}/servers/{server_id}/install with JSON body", async () => {
+			mockFetch.mockResolvedValueOnce({ id: VALID_UUID });
+			await handleInstallServer({
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				os_id: VALID_UUID,
+				hostname: "host",
+				ssh_key_ids: [VALID_UUID],
+				password: "p",
+				service_user: "u",
+				service_password: "sp",
+			});
+			const request = sentRequest();
+			expect(request.method).toBe("POST");
+			expect(request.path).toBe(`${BASE_PATH}/servers/${VALID_UUID}/install`);
+			expect(request.headers).toEqual(JSON_HEADERS);
+			expect(JSON.parse(request.body as string)).toEqual({
+				os_id: VALID_UUID,
+				hostname: "host",
+				ssh_key_ids: [VALID_UUID],
+				password: "p",
+				service_user: "u",
+				service_password: "sp",
+			});
+		});
+
+		it("RebootServer: POST /baremetal/v1/zones/{zone}/servers/{server_id}/reboot with boot_type", async () => {
+			mockFetch.mockResolvedValueOnce({ id: VALID_UUID });
+			await handleRebootServer({ zone: VALID_ZONE, server_id: VALID_UUID, boot_type: "rescue" });
+			const request = sentRequest();
+			expect(request.method).toBe("POST");
+			expect(request.path).toBe(`${BASE_PATH}/servers/${VALID_UUID}/reboot`);
+			expect(request.headers).toEqual(JSON_HEADERS);
+			expect(JSON.parse(request.body as string)).toEqual({ boot_type: "rescue" });
+		});
+
+		it("StartServer: POST /baremetal/v1/zones/{zone}/servers/{server_id}/start with empty body by default", async () => {
+			mockFetch.mockResolvedValueOnce({ id: VALID_UUID });
+			await handleStartServer({ zone: VALID_ZONE, server_id: VALID_UUID });
+			const request = sentRequest();
+			expect(request.method).toBe("POST");
+			expect(request.path).toBe(`${BASE_PATH}/servers/${VALID_UUID}/start`);
+			expect(request.headers).toEqual(JSON_HEADERS);
+			expect(request.body).toBe("{}");
+		});
+
+		it("StopServer: POST /baremetal/v1/zones/{zone}/servers/{server_id}/stop with empty body", async () => {
+			mockFetch.mockResolvedValueOnce({ id: VALID_UUID });
+			await handleStopServer({ zone: VALID_ZONE, server_id: VALID_UUID });
+			const request = sentRequest();
+			expect(request.method).toBe("POST");
+			expect(request.path).toBe(`${BASE_PATH}/servers/${VALID_UUID}/stop`);
+			expect(request.headers).toEqual(JSON_HEADERS);
+			expect(request.body).toBe("{}");
+		});
+
+		it("ListOffers: GET /baremetal/v1/zones/{zone}/offers with subscription_period", async () => {
+			mockFetch.mockResolvedValueOnce({ offers: [], total_count: 0 });
+			await handleListOffers({ zone: VALID_ZONE, subscription_period: "hourly" });
+			const request = sentRequest();
+			expect(request.method).toBe("GET");
+			expect(request.path).toBe(`${BASE_PATH}/offers`);
+			expect(request.urlParams?.toString()).toBe("page=1&page_size=50&subscription_period=hourly");
+		});
+
+		it("ListOS: GET /baremetal/v1/zones/{zone}/os with offer_id; response wrapped under `os`", async () => {
+			mockFetch.mockResolvedValueOnce({ os: [{ id: VALID_UUID }], total_count: 1 });
+			const result = await handleListOss({ zone: VALID_ZONE, offer_id: VALID_UUID });
+			const request = sentRequest();
+			expect(request.method).toBe("GET");
+			expect(request.path).toBe(`${BASE_PATH}/os`);
+			expect(request.urlParams?.toString()).toBe(`page=1&page_size=50&offer_id=${VALID_UUID}`);
+			expect(parseResult(result).items).toEqual([{ id: VALID_UUID }]);
+		});
+
+		it("GetBMCAccess: GET /baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access", async () => {
+			mockFetch.mockResolvedValueOnce({ url: "https://bmc", login: "l", password: "p" });
+			await handleGetBmcAccess({ zone: VALID_ZONE, server_id: VALID_UUID });
+			const request = sentRequest();
+			expect(request.method).toBe("GET");
+			expect(request.path).toBe(`${BASE_PATH}/servers/${VALID_UUID}/bmc-access`);
+			expect(request.body).toBeUndefined();
+		});
+
+		it("ListIPs: GET /flexible-ip/v1alpha1/zones/{zone}/fips with filters", async () => {
+			mockFetch.mockResolvedValueOnce({ flexible_ips: [], total_count: 0 });
+			await handleListIps({
+				zone: VALID_ZONE,
+				project_id: VALID_UUID,
+				server_id: VALID_UUID,
+				order_by: "created_at_asc",
+			});
+			const request = sentRequest();
+			expect(request.method).toBe("GET");
+			expect(request.path).toBe(FIP_PATH);
+			expect(request.urlParams?.toString()).toBe(
+				`page=1&page_size=50&project_id=${VALID_UUID}&server_ids=${VALID_UUID}&order_by=created_at_asc`,
+			);
+		});
+
+		it("CreateIP: POST /flexible-ip/v1alpha1/zones/{zone}/fips with JSON body", async () => {
+			mockFetch.mockResolvedValueOnce({ id: VALID_UUID });
+			await handleCreateIp({ zone: VALID_ZONE, project_id: VALID_UUID, server_id: VALID_UUID });
+			const request = sentRequest();
+			expect(request.method).toBe("POST");
+			expect(request.path).toBe(FIP_PATH);
+			expect(request.headers).toEqual(JSON_HEADERS);
+			expect(JSON.parse(request.body as string)).toEqual({
+				project_id: VALID_UUID,
+				description: "",
+				tags: [],
+				server_id: VALID_UUID,
+			});
+		});
+
+		it("DeleteIP: DELETE /flexible-ip/v1alpha1/zones/{zone}/fips/{fip_id}; 204 normalized to {}", async () => {
+			mockFetch.mockResolvedValueOnce(undefined);
+			const result = await handleDeleteIp({ zone: VALID_ZONE, ip_id: VALID_UUID });
+			const request = sentRequest();
+			expect(request.method).toBe("DELETE");
+			expect(request.path).toBe(`${FIP_PATH}/${VALID_UUID}`);
+			expect(request.body).toBeUndefined();
+			expect(parseResult(result)).toEqual({});
+		});
+
+		it("ListServerPrivateNetworks: GET /baremetal/v1/zones/{zone}/server-private-networks with filters", async () => {
+			mockFetch.mockResolvedValueOnce({ server_private_networks: [], total_count: 0 });
+			await handleListServerPrivateNetworks({
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				private_network_id: VALID_UUID,
+				organization_id: VALID_UUID,
+				project_id: VALID_UUID,
+				order_by: "updated_at_asc",
+			});
+			const request = sentRequest();
+			expect(request.method).toBe("GET");
+			expect(request.path).toBe(`${BASE_PATH}/server-private-networks`);
+			expect(request.urlParams?.toString()).toBe(
+				`page=1&page_size=50&server_id=${VALID_UUID}&private_network_id=${VALID_UUID}&organization_id=${VALID_UUID}&project_id=${VALID_UUID}&order_by=updated_at_asc`,
+			);
+		});
+
+		it("AddServerPrivateNetwork: POST /baremetal/v1/zones/{zone}/servers/{server_id}/private-networks", async () => {
+			mockFetch.mockResolvedValueOnce({ id: VALID_UUID });
+			await handleAddServerPrivateNetwork({
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				private_network_id: VALID_UUID,
+			});
+			const request = sentRequest();
+			expect(request.method).toBe("POST");
+			expect(request.path).toBe(`${BASE_PATH}/servers/${VALID_UUID}/private-networks`);
+			expect(request.headers).toEqual(JSON_HEADERS);
+			expect(JSON.parse(request.body as string)).toEqual({ private_network_id: VALID_UUID });
+		});
+
+		it("SetServerPrivateNetworks: PUT /baremetal/v1/zones/{zone}/servers/{server_id}/private-networks", async () => {
+			mockFetch.mockResolvedValueOnce({ server_private_networks: [] });
+			await handleSetServerPrivateNetworks({
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				private_network_ids: [VALID_UUID],
+			});
+			const request = sentRequest();
+			expect(request.method).toBe("PUT");
+			expect(request.path).toBe(`${BASE_PATH}/servers/${VALID_UUID}/private-networks`);
+			expect(request.headers).toEqual(JSON_HEADERS);
+			expect(JSON.parse(request.body as string)).toEqual({ private_network_ids: [VALID_UUID] });
+		});
+
+		it("DeleteServerPrivateNetwork: DELETE .../servers/{server_id}/private-networks/{private_network_id}; 204 -> {}", async () => {
+			mockFetch.mockResolvedValueOnce(undefined);
+			const result = await handleDeleteServerPrivateNetwork({
+				zone: VALID_ZONE,
+				server_id: VALID_UUID,
+				private_network_id: VALID_UUID,
+			});
+			const request = sentRequest();
+			expect(request.method).toBe("DELETE");
+			expect(request.path).toBe(
+				`${BASE_PATH}/servers/${VALID_UUID}/private-networks/${VALID_UUID}`,
+			);
+			expect(request.body).toBeUndefined();
+			expect(parseResult(result)).toEqual({});
+		});
+
+		it("never sends an absolute URL or a Response-style call (single ScwRequest argument)", async () => {
+			mockFetch.mockResolvedValueOnce({ id: VALID_UUID });
+			await handleGetServer({ zone: "pl-waw-2", server_id: VALID_UUID });
+			expect(mockFetch.mock.calls[0]).toHaveLength(1);
+			const request = sentRequest();
+			expect(typeof request).toBe("object");
+			expect(request.path.startsWith("/baremetal/v1/zones/pl-waw-2/")).toBe(true);
+			expect(request.path).not.toMatch(/^https?:/);
+		});
+	});
+
+	// --- Error code mapping (ScalewayError.status -> ApiErrorType) ---
+	describe("error code mapping", () => {
+		const cases: Array<[number, string]> = [
+			[400, "invalid_input"],
+			[401, "permission_denied"],
+			[403, "permission_denied"],
+			[404, "not_found"],
+			[429, "rate_limited"],
+			[500, "server_error"],
+			[503, "server_error"],
+		];
+
+		for (const [status, type] of cases) {
+			it(`maps ScalewayError ${status} to ${type}`, async () => {
+				mockFetch.mockRejectedValueOnce(new Errors.ScalewayError(status, { message: "m" }));
+				const result = (await handleGetServer({
+					zone: VALID_ZONE,
+					server_id: VALID_UUID,
+				})) as ToolResult;
+				expect(result.isError).toBe(true);
+				const parsed = parseResult(result);
+				expect(parsed.error.type).toBe(type);
+				expect(parsed.error.statusCode).toBe(status);
+			});
+		}
 	});
 
 	// --- US1: Server CRUD Schema Contracts ---

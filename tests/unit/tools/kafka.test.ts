@@ -148,7 +148,7 @@ describe("kafka handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "kafka/v1alpha1/regions/fr-par/clusters",
+					path: "/kafka/v1alpha1/regions/fr-par/clusters",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -210,7 +210,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}`,
+				path: `/kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.name).toBe("my-kafka");
@@ -255,7 +255,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "kafka/v1alpha1/regions/fr-par/clusters",
+				path: "/kafka/v1alpha1/regions/fr-par/clusters",
 				body: JSON.stringify({
 					name: "new-kafka",
 					version: "3.7.0",
@@ -290,7 +290,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "kafka/v1alpha1/regions/fr-par/clusters",
+				path: "/kafka/v1alpha1/regions/fr-par/clusters",
 				body: JSON.stringify({
 					name: "minimal",
 					version: "3.7.0",
@@ -338,7 +338,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}`,
+				path: `/kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}`,
 				body: JSON.stringify({ name: "renamed", tags: ["x"] }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -354,7 +354,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}`,
+				path: `/kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -384,7 +384,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}`,
+				path: `/kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.status).toBe("deleting");
@@ -421,7 +421,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}/certificate-authority`,
+				path: `/kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}/certificate-authority`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.content).toContain("BEGIN CERTIFICATE");
@@ -460,7 +460,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}/renew-certificate-authority`,
+				path: `/kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}/renew-certificate-authority`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -498,7 +498,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "kafka/v1alpha1/regions/fr-par/endpoints",
+				path: "/kafka/v1alpha1/regions/fr-par/endpoints",
 				body: JSON.stringify({
 					cluster_id: CLUSTER_ID,
 					endpoint: { private_network: { private_network_id: PN_ID } },
@@ -521,7 +521,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "kafka/v1alpha1/regions/fr-par/endpoints",
+				path: "/kafka/v1alpha1/regions/fr-par/endpoints",
 				body: JSON.stringify({
 					cluster_id: CLUSTER_ID,
 					endpoint: { public_network: {} },
@@ -559,7 +559,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `kafka/v1alpha1/regions/fr-par/endpoints/${ENDPOINT_ID}`,
+				path: `/kafka/v1alpha1/regions/fr-par/endpoints/${ENDPOINT_ID}`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);
@@ -598,7 +598,7 @@ describe("kafka handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: `kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}/users`,
+					path: `/kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}/users`,
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -659,7 +659,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}/users/admin`,
+				path: `/kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}/users/admin`,
 				body: JSON.stringify({ password: "newpass" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -679,7 +679,7 @@ describe("kafka handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}/users/admin`,
+				path: `/kafka/v1alpha1/regions/fr-par/clusters/${CLUSTER_ID}/users/admin`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -718,7 +718,7 @@ describe("kafka handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "kafka/v1alpha1/regions/fr-par/node-types",
+					path: "/kafka/v1alpha1/regions/fr-par/node-types",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -774,7 +774,7 @@ describe("kafka handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "kafka/v1alpha1/regions/fr-par/versions",
+					path: "/kafka/v1alpha1/regions/fr-par/versions",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);

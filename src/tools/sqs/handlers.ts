@@ -13,7 +13,9 @@ import type {
 	UpdateSqsCredentialsInput,
 } from "./types.js";
 
-const SQS_API_PREFIX = "mnq/v1beta1/regions";
+const SQS_API_PREFIX = "/mnq/v1beta1/regions";
+
+const JSON_HEADERS = { "Content-Type": "application/json" };
 
 function getClient() {
 	const config = loadAuthConfig();
@@ -26,19 +28,22 @@ function formatResponse(data: unknown) {
 	};
 }
 
+// `client.fetch` (@scaleway/sdk-client) resolves to the already-parsed JSON body
+// (or `undefined` on 204) and throws a ScalewayError on non-2xx responses, so the
+// handlers below use the resolved value directly instead of a `Response` object.
+
 export async function handleActivateSqs(input: ActivateSqsInput) {
 	try {
 		const { client, config } = getClient();
 		const region = input.region ?? config.defaultRegion;
 		const projectId = input.project_id ?? config.defaultProjectId;
 
-		const response = (await client.fetch({
+		const data = await client.fetch<unknown>({
 			method: "POST",
-			path: `/${SQS_API_PREFIX}/${region}/activate-sqs`,
+			path: `${SQS_API_PREFIX}/${region}/activate-sqs`,
 			body: JSON.stringify({ project_id: projectId }),
-			headers: { "Content-Type": "application/json" },
-		})) as Response;
-		const data = await response.json();
+			headers: JSON_HEADERS,
+		});
 		return formatResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -51,13 +56,12 @@ export async function handleDeactivateSqs(input: DeactivateSqsInput) {
 		const region = input.region ?? config.defaultRegion;
 		const projectId = input.project_id ?? config.defaultProjectId;
 
-		const response = (await client.fetch({
+		const data = await client.fetch<unknown>({
 			method: "POST",
-			path: `/${SQS_API_PREFIX}/${region}/deactivate-sqs`,
+			path: `${SQS_API_PREFIX}/${region}/deactivate-sqs`,
 			body: JSON.stringify({ project_id: projectId }),
-			headers: { "Content-Type": "application/json" },
-		})) as Response;
-		const data = await response.json();
+			headers: JSON_HEADERS,
+		});
 		return formatResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -70,11 +74,11 @@ export async function handleGetSqsInfo(input: GetSqsInfoInput) {
 		const region = input.region ?? config.defaultRegion;
 		const projectId = input.project_id ?? config.defaultProjectId;
 
-		const response = (await client.fetch({
+		const data = await client.fetch<unknown>({
 			method: "GET",
-			path: `/${SQS_API_PREFIX}/${region}/sqs-info?project_id=${projectId}`,
-		})) as Response;
-		const data = await response.json();
+			path: `${SQS_API_PREFIX}/${region}/sqs-info`,
+			urlParams: new URLSearchParams({ project_id: projectId }),
+		});
 		return formatResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -95,13 +99,12 @@ export async function handleCreateSqsCredentials(input: CreateSqsCredentialsInpu
 			body.permissions = input.permissions;
 		}
 
-		const response = (await client.fetch({
+		const data = await client.fetch<unknown>({
 			method: "POST",
-			path: `/${SQS_API_PREFIX}/${region}/sqs-credentials`,
+			path: `${SQS_API_PREFIX}/${region}/sqs-credentials`,
 			body: JSON.stringify(body),
-			headers: { "Content-Type": "application/json" },
-		})) as Response;
-		const data = await response.json();
+			headers: JSON_HEADERS,
+		});
 		return formatResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -115,7 +118,7 @@ export async function handleDeleteSqsCredentials(input: DeleteSqsCredentialsInpu
 
 		await client.fetch({
 			method: "DELETE",
-			path: `/${SQS_API_PREFIX}/${region}/sqs-credentials/${input.credential_id}`,
+			path: `${SQS_API_PREFIX}/${region}/sqs-credentials/${input.credential_id}`,
 		});
 		return formatResponse({ message: "Credentials deleted successfully" });
 	} catch (error) {
@@ -128,11 +131,10 @@ export async function handleGetSqsCredentials(input: GetSqsCredentialsInput) {
 		const { client, config } = getClient();
 		const region = input.region ?? config.defaultRegion;
 
-		const response = (await client.fetch({
+		const data = await client.fetch<unknown>({
 			method: "GET",
-			path: `/${SQS_API_PREFIX}/${region}/sqs-credentials/${input.credential_id}`,
-		})) as Response;
-		const data = await response.json();
+			path: `${SQS_API_PREFIX}/${region}/sqs-credentials/${input.credential_id}`,
+		});
 		return formatResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -146,21 +148,18 @@ export async function handleListSqsCredentials(input: ListSqsCredentialsInput) {
 		const projectId = input.project_id ?? config.defaultProjectId;
 		const { page, page_size: pageSize } = paginationToQuery(input.page, input.page_size);
 
-		const params = new URLSearchParams({
+		const urlParams = new URLSearchParams({
 			project_id: projectId,
 			page: String(page),
 			page_size: String(pageSize),
 			order_by: input.order_by,
 		});
 
-		const response = (await client.fetch({
+		const data = await client.fetch<{ sqs_credentials?: unknown[]; total_count?: number }>({
 			method: "GET",
-			path: `/${SQS_API_PREFIX}/${region}/sqs-credentials?${params.toString()}`,
-		})) as Response;
-		const data = (await response.json()) as {
-			sqs_credentials: unknown[];
-			total_count: number;
-		};
+			path: `${SQS_API_PREFIX}/${region}/sqs-credentials`,
+			urlParams,
+		});
 
 		return formatResponse(
 			buildPaginatedResponse(
@@ -188,13 +187,12 @@ export async function handleUpdateSqsCredentials(input: UpdateSqsCredentialsInpu
 			body.permissions = input.permissions;
 		}
 
-		const response = (await client.fetch({
+		const data = await client.fetch<unknown>({
 			method: "PATCH",
-			path: `/${SQS_API_PREFIX}/${region}/sqs-credentials/${input.credential_id}`,
+			path: `${SQS_API_PREFIX}/${region}/sqs-credentials/${input.credential_id}`,
 			body: JSON.stringify(body),
-			headers: { "Content-Type": "application/json" },
-		})) as Response;
-		const data = await response.json();
+			headers: JSON_HEADERS,
+		});
 		return formatResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));

@@ -59,7 +59,7 @@ Test organization:
 
 ## Architecture
 
-Stateless MCP server exposing ~733 tools across 50 Scaleway product areas.
+Stateless MCP server exposing ~724 tools across 50 Scaleway product areas.
 
 - `src/main.ts` - Entry point (stdio transport); `src/server.ts` - creates the MCP server and calls `registerAllTools`.
 - `src/tools/<area>/` - one directory per product area, each with three files:

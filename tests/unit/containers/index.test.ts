@@ -12,8 +12,10 @@ vi.mock("../../../src/shared/auth.js", () => ({
 	}),
 }));
 
+// Registration never issues a request; provide the same `{ fetch }` client shape
+// the handlers rely on so an accidental call fails loudly instead of hitting the network.
 vi.mock("../../../src/shared/client.js", () => ({
-	createScalewayClient: () => ({}),
+	createScalewayClient: vi.fn(() => ({ fetch: vi.fn() })),
 }));
 
 const EXPECTED_TOOLS = [
@@ -27,7 +29,6 @@ const EXPECTED_TOOLS = [
 	"scaleway_containers_create_container",
 	"scaleway_containers_update_container",
 	"scaleway_containers_delete_container",
-	"scaleway_containers_deploy_container",
 	"scaleway_containers_list_crons",
 	"scaleway_containers_create_cron",
 	"scaleway_containers_update_cron",
@@ -35,22 +36,21 @@ const EXPECTED_TOOLS = [
 	"scaleway_containers_list_domains",
 	"scaleway_containers_create_domain",
 	"scaleway_containers_delete_domain",
-	"scaleway_containers_create_token",
-	"scaleway_containers_delete_token",
 ];
 
 describe("containers/index", () => {
-	it("registers all 20 container tools", () => {
+	it("registers exactly the 17 supported container tools", () => {
 		const server = new McpServer({ name: "test", version: "0.0.1" });
 		const toolSpy = vi.spyOn(server, "tool");
 
 		registerContainersTools(server);
 
-		expect(toolSpy).toHaveBeenCalledTimes(20);
+		expect(toolSpy).toHaveBeenCalledTimes(17);
 
 		const registeredNames = toolSpy.mock.calls.map((call) => call[0]);
-		for (const name of EXPECTED_TOOLS) {
-			expect(registeredNames).toContain(name);
+		expect(registeredNames).toEqual(EXPECTED_TOOLS);
+		for (const op of ["deploy_container", "create_token", "delete_token", "redeploy_container"]) {
+			expect(registeredNames).not.toContain(`scaleway_containers_${op}`);
 		}
 	});
 

@@ -115,7 +115,7 @@ describe("rabbitmq deployment handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "messageq/v1alpha1/regions/fr-par/deployments",
+					path: "/messageq/v1alpha1/regions/fr-par/deployments",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -175,7 +175,7 @@ describe("rabbitmq deployment handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("rabbit");
 		});
@@ -215,7 +215,7 @@ describe("rabbitmq deployment handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "messageq/v1alpha1/regions/fr-par/deployments",
+				path: "/messageq/v1alpha1/regions/fr-par/deployments",
 				body: JSON.stringify({
 					name: "rabbit",
 					node_type: "rmq-node",
@@ -247,7 +247,7 @@ describe("rabbitmq deployment handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "messageq/v1alpha1/regions/fr-par/deployments",
+				path: "/messageq/v1alpha1/regions/fr-par/deployments",
 				body: JSON.stringify({
 					name: "rabbit",
 					node_type: "rmq-node",
@@ -289,7 +289,7 @@ describe("rabbitmq deployment handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 				body: JSON.stringify({ name: "renamed", tags: ["updated"] }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -303,7 +303,7 @@ describe("rabbitmq deployment handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -336,7 +336,7 @@ describe("rabbitmq deployment handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/upgrade`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/upgrade`,
 				body: JSON.stringify({ node_count: 5 }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -354,7 +354,7 @@ describe("rabbitmq deployment handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/upgrade`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/upgrade`,
 				body: JSON.stringify({ volume_size_bytes: 20000000000 }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -387,7 +387,7 @@ describe("rabbitmq deployment handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("deleting");
 		});
@@ -420,7 +420,7 @@ describe("rabbitmq deployment handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/certificate-authority`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/certificate-authority`,
 			});
 			expect(JSON.parse(result.content[0].text).content).toContain("BEGIN CERTIFICATE");
 		});
@@ -464,7 +464,7 @@ describe("rabbitmq user handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
+					path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -518,7 +518,7 @@ describe("rabbitmq user handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
 				body: JSON.stringify({ username: "newuser", password: "pass" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -554,7 +554,7 @@ describe("rabbitmq user handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
 				body: JSON.stringify({ password: "newpass" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -572,7 +572,7 @@ describe("rabbitmq user handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -605,7 +605,7 @@ describe("rabbitmq user handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
+				path: `/messageq/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);
@@ -645,7 +645,7 @@ describe("rabbitmq endpoint handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "messageq/v1alpha1/regions/fr-par/endpoints",
+				path: "/messageq/v1alpha1/regions/fr-par/endpoints",
 				body: JSON.stringify({
 					deployment_id: DEPLOYMENT_ID,
 					endpoint_spec: { private_network: { private_network_id: PN_ID } },
@@ -666,7 +666,7 @@ describe("rabbitmq endpoint handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "messageq/v1alpha1/regions/fr-par/endpoints",
+				path: "/messageq/v1alpha1/regions/fr-par/endpoints",
 				body: JSON.stringify({
 					deployment_id: DEPLOYMENT_ID,
 					endpoint_spec: { public: {} },
@@ -701,7 +701,7 @@ describe("rabbitmq endpoint handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `messageq/v1alpha1/regions/fr-par/endpoints/${ENDPOINT_ID}`,
+				path: `/messageq/v1alpha1/regions/fr-par/endpoints/${ENDPOINT_ID}`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);
@@ -740,7 +740,7 @@ describe("rabbitmq node type & version handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "messageq/v1alpha1/regions/fr-par/node-types",
+					path: "/messageq/v1alpha1/regions/fr-par/node-types",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -788,7 +788,7 @@ describe("rabbitmq node type & version handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "messageq/v1alpha1/regions/fr-par/versions",
+					path: "/messageq/v1alpha1/regions/fr-par/versions",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);

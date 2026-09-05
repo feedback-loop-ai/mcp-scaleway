@@ -38,12 +38,12 @@ An MCP (Model Context Protocol) server that gives AI assistants like Claude full
 
 ## Overview
 
-**mcp-scaleway** is a stateless MCP server that acts as a bridge between AI assistants and the [Scaleway](https://www.scaleway.com) cloud platform. It exposes 733 tools across 50 Scaleway services, enabling AI agents to provision infrastructure, manage databases, deploy applications, and operate cloud resources on your behalf.
+**mcp-scaleway** is a stateless MCP server that acts as a bridge between AI assistants and the [Scaleway](https://www.scaleway.com) cloud platform. It exposes 724 tools across 50 Scaleway services, enabling AI agents to provision infrastructure, manage databases, deploy applications, and operate cloud resources on your behalf.
 
 **Why use this?**
 
 - **Natural language cloud management** - Ask your AI assistant to "create a Kubernetes cluster with 3 nodes" instead of writing API calls
-- **Full Scaleway coverage** - 50 services, 733 operations, from compute to AI to networking
+- **Full Scaleway coverage** - 50 services, 724 operations, from compute to AI to networking
 - **Zero state** - Pure proxy to Scaleway APIs; no data stored, no side effects beyond what you request
 - **Type-safe** - Every input validated with Zod schemas before reaching Scaleway
 
@@ -348,26 +348,25 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 </details>
 
 <details>
-<summary><strong>Autoscaling</strong> (16 tools) - Instance scaling groups</summary>
+<summary><strong>Autoscaling</strong> (15 tools) - Instance autoscaling groups (v1alpha2)</summary>
 
 | Tool | Description |
 |------|-------------|
-| `scaleway_autoscaling_list_instance_groups` | List autoscaling instance groups in a zone |
-| `scaleway_autoscaling_get_instance_group` | Get details of a specific instance group |
-| `scaleway_autoscaling_create_instance_group` | Create an instance group from a template |
-| `scaleway_autoscaling_update_instance_group` | Update an instance group (name, tags, capacity, load balancer) |
-| `scaleway_autoscaling_delete_instance_group` | Delete an instance group |
-| `scaleway_autoscaling_list_instance_group_events` | List lifecycle and scaling events for a group |
-| `scaleway_autoscaling_list_instance_templates` | List instance templates in a zone |
-| `scaleway_autoscaling_get_instance_template` | Get details of a specific template |
-| `scaleway_autoscaling_create_instance_template` | Create a template describing scaled-up instances |
-| `scaleway_autoscaling_update_instance_template` | Update a template |
-| `scaleway_autoscaling_delete_instance_template` | Delete a template |
-| `scaleway_autoscaling_list_instance_policies` | List scaling policies in a zone |
-| `scaleway_autoscaling_get_instance_policy` | Get details of a specific scaling policy |
-| `scaleway_autoscaling_create_instance_policy` | Create a scaling policy on an instance group |
-| `scaleway_autoscaling_update_instance_policy` | Update a scaling policy |
-| `scaleway_autoscaling_delete_instance_policy` | Delete a scaling policy |
+| `scaleway_autoscaling_list_instance_groups` | List Instance autoscaling groups in a zone (v1alpha2, token pagination) |
+| `scaleway_autoscaling_get_instance_group` | Get an autoscaling group (status, sizes, scaling policy, LB config, open alerts) |
+| `scaleway_autoscaling_create_instance_group` | Create an autoscaling group from an Instance template with an embedded scaling policy |
+| `scaleway_autoscaling_update_instance_group` | Update an autoscaling group (name, tags, template, scaling policy, LB config) |
+| `scaleway_autoscaling_delete_instance_group` | Delete an autoscaling group and its managed Instances |
+| `scaleway_autoscaling_list_instance_group_events` | List scaling logs of an autoscaling group, optionally within a time window |
+| `scaleway_autoscaling_list_instance_group_servers` | List the Instances currently managed by an autoscaling group |
+| `scaleway_autoscaling_list_instance_group_alerts` | List active and historical alerts for a group or a whole project |
+| `scaleway_autoscaling_list_instance_templates` | List Instance templates (Instance API v2alpha1) usable by autoscaling groups |
+| `scaleway_autoscaling_get_instance_template` | Get an Instance template (server type, volumes, Private Networks, IP counts) |
+| `scaleway_autoscaling_create_instance_template` | Create an Instance template describing the Instances a group starts |
+| `scaleway_autoscaling_update_instance_template` | Update an Instance template (applies to new Instances only) |
+| `scaleway_autoscaling_delete_instance_template` | Delete an Instance template |
+| `scaleway_autoscaling_get_instance_template_cloud_init` | Get the cloud-init configuration of an Instance template |
+| `scaleway_autoscaling_set_instance_template_cloud_init` | Set the cloud-init configuration of an Instance template |
 
 </details>
 
@@ -637,7 +636,7 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 </details>
 
 <details>
-<summary><strong>Public Gateway</strong> (26 tools) - NAT gateway for private networks</summary>
+<summary><strong>Public Gateway</strong> (21 tools) - NAT gateway for private networks</summary>
 
 | Tool | Description |
 |------|-------------|
@@ -651,11 +650,6 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 | `scaleway_public_gateway_create_gateway_network` | Attach a gateway to a private network |
 | `scaleway_public_gateway_update_gateway_network` | Update a gateway network connection |
 | `scaleway_public_gateway_delete_gateway_network` | Detach a gateway from a private network |
-| `scaleway_public_gateway_list_dhcps` | List DHCP configurations |
-| `scaleway_public_gateway_get_dhcp` | Get a DHCP configuration |
-| `scaleway_public_gateway_create_dhcp` | Create a DHCP configuration |
-| `scaleway_public_gateway_update_dhcp` | Update a DHCP configuration |
-| `scaleway_public_gateway_delete_dhcp` | Delete a DHCP configuration |
 | `scaleway_public_gateway_list_pat_rules` | List PAT (port forwarding) rules |
 | `scaleway_public_gateway_get_pat_rule` | Get a PAT rule |
 | `scaleway_public_gateway_create_pat_rule` | Create a PAT rule |
@@ -836,7 +830,7 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 ### Serverless & Containers
 
 <details>
-<summary><strong>Containers</strong> (20 tools) - Serverless containers</summary>
+<summary><strong>Containers</strong> (17 tools) - Serverless containers</summary>
 
 | Tool | Description |
 |------|-------------|
@@ -850,7 +844,6 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 | `scaleway_containers_create_container` | Create a new container |
 | `scaleway_containers_update_container` | Update container configuration |
 | `scaleway_containers_delete_container` | Delete a container |
-| `scaleway_containers_deploy_container` | Deploy a container |
 | `scaleway_containers_list_crons` | List cron triggers |
 | `scaleway_containers_create_cron` | Create a cron trigger |
 | `scaleway_containers_update_cron` | Update a cron trigger |
@@ -858,8 +851,6 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 | `scaleway_containers_list_domains` | List custom domains |
 | `scaleway_containers_create_domain` | Map a custom domain |
 | `scaleway_containers_delete_domain` | Remove a custom domain |
-| `scaleway_containers_create_token` | Create an auth token |
-| `scaleway_containers_delete_token` | Delete an auth token |
 
 </details>
 
@@ -1396,7 +1387,7 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 
 ## Managing Tool Access
 
-With 733 tools available, you may want to limit which tools are exposed to your AI assistant for focused sessions.
+With 724 tools available, you may want to limit which tools are exposed to your AI assistant for focused sessions.
 
 ### Claude Code
 
@@ -1438,7 +1429,7 @@ Use the `allowedTools` field in your `.mcp.json` to filter tools by pattern:
 ### Prerequisites
 
 - [Bun](https://bun.sh) 1.x
-- Node.js 18+ (for some dev tooling)
+- Node.js 20.20.2+ (for some dev tooling)
 
 ### Commands
 

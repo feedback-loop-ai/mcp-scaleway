@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import * as schemas from "../../../src/tools/containers/types.js";
 import {
 	ContainerHttpOption,
 	ContainerPrivacy,
@@ -8,13 +9,10 @@ import {
 	CreateCronParams,
 	CreateDomainParams,
 	CreateNamespaceParams,
-	CreateTokenParams,
 	DeleteContainerParams,
 	DeleteCronParams,
 	DeleteDomainParams,
 	DeleteNamespaceParams,
-	DeleteTokenParams,
-	DeployContainerParams,
 	GetContainerParams,
 	GetNamespaceParams,
 	ListContainersParams,
@@ -27,6 +25,12 @@ import {
 } from "../../../src/tools/containers/types.js";
 
 describe("containers/types", () => {
+	it.each(["DeployContainerParams", "CreateTokenParams", "DeleteTokenParams"])(
+		"does not export the removed %s schema",
+		(schema) => {
+			expect(schemas).not.toHaveProperty(schema);
+		},
+	);
 	describe("ContainerRegionParam", () => {
 		it("accepts valid region", () => {
 			expect(ContainerRegionParam.parse({ region: "fr-par" })).toEqual({
@@ -315,19 +319,6 @@ describe("containers/types", () => {
 		});
 	});
 
-	describe("DeployContainerParams", () => {
-		it("requires containerId", () => {
-			expect(() => DeployContainerParams.parse({})).toThrow();
-		});
-
-		it("parses valid input", () => {
-			const result = DeployContainerParams.parse({
-				containerId: "00000000-0000-0000-0000-000000000001",
-			});
-			expect(result.containerId).toBe("00000000-0000-0000-0000-000000000001");
-		});
-	});
-
 	// ─── Cron Schemas ───────────────────────────────────────────────
 
 	describe("ListCronsParams", () => {
@@ -439,44 +430,48 @@ describe("containers/types", () => {
 			expect(result.domainId).toBe("00000000-0000-0000-0000-000000000001");
 		});
 	});
+});
 
-	// ─── Token Schemas ──────────────────────────────────────────────
-
-	describe("CreateTokenParams", () => {
-		it("allows empty (both optional)", () => {
-			const result = CreateTokenParams.parse({});
-			expect(result.containerId).toBeUndefined();
-			expect(result.namespaceId).toBeUndefined();
-		});
-
-		it("parses with containerId", () => {
-			const result = CreateTokenParams.parse({
-				containerId: "00000000-0000-0000-0000-000000000001",
-				description: "test token",
-				expiresAt: "2026-12-31T23:59:59Z",
-			});
-			expect(result.containerId).toBe("00000000-0000-0000-0000-000000000001");
-			expect(result.expiresAt).toBe("2026-12-31T23:59:59Z");
-		});
-
-		it("parses with namespaceId", () => {
-			const result = CreateTokenParams.parse({
-				namespaceId: "00000000-0000-0000-0000-000000000002",
-			});
-			expect(result.namespaceId).toBe("00000000-0000-0000-0000-000000000002");
-		});
+describe("containers v1 additions and exact numeric units", () => {
+	const required = {
+		namespaceId: "00000000-0000-0000-0000-000000000001",
+		name: "app",
+		registryImage: "example/app:1",
+	};
+	it("accepts it-mil and the new HTTPS-only boolean", () => {
+		expect(
+			CreateContainerParams.parse({ ...required, region: "it-mil", httpsConnectionsOnly: false })
+				.httpsConnectionsOnly,
+		).toBe(false);
 	});
-
-	describe("DeleteTokenParams", () => {
-		it("requires tokenId", () => {
-			expect(() => DeleteTokenParams.parse({})).toThrow();
-		});
-
-		it("parses valid input", () => {
-			const result = DeleteTokenParams.parse({
-				tokenId: "00000000-0000-0000-0000-000000000001",
-			});
-			expect(result.tokenId).toBe("00000000-0000-0000-0000-000000000001");
-		});
+	it.each([0, -1, 1.5, 8589934592])("rejects inexact or invalid MiB memory %s", (memoryLimit) => {
+		expect(() => CreateContainerParams.parse({ ...required, memoryLimit })).toThrow();
+		expect(() =>
+			UpdateContainerParams.parse({ containerId: required.namespaceId, memoryLimit }),
+		).toThrow();
+	});
+	it.each([0, -1, 1.5, 4294967296])("rejects invalid CPU millicores %s", (cpuLimit) => {
+		expect(() => CreateContainerParams.parse({ ...required, cpuLimit })).toThrow();
+		expect(() =>
+			UpdateContainerParams.parse({ containerId: required.namespaceId, cpuLimit }),
+		).toThrow();
+	});
+	it("keeps timezone optional and allows explicitly updating it", () => {
+		expect(
+			CreateCronParams.parse({ containerId: required.namespaceId, schedule: "0 * * * *" }).timezone,
+		).toBeUndefined();
+		expect(
+			UpdateCronParams.parse({ cronId: required.namespaceId, timezone: "Europe/Paris" }).timezone,
+		).toBe("Europe/Paris");
+	});
+	it("rejects empty cron name and timezone", () => {
+		expect(() =>
+			CreateCronParams.parse({
+				containerId: required.namespaceId,
+				schedule: "0 * * * *",
+				name: "",
+			}),
+		).toThrow();
+		expect(() => UpdateCronParams.parse({ cronId: required.namespaceId, timezone: "" })).toThrow();
 	});
 });

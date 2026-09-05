@@ -79,6 +79,7 @@ export async function handleCreateNamespace(
 		const result = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/${region}/namespaces`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(result);
@@ -96,6 +97,7 @@ export async function handleUpdateNamespace(
 		const result = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${API_PREFIX}/${region}/namespaces/${namespace_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(result);
@@ -167,6 +169,7 @@ export async function handleCreateFunction(
 		const result = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/${region}/functions`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(result);
@@ -184,6 +187,7 @@ export async function handleUpdateFunction(
 		const result = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${API_PREFIX}/${region}/functions/${function_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(result);
@@ -215,6 +219,7 @@ export async function handleDeployFunction(
 		const result = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/${input.region}/functions/${input.function_id}/deploy`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({}),
 		});
 		return jsonResponse(result);
@@ -251,6 +256,7 @@ export async function handleCreateCron(client: Client, input: z.infer<typeof Cre
 		const result = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/${region}/crons`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(result);
@@ -265,6 +271,7 @@ export async function handleUpdateCron(client: Client, input: z.infer<typeof Upd
 		const result = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${API_PREFIX}/${region}/crons/${cron_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(result);
@@ -313,6 +320,7 @@ export async function handleCreateDomain(client: Client, input: z.infer<typeof C
 		const result = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/${region}/domains`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(result);
@@ -341,6 +349,7 @@ export async function handleCreateToken(client: Client, input: z.infer<typeof Cr
 		const result = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/${region}/tokens`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(result);

@@ -1,4 +1,18 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+/**
+ * Contract tests for Scaleway Instances MCP Tools.
+ *
+ * These tests validate:
+ * - Input schema shapes (required fields, optional fields, types, constraints)
+ * - Tool registration with MCP server
+ * - Zod schema validation (accept valid, reject invalid)
+ *
+ * API Reference: specs/scaleway-api/ (Instances)
+ * Parity Matrix: tests/parity-matrix.json
+ */
+import { createAdvancedClient, withProfile } from "@scaleway/sdk-client";
+import { createScalewayClient } from "../../../../src/shared/client.js";
+import * as httpHandlers from "../../../../src/tools/instances/handlers.js";
+
 import { describe, expect, it, vi } from "vitest";
 import { registerInstancesTools } from "../../../../src/tools/instances/index.js";
 import {
@@ -24,17 +38,11 @@ import {
 	ServerActionInput,
 } from "../../../../src/tools/instances/types.js";
 
-/**
- * Contract tests for Scaleway Instances MCP Tools.
- *
- * These tests validate:
- * - Input schema shapes (required fields, optional fields, types, constraints)
- * - Tool registration with MCP server
- * - Zod schema validation (accept valid, reject invalid)
- *
- * API Reference: specs/scaleway-api/ (Instances)
- * Parity Matrix: tests/parity-matrix.json
- */
+vi.mock("../../../../src/shared/auth.js", () => ({
+	loadAuthConfig: vi.fn(() => ({ defaultRegion: "fr-par" })),
+}));
+vi.mock("../../../../src/shared/client.js", () => ({ createScalewayClient: vi.fn() }));
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 const VALID_ZONE = "fr-par-1";
 const VALID_UUID = "00000000-0000-0000-0000-000000000001";
@@ -748,5 +756,171 @@ describe("instances contract tests", () => {
 				expect(result.success).toBe(true);
 			});
 		}
+	});
+});
+
+// Exercise the installed SDK's Request construction, JSON parsing, and real HTTP errors.
+// Only the HTTP transport is replaced: no environment credentials or network calls.
+describe("SDK HTTP request contracts", () => {
+	function recordingClient(
+		response: unknown = { id: "http-response", status: "ready" },
+		status = 200,
+	) {
+		const requests: Request[] = [];
+		const client = createAdvancedClient(
+			withProfile({
+				accessKey: "SCWXXXXXXXXXXXXXXXXX",
+				secretKey: "00000000-0000-0000-0000-000000000000",
+			}),
+			(settings) => ({
+				...settings,
+				apiURL: "https://scaleway.invalid",
+				httpClient: (async (input: RequestInfo | URL, init?: RequestInit) => {
+					requests.push(new Request(input, init));
+					return new Response(status === 204 ? null : JSON.stringify(response), {
+						status,
+						headers: { "Content-Type": "application/json" },
+					});
+				}) as typeof fetch,
+			}),
+		);
+		vi.mocked(createScalewayClient).mockReturnValue(client);
+		return { client, requests };
+	}
+
+	const jsonCases = [
+		{
+			name: "CreateServer",
+			method: "POST",
+			path: "/instance/v1/zones/fr-par-1/servers",
+			call: () =>
+				httpHandlers.handleCreateServer({
+					zone: "fr-par-1",
+					name: "test",
+					commercial_type: "DEV1-S",
+					image: "11111111-1111-1111-1111-111111111111",
+					dynamic_ip_required: false,
+				}),
+			body: {
+				name: "test",
+				commercial_type: "DEV1-S",
+				image: "11111111-1111-1111-1111-111111111111",
+				dynamic_ip_required: false,
+			},
+		},
+		{
+			name: "ServerAction",
+			method: "POST",
+			path: "/instance/v1/zones/fr-par-1/servers/11111111-1111-1111-1111-111111111111/action",
+			call: () =>
+				httpHandlers.handleServerAction({
+					zone: "fr-par-1",
+					server_id: "11111111-1111-1111-1111-111111111111",
+					action: "poweron",
+				}),
+			body: { action: "poweron" },
+		},
+		{
+			name: "CreateVolume",
+			method: "POST",
+			path: "/instance/v1/zones/fr-par-1/volumes",
+			call: () =>
+				httpHandlers.handleCreateVolume({
+					zone: "fr-par-1",
+					name: "test",
+					size: 10000000000,
+					volume_type: "l_ssd",
+					tags: [],
+				}),
+			body: { name: "test", size: 10000000000, volume_type: "l_ssd", tags: [] },
+		},
+		{
+			name: "CreateSecurityGroup",
+			method: "POST",
+			path: "/instance/v1/zones/fr-par-1/security_groups",
+			call: () =>
+				httpHandlers.handleCreateSecurityGroup({
+					zone: "fr-par-1",
+					name: "test",
+					inbound_default_policy: "drop",
+					outbound_default_policy: "accept",
+					stateful: false,
+				}),
+			body: {
+				name: "test",
+				inbound_default_policy: "drop",
+				outbound_default_policy: "accept",
+				stateful: false,
+			},
+		},
+		{
+			name: "CreateIp",
+			method: "POST",
+			path: "/instance/v1/zones/fr-par-1/ips",
+			call: () => httpHandlers.handleCreateIp({ zone: "fr-par-1", type: "routed_ipv4", tags: [] }),
+			body: { type: "routed_ipv4", tags: [] },
+		},
+		{
+			name: "AttachIp",
+			method: "PATCH",
+			path: "/instance/v1/zones/fr-par-1/ips/11111111-1111-1111-1111-111111111111",
+			call: () =>
+				httpHandlers.handleAttachIp({
+					zone: "fr-par-1",
+					ip_id: "11111111-1111-1111-1111-111111111111",
+					server_id: "11111111-1111-1111-1111-111111111111",
+				}),
+			body: { server: "11111111-1111-1111-1111-111111111111" },
+		},
+		{
+			name: "CreateSnapshot",
+			method: "POST",
+			path: "/instance/v1/zones/fr-par-1/snapshots",
+			call: () =>
+				httpHandlers.handleCreateSnapshot({
+					zone: "fr-par-1",
+					name: "test",
+					volume_id: "11111111-1111-1111-1111-111111111111",
+					tags: [],
+				}),
+			body: { name: "test", volume_id: "11111111-1111-1111-1111-111111111111", tags: [] },
+		},
+	];
+
+	it.each(jsonCases)(
+		"$name: $method $path sends application/json",
+		async ({ call, method, path, body }) => {
+			const response = { id: "http-response", status: "ready" };
+			const { requests } = recordingClient(response);
+			const result = await call();
+			expect(requests).toHaveLength(1);
+			const [request] = requests;
+			expect(request.url).toBe(`https://scaleway.invalid${path}`);
+			expect(request.method).toBe(method);
+			expect(request.headers.get("Content-Type")).toBe("application/json");
+			expect(request.headers.get("Accept")).toBe("application/json");
+			expect(request.headers.get("X-Auth-Token")).toBe("00000000-0000-0000-0000-000000000000");
+			expect(JSON.parse(await request.text())).toEqual(body);
+			expect(result).toEqual({
+				content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+			});
+		},
+	);
+
+	it.each([
+		[400, "invalid_input"],
+		[401, "permission_denied"],
+		[403, "permission_denied"],
+		[404, "not_found"],
+		[429, "rate_limited"],
+		[500, "server_error"],
+	] as const)("maps SDK HTTP %i errors to %s", async (status, type) => {
+		const { requests } = recordingClient({ message: "HTTP contract error" }, status);
+		const result = await jsonCases[0].call();
+		expect(requests).toHaveLength(1);
+		expect(result).toMatchObject({ isError: true });
+		expect(JSON.parse(result.content[0].text)).toMatchObject({
+			error: { type, statusCode: status },
+		});
 	});
 });

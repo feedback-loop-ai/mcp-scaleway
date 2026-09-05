@@ -103,7 +103,7 @@ describe("dedibox handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "dedibox/v1/zones/fr-par-1/servers",
+					path: "/dedibox/v1/zones/fr-par-1/servers",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -141,7 +141,7 @@ describe("dedibox handlers", () => {
 			mockFetch.mockResolvedValue({ id: 42, hostname: "srv" });
 			const result = await handleGetServer({ zone: "fr-par-1", serverId: 42 });
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({ method: "GET", path: "dedibox/v1/zones/fr-par-1/servers/42" }),
+				expect.objectContaining({ method: "GET", path: "/dedibox/v1/zones/fr-par-1/servers/42" }),
 			);
 			expect(parse(result).id).toBe(42);
 		});
@@ -167,7 +167,7 @@ describe("dedibox handlers", () => {
 				enableIpv6: true,
 			});
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({ method: "PATCH", path: "dedibox/v1/zones/fr-par-1/servers/42" }),
+				expect.objectContaining({ method: "PATCH", path: "/dedibox/v1/zones/fr-par-1/servers/42" }),
 			);
 			expect(parse(result).hostname).toBe("new");
 		});
@@ -188,7 +188,7 @@ describe("dedibox handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "POST",
-					path: "dedibox/v1/zones/fr-par-1/servers/7/reboot",
+					path: "/dedibox/v1/zones/fr-par-1/servers/7/reboot",
 				}),
 			);
 		});
@@ -207,7 +207,7 @@ describe("dedibox handlers", () => {
 			mockFetch.mockResolvedValue({});
 			await handleStartServer({ zone: "fr-par-1", serverId: 8 });
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({ path: "dedibox/v1/zones/fr-par-1/servers/8/start" }),
+				expect.objectContaining({ path: "/dedibox/v1/zones/fr-par-1/servers/8/start" }),
 			);
 		});
 
@@ -225,7 +225,7 @@ describe("dedibox handlers", () => {
 			mockFetch.mockResolvedValue({});
 			await handleStopServer({ zone: "fr-par-1", serverId: 9 });
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({ path: "dedibox/v1/zones/fr-par-1/servers/9/stop" }),
+				expect.objectContaining({ path: "/dedibox/v1/zones/fr-par-1/servers/9/stop" }),
 			);
 		});
 
@@ -243,7 +243,7 @@ describe("dedibox handlers", () => {
 			mockFetch.mockResolvedValue(undefined);
 			const result = await handleDeleteServer({ zone: "fr-par-1", serverId: 5 });
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({ method: "DELETE", path: "dedibox/v1/zones/fr-par-1/servers/5" }),
+				expect.objectContaining({ method: "DELETE", path: "/dedibox/v1/zones/fr-par-1/servers/5" }),
 			);
 			expect(parse(result).message).toContain("deleted");
 		});
@@ -286,7 +286,7 @@ describe("dedibox handlers", () => {
 			});
 			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("POST");
-			expect(call.path).toBe("dedibox/v1/zones/fr-par-1/servers/10/install");
+			expect(call.path).toBe("/dedibox/v1/zones/fr-par-1/servers/10/install");
 			const body = JSON.parse(call.body);
 			expect(body.os_id).toBe(20);
 			expect(body.partitions[0].file_system).toBe("ext4");
@@ -327,7 +327,7 @@ describe("dedibox handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "dedibox/v1/zones/fr-par-1/servers/10/install",
+					path: "/dedibox/v1/zones/fr-par-1/servers/10/install",
 				}),
 			);
 			expect(parse(result).status).toBe("installed");
@@ -352,7 +352,7 @@ describe("dedibox handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "POST",
-					path: "dedibox/v1/zones/fr-par-1/servers/10/cancel-install",
+					path: "/dedibox/v1/zones/fr-par-1/servers/10/cancel-install",
 				}),
 			);
 		});
@@ -383,7 +383,7 @@ describe("dedibox handlers", () => {
 				availableOnly: true,
 			});
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({ method: "GET", path: "dedibox/v1/zones/fr-par-1/offers" }),
+				expect.objectContaining({ method: "GET", path: "/dedibox/v1/zones/fr-par-1/offers" }),
 			);
 			expect(parse(result).totalCount).toBe(1);
 		});
@@ -417,7 +417,7 @@ describe("dedibox handlers", () => {
 				projectId: "00000000-0000-0000-0000-000000000001",
 			});
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({ method: "GET", path: "dedibox/v1/zones/fr-par-1/offers/3" }),
+				expect.objectContaining({ method: "GET", path: "/dedibox/v1/zones/fr-par-1/offers/3" }),
 			);
 			expect(parse(result).id).toBe(3);
 		});
@@ -451,7 +451,7 @@ describe("dedibox handlers", () => {
 				projectId: "00000000-0000-0000-0000-000000000001",
 			});
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({ method: "GET", path: "dedibox/v1/zones/fr-par-1/os" }),
+				expect.objectContaining({ method: "GET", path: "/dedibox/v1/zones/fr-par-1/os" }),
 			);
 			expect(parse(result).totalCount).toBe(1);
 		});
@@ -486,7 +486,7 @@ describe("dedibox handlers", () => {
 				projectId: "00000000-0000-0000-0000-000000000001",
 			});
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({ method: "GET", path: "dedibox/v1/zones/fr-par-1/os/4" }),
+				expect.objectContaining({ method: "GET", path: "/dedibox/v1/zones/fr-par-1/os/4" }),
 			);
 			expect(parse(result).id).toBe(4);
 		});
@@ -511,7 +511,7 @@ describe("dedibox handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "dedibox/v1/zones/fr-par-1/servers/6/bmc-access",
+					path: "/dedibox/v1/zones/fr-par-1/servers/6/bmc-access",
 				}),
 			);
 			expect(parse(result).url).toBe("https://bmc");
@@ -532,7 +532,7 @@ describe("dedibox handlers", () => {
 			await handleStartBmcAccess({ zone: "fr-par-1", serverId: 6, ip: "1.2.3.4" });
 			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("POST");
-			expect(call.path).toBe("dedibox/v1/zones/fr-par-1/servers/6/bmc-access");
+			expect(call.path).toBe("/dedibox/v1/zones/fr-par-1/servers/6/bmc-access");
 			expect(JSON.parse(call.body).ip).toBe("1.2.3.4");
 		});
 
@@ -556,7 +556,7 @@ describe("dedibox handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "DELETE",
-					path: "dedibox/v1/zones/fr-par-1/servers/6/bmc-access",
+					path: "/dedibox/v1/zones/fr-par-1/servers/6/bmc-access",
 				}),
 			);
 			expect(parse(result).message).toContain("stopped");

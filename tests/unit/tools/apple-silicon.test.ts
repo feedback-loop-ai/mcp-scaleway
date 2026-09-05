@@ -1,7 +1,9 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { resetClient } from "../../../src/shared/client.js";
-import { registerAppleSiliconTools } from "../../../src/tools/apple-silicon/index.js";
+import { loadAuthConfig } from "../../../src/shared/auth.js";
+import { createScalewayClient, resetClient } from "../../../src/shared/client.js";
+import { createAppleSiliconHandlers } from "../../../src/tools/apple-silicon/handlers.js";
+import { getHandlers, registerAppleSiliconTools } from "../../../src/tools/apple-silicon/index.js";
 
 vi.mock("../../../src/shared/auth.js", () => ({
 	loadAuthConfig: vi.fn().mockReturnValue({
@@ -21,6 +23,9 @@ vi.mock("../../../src/shared/client.js", () => ({
 	resetClient: vi.fn(),
 }));
 
+const mockLoadAuthConfig = vi.mocked(loadAuthConfig);
+const mockCreateScalewayClient = vi.mocked(createScalewayClient);
+
 const TEST_ENV = {
 	SCW_ACCESS_KEY: "SCWXXXXXXXXXXXXXXXXX",
 	SCW_SECRET_KEY: "11111111-1111-1111-1111-111111111111",
@@ -30,6 +35,8 @@ const TEST_ENV = {
 describe("apple-silicon module", () => {
 	beforeEach(() => {
 		Object.assign(process.env, TEST_ENV);
+		mockLoadAuthConfig.mockClear();
+		mockCreateScalewayClient.mockClear();
 	});
 
 	afterEach(() => {
@@ -42,6 +49,23 @@ describe("apple-silicon module", () => {
 	it("registers without error", () => {
 		const server = new McpServer({ name: "test", version: "0.0.1" });
 		expect(() => registerAppleSiliconTools(server)).not.toThrow();
+	});
+
+	it("does not resolve credentials or build a client at registration time", () => {
+		const server = new McpServer({ name: "test", version: "0.0.1" });
+		registerAppleSiliconTools(server);
+
+		expect(mockLoadAuthConfig).not.toHaveBeenCalled();
+		expect(mockCreateScalewayClient).not.toHaveBeenCalled();
+	});
+
+	it("registers without error when SCW_* credentials are absent", () => {
+		for (const key of Object.keys(TEST_ENV)) {
+			delete process.env[key];
+		}
+		const server = new McpServer({ name: "test", version: "0.0.1" });
+		expect(() => registerAppleSiliconTools(server)).not.toThrow();
+		expect(mockLoadAuthConfig).not.toHaveBeenCalled();
 	});
 
 	it("registers all 13 Apple Silicon tools", () => {
@@ -62,7 +86,25 @@ describe("apple-silicon module", () => {
 		expect(names).toHaveLength(13);
 	});
 
-	describe("Private Network tool callbacks", () => {
+	describe("getHandlers", () => {
+		it("resolves credentials, builds the client, and returns the full handler set", () => {
+			const handlers = getHandlers();
+
+			expect(mockLoadAuthConfig).toHaveBeenCalledOnce();
+			expect(mockCreateScalewayClient).toHaveBeenCalledOnce();
+			expect(mockCreateScalewayClient).toHaveBeenCalledWith(
+				expect.objectContaining({ accessKey: "SCWTEST", defaultZone: "fr-par-1" }),
+			);
+
+			const expectedKeys = Object.keys(
+				createAppleSiliconHandlers(mockCreateScalewayClient.mock.results[0].value, "fr-par-1"),
+			).sort();
+			expect(Object.keys(handlers).sort()).toEqual(expectedKeys);
+			expect(expectedKeys).toHaveLength(13);
+		});
+	});
+
+	describe("tool callbacks", () => {
 		let toolCallbacks: Map<string, (params: Record<string, unknown>) => Promise<unknown>>;
 
 		beforeEach(() => {
@@ -78,6 +120,32 @@ describe("apple-silicon module", () => {
 				},
 			} as unknown as McpServer;
 			registerAppleSiliconTools(server);
+		});
+
+		it("resolves credentials lazily, on the first tool invocation", async () => {
+			expect(mockLoadAuthConfig).not.toHaveBeenCalled();
+			expect(mockCreateScalewayClient).not.toHaveBeenCalled();
+
+			const cb = toolCallbacks.get("scaleway_apple_silicon_list_servers");
+			expect(cb).toBeDefined();
+			const result = await cb?.({});
+
+			expect(result).toBeDefined();
+			expect(mockLoadAuthConfig).toHaveBeenCalledOnce();
+			expect(mockCreateScalewayClient).toHaveBeenCalledOnce();
+		});
+
+		it("uses the default zone from the resolved config", async () => {
+			const cb = toolCallbacks.get("scaleway_apple_silicon_list_server_types");
+			await cb?.({});
+
+			const client = mockCreateScalewayClient.mock.results[0].value;
+			expect(client.fetch).toHaveBeenCalledWith(
+				expect.objectContaining({
+					method: "GET",
+					path: "/apple-silicon/v1alpha1/zones/fr-par-1/server-types",
+				}),
+			);
 		});
 
 		it("list_server_private_networks callback executes", async () => {

@@ -90,6 +90,7 @@ export async function handleCreateUser(client: Client, input: CreateUserInput) {
 		const data = await client.fetch<unknown>({
 			method: "POST",
 			path: `${IAM_API}/users`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				organization_id: input.organization_id,
 				email: input.email,
@@ -106,6 +107,7 @@ export async function handleUpdateUser(client: Client, input: UpdateUserInput) {
 		const data = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${IAM_API}/users/${input.user_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({}),
 		});
 		return jsonResponse(data);
@@ -163,6 +165,7 @@ export async function handleCreateApplication(client: Client, input: CreateAppli
 		const data = await client.fetch<unknown>({
 			method: "POST",
 			path: `${IAM_API}/applications`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				name: input.name,
 				organization_id: input.organization_id,
@@ -181,6 +184,7 @@ export async function handleUpdateApplication(client: Client, input: UpdateAppli
 		const data = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${IAM_API}/applications/${application_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(data);
@@ -240,6 +244,7 @@ export async function handleCreateApiKey(client: Client, input: CreateApiKeyInpu
 		const data = await client.fetch<unknown>({
 			method: "POST",
 			path: `${IAM_API}/api-keys`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				application_id: input.application_id,
 				user_id: input.user_id,
@@ -260,6 +265,7 @@ export async function handleUpdateApiKey(client: Client, input: UpdateApiKeyInpu
 		const data = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${IAM_API}/api-keys/${access_key}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(data);
@@ -317,6 +323,7 @@ export async function handleCreatePolicy(client: Client, input: CreatePolicyInpu
 		const data = await client.fetch<unknown>({
 			method: "POST",
 			path: `${IAM_API}/policies`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				name: input.name,
 				organization_id: input.organization_id,
@@ -339,6 +346,7 @@ export async function handleUpdatePolicy(client: Client, input: UpdatePolicyInpu
 		const data = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${IAM_API}/policies/${policy_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(data);
@@ -432,6 +440,7 @@ function setPolicyRules(client: Client, policyId: string, rules: RuleSpec[]) {
 	return client.fetch<unknown>({
 		method: "PUT",
 		path: `${IAM_API}/rules`,
+		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({ policy_id: policyId, rules }),
 	});
 }
@@ -538,6 +547,7 @@ export async function handleCreateGroup(client: Client, input: CreateGroupInput)
 		const data = await client.fetch<unknown>({
 			method: "POST",
 			path: `${IAM_API}/groups`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				name: input.name,
 				organization_id: input.organization_id,
@@ -556,6 +566,7 @@ export async function handleUpdateGroup(client: Client, input: UpdateGroupInput)
 		const data = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${IAM_API}/groups/${group_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(data);
@@ -581,6 +592,7 @@ export async function handleAddGroupMember(client: Client, input: AddGroupMember
 		const data = await client.fetch<unknown>({
 			method: "POST",
 			path: `${IAM_API}/groups/${input.group_id}/add-member`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				user_id: input.user_id,
 				application_id: input.application_id,
@@ -597,6 +609,7 @@ export async function handleRemoveGroupMember(client: Client, input: RemoveGroup
 		const data = await client.fetch<unknown>({
 			method: "POST",
 			path: `${IAM_API}/groups/${input.group_id}/remove-member`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				user_id: input.user_id,
 				application_id: input.application_id,

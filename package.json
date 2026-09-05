@@ -14,7 +14,7 @@
 	},
 	"files": ["dist/", "README.md", "LICENSE"],
 	"engines": {
-		"node": ">=18.0.0"
+		"node": ">=20.20.2"
 	},
 	"scripts": {
 		"start": "bun run src/main.ts",
@@ -28,7 +28,7 @@
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.25.0",
 		"@scaleway/sdk-account": "^2.3.1",
-		"@scaleway/sdk-client": "^1.0.0",
+		"@scaleway/sdk-client": "^2.7.0",
 		"@scaleway/sdk-edge-services": "^2.7.0",
 		"@scaleway/sdk-key-manager": "^2.3.1",
 		"@scaleway/sdk-mnq": "^2.3.1",

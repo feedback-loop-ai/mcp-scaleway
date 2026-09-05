@@ -2,36 +2,32 @@
  * Contract tests for Public Gateway API tools.
  *
  * Validates request/response shapes, pagination, auth, and error handling
- * against the Scaleway VPC Public Gateway API v2 (and v1 for DHCP).
+ * against the Scaleway VPC Public Gateway API v2. The legacy v1 API was
+ * removed upstream on 3 Nov 2025; only v2 endpoints are exposed by this server.
  *
- * API Reference: specs/scaleway-api/ + @scaleway/sdk-vpcgw
+ * API Reference: specs/scaleway-api/public-gateway/api-reference.md + @scaleway/sdk-vpcgw
  * Parity Matrix: tests/parity-matrix.json > public-gateway
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-	handleCreateDHCP,
 	handleCreateGateway,
 	handleCreateGatewayNetwork,
 	handleCreateIP,
 	handleCreatePatRule,
-	handleDeleteDHCP,
 	handleDeleteGateway,
 	handleDeleteGatewayNetwork,
 	handleDeleteIP,
 	handleDeletePatRule,
-	handleGetDHCP,
 	handleGetGateway,
 	handleGetGatewayNetwork,
 	handleGetIP,
 	handleGetPatRule,
-	handleListDHCPs,
 	handleListGatewayNetworks,
 	handleListGatewayTypes,
 	handleListGateways,
 	handleListIPs,
 	handleListPatRules,
-	handleUpdateDHCP,
 	handleUpdateGateway,
 	handleUpdateGatewayNetwork,
 	handleUpdateIP,
@@ -64,11 +60,42 @@ describe("Public Gateway API Contracts", () => {
 	// ─── Tool Registration Contract ──────────────────────────────────────
 
 	describe("tool registration", () => {
-		it("registers all 26 public-gateway tools", () => {
-			const server = new McpServer({ name: "test", version: "0.0.1" });
+		it("registers exactly the 21 v2 public-gateway tools", () => {
+			const names: string[] = [];
+			const server = {
+				tool: (name: string) => {
+					names.push(name);
+				},
+			} as unknown as McpServer;
 			registerPublicGatewayTools(server);
-			// Registration should not throw for all 26 tools
-			expect(true).toBe(true);
+			expect(names).toEqual([
+				"scaleway_public_gateway_list_gateways",
+				"scaleway_public_gateway_get_gateway",
+				"scaleway_public_gateway_create_gateway",
+				"scaleway_public_gateway_update_gateway",
+				"scaleway_public_gateway_delete_gateway",
+				"scaleway_public_gateway_list_gateway_networks",
+				"scaleway_public_gateway_get_gateway_network",
+				"scaleway_public_gateway_create_gateway_network",
+				"scaleway_public_gateway_update_gateway_network",
+				"scaleway_public_gateway_delete_gateway_network",
+				"scaleway_public_gateway_list_pat_rules",
+				"scaleway_public_gateway_get_pat_rule",
+				"scaleway_public_gateway_create_pat_rule",
+				"scaleway_public_gateway_update_pat_rule",
+				"scaleway_public_gateway_delete_pat_rule",
+				"scaleway_public_gateway_list_ips",
+				"scaleway_public_gateway_get_ip",
+				"scaleway_public_gateway_create_ip",
+				"scaleway_public_gateway_update_ip",
+				"scaleway_public_gateway_delete_ip",
+				"scaleway_public_gateway_list_gateway_types",
+			]);
+		});
+
+		it("registers on a real McpServer without throwing", () => {
+			const server = new McpServer({ name: "test", version: "0.0.1" });
+			expect(() => registerPublicGatewayTools(server)).not.toThrow();
 		});
 	});
 
@@ -285,67 +312,6 @@ describe("Public Gateway API Contracts", () => {
 			await handleDeleteGatewayNetwork({ gatewayNetworkId: UUID });
 
 			expect(mockFetch.mock.calls[0][0].method).toBe("DELETE");
-		});
-	});
-
-	// ─── DHCP Contracts (v1 API) ─────────────────────────────────────────
-	// API: GET /vpc-gw/v1/zones/{zone}/dhcps
-
-	describe("ListDHCPs contract", () => {
-		it("sends GET to v1 API path", async () => {
-			mockFetch.mockResolvedValue({ dhcps: [], total_count: 0 });
-
-			await handleListDHCPs({ page: 1, pageSize: 50 });
-
-			expect(mockFetch.mock.calls[0][0].path).toMatch(/\/vpc-gw\/v1\/zones\//);
-		});
-	});
-
-	// API: GET /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}
-	describe("GetDHCP contract", () => {
-		it("sends GET to v1 dhcps path", async () => {
-			mockFetch.mockResolvedValue({ id: UUID });
-
-			await handleGetDHCP({ dhcpId: UUID });
-
-			expect(mockFetch.mock.calls[0][0].path).toContain(`/dhcps/${UUID}`);
-		});
-	});
-
-	// API: POST /vpc-gw/v1/zones/{zone}/dhcps
-	describe("CreateDHCP contract", () => {
-		it("sends POST with subnet in body", async () => {
-			mockFetch.mockResolvedValue({ id: "dhcp-new" });
-
-			await handleCreateDHCP({ subnet: "192.168.1.0/24" });
-
-			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
-			expect(body).toHaveProperty("subnet", "192.168.1.0/24");
-		});
-	});
-
-	// API: PATCH /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}
-	describe("UpdateDHCP contract", () => {
-		it("sends PATCH to v1 dhcps path", async () => {
-			mockFetch.mockResolvedValue({ id: UUID });
-
-			await handleUpdateDHCP({ dhcpId: UUID, subnet: "10.0.0.0/8" });
-
-			const req = mockFetch.mock.calls[0][0];
-			expect(req.method).toBe("PATCH");
-			expect(req.path).toContain("/v1/");
-		});
-	});
-
-	// API: DELETE /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}
-	describe("DeleteDHCP contract", () => {
-		it("sends DELETE and returns success", async () => {
-			mockFetch.mockResolvedValue(undefined);
-
-			const result = await handleDeleteDHCP({ dhcpId: UUID });
-
-			expect(mockFetch.mock.calls[0][0].method).toBe("DELETE");
-			expect(JSON.parse(result.content[0].text)).toEqual({ success: true });
 		});
 	});
 

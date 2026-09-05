@@ -14,7 +14,7 @@ import type {
 	UpdateClusterParams,
 } from "./types.js";
 
-const DATA_LAB_API_PREFIX = "datalab/v1beta1/regions";
+const DATA_LAB_API_PREFIX = "/datalab/v1beta1/regions";
 
 function getClient() {
 	const config = loadAuthConfig();

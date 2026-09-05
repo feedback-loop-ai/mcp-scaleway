@@ -110,6 +110,7 @@ export async function handleCreateServer(input: CreateServerInput) {
 		const response = await client.fetch<{ server: unknown }>({
 			method: "POST",
 			path: `${basePath(input.zone)}/servers`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return successResponse(response);
@@ -137,6 +138,7 @@ export async function handleServerAction(input: ServerActionInput) {
 		const response = await client.fetch<{ task: unknown }>({
 			method: "POST",
 			path: `${basePath(input.zone)}/servers/${input.server_id}/action`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ action: input.action }),
 		});
 		return successResponse(response);
@@ -195,6 +197,7 @@ export async function handleCreateVolume(input: CreateVolumeInput) {
 		const response = await client.fetch<{ volume: unknown }>({
 			method: "POST",
 			path: `${basePath(input.zone)}/volumes`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return successResponse(response);
@@ -269,6 +272,7 @@ export async function handleCreateSecurityGroup(input: CreateSecurityGroupInput)
 		const response = await client.fetch<{ security_group: unknown }>({
 			method: "POST",
 			path: `${basePath(input.zone)}/security_groups`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return successResponse(response);
@@ -326,6 +330,7 @@ export async function handleCreateIp(input: CreateIpInput) {
 		const response = await client.fetch<{ ip: unknown }>({
 			method: "POST",
 			path: `${basePath(input.zone)}/ips`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return successResponse(response);
@@ -353,6 +358,7 @@ export async function handleAttachIp(input: AttachIpInput) {
 		const response = await client.fetch<{ ip: unknown }>({
 			method: "PATCH",
 			path: `${basePath(input.zone)}/ips/${input.ip_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ server: input.server_id }),
 		});
 		return successResponse(response);
@@ -396,6 +402,7 @@ export async function handleCreateSnapshot(input: CreateSnapshotInput) {
 		const response = await client.fetch<{ snapshot: unknown }>({
 			method: "POST",
 			path: `${basePath(input.zone)}/snapshots`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return successResponse(response);

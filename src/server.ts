@@ -1,11 +1,12 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import pkg from "../package.json";
 import { registerAllTools } from "./tools/index.js";
 
 export function createServer(): McpServer {
 	const server = new McpServer({
 		name: "mcp-scaleway",
-		version: "0.1.0",
+		version: pkg.version,
 	});
 
 	registerAllTools(server);

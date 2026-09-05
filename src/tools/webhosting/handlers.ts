@@ -114,6 +114,7 @@ export async function handleCreateHosting(input: CreateHostingInput) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${API_PREFIX}/regions/${region}/hostings`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 
@@ -138,6 +139,7 @@ export async function handleUpdateHosting(input: UpdateHostingInput) {
 		const response = await client.fetch<unknown>({
 			method: "PATCH",
 			path: `${API_PREFIX}/regions/${region}/hostings/${input.hosting_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 

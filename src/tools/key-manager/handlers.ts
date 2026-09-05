@@ -2,7 +2,7 @@ import type { Client } from "@scaleway/sdk-client";
 import { KeyManagerv1alpha1 } from "@scaleway/sdk-key-manager";
 import type { z } from "zod";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
-import { buildPaginatedResponse, paginationToQuery } from "../../shared/pagination.js";
+import { buildPaginatedResponse } from "../../shared/pagination.js";
 import type {
 	CreateKeyInput,
 	DecryptInput,
@@ -41,7 +41,8 @@ export async function handleListKeys(client: Client, input: z.infer<typeof ListK
 			name: input.name,
 			usage: input.usage,
 			scheduledForDeletion: input.scheduledForDeletion,
-			...paginationToQuery(input.page, input.pageSize),
+			page: input.page,
+			pageSize: input.pageSize,
 		});
 		return formatSuccess(
 			buildPaginatedResponse(response.keys, response.totalCount, input.page, input.pageSize),

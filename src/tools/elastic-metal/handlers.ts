@@ -24,7 +24,33 @@ import {
 	StopServerInput,
 } from "./types.js";
 
-const BASE_URL = "https://api.scaleway.com/baremetal/v1/zones";
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+/**
+ * Mirrors `ScwRequest` from `@scaleway/sdk-client` (not re-exported by the
+ * package). `path` is appended verbatim to `https://api.scaleway.com`, so it
+ * MUST start with `/`; `urlParams` is serialised as the query string.
+ */
+interface ElasticMetalRequest {
+	method: HttpMethod;
+	path: string;
+	headers?: Record<string, string>;
+	body?: string;
+	urlParams?: URLSearchParams;
+}
+
+interface ApiRequestOptions {
+	body?: unknown;
+	urlParams?: URLSearchParams;
+}
+
+function basePath(zone: string): string {
+	return `/baremetal/v1/zones/${zone}`;
+}
+
+function flexibleIpPath(zone: string): string {
+	return `/flexible-ip/v1alpha1/zones/${zone}/fips`;
+}
 
 function paginationSearchParams(page: number, pageSize: number): URLSearchParams {
 	return new URLSearchParams({
@@ -39,33 +65,30 @@ function jsonResponse(data: unknown) {
 	};
 }
 
-export async function apiCall(
+/**
+ * Issue a request through the Scaleway SDK client.
+ *
+ * The SDK resolves with the already-parsed JSON body (or `undefined` on
+ * `204 No Content`) and throws `ScalewayError` (carrying `.status`) on
+ * non-2xx responses, which the callers map via `mapScalewayError`. Empty
+ * responses resolve to `{}` so delete handlers keep returning a JSON object.
+ */
+async function apiRequest(
 	client: Client,
-	method: string,
-	url: string,
-	body?: unknown,
+	method: HttpMethod,
+	path: string,
+	options: ApiRequestOptions = {},
 ): Promise<unknown> {
-	const fetchFn = client as unknown as {
-		fetch: (url: string, init: RequestInit) => Promise<Response>;
-	};
-	const init: RequestInit = {
-		method,
-		headers: { "Content-Type": "application/json" },
-	};
-	if (body !== undefined) {
-		init.body = JSON.stringify(body);
+	const request: ElasticMetalRequest = { method, path };
+	if (options.body !== undefined) {
+		request.body = JSON.stringify(options.body);
+		request.headers = { "Content-Type": "application/json" };
 	}
-	const response = await fetchFn.fetch(url, init);
-	if (!response.ok) {
-		const errorBody = await response.text();
-		const error = new Error(errorBody || `HTTP ${response.status}`);
-		(error as unknown as { statusCode: number }).statusCode = response.status;
-		throw error;
+	if (options.urlParams) {
+		request.urlParams = options.urlParams;
 	}
-	if (response.status === 204) {
-		return {};
-	}
-	return response.json();
+	const data = await client.fetch<unknown>(request);
+	return data ?? {};
 }
 
 function getClient(): Client {
@@ -87,11 +110,9 @@ export async function handleListServers(params: Record<string, unknown>) {
 		if (input.status) searchParams.set("status", input.status);
 		if (input.order_by) searchParams.set("order_by", input.order_by);
 
-		const data = (await apiCall(
-			client,
-			"GET",
-			`${BASE_URL}/${input.zone}/servers?${searchParams.toString()}`,
-		)) as { servers: unknown[]; total_count: number };
+		const data = (await apiRequest(client, "GET", `${basePath(input.zone)}/servers`, {
+			urlParams: searchParams,
+		})) as { servers: unknown[]; total_count: number };
 
 		return jsonResponse(
 			buildPaginatedResponse(data.servers, data.total_count, input.page, input.pageSize),
@@ -105,10 +126,10 @@ export async function handleGetServer(params: Record<string, unknown>) {
 	const input = GetServerInput.parse(params);
 	try {
 		const client = getClient();
-		const data = await apiCall(
+		const data = await apiRequest(
 			client,
 			"GET",
-			`${BASE_URL}/${input.zone}/servers/${input.server_id}`,
+			`${basePath(input.zone)}/servers/${input.server_id}`,
 		);
 		return jsonResponse(data);
 	} catch (error) {
@@ -128,7 +149,7 @@ export async function handleCreateServer(params: Record<string, unknown>) {
 		};
 		if (input.project_id) body.project_id = input.project_id;
 
-		const data = await apiCall(client, "POST", `${BASE_URL}/${input.zone}/servers`, body);
+		const data = await apiRequest(client, "POST", `${basePath(input.zone)}/servers`, { body });
 		return jsonResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -139,10 +160,10 @@ export async function handleDeleteServer(params: Record<string, unknown>) {
 	const input = DeleteServerInput.parse(params);
 	try {
 		const client = getClient();
-		const data = await apiCall(
+		const data = await apiRequest(
 			client,
 			"DELETE",
-			`${BASE_URL}/${input.zone}/servers/${input.server_id}`,
+			`${basePath(input.zone)}/servers/${input.server_id}`,
 		);
 		return jsonResponse(data);
 	} catch (error) {
@@ -165,11 +186,11 @@ export async function handleInstallServer(params: Record<string, unknown>) {
 		if (input.service_user) body.service_user = input.service_user;
 		if (input.service_password) body.service_password = input.service_password;
 
-		const data = await apiCall(
+		const data = await apiRequest(
 			client,
 			"POST",
-			`${BASE_URL}/${input.zone}/servers/${input.server_id}/install`,
-			body,
+			`${basePath(input.zone)}/servers/${input.server_id}/install`,
+			{ body },
 		);
 		return jsonResponse(data);
 	} catch (error) {
@@ -184,11 +205,11 @@ export async function handleRebootServer(params: Record<string, unknown>) {
 		const body: Record<string, unknown> = {};
 		if (input.boot_type) body.boot_type = input.boot_type;
 
-		const data = await apiCall(
+		const data = await apiRequest(
 			client,
 			"POST",
-			`${BASE_URL}/${input.zone}/servers/${input.server_id}/reboot`,
-			body,
+			`${basePath(input.zone)}/servers/${input.server_id}/reboot`,
+			{ body },
 		);
 		return jsonResponse(data);
 	} catch (error) {
@@ -203,11 +224,11 @@ export async function handleStartServer(params: Record<string, unknown>) {
 		const body: Record<string, unknown> = {};
 		if (input.boot_type) body.boot_type = input.boot_type;
 
-		const data = await apiCall(
+		const data = await apiRequest(
 			client,
 			"POST",
-			`${BASE_URL}/${input.zone}/servers/${input.server_id}/start`,
-			body,
+			`${basePath(input.zone)}/servers/${input.server_id}/start`,
+			{ body },
 		);
 		return jsonResponse(data);
 	} catch (error) {
@@ -219,11 +240,11 @@ export async function handleStopServer(params: Record<string, unknown>) {
 	const input = StopServerInput.parse(params);
 	try {
 		const client = getClient();
-		const data = await apiCall(
+		const data = await apiRequest(
 			client,
 			"POST",
-			`${BASE_URL}/${input.zone}/servers/${input.server_id}/stop`,
-			{},
+			`${basePath(input.zone)}/servers/${input.server_id}/stop`,
+			{ body: {} },
 		);
 		return jsonResponse(data);
 	} catch (error) {
@@ -241,11 +262,9 @@ export async function handleListOffers(params: Record<string, unknown>) {
 		if (input.subscription_period)
 			searchParams.set("subscription_period", input.subscription_period);
 
-		const data = (await apiCall(
-			client,
-			"GET",
-			`${BASE_URL}/${input.zone}/offers?${searchParams.toString()}`,
-		)) as { offers: unknown[]; total_count: number };
+		const data = (await apiRequest(client, "GET", `${basePath(input.zone)}/offers`, {
+			urlParams: searchParams,
+		})) as { offers: unknown[]; total_count: number };
 
 		return jsonResponse(
 			buildPaginatedResponse(data.offers, data.total_count, input.page, input.pageSize),
@@ -262,14 +281,14 @@ export async function handleListOss(params: Record<string, unknown>) {
 		const searchParams = paginationSearchParams(input.page, input.pageSize);
 		if (input.offer_id) searchParams.set("offer_id", input.offer_id);
 
-		const data = (await apiCall(
-			client,
-			"GET",
-			`${BASE_URL}/${input.zone}/oss?${searchParams.toString()}`,
-		)) as { oss: unknown[]; total_count: number };
+		// The Bare Metal API lists operating systems at `/os` and wraps them under `os`
+		// (see specs/scaleway-api/elastic-metal/api-reference.md, ListOSResponse).
+		const data = (await apiRequest(client, "GET", `${basePath(input.zone)}/os`, {
+			urlParams: searchParams,
+		})) as { os: unknown[]; total_count: number };
 
 		return jsonResponse(
-			buildPaginatedResponse(data.oss, data.total_count, input.page, input.pageSize),
+			buildPaginatedResponse(data.os, data.total_count, input.page, input.pageSize),
 		);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -280,10 +299,10 @@ export async function handleGetBmcAccess(params: Record<string, unknown>) {
 	const input = GetBmcAccessInput.parse(params);
 	try {
 		const client = getClient();
-		const data = await apiCall(
+		const data = await apiRequest(
 			client,
 			"GET",
-			`${BASE_URL}/${input.zone}/servers/${input.server_id}/bmc-access`,
+			`${basePath(input.zone)}/servers/${input.server_id}/bmc-access`,
 		);
 		return jsonResponse(data);
 	} catch (error) {
@@ -299,17 +318,16 @@ export async function handleListIps(params: Record<string, unknown>) {
 		const client = getClient();
 		const searchParams = paginationSearchParams(input.page, input.pageSize);
 		if (input.project_id) searchParams.set("project_id", input.project_id);
-		if (input.server_id) searchParams.set("server_id", input.server_id);
+		// Keep the singular tool input; the Flexible IP API expects a server_ids array.
+		if (input.server_id) searchParams.append("server_ids", input.server_id);
 		if (input.order_by) searchParams.set("order_by", input.order_by);
 
-		const data = (await apiCall(
-			client,
-			"GET",
-			`${BASE_URL}/${input.zone}/ips?${searchParams.toString()}`,
-		)) as { ips: unknown[]; total_count: number };
+		const data = (await apiRequest(client, "GET", flexibleIpPath(input.zone), {
+			urlParams: searchParams,
+		})) as { flexible_ips: unknown[]; total_count: number };
 
 		return jsonResponse(
-			buildPaginatedResponse(data.ips, data.total_count, input.page, input.pageSize),
+			buildPaginatedResponse(data.flexible_ips, data.total_count, input.page, input.pageSize),
 		);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -327,7 +345,7 @@ export async function handleCreateIp(params: Record<string, unknown>) {
 		};
 		if (input.server_id) body.server_id = input.server_id;
 
-		const data = await apiCall(client, "POST", `${BASE_URL}/${input.zone}/ips`, body);
+		const data = await apiRequest(client, "POST", flexibleIpPath(input.zone), { body });
 		return jsonResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -338,7 +356,7 @@ export async function handleDeleteIp(params: Record<string, unknown>) {
 	const input = DeleteIpInput.parse(params);
 	try {
 		const client = getClient();
-		const data = await apiCall(client, "DELETE", `${BASE_URL}/${input.zone}/ips/${input.ip_id}`);
+		const data = await apiRequest(client, "DELETE", `${flexibleIpPath(input.zone)}/${input.ip_id}`);
 		return jsonResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -358,10 +376,11 @@ export async function handleListServerPrivateNetworks(params: Record<string, unk
 		if (input.project_id) searchParams.set("project_id", input.project_id);
 		if (input.order_by) searchParams.set("order_by", input.order_by);
 
-		const data = (await apiCall(
+		const data = (await apiRequest(
 			client,
 			"GET",
-			`${BASE_URL}/${input.zone}/server-private-networks?${searchParams.toString()}`,
+			`${basePath(input.zone)}/server-private-networks`,
+			{ urlParams: searchParams },
 		)) as { server_private_networks: unknown[]; total_count: number };
 
 		return jsonResponse(
@@ -381,11 +400,11 @@ export async function handleAddServerPrivateNetwork(params: Record<string, unkno
 	const input = AddServerPrivateNetworkInput.parse(params);
 	try {
 		const client = getClient();
-		const data = await apiCall(
+		const data = await apiRequest(
 			client,
 			"POST",
-			`${BASE_URL}/${input.zone}/servers/${input.server_id}/private-networks`,
-			{ private_network_id: input.private_network_id },
+			`${basePath(input.zone)}/servers/${input.server_id}/private-networks`,
+			{ body: { private_network_id: input.private_network_id } },
 		);
 		return jsonResponse(data);
 	} catch (error) {
@@ -397,11 +416,11 @@ export async function handleSetServerPrivateNetworks(params: Record<string, unkn
 	const input = SetServerPrivateNetworksInput.parse(params);
 	try {
 		const client = getClient();
-		const data = await apiCall(
+		const data = await apiRequest(
 			client,
 			"PUT",
-			`${BASE_URL}/${input.zone}/servers/${input.server_id}/private-networks`,
-			{ private_network_ids: input.private_network_ids },
+			`${basePath(input.zone)}/servers/${input.server_id}/private-networks`,
+			{ body: { private_network_ids: input.private_network_ids } },
 		);
 		return jsonResponse(data);
 	} catch (error) {
@@ -413,10 +432,10 @@ export async function handleDeleteServerPrivateNetwork(params: Record<string, un
 	const input = DeleteServerPrivateNetworkInput.parse(params);
 	try {
 		const client = getClient();
-		const data = await apiCall(
+		const data = await apiRequest(
 			client,
 			"DELETE",
-			`${BASE_URL}/${input.zone}/servers/${input.server_id}/private-networks/${input.private_network_id}`,
+			`${basePath(input.zone)}/servers/${input.server_id}/private-networks/${input.private_network_id}`,
 		);
 		return jsonResponse(data);
 	} catch (error) {

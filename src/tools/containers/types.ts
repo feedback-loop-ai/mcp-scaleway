@@ -1,12 +1,13 @@
 import { z } from "zod";
-import { PaginationParams, ScalewayRegion } from "../../shared/types.js";
+import { PaginationParams } from "../../shared/types.js";
 
 // ─── Shared ──────────────────────────────────────────────────────────
 
 export const ContainerRegionParam = z.object({
-	region: ScalewayRegion.optional().describe(
-		"Scaleway region (e.g. fr-par). Defaults to account default region",
-	),
+	region: z
+		.enum(["fr-par", "nl-ams", "pl-waw", "it-mil"])
+		.optional()
+		.describe("Scaleway region (e.g. fr-par). Defaults to account default region"),
 });
 
 // ─── Namespace ───────────────────────────────────────────────────────
@@ -75,7 +76,9 @@ export const ContainerProtocol = z.enum(["http1", "h2c"]).describe("Container pr
 
 export const ContainerHttpOption = z
 	.enum(["enabled", "redirected", "doNotForce"])
-	.describe("HTTP option for the container");
+	.describe(
+		"Legacy HTTP option: enabled allows HTTP and HTTPS; redirected and doNotForce are unsupported in v1. Prefer httpsConnectionsOnly.",
+	);
 
 export const ListContainersParams = PaginationParams.merge(ContainerRegionParam).merge(
 	z.object({
@@ -119,12 +122,28 @@ export const CreateContainerParams = ContainerRegionParam.merge(
 			.min(1)
 			.optional()
 			.describe("Maximum number of instances (default: 20)"),
-		memoryLimit: z.number().int().optional().describe("Memory limit in MB (default: 256)"),
-		cpuLimit: z.number().int().optional().describe("CPU limit in millicores (default: 140)"),
+		memoryLimit: z
+			.number()
+			.int()
+			.positive()
+			.max(Math.floor(Number.MAX_SAFE_INTEGER / 1_048_576))
+			.optional()
+			.describe("Memory limit in MiB; converted to bytes for v1"),
+		cpuLimit: z
+			.number()
+			.int()
+			.positive()
+			.max(4_294_967_295)
+			.optional()
+			.describe("CPU limit in millicores (1000 = 1 vCPU)"),
 		timeout: z.string().optional().describe("Request timeout duration (e.g. '300s')"),
 		privacy: ContainerPrivacy.optional().describe("Privacy setting (default: public)"),
 		protocol: ContainerProtocol.optional().describe("Protocol (default: http1)"),
-		httpOption: ContainerHttpOption.optional().describe("HTTP option (default: enabled)"),
+		httpOption: ContainerHttpOption.optional(),
+		httpsConnectionsOnly: z
+			.boolean()
+			.optional()
+			.describe("Only allow HTTPS connections; does not promise HTTP redirection"),
 		description: z.string().optional().describe("Container description"),
 		environmentVariables: z
 			.record(z.string(), z.string())
@@ -145,12 +164,28 @@ export const UpdateContainerParams = ContainerRegionParam.merge(
 		port: z.number().int().min(1).max(65535).optional().describe("Updated container port"),
 		minScale: z.number().int().min(0).optional().describe("Updated minimum scale"),
 		maxScale: z.number().int().min(1).optional().describe("Updated maximum scale"),
-		memoryLimit: z.number().int().optional().describe("Updated memory limit in MB"),
-		cpuLimit: z.number().int().optional().describe("Updated CPU limit in millicores"),
+		memoryLimit: z
+			.number()
+			.int()
+			.positive()
+			.max(Math.floor(Number.MAX_SAFE_INTEGER / 1_048_576))
+			.optional()
+			.describe("Updated memory limit in MiB; converted to bytes for v1"),
+		cpuLimit: z
+			.number()
+			.int()
+			.positive()
+			.max(4_294_967_295)
+			.optional()
+			.describe("Updated CPU limit in millicores"),
 		timeout: z.string().optional().describe("Updated request timeout"),
 		privacy: ContainerPrivacy.optional().describe("Updated privacy setting"),
 		protocol: ContainerProtocol.optional().describe("Updated protocol"),
-		httpOption: ContainerHttpOption.optional().describe("Updated HTTP option"),
+		httpOption: ContainerHttpOption.optional(),
+		httpsConnectionsOnly: z
+			.boolean()
+			.optional()
+			.describe("Only allow HTTPS connections; does not promise HTTP redirection"),
 		description: z.string().optional().describe("Updated description"),
 		environmentVariables: z
 			.record(z.string(), z.string())
@@ -171,13 +206,6 @@ export const DeleteContainerParams = ContainerRegionParam.merge(
 );
 export type DeleteContainerParams = z.infer<typeof DeleteContainerParams>;
 
-export const DeployContainerParams = ContainerRegionParam.merge(
-	z.object({
-		containerId: z.string().uuid().describe("Container ID to deploy"),
-	}),
-);
-export type DeployContainerParams = z.infer<typeof DeployContainerParams>;
-
 // ─── Cron ────────────────────────────────────────────────────────────
 
 export const ListCronsParams = PaginationParams.merge(ContainerRegionParam).merge(
@@ -191,29 +219,48 @@ export const CreateCronParams = ContainerRegionParam.merge(
 	z.object({
 		containerId: z.string().uuid().describe("Container ID"),
 		schedule: z.string().min(1).describe("Cron schedule expression (e.g. '0 * * * *')"),
+		timezone: z
+			.string()
+			.min(1)
+			.optional()
+			.describe("IANA cron time zone (default on creation: UTC)"),
 		args: z
 			.record(z.string(), z.unknown())
 			.optional()
 			.describe("JSON arguments passed to the container"),
-		name: z.string().optional().describe("Cron trigger name"),
+		name: z
+			.string()
+			.min(1)
+			.max(50)
+			.optional()
+			.describe("Cron trigger name (auto-generated when omitted)"),
 	}),
 );
 export type CreateCronParams = z.infer<typeof CreateCronParams>;
 
 export const UpdateCronParams = ContainerRegionParam.merge(
 	z.object({
-		cronId: z.string().uuid().describe("Cron ID"),
-		containerId: z.string().uuid().optional().describe("Updated container ID"),
-		schedule: z.string().optional().describe("Updated cron schedule expression"),
+		cronId: z.string().uuid().describe("v1 cron trigger ID"),
+		containerId: z
+			.string()
+			.uuid()
+			.optional()
+			.describe("Unsupported in v1: triggers cannot be retargeted; omit this field"),
+		schedule: z.string().min(1).optional().describe("Updated cron schedule expression"),
+		timezone: z
+			.string()
+			.min(1)
+			.optional()
+			.describe("Updated IANA cron time zone; omitted means unchanged"),
 		args: z.record(z.string(), z.unknown()).optional().describe("Updated JSON arguments"),
-		name: z.string().optional().describe("Updated cron name"),
+		name: z.string().min(1).max(50).optional().describe("Updated cron name"),
 	}),
 );
 export type UpdateCronParams = z.infer<typeof UpdateCronParams>;
 
 export const DeleteCronParams = ContainerRegionParam.merge(
 	z.object({
-		cronId: z.string().uuid().describe("Cron ID to delete"),
+		cronId: z.string().uuid().describe("v1 cron trigger ID to delete"),
 	}),
 );
 export type DeleteCronParams = z.infer<typeof DeleteCronParams>;
@@ -241,30 +288,3 @@ export const DeleteDomainParams = ContainerRegionParam.merge(
 	}),
 );
 export type DeleteDomainParams = z.infer<typeof DeleteDomainParams>;
-
-// ─── Token ───────────────────────────────────────────────────────────
-
-export const CreateTokenParams = ContainerRegionParam.merge(
-	z.object({
-		containerId: z
-			.string()
-			.uuid()
-			.optional()
-			.describe("Container ID (provide either containerId or namespaceId)"),
-		namespaceId: z
-			.string()
-			.uuid()
-			.optional()
-			.describe("Namespace ID (provide either containerId or namespaceId)"),
-		description: z.string().optional().describe("Token description"),
-		expiresAt: z.string().optional().describe("Expiration date (ISO 8601 format)"),
-	}),
-);
-export type CreateTokenParams = z.infer<typeof CreateTokenParams>;
-
-export const DeleteTokenParams = ContainerRegionParam.merge(
-	z.object({
-		tokenId: z.string().uuid().describe("Token ID to delete"),
-	}),
-);
-export type DeleteTokenParams = z.infer<typeof DeleteTokenParams>;

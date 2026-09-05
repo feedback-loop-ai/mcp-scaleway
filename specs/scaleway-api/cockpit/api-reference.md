@@ -76,7 +76,10 @@ Offset-based via `page` (1-indexed) and `page_size`. List responses return
 - List response: `{ tokens: Token[], total_count }`
 - Create body: `{ project_id, name, token_scopes? }` (the request field is `token_scopes`, not `scopes`)
 
-### Grafana Users (global)
+### Grafana Users (global) — deprecated upstream
+
+> **Deprecation:** all four `/cockpit/v1/grafana/users` operations are flagged `deprecated: true` in the official Cockpit Global v1 OpenAPI schema with the summary "(Deprecated) EOL 2026-01-20"; the schema names no replacement endpoint. The tools are kept for compatibility, carry " (deprecated upstream)" in their MCP descriptions, and are marked `deprecated_upstream: true` in `tests/parity-matrix.json`. Expect them to start failing once Scaleway completes the removal.
+
 | Tool | Method/Path |
 |------|-------------|
 | `scaleway_cockpit_list_grafana_users` | `GET /cockpit/v1/grafana/users?project_id=` |
@@ -108,8 +111,10 @@ Offset-based via `page` (1-indexed) and `page_size`. List responses return
 | Tool | Method/Path |
 |------|-------------|
 | `scaleway_cockpit_list_managed_alerts_contact_points` | `GET /cockpit/v1/regions/{region}/alert-manager/managed-alerts-contact-points` |
-| `scaleway_cockpit_enable_managed_alerts` | `POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/enable` |
-| `scaleway_cockpit_disable_managed_alerts` | `POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/disable` |
+| `scaleway_cockpit_enable_managed_alerts` | `POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/enable` — **deprecated upstream** |
+| `scaleway_cockpit_disable_managed_alerts` | `POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/disable` — **deprecated upstream** |
+
+> **Deprecation:** `EnableManagedAlerts` and `DisableManagedAlerts` are flagged `deprecated: true` in the official Cockpit Regional v1 OpenAPI schema; the replacement is the per-rule `POST /cockpit/v1/regions/{region}/alert-manager/enable-alert-rules` / `disable-alert-rules` pair (not exposed as tools). The two tools are kept for compatibility, carry " (deprecated upstream)" in their MCP descriptions, and are marked `deprecated_upstream: true` in `tests/parity-matrix.json`. `list_managed_alerts_contact_points` is not deprecated.
 
 ## Implementation Notes / Verification / Deviations
 

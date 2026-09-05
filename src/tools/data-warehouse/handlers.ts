@@ -25,7 +25,7 @@ import type {
 	UpdateUserParams,
 } from "./types.js";
 
-const DW_API_PREFIX = "datawarehouse/v1beta1/regions";
+const DW_API_PREFIX = "/datawarehouse/v1beta1/regions";
 
 function getClient() {
 	const config = loadAuthConfig();

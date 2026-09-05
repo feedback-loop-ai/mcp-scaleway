@@ -8,14 +8,11 @@ Base URL: `https://api.scaleway.com/vpc-gw/{version}/zones/{zone}`
 - **Authentication:** header `X-Auth-Token: <secret_key>`.
 - **Pagination:** query `page` / `page_size`; list responses return `{ <collection>: [...], total_count }`, re-wrapped by the MCP layer into `{ items, totalCount, page, pageSize }`.
 
-## API version split (important)
+## API version (v2 only)
 
-This product deliberately spans two upstream API versions:
+All tools target **v2 (`/vpc-gw/v2/zones/{zone}`)**: gateways, gateway-networks, PAT rules, IPs, and gateway-types. The legacy **v1 API (`/vpc-gw/v1`) was removed upstream on 3 Nov 2025** (after its deprecation period) together with its developer tooling; `@scaleway/sdk-vpcgw` ships v2 only. This server exposes no v1 endpoints.
 
-- **v2 (`/vpc-gw/v2/zones/{zone}`)** — used for gateways, gateway-networks, PAT rules, IPs, and gateway-types. This is the current API; on v2, per-gateway addressing is IPAM-managed and there are **no `/dhcps` endpoints**.
-- **v1 (`/vpc-gw/v1/zones/{zone}`)** — used **only** for the legacy DHCP endpoints (`/dhcps`). DHCP-as-a-standalone-resource was **removed in v2** (gateways now use IPAM-managed DHCP), so these endpoints are **deprecated upstream** and retained for backward compatibility. Marked `deprecated-upstream` in the parity fragment.
-
-Helpers: `buildUrl(zone, path)` → v2 prefix; `buildV1Url(zone, path)` → v1 prefix (`src/tools/public-gateway/handlers.ts`).
+Helper: `buildUrl(zone, path)` → v2 prefix (`src/tools/public-gateway/handlers.ts`).
 
 ## Gateways (v2)
 
@@ -58,25 +55,9 @@ Helpers: `buildUrl(zone, path)` → v2 prefix; `buildV1Url(zone, path)` → v1 p
 ### Delete — `scaleway_public_gateway_delete_gateway_network`
 `DELETE /vpc-gw/v2/zones/{zone}/gateway-networks/{gateway_network_id}`
 
-## DHCP (v1 — deprecated upstream)
+## DHCP — Removed
 
-DHCP standalone resources exist only on `/vpc-gw/v1`. Deprecated: v2 gateways use IPAM-managed DHCP instead.
-
-### List — `scaleway_public_gateway_list_dhcps`
-`GET /vpc-gw/v1/zones/{zone}/dhcps` — query `page`, `page_size`, `order_by`, `organization_id`, `project_id`, `address`, `has_address`.
-
-### Get — `scaleway_public_gateway_get_dhcp`
-`GET /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}`
-
-### Create — `scaleway_public_gateway_create_dhcp`
-`POST /vpc-gw/v1/zones/{zone}/dhcps`
-- Body: `{ subnet, project_id?, address?, pool_low?, pool_high?, enable_dynamic?, valid_lifetime?, renew_timer?, rebind_timer?, push_default_route?, push_dns_server?, dns_servers_override?, dns_search?, dns_local_name? }`
-
-### Update — `scaleway_public_gateway_update_dhcp`
-`PATCH /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}` — same fields as create, all optional.
-
-### Delete — `scaleway_public_gateway_delete_dhcp`
-`DELETE /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}` — MCP returns `{ success: true }`.
+The standalone DHCP resource (`/vpc-gw/v1/zones/{zone}/dhcps`, formerly the tools `scaleway_public_gateway_{list_dhcps,get_dhcp,create_dhcp,update_dhcp,delete_dhcp}`) no longer exists: the Public Gateways API v1 was removed upstream on **3 Nov 2025**, and v2 never carried `/dhcps` endpoints. In v2, per-Private-Network addressing is handled by **IPAM**, and the gateway-side DHCP behaviour (masquerade, default route, IPAM-booked IP) is configured on the **GatewayNetwork** (`/gateway-networks`, see above). The five DHCP tools were removed from this server accordingly.
 
 ## PAT Rules (v2)
 

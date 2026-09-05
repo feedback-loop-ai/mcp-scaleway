@@ -7,7 +7,11 @@
  * API Reference: https://www.scaleway.com/en/developers/api/serverless-sql-databases/
  * SDK Reference: @scaleway/sdk-client → /serverless-sqldb/v1alpha1/regions/{region}/databases
  */
-import { describe, expect, it } from "vitest";
+import { createAdvancedClient, withProfile } from "@scaleway/sdk-client";
+import { createScalewayClient } from "../../src/shared/client.js";
+import * as httpHandlers from "../../src/tools/serverless-sqldb/handlers.js";
+
+import { describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 import {
 	CreateDatabaseInput,
@@ -26,6 +30,11 @@ import {
 	RestoreDatabaseInput,
 	UpdateDatabaseInput,
 } from "../../src/tools/serverless-sqldb/types.js";
+
+vi.mock("../../src/shared/auth.js", () => ({
+	loadAuthConfig: vi.fn(() => ({ defaultRegion: "fr-par" })),
+}));
+vi.mock("../../src/shared/client.js", () => ({ createScalewayClient: vi.fn() }));
 
 // ── Fixtures ────────────────────────────────────────────────────────────────
 const VALID_UUID = "11111111-1111-1111-1111-111111111111";
@@ -450,5 +459,148 @@ describe("Auth contract", () => {
 			const result = GetDatabaseInput.parse({ database_id: VALID_UUID, region: r });
 			expect(result.region).toBe(r);
 		}
+	});
+});
+
+// Exercise the installed SDK's Request construction, JSON parsing, and real HTTP errors.
+// Only the HTTP transport is replaced: no environment credentials or network calls.
+describe("SDK HTTP request contracts", () => {
+	function recordingClient(
+		response: unknown = { id: "http-response", status: "ready" },
+		status = 200,
+	) {
+		const requests: Request[] = [];
+		const client = createAdvancedClient(
+			withProfile({
+				accessKey: "SCWXXXXXXXXXXXXXXXXX",
+				secretKey: "00000000-0000-0000-0000-000000000000",
+			}),
+			(settings) => ({
+				...settings,
+				apiURL: "https://scaleway.invalid",
+				httpClient: (async (input: RequestInfo | URL, init?: RequestInit) => {
+					requests.push(new Request(input, init));
+					return new Response(status === 204 ? null : JSON.stringify(response), {
+						status,
+						headers: { "Content-Type": "application/json" },
+					});
+				}) as typeof fetch,
+			}),
+		);
+		vi.mocked(createScalewayClient).mockReturnValue(client);
+		return { client, requests };
+	}
+
+	const jsonCases = [
+		{
+			name: "CreateDatabase",
+			method: "POST",
+			path: "/serverless-sqldb/v1alpha1/regions/fr-par/databases",
+			call: () =>
+				httpHandlers.handleCreateDatabase({
+					region: "fr-par",
+					name: "test",
+					cpu_min: 0,
+					cpu_max: 1,
+					project_id: "11111111-1111-1111-1111-111111111111",
+				}),
+			body: {
+				name: "test",
+				cpu_min: 0,
+				cpu_max: 1,
+				project_id: "11111111-1111-1111-1111-111111111111",
+			},
+		},
+		{
+			name: "UpdateDatabase",
+			method: "PATCH",
+			path: "/serverless-sqldb/v1alpha1/regions/fr-par/databases/11111111-1111-1111-1111-111111111111",
+			call: () =>
+				httpHandlers.handleUpdateDatabase({
+					region: "fr-par",
+					database_id: "11111111-1111-1111-1111-111111111111",
+					cpu_min: 0,
+				}),
+			body: { cpu_min: 0 },
+		},
+		{
+			name: "ExportDatabaseBackup",
+			method: "POST",
+			path: "/serverless-sqldb/v1alpha1/regions/fr-par/backups/11111111-1111-1111-1111-111111111111/export",
+			call: () =>
+				httpHandlers.handleExportDatabaseBackup({
+					region: "fr-par",
+					backup_id: "11111111-1111-1111-1111-111111111111",
+				}),
+			body: {},
+		},
+		{
+			name: "RestoreDatabase",
+			method: "POST",
+			path: "/serverless-sqldb/v1alpha1/regions/fr-par/databases/11111111-1111-1111-1111-111111111111/restore",
+			call: () =>
+				httpHandlers.handleRestoreDatabase({
+					region: "fr-par",
+					database_id: "11111111-1111-1111-1111-111111111111",
+					backup_id: "11111111-1111-1111-1111-111111111111",
+				}),
+			body: { backup_id: "11111111-1111-1111-1111-111111111111" },
+		},
+	];
+
+	it.each(jsonCases)(
+		"$name: $method $path sends application/json",
+		async ({ call, method, path, body }) => {
+			const response = { id: "http-response", status: "ready" };
+			const { requests } = recordingClient(response);
+			const result = await call();
+			expect(requests).toHaveLength(1);
+			const [request] = requests;
+			expect(request.url).toBe(`https://scaleway.invalid${path}`);
+			expect(request.method).toBe(method);
+			expect(request.headers.get("Content-Type")).toBe("application/json");
+			expect(request.headers.get("Accept")).toBe("application/json");
+			expect(request.headers.get("X-Auth-Token")).toBe("00000000-0000-0000-0000-000000000000");
+			expect(JSON.parse(await request.text())).toEqual(body);
+			expect(result).toEqual({
+				content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+			});
+		},
+	);
+
+	it.each([
+		[400, "invalid_input"],
+		[401, "permission_denied"],
+		[403, "permission_denied"],
+		[404, "not_found"],
+		[429, "rate_limited"],
+		[500, "server_error"],
+	] as const)("maps SDK HTTP %i errors to %s", async (status, type) => {
+		const { requests } = recordingClient({ message: "HTTP contract error" }, status);
+		const result = await jsonCases[0].call();
+		expect(requests).toHaveLength(1);
+		expect(result).toMatchObject({ isError: true });
+		expect(JSON.parse(result.content[0].text)).toMatchObject({
+			error: { type, statusCode: status },
+		});
+	});
+
+	// These DELETE endpoints return HTTP 200 JSON resource bodies, not HTTP 204.
+	it("DeleteDatabase preserves the HTTP 200 resource response", async () => {
+		const response = { id: "11111111-1111-1111-1111-111111111111", status: "deleting" };
+		const { requests } = recordingClient(response);
+		const result = await httpHandlers.handleDeleteDatabase({
+			region: "fr-par",
+			database_id: "11111111-1111-1111-1111-111111111111",
+		});
+		expect(requests).toHaveLength(1);
+		expect(requests[0].method).toBe("DELETE");
+		expect(new URL(requests[0].url).pathname).toBe(
+			"/serverless-sqldb/v1alpha1/regions/fr-par/databases/11111111-1111-1111-1111-111111111111",
+		);
+		expect(requests[0].body).toBeNull();
+		expect(result).toEqual({
+			content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+		});
 	});
 });

@@ -9,7 +9,9 @@
  * Spec: specs/scaleway-api/ (Key Manager section)
  */
 
-import { describe, expect, it } from "vitest";
+import type { Client } from "@scaleway/sdk-client";
+import { describe, expect, it, vi } from "vitest";
+import { handleListKeys } from "../../src/tools/key-manager/handlers.js";
 import {
 	CreateKeyInput,
 	DataKeyAlgorithmSymmetricEncryption,
@@ -503,5 +505,57 @@ describe("contract: POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/ge
 
 	it("request shape: rejects missing keyId", () => {
 		expect(() => GenerateDataKeyInput.parse({})).toThrow();
+	});
+});
+
+// ── Wire contract: pagination reaches the Scaleway API ───────────────────
+// specs/scaleway-api/key-manager/api-reference.md — "List Keys" query params
+// `page` (int) and `page_size` (int). The handler must hand the SDK camelCase
+// `pageSize` so that @scaleway/sdk-key-manager marshals it to `page_size`.
+
+describe("contract: GET /keys pagination is marshalled to the wire", () => {
+	const mockFetch = vi.fn();
+	const fakeClient = {
+		fetch: mockFetch,
+		settings: {
+			defaultRegion: "fr-par",
+			defaultZone: "fr-par-1",
+			defaultProjectId: VALID_UUID,
+		},
+	} as unknown as Client;
+
+	it("sends page and page_size query parameters through the real SDK marshaller", async () => {
+		mockFetch.mockResolvedValueOnce({ keys: [], totalCount: 0 });
+
+		await handleListKeys(fakeClient, { page: 3, pageSize: 7, scheduledForDeletion: false });
+
+		expect(mockFetch).toHaveBeenCalledWith(
+			expect.objectContaining({
+				method: "GET",
+				path: "/key-manager/v1alpha1/regions/fr-par/keys",
+			}),
+			expect.any(Function),
+		);
+		const request = mockFetch.mock.lastCall?.[0] as { urlParams: URLSearchParams };
+		expect(request.urlParams).toBeInstanceOf(URLSearchParams);
+		expect(request.urlParams.get("page")).toBe("3");
+		expect(request.urlParams.get("page_size")).toBe("7");
+		expect(request.urlParams.get("scheduled_for_deletion")).toBe("false");
+	});
+
+	it("honours the caller's region and forwards it into the path", async () => {
+		mockFetch.mockResolvedValueOnce({ keys: [], totalCount: 0 });
+
+		await handleListKeys(fakeClient, {
+			region: "nl-ams",
+			page: 1,
+			pageSize: 100,
+			scheduledForDeletion: true,
+		});
+
+		const request = mockFetch.mock.lastCall?.[0] as { path: string; urlParams: URLSearchParams };
+		expect(request.path).toBe("/key-manager/v1alpha1/regions/nl-ams/keys");
+		expect(request.urlParams.get("page_size")).toBe("100");
+		expect(request.urlParams.get("scheduled_for_deletion")).toBe("true");
 	});
 });

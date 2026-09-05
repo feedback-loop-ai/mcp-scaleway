@@ -3,7 +3,7 @@ import type { z } from "zod";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
-import { buildPaginatedResponse, paginationToQuery } from "../../shared/pagination.js";
+import { buildPaginatedResponse } from "../../shared/pagination.js";
 import type {
 	AccessSecretVersionInput,
 	AddSecretOwnerInput,
@@ -45,7 +45,8 @@ export async function handleListSecrets(
 		const { page, pageSize, ...rest } = input;
 		const response = await api.listSecrets({
 			...rest,
-			...paginationToQuery(page, pageSize),
+			page,
+			pageSize,
 			scheduledForDeletion: false,
 		});
 		return formatSuccess(
@@ -116,7 +117,8 @@ export async function handleListSecretVersions(
 		const { page, pageSize, ...rest } = input;
 		const response = await api.listSecretVersions({
 			...rest,
-			...paginationToQuery(page, pageSize),
+			page,
+			pageSize,
 		});
 		return formatSuccess(
 			buildPaginatedResponse(response.versions, response.totalCount, page, pageSize),
@@ -236,7 +238,8 @@ export async function handleListTags(input: z.infer<typeof import("./types.js").
 		const { page, pageSize, ...rest } = input;
 		const response = await api.listTags({
 			...rest,
-			...paginationToQuery(page, pageSize),
+			page,
+			pageSize,
 		});
 		return formatSuccess(
 			buildPaginatedResponse(response.tags, response.totalCount, page, pageSize),

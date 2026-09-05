@@ -81,7 +81,7 @@ describe("nats handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "mnq/v1beta1/regions/fr-par/nats-accounts",
+					path: "/mnq/v1beta1/regions/fr-par/nats-accounts",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -156,7 +156,7 @@ describe("nats handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: "mnq/v1beta1/regions/fr-par/nats-accounts/00000000-0000-0000-0000-000000000010",
+				path: "/mnq/v1beta1/regions/fr-par/nats-accounts/00000000-0000-0000-0000-000000000010",
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.name).toBe("my-nats");
@@ -201,7 +201,7 @@ describe("nats handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "mnq/v1beta1/regions/fr-par/nats-accounts",
+				path: "/mnq/v1beta1/regions/fr-par/nats-accounts",
 				body: JSON.stringify({
 					name: "new-nats",
 					project_id: "00000000-0000-0000-0000-000000000001",
@@ -226,7 +226,7 @@ describe("nats handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "mnq/v1beta1/regions/fr-par/nats-accounts",
+				path: "/mnq/v1beta1/regions/fr-par/nats-accounts",
 				body: JSON.stringify({ name: "new-nats" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -265,7 +265,7 @@ describe("nats handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: "mnq/v1beta1/regions/fr-par/nats-accounts/00000000-0000-0000-0000-000000000010",
+				path: "/mnq/v1beta1/regions/fr-par/nats-accounts/00000000-0000-0000-0000-000000000010",
 				body: JSON.stringify({ name: "updated-nats" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -286,7 +286,7 @@ describe("nats handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: "mnq/v1beta1/regions/fr-par/nats-accounts/00000000-0000-0000-0000-000000000010",
+				path: "/mnq/v1beta1/regions/fr-par/nats-accounts/00000000-0000-0000-0000-000000000010",
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -320,7 +320,7 @@ describe("nats handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: "mnq/v1beta1/regions/fr-par/nats-accounts/00000000-0000-0000-0000-000000000010",
+				path: "/mnq/v1beta1/regions/fr-par/nats-accounts/00000000-0000-0000-0000-000000000010",
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);
@@ -371,7 +371,7 @@ describe("nats handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "mnq/v1beta1/regions/fr-par/nats-credentials",
+					path: "/mnq/v1beta1/regions/fr-par/nats-credentials",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -443,7 +443,7 @@ describe("nats handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: "mnq/v1beta1/regions/fr-par/nats-credentials/00000000-0000-0000-0000-000000000020",
+				path: "/mnq/v1beta1/regions/fr-par/nats-credentials/00000000-0000-0000-0000-000000000020",
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.name).toBe("my-creds");
@@ -487,7 +487,7 @@ describe("nats handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "mnq/v1beta1/regions/fr-par/nats-credentials",
+				path: "/mnq/v1beta1/regions/fr-par/nats-credentials",
 				body: JSON.stringify({
 					nats_account_id: "00000000-0000-0000-0000-000000000010",
 					name: "new-creds",
@@ -527,7 +527,7 @@ describe("nats handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: "mnq/v1beta1/regions/fr-par/nats-credentials/00000000-0000-0000-0000-000000000020",
+				path: "/mnq/v1beta1/regions/fr-par/nats-credentials/00000000-0000-0000-0000-000000000020",
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);
