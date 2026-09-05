@@ -86,6 +86,7 @@ Stateless MCP server exposing four gateway tools over 724 supported operations a
 - N/A (stateless proxy — no state involved in release pipeline) (040-release-pipeline)
 - TypeScript 5.x (strict mode) with Bun 1.x + `@modelcontextprotocol/sdk` ^1.25.x, `@scaleway/sdk-client` ^1.0.0, `zod` ^3.25.x (041-quota-query-tool)
 - N/A (stateless proxy) (041-quota-query-tool)
+- TypeScript 5.x (strict mode) with Bun 1.x + `@modelcontextprotocol/sdk` ^1.25.x, `zod` ^3.25.x, `zod-to-json-schema` 3.25.1 (059-discovery-token-reduction)
 
 ## Recent Changes
 - Constitution v1.2.0 permits explicitly contract-tested gateway meta-tools while retaining underlying endpoint parity and full coverage.

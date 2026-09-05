@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+No runtime changes. Releases are now published to npm through Trusted Publishing (GitHub OIDC) with provenance instead of a long-lived token.
+
 ## 0.4.0
 
 Breaking release: the default tool surface, several Scaleway API contracts and the Node minimum change. Set `SCW_MCP_MODE=flat` to keep the legacy tool names.
