@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.4.0-beta.0
+## 0.4.0
 
-Prerelease implementation, not published by this change.
+Breaking release: the default tool surface, several Scaleway API contracts and the Node minimum change. Set `SCW_MCP_MODE=flat` to keep the legacy tool names.
 
 ### Compact discovery
 
