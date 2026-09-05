@@ -9,4 +9,4 @@
 - [x] Integrate modes and server instructions.
 - [x] Pass complete line/branch coverage and all delivery gates.
 - [x] Measure actual discovery payload and document scope of verification.
-- [ ] Open reviewable PRs without merging or publishing.
+- [x] Open reviewable PRs without merging or publishing: correctness #54, stacked discovery #55.

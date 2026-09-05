@@ -11,6 +11,7 @@ Prerelease implementation, not published by this change.
 - SCW_MCP_MODE=flat preserves supported legacy names; both mode combines surfaces.
 - Immutable toolset/additive-name/exclusion/read-only filters govern discovery and execution. Secret revision inputs reject path fragments before dispatch to prevent metadata reads from reaching the excluded access endpoint.
 - Generated runtime metadata and gateway contract-test parity gates prevent drift.
+- Enabled CI for slash-named branches and stacked pull requests, which the previous branch filters skipped.
 - Fixed package imports to resolve to a bundled server module, without starting stdio on import.
 - No SDK private-field dependency and no requirement for client-side deferred loading.
 - Measured listing: 2,162 bytes plus 1,233 instruction bytes, versus 553,063 listing bytes in current flat mode. Exact post-change token recount was unavailable because the configured provider pool returned 503; these bytes are not claimed as token counts.
