@@ -1,6 +1,6 @@
 # Tool Contracts: Serverless Containers (v1)
 
-Feature 060 migrated or relocated these tools. This file supersedes the corresponding entries in earlier feature contracts (see Superseded contracts below). Input schemas are the Zod shapes in `src/tools/containers/types.ts`; the JSON projection is served by `scaleway_describe`.
+Feature 060 migrated or relocated these tools. This file supersedes the corresponding entries in earlier feature contracts (see Superseded contracts below). Input schemas are the Zod shapes in `src/tools/containers/types.ts`; the JSON projection is served by `scaleway_describe`. Descriptions below are generated from the live registry, so they match the shipped tool descriptions including usage examples.
 
 Reference: `specs/scaleway-api/containers/api-reference.md`. Errors return `{ error: { type, message, statusCode } }` with `isError: true`; `unsupported_operation` (501) marks combinations with no faithful upstream equivalent.
 

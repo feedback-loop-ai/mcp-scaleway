@@ -97,7 +97,7 @@ describe("autoscaling v1alpha2 through the real SDK", () => {
 			zone: "fr-par-1",
 			name: "web",
 			templateId: ID,
-			scalingPolicy: { type: "fixed", targetSize: 2 },
+			scalingPolicySpec: { fixed_size: { size: 2 } },
 		});
 		const r = lastRequest();
 		expect(result.isError).not.toBe(true);
@@ -107,6 +107,7 @@ describe("autoscaling v1alpha2 through the real SDK", () => {
 		const body = await r.json();
 		expect(body.name).toBe("web");
 		expect(body.template_id).toBe(ID);
+		expect(body.scaling_policy_spec).toEqual({ fixed_size: { size: 2 } });
 	});
 	it("targets instance v2alpha1 for templates", async () => {
 		await call("autoscaling_get_instance_template", { zone: "fr-par-1", instanceTemplateId: ID });

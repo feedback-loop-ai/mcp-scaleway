@@ -1,6 +1,6 @@
 # Tool Contracts: Autoscaling (v1alpha2) and Instance Templates (v2alpha1)
 
-Feature 060 migrated or relocated these tools. This file supersedes the corresponding entries in earlier feature contracts (see Superseded contracts below). Input schemas are the Zod shapes in `src/tools/autoscaling/types.ts`; the JSON projection is served by `scaleway_describe`.
+Feature 060 migrated or relocated these tools. This file supersedes the corresponding entries in earlier feature contracts (see Superseded contracts below). Input schemas are the Zod shapes in `src/tools/autoscaling/types.ts`; the JSON projection is served by `scaleway_describe`. Descriptions below are generated from the live registry, so they match the shipped tool descriptions including usage examples.
 
 Reference: `specs/scaleway-api/autoscaling/api-reference.md`. Errors return `{ error: { type, message, statusCode } }` with `isError: true`; `unsupported_operation` (501) marks combinations with no faithful upstream equivalent.
 
@@ -8,7 +8,7 @@ Reference: `specs/scaleway-api/autoscaling/api-reference.md`. Errors return `{ e
 
 - **Endpoint**: `POST /autoscaling/v1alpha2/zones/{zone}/groups`
 - **Read-only**: no
-- **Description**: Create an Instance autoscaling group from an Instance template, with an embedded scaling policy (fixed size, CPU or memory target) and optional Load Balancer backends. Example: {zone: 'fr-par-1', name: 'web', templateId: '11111111-1111-4111-8111-111111111111', scalingPolicy: {type: 'fixed', targetSize: 2}}
+- **Description**: Create an Instance autoscaling group from an Instance template, with an embedded scaling policy (fixed size, CPU or memory target) and optional Load Balancer backends. Example: {zone: 'fr-par-1', name: 'web', templateId: '11111111-1111-4111-8111-111111111111'}
 - **Required**: `zone`, `name`, `templateId`
 - **Optional**: `projectId`, `tags`, `scalingPolicySpec`, `loadBalancerConfigurationSpec`
 
@@ -16,7 +16,7 @@ Reference: `specs/scaleway-api/autoscaling/api-reference.md`. Errors return `{ e
 
 - **Endpoint**: `POST /instance/v2alpha1/zones/{zone}/templates`
 - **Read-only**: no
-- **Description**: Create an Instance template (Instance API v2alpha1) describing the Instances an autoscaling group starts. Example: {zone: 'fr-par-1', name: 'web-tpl', commercialType: 'DEV1-S', imageId: '11111111-1111-4111-8111-111111111111'}
+- **Description**: Create an Instance template (Instance API v2alpha1) describing the Instances an autoscaling group starts. Example: {zone: 'fr-par-1', name: 'web-tpl', serverType: 'PLAY2-NANO'}
 - **Required**: `zone`, `name`, `serverType`
 - **Optional**: `projectId`, `tags`, `serverTags`, `securityGroupId`, `placementGroupId`, `volumes`, `privateNetworks`, `filesystemIds`, `publicIpV4Count`, `publicIpV6Count`, `windowsRdpSshKeyId`
 
@@ -104,7 +104,7 @@ Reference: `specs/scaleway-api/autoscaling/api-reference.md`. Errors return `{ e
 
 - **Endpoint**: `PUT /instance/v2alpha1/zones/{zone}/templates/{template_id}/user-data/cloud-init`
 - **Read-only**: no
-- **Description**: Set the cloud-init configuration of an Instance template. Example: {zone: 'fr-par-1', instanceTemplateId: '11111111-1111-4111-8111-111111111111', cloudInit: '#cloud-config ...'}
+- **Description**: Set the cloud-init configuration of an Instance template. Example: {zone: 'fr-par-1', instanceTemplateId: '11111111-1111-4111-8111-111111111111', content: '#cloud-config'}
 - **Required**: `zone`, `instanceTemplateId`, `content`
 - **Optional**: none
 
