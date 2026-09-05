@@ -124,6 +124,16 @@ jobs:
             echo "prerelease=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # Trusted Publishing (OIDC): npm >= 11.5.1 detects the GitHub OIDC token and
+      # authenticates without NPM_TOKEN; the package is linked to this workflow on
+      # npmjs.com (org feedback-loop-ai, repo mcp-scaleway, workflow release.yml).
+      # NPM_TOKEN stays as a fallback until an OIDC publish is confirmed.
+      - name: Ensure npm supports trusted publishing
+        run: |
+          npm install -g npm@latest
+          npm --version
+          node --version
+
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -132,7 +142,7 @@ jobs:
           MAX_ATTEMPTS=2
           while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
             echo "Publish attempt $ATTEMPT of $MAX_ATTEMPTS"
-            if npm publish --access public --tag ${{ steps.version.outputs.dist_tag }}; then
+            if npm publish --provenance --access public --tag ${{ steps.version.outputs.dist_tag }}; then
               echo "Published successfully"
               exit 0
             fi
