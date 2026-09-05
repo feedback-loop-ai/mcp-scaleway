@@ -118,28 +118,28 @@ export function registerCockpitTools(server: McpServer): void {
 	// --- Grafana Users ---
 	server.tool(
 		"scaleway_cockpit_list_grafana_users",
-		"List Grafana users for a project (deprecated upstream)",
+		"List Grafana users for a project (deprecated upstream). Example: {project_id: '11111111-1111-4111-8111-111111111111'}",
 		ListGrafanaUsersInput.shape,
 		async (params) => handleListGrafanaUsers(ListGrafanaUsersInput.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_cockpit_create_grafana_user",
-		"Create a new Grafana user (deprecated upstream)",
+		"Create a new Grafana user (deprecated upstream). Example: {project_id: '11111111-1111-4111-8111-111111111111', login: 'viewer1', role: 'viewer'}",
 		CreateGrafanaUserInput.shape,
 		async (params) => handleCreateGrafanaUser(CreateGrafanaUserInput.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_cockpit_delete_grafana_user",
-		"Delete a Grafana user (deprecated upstream)",
+		"Delete a Grafana user (deprecated upstream). Example: {project_id: '11111111-1111-4111-8111-111111111111', grafana_user_id: 42}",
 		DeleteGrafanaUserInput.shape,
 		async (params) => handleDeleteGrafanaUser(DeleteGrafanaUserInput.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_cockpit_reset_grafana_user_password",
-		"Reset a Grafana user's password (deprecated upstream)",
+		"Reset a Grafana user's password (deprecated upstream). Example: {project_id: '11111111-1111-4111-8111-111111111111', grafana_user_id: 42}",
 		ResetGrafanaUserPasswordInput.shape,
 		async (params) => handleResetGrafanaUserPassword(ResetGrafanaUserPasswordInput.parse(params)),
 	);
@@ -199,14 +199,14 @@ export function registerCockpitTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_cockpit_enable_managed_alerts",
-		"Enable managed alerts for a project (deprecated upstream)",
+		"Enable managed alerts for a project (deprecated upstream). Example: {project_id: '11111111-1111-4111-8111-111111111111', region: 'fr-par'}",
 		EnableManagedAlertsInput.shape,
 		async (params) => handleEnableManagedAlerts(EnableManagedAlertsInput.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_cockpit_disable_managed_alerts",
-		"Disable managed alerts for a project (deprecated upstream)",
+		"Disable managed alerts for a project (deprecated upstream). Example: {project_id: '11111111-1111-4111-8111-111111111111', region: 'fr-par'}",
 		DisableManagedAlertsInput.shape,
 		async (params) => handleDisableManagedAlerts(DisableManagedAlertsInput.parse(params)),
 	);

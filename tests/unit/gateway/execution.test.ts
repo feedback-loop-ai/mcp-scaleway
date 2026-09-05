@@ -51,7 +51,17 @@ describe("gateway execution", () => {
 			false,
 		);
 		expect(invalid.isError).toBe(true);
-		expect(textJson(invalid).issues).toEqual([{ code: "custom", field: "value" }]);
+		expect(textJson(invalid)).toEqual({
+			error: {
+				type: "invalid_input",
+				message:
+					"Invalid operation parameters. Correct these fields using the schema; scaleway_describe returns the full contract.",
+				statusCode: 400,
+			},
+			op: "dns_update_zone",
+			issues: [{ code: "custom", field: "value" }],
+			inputSchema: registry.get("dns_update_zone")?.inputSchema,
+		});
 		expect(callback).toHaveBeenCalledTimes(3);
 	});
 	it("validates record values, preserves original isError and does not double wrap results", async () => {
@@ -75,7 +85,16 @@ describe("gateway execution", () => {
 		const callback = vi.fn<OperationCallback>(() => result);
 		for (const op of ["instances_create_server", "secret_manager_access_secret_version"]) {
 			const response = await executeOperation(fixtureRegistry(callback), { op }, extra, true);
-			expect(textJson(response).error).toContain("not read-only");
+			expect(response.isError).toBe(true);
+			expect(textJson(response)).toEqual({
+				error: {
+					type: "permission_denied",
+					message:
+						"This operation is not read-only. Use scaleway_call if authorized; IAM and configured filters still apply.",
+					statusCode: 403,
+				},
+				op,
+			});
 		}
 		expect(callback).not.toHaveBeenCalled();
 	});
@@ -88,6 +107,15 @@ describe("gateway execution", () => {
 		const failure = await executeOperation(registry, { op: "dns_get_zone" }, extra, true);
 		expect(JSON.stringify(failure)).not.toContain(secret);
 		expect(failure.isError).toBe(true);
+		expect(textJson(failure)).toEqual({
+			error: {
+				type: "server_error",
+				message:
+					"Operation failed. Check scaleway_describe for parameters, Scaleway IAM permissions and service availability before retrying.",
+				statusCode: 500,
+			},
+			op: "dns_get_zone",
+		});
 		const issues: z.ZodIssue[] = [
 			{ code: "custom", path: [secret], message: secret },
 			{ code: "custom", path: [1], message: secret },
@@ -116,7 +144,12 @@ describe("gateway execution", () => {
 			},
 		);
 		const invalid = await executeOperation(registry, { op: "instances_list_servers" }, extra, true);
-		expect(textJson(invalid)).toMatchObject({ schemaOmitted: true });
+		expect(textJson(invalid)).toMatchObject({
+			error: { type: "invalid_input", statusCode: 400 },
+			op: "instances_list_servers",
+			schemaOmitted: true,
+		});
+		expect(textJson(invalid)).not.toHaveProperty("inputSchema");
 		expect(textJson(invalid).issues).toHaveLength(10);
 		expect(Buffer.byteLength(JSON.stringify(invalid))).toBeLessThan(MAX_ERROR_SCHEMA_BYTES);
 	});
@@ -155,9 +188,61 @@ describe("gateway execution", () => {
 	it("rejects unknown IDs without invoking a handler and validates envelope input", async () => {
 		const callback = vi.fn<OperationCallback>(() => result);
 		const registry = fixtureRegistry(callback);
-		expect((await executeOperation(registry, { op: "unknown" }, extra, false)).isError).toBe(true);
-		await expect(executeOperation(registry, { op: "" }, extra, false)).rejects.toThrow();
+		const unknown = await executeOperation(registry, { op: "dns_get_zones" }, extra, false);
+		expect(unknown.isError).toBe(true);
+		expect(textJson(unknown)).toEqual({
+			error: {
+				type: "not_found",
+				message:
+					"Unknown or disabled operation. Use scaleway_search to find an allowed ID; filters apply to execution too.",
+				statusCode: 404,
+			},
+			suggestions: ["dns_get_zone", "dns_update_zone"],
+		});
+		// Envelope ({op, params}) validation stays an SDK-native thrown error, as for flat tools.
+		await expect(executeOperation(registry, { op: "" }, extra, false)).rejects.toThrow(z.ZodError);
 		expect(callback).not.toHaveBeenCalled();
+	});
+	it("uses one envelope shape across every gateway error class over MCP", async () => {
+		const callback = vi.fn<OperationCallback>(() => {
+			throw new Error("boom");
+		});
+		const instance = server();
+		registerGatewayTools(
+			instance,
+			fixtureRegistry(callback, { excludeTools: ["dns_update_zone"] }),
+		);
+		const client = await connect(instance);
+		try {
+			const cases: Array<[string, Record<string, unknown>, string, number, string[]]> = [
+				["scaleway_search", { area: "nope" }, "not_found", 404, ["areas"]],
+				["scaleway_describe", { ops: ["dns_update_zone"] }, "not_found", 404, ["suggestions"]],
+				["scaleway_read", { op: "dns_update_zone" }, "not_found", 404, ["suggestions"]],
+				["scaleway_read", { op: "instances_create_server" }, "permission_denied", 403, ["op"]],
+				[
+					"scaleway_call",
+					{ op: "instances_list_servers", params: { zone: "nope" } },
+					"invalid_input",
+					400,
+					["op", "issues", "inputSchema"],
+				],
+				["scaleway_call", { op: "dns_get_zone" }, "server_error", 500, ["op"]],
+			];
+			for (const [name, args, type, statusCode, keys] of cases) {
+				const response = await client.callTool({ name, arguments: args });
+				expect(response.isError, name).toBe(true);
+				const body = textJson(response);
+				expect(body.error).toEqual({ type, message: expect.any(String), statusCode });
+				expect(Object.keys(body).sort()).toEqual(["error", ...keys].sort());
+			}
+			// SDK-native outer validation of the envelope itself is deliberately left to the SDK.
+			const native = await client.callTool({ name: "scaleway_read", arguments: { op: 1 } });
+			expect(native.isError).toBe(true);
+			expect(() => textJson(native)).toThrow();
+		} finally {
+			await client.close();
+			await instance.close();
+		}
 	});
 	it("exposes exactly four concise protocol tools with correct annotations and errors", async () => {
 		const instance = server();

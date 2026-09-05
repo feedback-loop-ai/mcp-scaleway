@@ -11,7 +11,7 @@
 ## Decision 2: The SDK client contract, established by probe
 
 - **Finding**: `client.fetch({method, path, body?, headers?, urlParams?})` builds `new Request(`${apiURL}${path}`)` verbatim, so a path without a leading slash yields `https://api.scaleway.comaudit-trail/...`. Responses resolve to parsed bodies (204 → undefined); non-2xx throws `ScalewayError` with numeric `.status`. The SDK does not add Content-Type. `createClient({httpClient})` silently ignores the option; only `createAdvancedClient(withHTTPClient(...))` injects transport.
-- **Consequence**: 15 areas with unslashed prefixes (~220 tools), 4 areas treating results as `Response`, 1 area bypassing auth via global fetch, and the error mapper reading only `.statusCode` were all broken live while passing mocked tests.
+- **Consequence** (authoritative breakdown, referenced by spec and tasks): 14 areas with unslashed path prefixes plus autoscaling fixed wholesale (~220 tools); rdb, elastic-metal, containers and sqs misusing the transport (~70 tools); containers additionally bypassing authentication; the error mapper reading only `.statusCode` (all 44 SDK-backed areas reported every 4xx as 500). All of this passed the existing mocked tests.
 
 ## Decision 3: Real-transport tests as the proof standard
 

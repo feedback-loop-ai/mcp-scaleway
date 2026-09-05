@@ -798,7 +798,12 @@ describe("SDK HTTP request contracts", () => {
 		);
 		expect(requests[0].body).toBeNull();
 		expect(CallToolResultSchema.parse(result)).toEqual({
-			content: [{ type: "text", text: '{\n  "message": "Routing policy deleted successfully"\n}' }],
+			content: [
+				{
+					type: "text",
+					text: JSON.stringify({ message: "Routing policy deleted successfully" }, null, 2),
+				},
+			],
 		});
 	});
 

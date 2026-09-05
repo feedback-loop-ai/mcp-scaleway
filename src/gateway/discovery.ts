@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { operationId } from "../shared/toolsets.js";
+import type { ApiError } from "../shared/types.js";
 import type { Operation, OperationRegistry } from "./registry.js";
 
 export const SearchInput = z.object({
@@ -15,6 +16,33 @@ export const ExecuteInput = z.object({
 	op: z.string().trim().min(1).max(200),
 	params: z.record(z.unknown()).optional(),
 });
+
+/**
+ * Gateway error classes share the flat-tool error shape (`error: {type, message, statusCode}`,
+ * see shared/errors.ts) so callers handle both surfaces uniformly. Gateway-specific context
+ * (op, issues, suggestions, inputSchema, areas) stays at the top level next to `error`.
+ */
+export const GATEWAY_ERROR_STATUS = Object.freeze({
+	invalid_input: 400,
+	permission_denied: 403,
+	not_found: 404,
+	server_error: 500,
+} as const) satisfies Partial<Record<ApiError["type"], number>>;
+export type GatewayErrorType = keyof typeof GATEWAY_ERROR_STATUS;
+export interface GatewayError {
+	error: ApiError;
+}
+
+export function gatewayError<D extends object>(
+	type: GatewayErrorType,
+	message: string,
+	details: D,
+): GatewayError & D {
+	return { error: { type, message, statusCode: GATEWAY_ERROR_STATUS[type] }, ...details };
+}
+
+const MAX_SUGGESTIONS = 5;
+const MIN_PARTIAL_TOKEN = 4;
 
 function tokens(text: string): string[] {
 	return text
@@ -40,24 +68,60 @@ function matches(registry: OperationRegistry, query: string, area?: string): Ope
 		.map((hit) => hit.op);
 }
 
+/**
+ * Typo fallback for lookups only. Per query word over an operation ID's tokens: an exact token
+ * scores 2; containment or a shared prefix over tokens of at least four characters scores 1.
+ * Ties prefer shorter IDs, then ID order. Search keeps its all-token semantics; this ranks over
+ * the allowed registry only, so filtered or disabled operations are never suggested.
+ */
+function overlaps(word: string, token: string): boolean {
+	if (word.length < MIN_PARTIAL_TOKEN || token.length < MIN_PARTIAL_TOKEN) return false;
+	return (
+		token.includes(word) ||
+		word.includes(token) ||
+		word.slice(0, MIN_PARTIAL_TOKEN) === token.slice(0, MIN_PARTIAL_TOKEN)
+	);
+}
+
+function partialMatches(registry: OperationRegistry, requested: string): Operation[] {
+	const words = [...new Set(tokens(requested))];
+	return registry.operations
+		.map((op) => {
+			const idTokens = tokens(op.op);
+			const score = words.reduce((sum, word) => {
+				if (idTokens.includes(word)) return sum + 2;
+				return idTokens.some((token) => overlaps(word, token)) ? sum + 1 : sum;
+			}, 0);
+			return { op, score, size: idTokens.length };
+		})
+		.filter((hit) => hit.score > 0)
+		.sort((a, b) => b.score - a.score || a.size - b.size || a.op.op.localeCompare(b.op.op))
+		.map((hit) => hit.op);
+}
+
 export function lookupError(registry: OperationRegistry, requested: string) {
-	return {
-		error:
-			"Unknown or disabled operation. Use scaleway_search to find an allowed ID; filters apply to execution too.",
-		suggestions: matches(registry, requested)
-			.slice(0, 5)
-			.map((op) => op.op),
-	};
+	// For an unknown identifier, rank by ID-token overlap first (the "did you mean this op"
+	// signal), then fall back to description-token matches. matches() scores description text,
+	// which would otherwise rank an op whose description mentions a word above the op whose ID
+	// the caller actually mistyped.
+	const byId = partialMatches(registry, requested);
+	const candidates = byId.length > 0 ? byId : matches(registry, requested);
+	return gatewayError(
+		"not_found",
+		"Unknown or disabled operation. Use scaleway_search to find an allowed ID; filters apply to execution too.",
+		{ suggestions: candidates.slice(0, MAX_SUGGESTIONS).map((op) => op.op) },
+	);
 }
 
 export function searchOperations(registry: OperationRegistry, input: z.input<typeof SearchInput>) {
 	const { query = "", area, limit, offset } = SearchInput.parse(input);
 	const areas = [...new Set(registry.operations.map((op) => op.area))].sort();
 	if (area && !areas.includes(area)) {
-		return {
-			error: "Unknown or disabled area. Use an enabled area slug or omit area to list them.",
-			areas,
-		};
+		return gatewayError(
+			"not_found",
+			"Unknown or disabled area. Use an enabled area slug or omit area to list them.",
+			{ areas },
+		);
 	}
 	if (!query && !area) {
 		return {

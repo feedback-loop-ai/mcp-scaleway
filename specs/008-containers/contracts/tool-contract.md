@@ -1,3 +1,5 @@
+> **Superseded (2026-09-05, feature 060 / release 0.4.0).** This contract describes a retired upstream API version. The current tool contract is `specs/060-api-correctness/contracts/containers-tools.md` and the authoritative endpoint reference is under `specs/scaleway-api/`. Kept for history; do not implement against it.
+
 # Tool Contracts: Scaleway Serverless Containers MCP Tools
 
 **Feature**: 008-containers | **Date**: 2026-03-11

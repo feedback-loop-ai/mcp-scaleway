@@ -1435,7 +1435,27 @@ Set these variables in the MCP server process environment:
 
 Exclusion and read-only restrictions always win, including calls through `scaleway_call`. Invalid values and empty selections fail startup rather than expose everything. `SCW_TOOLS` is additive, not an allowlist by itself. All modes use the same immutable filtered registry.
 
-Presets: `compute`, `storage`, `networking`, `security`, `serverless`, `data`, `ai`, `messaging`, `observability`, `business`, and `core`. Exact memberships are defined in `src/shared/toolsets.ts`. The `core` preset includes Instances, Elastic Metal, Apple Silicon, Kubernetes, Registry, Functions, Containers, Jobs, Block Storage, Object Storage, VPC, DNS, IAM and Marketplace.
+Preset memberships (fixed; changes are release-noted):
+
+| Preset | Areas |
+| --- | --- |
+| `core` | instances, elastic-metal, apple-silicon, k8s, registry, functions, containers, jobs, block-storage, object-storage, vpc, dns, iam, marketplace |
+| `compute` | instances, elastic-metal, apple-silicon, autoscaling, dedibox |
+| `storage` | block-storage, object-storage, file-storage |
+| `networking` | vpc, lb, public-gateway, dns, domain-registrar, ipam, edge-services, vpn, interlink |
+| `security` | iam, secret-manager, key-manager |
+| `serverless` | k8s, registry, functions, containers, jobs, serverless-sqldb |
+| `data` | rdb, redis, mongodb, kafka, data-warehouse, data-lab, opensearch |
+| `ai` | inference, generative-apis |
+| `messaging` | nats, sqs, sns, rabbitmq, tem, iot |
+| `observability` | cockpit, audit-trail, environmental-footprint |
+| `business` | account, billing, marketplace, product-catalog, webhosting, mailbox |
+
+`core` is a curated getting-started set, not the union of the family presets. The ten family presets partition all 50 areas with no overlap.
+
+### Support window
+
+Flat compatibility mode (`SCW_MCP_MODE=flat`) is supported for the entire 0.x release series. Removing it requires a major version bump preceded by at least one minor release whose notes announce the deprecation. Until then, legacy tool names remain available.
 
 Legacy compatibility example, restricted to RDB:
 

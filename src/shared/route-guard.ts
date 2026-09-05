@@ -50,16 +50,14 @@ function compileTemplate(template: string, host = false) {
 	return { regex: new RegExp(`^${pattern}$`), fields };
 }
 
-/** Known multi-request operations declare every leg, rather than widening method/path rules. */
+/**
+ * Every allowed request leg comes from the operation's declared `api` metadata alone
+ * (composites join legs with " + "; trailing parenthesised notes are ignored). Labels select
+ * the default host family only; they never add legs that the declaration does not name.
+ */
 export function parseApiMatchers(label: string, api: string): readonly RouteMatcher[] {
 	const s3 = label.startsWith("scaleway_object_storage_");
-	const declarations = [
-		"scaleway_iam_create_rule",
-		"scaleway_iam_update_rule",
-		"scaleway_iam_delete_rule",
-	].includes(label)
-		? "GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules"
-		: api.replace(/\s+\([^)]*\)/g, "");
+	const declarations = api.replace(/\s+\([^)]*\)/g, "");
 	return declarations.split(/\s+\+\s+/).map((declaration) => {
 		const match = /^(GET|HEAD|POST|PUT|PATCH|DELETE) (?:https:\/\/([^/]+))?(\/\S*)$/.exec(
 			declaration,

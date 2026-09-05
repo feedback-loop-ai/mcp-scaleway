@@ -54,6 +54,14 @@ describe("mapScalewayError", () => {
 		});
 	});
 
+	it("maps 501 to unsupported_operation (shared contract for retired upstream features)", () => {
+		expect(mapScalewayError(createErrorWithStatus("no v1 equivalent", 501))).toEqual({
+			type: "unsupported_operation",
+			message: "no v1 equivalent",
+			statusCode: 501,
+		});
+	});
+
 	it("maps 500+ to server_error", () => {
 		const result = mapScalewayError(createErrorWithStatus("internal error", 500));
 		expect(result).toEqual({

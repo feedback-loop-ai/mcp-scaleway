@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased
+
+Specification retrofit (features 059 and 060) brought the shipped 0.4.x behavior under full
+speckit governance. Runtime changes in this pass:
+
+- Gateway surface now returns a single consistent error envelope `{error:{type,message,statusCode},...}`
+  (shared with the legacy `ApiError` types) instead of an ad-hoc string, for validation failures,
+  unknown/disabled operations, read refusals and unexpected errors. Flat/combined modes keep the
+  MCP SDK's native validation-error format for legacy compatibility.
+- `unsupported_operation` (HTTP 501) added to the shared error-type enum, formalizing the containers
+  "no faithful v1 equivalent" responses.
+- IAM create/update/delete rule endpoints are declared as their real `GET + PUT` composite in the
+  parity matrix; the route guard derives all legs from that declaration with no per-operation override.
+- Lookup suggestions for unknown identifiers now rank by identifier-token overlap first, so a mistyped
+  operation surfaces the intended one (e.g. `iam_create_rules` → `iam_create_rule`).
+- 38 operation descriptions authored in 0.4.0 (autoscaling, containers, deprecated cockpit) now include
+  a usage example, satisfying the Constitution I requirement for new/changed tools.
+- `src/main.ts` coverage exclusion removed and the entry point covered; coverage is 100% line and branch
+  with no exclusions.
+- New CI gates: whole-catalog real-transport smoke, migrated-area transport proofs, supported-version
+  inventory check, and README/matrix/metadata documentation parity.
+
 ## 0.4.1
 
 No runtime changes. Releases are now published to npm through Trusted Publishing (GitHub OIDC) with provenance instead of a long-lived token.
@@ -26,7 +48,7 @@ Breaking release: the default tool surface, several Scaleway API contracts and t
 
 ### API correctness and migrations
 
-This change requires a prerelease/minor release, not a compatibility patch. No release has been published from this branch.
+This change was released as part of 0.4.0 (breaking minor).
 
 - Fixed malformed SDK URLs caused by missing leading slashes across product areas.
 - Fixed RDB and Elastic Metal request construction, Containers authentication, SQS response parsing, SDK error status mapping and SDK-backed pagination.

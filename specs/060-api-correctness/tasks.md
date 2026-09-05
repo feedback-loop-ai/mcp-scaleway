@@ -5,7 +5,7 @@
 
 **Tests**: REQUIRED by Constitution VIII. Real-transport contract tests are the proof standard for this feature (Clarification Q3).
 
-**Status**: Shipped in 0.4.0 (commit `ce01175`, PR #54; error-mapper fix in `4cf689c`). Completed tasks are checked with the file each landed in. Phase 8 lists open follow-ups.
+**Status**: Shipped in 0.4.0 (commit `ce01175`, PR #54; error-mapper fix in `4cf689c`); analyzer remediations landed on the retrofit branch. Completed tasks are checked with the file each landed in.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -29,9 +29,9 @@ Single project: `src/`, `tests/`, `specs/` at repository root.
 
 **⚠️ CRITICAL**: All stories depend on error mapping and the shared transport behaving correctly
 
-- [x] T003 Map both `.statusCode` and SDK `.status` to error types in src/shared/errors.ts
-- [x] T004 [P] Unit-test SDK ScalewayError mapping, precedence and non-numeric statuses in tests/unit/shared/errors.test.ts
-- [x] T005 Build the whole-catalog fake-network smoke harness that classifies every operation's outgoing request (recorded in specs/060-api-correctness/quickstart.md)
+- [x] T003 Map both `.statusCode` and SDK `.status` to error types, and add the shared `unsupported_operation` (501) type, in src/shared/errors.ts and src/shared/types.ts
+- [x] T004 [P] Unit-test SDK ScalewayError mapping, precedence, non-numeric statuses and the 501 mapping in tests/unit/shared/errors.test.ts
+- [x] T005 Commit the whole-catalog real-transport smoke as a CI test (every operation, per area, allowed host + path + auth) in tests/contract/transport/catalog-smoke.contract.test.ts
 
 **Checkpoint**: Upstream 4xx statuses survive to the MCP error envelope; harness available to prove request construction.
 
@@ -45,13 +45,13 @@ Single project: `src/`, `tests/`, `specs/` at repository root.
 
 ### Tests for User Story 1
 
-- [x] T006 [P] [US1] Real-SDK whole-catalog GET path, auth header and 4xx/5xx status regressions in tests/contract/transport/path-auth.contract.test.ts
+- [x] T006 [P] [US1] Real-SDK representative GET path, auth header and 4xx/5xx status regressions in tests/contract/transport/path-auth.contract.test.ts
 - [x] T007 [P] [US1] Update unit assertions from unslashed to slashed paths for 14 areas in tests/unit/tools/{audit-trail,data-lab,data-warehouse,dedibox,file-storage,interlink,kafka,mailbox,nats,opensearch,rabbitmq,tem,vpn,product-catalog}.test.ts
 - [x] T008 [P] [US1] Rewrite RDB unit tests to assert ScwRequest objects and SDK errors in tests/unit/tools/rdb.test.ts
 - [x] T009 [P] [US1] Rewrite Elastic Metal unit/contract tests to assert ScwRequest objects in tests/unit/tools/elastic-metal/handlers.test.ts and tests/contract/tools/elastic-metal/contract.test.ts
 - [x] T010 [P] [US1] Rewrite Containers tests to mock the shared client instead of global fetch in tests/unit/containers/handlers.test.ts and tests/contract/containers/containers.contract.test.ts
 - [x] T011 [P] [US1] Assert parsed-result consumption and real 404 mapping for SQS in tests/unit/tools/sqs.test.ts
-- [x] T012 [P] [US1] Assert camelCase pageSize reaches generated clients in tests/unit/tools/{key-manager,secret-manager,edge-services,sns}.test.ts and their contract tests
+- [x] T012 [P] [US1] Assert camelCase pageSize in generated-client call args in tests/unit/tools/{key-manager,secret-manager,edge-services,sns}.test.ts, and prove page_size on the wire through the real SDK in tests/contract/transport/migrated-areas.transport.test.ts
 - [x] T013 [P] [US1] Add JSON content-type and InterLink 204 assertions in tests/unit/tools/{dns,functions,iam,instances,k8s,serverless-sqldb,tem,webhosting,interlink}.test.ts
 
 ### Implementation for User Story 1
@@ -63,7 +63,7 @@ Single project: `src/`, `tests/`, `specs/` at repository root.
 - [x] T018 [P] [US1] Consume parsed results and move query strings to urlParams in src/tools/sqs/handlers.ts
 - [x] T019 [P] [US1] Pass `pageSize` to generated clients in src/tools/{key-manager,secret-manager,edge-services,sns}/handlers.ts
 - [x] T020 [P] [US1] Add JSON content type on body requests in src/tools/{dns,functions,iam,instances,k8s,serverless-sqldb,tem,webhosting}/handlers.ts
-- [x] T021 [US1] Return a valid acknowledgement for the documented 204 in handleDeleteRoutingPolicy in src/tools/interlink/handlers.ts
+- [x] T021 [US1] Confirm the documented 204 in handleDeleteRoutingPolicy returns its shipped acknowledgement `{message}` (protocol-valid JSON; compatibility preserved) in src/tools/interlink/handlers.ts
 
 **Checkpoint**: Harness reports 724 OK, 0 BAD_URL, 0 NO_AUTH; upstream statuses preserved.
 
@@ -77,9 +77,9 @@ Single project: `src/`, `tests/`, `specs/` at repository root.
 
 ### Tests for User Story 2
 
-- [x] T022 [P] [US2] Rewrite autoscaling contract and unit tests for v1alpha2 groups and instance v2alpha1 templates in tests/contract/autoscaling/autoscaling.contract.test.ts and tests/unit/tools/autoscaling.test.ts
+- [x] T022 [P] [US2] Rewrite autoscaling schema contract and unit tests for v1alpha2 in tests/contract/autoscaling/autoscaling.contract.test.ts and tests/unit/tools/autoscaling.test.ts, and prove v1alpha2/v2alpha1 paths and JSON bodies through the real SDK in tests/contract/transport/migrated-areas.transport.test.ts
 - [x] T023 [P] [US2] Real-transport contracts for containers v1 (units, triggers, explicit unsupported combinations, 17-tool exactness) in tests/contract/containers/containers.contract.test.ts and tests/unit/containers/{handlers,index,types}.test.ts
-- [x] T024 [P] [US2] Remove DHCP tests and assert absence in tests/unit/tools/public-gateway.test.ts and tests/contract/public-gateway.test.ts
+- [x] T024 [P] [US2] Remove DHCP tests and assert the exact 21-tool registration in tests/unit/tools/public-gateway.test.ts and tests/contract/public-gateway.test.ts
 - [x] T025 [P] [US2] Assert deprecation notices in cockpit descriptions in tests/unit/tools/cockpit.test.ts
 
 ### Implementation for User Story 2
@@ -134,25 +134,31 @@ Single project: `src/`, `tests/`, `specs/` at repository root.
 - [x] T042 [P] Correct autoscaling availability hints in src/tools/autoscaling/types.ts and specs/scaleway-api/autoscaling/api-reference.md
 - [x] T043 Independent verification: correctness-only tree passes lint, types, 129 files / 5,830 tests, 100% coverage, build (recorded in PR #54)
 - [x] T044 Open PR #54 with migration notes; CI green; merged to main
+- [x] T045 Cover the entry point and remove the last coverage exclusion in tests/unit/main.test.ts and tests/vitest.config.ts
+- [x] T046 [P] Add usage examples to all 38 descriptions authored in this feature in src/tools/{autoscaling,containers,cockpit}/index.ts, enforced by tests/unit/tools/description-examples.test.ts
+- [x] T047 [P] Prove raw-fetch host authentication (object storage SigV4, generative APIs bearer) in tests/contract/transport/migrated-areas.transport.test.ts
+- [x] T048 [P] Automate the matrix ⇔ metadata ⇔ README ⇔ counts cross-check in tests/unit/docs-parity.test.ts
+- [x] T049 [P] Record documented supported product/version pairs in specs/scaleway-api/supported-versions.json and gate the matrix against it in tests/unit/supported-versions.test.ts
 
 ---
 
-## Phase 8: Retrofit and open follow-ups
+## Phase 8: Retrofit
 
-- [x] T045 Retrofit spec.md with stories, requirements, success criteria and clarifications in specs/060-api-correctness/spec.md
-- [x] T046 Retrofit plan.md with Technical Context, honest Constitution Check and Complexity Tracking in specs/060-api-correctness/plan.md
-- [x] T047 [P] Write research.md, data-model.md and quickstart.md in specs/060-api-correctness/
-- [x] T048 Write the spec quality checklist in specs/060-api-correctness/checklists/requirements.md
-- [ ] T049 Run `/speckit.analyze` across spec, plan and tasks and resolve every finding to zero constitutional drift
-- [ ] T050 Follow-up: adopt official `@scaleway/sdk-<product>` packages for hand-rolled areas, starting with rdb and instances in src/tools/{rdb,instances}/handlers.ts
-- [ ] T051 Follow-up (Principle VII, repo-wide): runtime-validate upstream response shapes in src/tools/*/handlers.ts
-- [ ] T052 Follow-up: manual live smoke against a sandbox project, documented in specs/060-api-correctness/quickstart.md, run outside CI
+- [x] T050 Retrofit spec.md with stories, requirements, success criteria and clarifications in specs/060-api-correctness/spec.md
+- [x] T051 Retrofit plan.md with Technical Context, honest Constitution Check and Complexity Tracking in specs/060-api-correctness/plan.md
+- [x] T052 [P] Write research.md, data-model.md and quickstart.md in specs/060-api-correctness/
+- [x] T053 [P] Write tool contracts for the migrated surfaces in specs/060-api-correctness/contracts/{autoscaling,containers,elastic-metal}-tools.md and add superseded banners to specs/045-instance-scaling-groups/contracts/autoscaling-tools.md and specs/008-containers/contracts/tool-contract.md
+- [x] T054 Write the spec quality checklist in specs/060-api-correctness/checklists/requirements.md
+- [x] T055 Run an independent `/speckit.analyze` pass and remediate every CRITICAL and HIGH finding in code or documents (findings C1–C4, U1–U3, I1 closed; MEDIUM/LOW A1, A2, E1, E2, E3, E4, I2, I3, T1, U4 closed)
+- [ ] T056 Manual verification checkpoint for SC-002: re-verify specs/scaleway-api/supported-versions.json against upstream (expected 401/2xx, not 404) and update its `verified` date; run outside CI
+
+Out-of-scope follow-ups (not tasks of this feature; see spec Out of Scope and 059 T057): adopt official product SDKs for hand-rolled areas; runtime-validate upstream response shapes.
 
 ---
 
 ## Dependencies & Execution Order
 
-- Setup → Foundational → US1 (MVP) → US2, US3, US4 (independent of each other; all depend on Foundational) → Polish → Retrofit.
+- Setup → Foundational → US1 (MVP) → US2, US3, US4 (independent of each other; all depend on Foundational) → Polish → Retrofit. Delivery branches: PR #54 (`fix/live-api-correctness`) for the code; `docs/spec-retrofit` for this retrofit.
 - US2's containers migration depends on US1's transport rewrite of the same handler file (T017 before T027).
 - Parallel: within US1, T014–T020 touch disjoint files and ran concurrently in the original delivery; within US2, T028/T029/T031 are independent.
 

@@ -27,16 +27,16 @@ Repair request construction across 33 product areas so operations reach Scaleway
 
 | Principle | Status | Evidence / gap |
 |---|---|---|
-| I. AI-Native Development | PASS | Structured, actionable errors now carry real upstream statuses; unsupported combinations return explicit errors instead of silent reinterpretation. Pre-existing gap: legacy descriptions lack usage examples (tracked in 059 follow-ups). |
-| II. Spec-Driven Development | PASS (retrofitted) | Full spec/plan/tasks/research/data-model/quickstart now exist; implementation preceded them under the owner's explicit directive (Complexity Tracking). |
-| III. Contract-First API Design | PASS | Per-area API references updated before or with each migration (autoscaling, containers, elastic-metal, public-gateway, cockpit, product-catalog, iam, secret-manager); every operation maps to a documented endpoint; breaking changes versioned in 0.4.0 with CHANGELOG. |
+| I. AI-Native Development | PASS | Structured errors carry real upstream statuses; unsupported combinations return the shared `unsupported_operation` type. All 38 descriptions authored in this feature (autoscaling 15, containers 17, cockpit 6) include a usage example, enforced by `tests/unit/tools/description-examples.test.ts`. Legacy descriptions in areas not touched here remain without examples: tracked as 059 T058. |
+| II. Spec-Driven Development | EXCEPTION (documented) | Implementation preceded the spec under the owner's explicit 2026-09-05 directive to fix live correctness first; recorded in Complexity Tracking per Governance. Full spec/plan/tasks/research/data-model/quickstart retrofitted 2026-09-06, clarified to zero markers, and analyzed. |
+| III. Contract-First API Design | PASS (contracts retrofitted) | Tool contracts for the migrated surfaces live in `contracts/{autoscaling,containers,elastic-metal}-tools.md`; the earlier contracts in features 045 and 008 carry a superseded banner. Per-area API references updated for autoscaling, containers, elastic-metal, public-gateway and cockpit. Error types are shared (`unsupported_operation` added to the common enum). Breaking changes versioned in 0.4.0 with CHANGELOG. Deviation: the contracts were written after the code; documented in Complexity Tracking. |
 | IV. Operational Excellence | PARTIAL (pre-existing) | Error mapping fixed repo-wide; graceful failures preserved. Structured logging and a health signal remain absent repo-wide; not introduced here. Tracked in 059 follow-ups. |
 | V. Simplicity & YAGNI | PASS | Repairs are in-place corrections; removed operations deleted rather than stubbed (dead code is negative value); no new abstractions. |
 | VI. Fast Feedback Loops | PASS | Suite 4.46 s measured after all changes. |
-| VII. Type Safety & Validation | PASS for this feature; PARTIAL repo-wide | Inputs Zod-validated; new schema constraints for IAM identifiers, secret revisions and autoscaling inputs; startup fails fast on misconfiguration. Upstream responses still not runtime-validated in most areas (pre-existing, tracked). |
-| VIII. 100% Coverage & API Parity | PASS | 100% lines/branches; parity matrix updated for every removal and migration; new contract tests referenced from the matrix; real-transport tests added for the whole catalog (`tests/contract/transport/path-auth.contract.test.ts`) and per migrated area. |
+| VII. Type Safety & Validation | PASS for this feature; PARTIAL repo-wide | Inputs Zod-validated; new autoscaling and containers schemas; startup fails fast on misconfiguration. (IAM identifier and secret revision constraints landed via feature 059.) Upstream responses still not runtime-validated in most areas: pre-existing, tracked in 059 T057. |
+| VIII. 100% Coverage & API Parity | PASS | 100% lines and branches with no exclusions (`src/main.ts` was previously excluded; now covered by `tests/unit/main.test.ts` and the exclusion removed). Parity matrix updated for every removal and migration, with the migrated areas' entries pointing at their real-transport contract tests. Whole-catalog real-transport smoke committed as `tests/contract/transport/catalog-smoke.contract.test.ts`; the cross-cutting `path-auth` regression is not tracked per operation in the matrix by design. |
 
-**Gate result**: proceed. PARTIAL rows are repo-wide and predate this feature; they are tracked, not diluted.
+**Gate result**: proceed. One documented EXCEPTION (Principle II, owner directive) and two PARTIAL rows that are repo-wide and predate this feature; all tracked in 059 follow-ups, none diluted.
 
 ## Project Structure
 
@@ -49,11 +49,15 @@ specs/060-api-correctness/
 ├── research.md
 ├── data-model.md
 ├── quickstart.md
+├── contracts/
+│   ├── autoscaling-tools.md
+│   ├── containers-tools.md
+│   └── elastic-metal-tools.md
 ├── checklists/requirements.md
 └── tasks.md
 ```
 
-Per-area authoritative references updated under `specs/scaleway-api/<area>/api-reference.md` for autoscaling, containers, elastic-metal, public-gateway, cockpit, product-catalog, iam and secret-manager.
+Per-area authoritative references updated under `specs/scaleway-api/<area>/api-reference.md` for autoscaling, containers, elastic-metal, public-gateway and cockpit. Tool contracts for migrated surfaces: `contracts/`. Live-version allow-list: `specs/scaleway-api/supported-versions.json`.
 
 ### Source Code (repository root)
 
@@ -76,7 +80,13 @@ src/
 └── tools/cockpit/index.ts                        # deprecation notices
 
 tests/
-├── contract/transport/path-auth.contract.test.ts          # real SDK, whole-catalog GET paths + auth + error statuses
+├── contract/transport/path-auth.contract.test.ts          # real SDK, representative GET paths + auth + error statuses
+├── contract/transport/catalog-smoke.contract.test.ts      # real SDK, every operation: host, path, auth (per area)
+├── contract/transport/migrated-areas.transport.test.ts    # autoscaling v1alpha2, generated-client page_size, SigV4/bearer
+├── unit/main.test.ts                                      # entry point (coverage exclusion removed)
+├── unit/docs-parity.test.ts                               # matrix ⇔ metadata ⇔ README ⇔ counts
+├── unit/supported-versions.test.ts                             # every endpoint on a documented supported product/version pair
+├── unit/tools/description-examples.test.ts                # Constitution I usage examples for areas authored here
 ├── contract/tools/elastic-metal/flexible-ip.transport.test.ts
 ├── contract/containers/containers.contract.test.ts        # real-transport v1 contracts
 ├── contract/autoscaling/autoscaling.contract.test.ts
@@ -92,10 +102,10 @@ tests/
 |-----------|------------|-------------------------------------|
 | Breaking removal of 8 operations (DHCP ×5, container deploy/tokens ×3) | Upstream endpoints removed; stubs would violate "no invented abstractions" and the 1:1 parity invariant | Keeping stubs that return "unsupported" was prototyped and rejected: it fails the parity gate honestly (api: null) and still misleads discovery |
 | sdk-client major bump (1.x → 2.x) and Node floor 18 → 20.20.2 | Installed product SDKs declared a 2.x peer and Node ≥ 20.19; the 1.x client was silently unsupported | Pinning product SDKs back to 1.x-compatible versions would have lost the upstream fixes the migrations depend on |
-| Implementation preceded the full spec (Principle II) | Owner directive to fix correctness before token work, shipped under time pressure; adversarial review workflows served as the interim gate | Retrofit performed 2026-09-06 with clarify and analyze passes |
+| Implementation preceded the full spec and tool contracts (Principles II, III) | Owner directive to fix live correctness before token work; adversarial review workflows served as the interim gate | Retrofit performed 2026-09-06: spec, clarifications, plan, tool contracts, research, data model, tasks; independent analyze pass run and every CRITICAL/HIGH finding remediated in code or documents |
 
-## Follow-ups (not blocking)
+## Follow-ups (not blocking; tracked outside this feature's scope)
 
-- Adopt official `@scaleway/sdk-<product>` packages for the 45 hand-rolled areas; this would also retire the leading-slash class of bug structurally.
-- Runtime-validate upstream response shapes (Principle VII, repo-wide).
-- Live smoke test against a sandbox project with real credentials, run manually and outside CI.
+- Adopt official `@scaleway/sdk-<product>` packages for the 45 hand-rolled areas (out of scope per spec; separate feature).
+- Runtime-validate upstream response shapes (Principle VII, repo-wide; 059 T057).
+- Re-verify `specs/scaleway-api/supported-versions.json` against upstream on a schedule; a manual live smoke against a sandbox project is the verification step (060 T052).

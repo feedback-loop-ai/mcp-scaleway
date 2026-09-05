@@ -57,7 +57,7 @@ Single project: `src/`, `tests/`, `scripts/`, `specs/` at repository root.
 
 ### Tests for User Story 1
 
-- [x] T012 [P] [US1] Protocol contract for search reachability, describe fidelity, read/call parity, and error shapes in tests/contract/gateway.test.ts
+- [x] T012 [P] [US1] Protocol contract for search reachability, describe fidelity, read/call parity, error shapes and zero-network discovery (FR-027/SC-009) in tests/contract/gateway.test.ts
 - [x] T013 [P] [US1] Unit-test ranking, pagination, area listing, bounds and lookup suggestions in tests/unit/gateway/discovery.test.ts
 - [x] T014 [P] [US1] Unit-test execution: defaults, async refinements, record values, isError preservation, sanitized errors in tests/unit/gateway/execution.test.ts
 - [x] T015 [P] [US1] Retrieval smoke test over 20 real keyword queries in tests/unit/gateway/search-quality.test.ts
@@ -69,7 +69,7 @@ Single project: `src/`, `tests/`, `scripts/`, `specs/` at repository root.
 - [x] T018 [US1] Wire default gateway mode, connection instructions and projected listing in src/server.ts
 - [x] T019 [US1] Add reproducible listing-size measurement for all modes in scripts/measure-discovery.ts and record results in specs/059-discovery-token-reduction/validation.md
 
-**Checkpoint**: Listing is 2,162 bytes for 4 tools versus 554,857 bytes for 724; all operations reachable via paging.
+**Checkpoint**: Listing is 2,162 bytes for 4 tools versus 557,833 bytes for 724; all operations reachable via paging.
 
 ---
 
@@ -85,7 +85,7 @@ Single project: `src/`, `tests/`, `scripts/`, `specs/` at repository root.
 - [x] T021 [P] [US2] Unit-test matcher compilation, raw-path traversal rejection, query confinement and S3 subresources in tests/unit/shared/route-guard.test.ts
 - [x] T022 [P] [US2] Protocol contract replaying every reviewer traversal payload across 11 areas in gateway, flat and both modes in tests/contract/route-confinement.test.ts
 - [x] T023 [P] [US2] Protocol contract for IAM identifier confinement with fail-closed transport in tests/contract/iam-path-confinement.test.ts
-- [x] T024 [P] [US2] Protocol test that filters cannot be bypassed through call/read or legacy names in tests/unit/server.test.ts
+- [x] T024 [P] [US2] Protocol test that filters cannot be bypassed through call/read or legacy names in tests/contract/gateway.test.ts (both-mode listing check also in tests/unit/server.test.ts)
 
 ### Implementation for User Story 2
 
@@ -162,7 +162,16 @@ Single project: `src/`, `tests/`, `scripts/`, `specs/` at repository root.
 - [x] T051 Retrofit plan.md with Technical Context, honest Constitution Check and Complexity Tracking in specs/059-discovery-token-reduction/plan.md
 - [x] T052 [P] Write research.md, data-model.md and quickstart.md in specs/059-discovery-token-reduction/
 - [x] T053 Write the spec quality checklist in specs/059-discovery-token-reduction/checklists/requirements.md
-- [ ] T054 Run `/speckit.analyze` across spec, plan and tasks and resolve every finding to zero constitutional drift
+- [x] T054 Run `/speckit.analyze` across spec, plan and tasks; remediate every CRITICAL/HIGH finding in code or documents
+- [x] T059 [P] [US3] Document the FR-026 support window (flat mode for the whole 0.x series; removal needs a major bump preceded by a deprecation minor) in README.md and the next CHANGELOG entry
+- [x] T060 [P] [US3] Enumerate family-preset memberships in README.md (FR-015/US3 "without consulting source") instead of pointing at src/shared/toolsets.ts
+- [x] T061 [P] [US1] Add a test asserting gateway listing bytes are identical for the small fixture registry and the full catalog (SC-002) in tests/unit/gateway/
+- [x] T062 [P] [US1] Extend scripts/measure-discovery.ts to emit the SC-005 offline discovery-sequence byte budget and assert it in a test
+- [x] T063 [P] [US2] Express the IAM create/update/delete_rule composite as `GET ... + PUT ...` in tests/parity-matrix.json, regenerate operations.json, and delete the label-specific override in src/shared/route-guard.ts (I4: one source of truth for endpoint legs)
+- [x] T064 [P] [US4] Specify partial-token-overlap fallback for lookup suggestions so typos yield candidates (FR-018/U1) in src/gateway/discovery.ts and tests/unit/gateway/discovery.test.ts
+- [x] T065 [P] [US4] Define the single gateway error envelope (ApiError type + op/issues/suggestions) in contracts/gateway-tools.md and src/gateway/index.ts, with a contract assertion (I3)
+- [x] T066 Add a unit test asserting flat mode remains supported while the package major version is 0 (FR-026 guard) in tests/unit/shared/mode.test.ts
+- [x] T067 Release-quality SC-010 test: package importable without starting stdio; packed install passes a stdio handshake in all three modes (tests/ or release check)
 - [ ] T055 Measure post-change token counts on an Anthropic-served route and append to specs/059-discovery-token-reduction/validation.md (blocked: provider pool returned 503)
 - [ ] T056 Follow-up (Principle IV, repo-wide): add structured logging and a stdio-appropriate health self-check in src/main.ts
 - [ ] T057 Follow-up (Principle VII, repo-wide): runtime-validate upstream response shapes in src/tools/*/handlers.ts, starting with the most-used reads

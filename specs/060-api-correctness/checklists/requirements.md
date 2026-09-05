@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [x] No [NEEDS CLARIFICATION] markers remain (3 resolved in Clarifications, Session 2026-09-06)
+- [x] No [NEEDS CLARIFICATION] markers remain (5 resolved in Clarifications, Session 2026-09-06)
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
@@ -30,5 +30,7 @@
 - [x] No implementation details leak into specification
 
 ## Notes
+
+- Validation pass 2 (2026-09-06, post-clarify and post-analyze): all items pass; 5 clarifications recorded; independent `/speckit.analyze` CRITICAL/HIGH findings remediated in code or documents (see tasks.md Phase 8).
 
 - Validation pass 1 (2026-09-06): all items pass. Clarifications were resolved during retrofit with the recommended option in each case (remove vs. stub; keep documented units; real-transport proof).

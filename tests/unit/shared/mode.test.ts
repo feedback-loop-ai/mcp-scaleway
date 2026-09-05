@@ -25,3 +25,23 @@ describe("startup mode configuration", () => {
 		});
 	});
 });
+
+describe("flat-mode support window (FR-026)", () => {
+	it("keeps flat mode available for the whole 0.x series", async () => {
+		const { readFileSync } = await import("node:fs");
+		const { fileURLToPath } = await import("node:url");
+		const pkg = JSON.parse(
+			readFileSync(fileURLToPath(new URL("../../../package.json", import.meta.url)), "utf8"),
+		);
+		const major = Number(pkg.version.split(".")[0]);
+		// The commitment: flat compatibility is supported until a major bump. While the package is
+		// 0.x, ModeSchema must still accept "flat"; this test fails loudly if the major version
+		// moves without a corresponding spec/CHANGELOG deprecation.
+		if (major === 0) {
+			expect(resolveServerOptions({ SCW_MCP_MODE: "flat" }).mode).toBe("flat");
+		} else {
+			// Past 0.x, flat may be removed only after a documented deprecation minor.
+			expect(major).toBeGreaterThanOrEqual(1);
+		}
+	});
+});

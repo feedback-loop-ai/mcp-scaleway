@@ -1525,7 +1525,7 @@
 	},
 	{
 		"tool": "scaleway_iam_create_rule",
-		"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+		"api": "GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules (SetRules read+set: no per-rule endpoint)",
 		"area": "iam",
 		"readOnly": false
 	},
@@ -1561,7 +1561,7 @@
 	},
 	{
 		"tool": "scaleway_iam_delete_rule",
-		"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+		"api": "GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules (SetRules read+set: no per-rule endpoint)",
 		"area": "iam",
 		"readOnly": false
 	},
@@ -1675,7 +1675,7 @@
 	},
 	{
 		"tool": "scaleway_iam_update_rule",
-		"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+		"api": "GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules (SetRules read+set: no per-rule endpoint)",
 		"area": "iam",
 		"readOnly": false
 	},
