@@ -72,7 +72,7 @@ describe("product-catalog handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "product-catalog/v2alpha1/public-catalog/products",
+					path: "/product-catalog/v2alpha1/public-catalog/products",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);

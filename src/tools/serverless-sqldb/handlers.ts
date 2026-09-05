@@ -95,6 +95,7 @@ export async function handleCreateDatabase(input: CreateDatabaseInput) {
 		const response = await client.fetch<Database>({
 			method: "POST",
 			path: `${API_PREFIX}/${region}/databases`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(response);
@@ -114,6 +115,7 @@ export async function handleUpdateDatabase(input: UpdateDatabaseInput) {
 		const response = await client.fetch<Database>({
 			method: "PATCH",
 			path: `${API_PREFIX}/${region}/databases/${input.database_id}`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return jsonResponse(response);
@@ -189,6 +191,7 @@ export async function handleExportDatabaseBackup(input: ExportDatabaseBackupInpu
 		const response = await client.fetch<DatabaseBackup>({
 			method: "POST",
 			path: `${API_PREFIX}/${region}/backups/${input.backup_id}/export`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({}),
 		});
 		return jsonResponse(response);
@@ -204,6 +207,7 @@ export async function handleRestoreDatabase(input: RestoreDatabaseInput) {
 		const response = await client.fetch<Database>({
 			method: "POST",
 			path: `${API_PREFIX}/${region}/databases/${input.database_id}/restore`,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ backup_id: input.backup_id }),
 		});
 		return jsonResponse(response);

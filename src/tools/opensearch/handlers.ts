@@ -22,7 +22,7 @@ import type {
 	UpgradeDeploymentParams,
 } from "./types.js";
 
-const OPENSEARCH_API_PREFIX = "searchdb/v1alpha1/regions";
+const OPENSEARCH_API_PREFIX = "/searchdb/v1alpha1/regions";
 
 function getClient() {
 	const config = loadAuthConfig();

@@ -93,6 +93,7 @@ export async function handleCreateCluster(input: CreateClusterInput) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: buildPath(region, "/clusters"),
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return formatSuccess(response);
@@ -123,6 +124,7 @@ export async function handleUpgradeCluster(input: UpgradeClusterInput) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: buildPath(region, `/clusters/${cluster_id}/upgrade`),
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return formatSuccess(response);
@@ -205,6 +207,7 @@ export async function handleCreatePool(input: CreatePoolInput) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: buildPath(region, `/clusters/${cluster_id}/pools`),
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return formatSuccess(response);
@@ -220,6 +223,7 @@ export async function handleUpdatePool(input: UpdatePoolInput) {
 		const response = await client.fetch<unknown>({
 			method: "PATCH",
 			path: buildPath(region, `/pools/${pool_id}`),
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return formatSuccess(response);
@@ -248,6 +252,7 @@ export async function handleUpgradePool(input: UpgradePoolInput) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: buildPath(region, `/pools/${pool_id}/upgrade`),
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(body),
 		});
 		return formatSuccess(response);

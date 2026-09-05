@@ -4,28 +4,23 @@ import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
 import { buildPaginatedResponse, paginationToQuery } from "../../shared/pagination.js";
 import type {
-	CreateDHCPParams,
 	CreateGatewayNetworkParams,
 	CreateGatewayParams,
 	CreateIPParams,
 	CreatePatRuleParams,
-	DeleteDHCPParams,
 	DeleteGatewayNetworkParams,
 	DeleteGatewayParams,
 	DeleteIPParams,
 	DeletePatRuleParams,
-	GetDHCPParams,
 	GetGatewayNetworkParams,
 	GetGatewayParams,
 	GetIPParams,
 	GetPatRuleParams,
-	ListDHCPsParams,
 	ListGatewayNetworksParams,
 	ListGatewayTypesParams,
 	ListGatewaysParams,
 	ListIPsParams,
 	ListPatRulesParams,
-	UpdateDHCPParams,
 	UpdateGatewayNetworkParams,
 	UpdateGatewayParams,
 	UpdateIPParams,
@@ -40,11 +35,6 @@ function getClient() {
 function buildUrl(zone: string | undefined, path: string): string {
 	const resolvedZone = zone ?? process.env.SCW_DEFAULT_ZONE ?? "fr-par-1";
 	return `/vpc-gw/v2/zones/${resolvedZone}${path}`;
-}
-
-function buildV1Url(zone: string | undefined, path: string): string {
-	const resolvedZone = zone ?? process.env.SCW_DEFAULT_ZONE ?? "fr-par-1";
-	return `/vpc-gw/v1/zones/${resolvedZone}${path}`;
 }
 
 export function toURLSearchParams(params: Record<string, unknown>): URLSearchParams {
@@ -285,124 +275,6 @@ export async function handleDeleteGatewayNetwork(
 			path: buildUrl(params.zone, `/gateway-networks/${params.gatewayNetworkId}`),
 		});
 		return formatResponse(response);
-	} catch (error) {
-		return formatErrorResponse(mapScalewayError(error));
-	}
-}
-
-// ─── DHCP Handlers (v1 API) ─────────────────────────────────────────────────
-
-export async function handleListDHCPs(params: z.infer<typeof ListDHCPsParams>) {
-	try {
-		const client = getClient();
-		const { page, pageSize, zone, ...filters } = params;
-		const queryParams: Record<string, unknown> = {
-			...paginationToQuery(page, pageSize),
-		};
-		if (filters.orderBy) queryParams.order_by = filters.orderBy;
-		if (filters.organizationId) queryParams.organization_id = filters.organizationId;
-		if (filters.projectId) queryParams.project_id = filters.projectId;
-		if (filters.address) queryParams.address = filters.address;
-		if (filters.hasAddress) queryParams.has_address = filters.hasAddress;
-
-		const response = (await client.fetch({
-			method: "GET",
-			path: buildV1Url(zone, "/dhcps"),
-			urlParams: toURLSearchParams(queryParams),
-		})) as { dhcps: unknown[]; total_count: number };
-
-		return formatResponse(
-			buildPaginatedResponse(response.dhcps, response.total_count, page, pageSize),
-		);
-	} catch (error) {
-		return formatErrorResponse(mapScalewayError(error));
-	}
-}
-
-export async function handleGetDHCP(params: z.infer<typeof GetDHCPParams>) {
-	try {
-		const client = getClient();
-		const response = await client.fetch({
-			method: "GET",
-			path: buildV1Url(params.zone, `/dhcps/${params.dhcpId}`),
-		});
-		return formatResponse(response);
-	} catch (error) {
-		return formatErrorResponse(mapScalewayError(error));
-	}
-}
-
-export async function handleCreateDHCP(params: z.infer<typeof CreateDHCPParams>) {
-	try {
-		const client = getClient();
-		const body: Record<string, unknown> = {
-			subnet: params.subnet,
-		};
-		if (params.projectId) body.project_id = params.projectId;
-		if (params.address) body.address = params.address;
-		if (params.poolLow) body.pool_low = params.poolLow;
-		if (params.poolHigh) body.pool_high = params.poolHigh;
-		if (params.enableDynamic !== undefined) body.enable_dynamic = params.enableDynamic;
-		if (params.validLifetime) body.valid_lifetime = params.validLifetime;
-		if (params.renewTimer) body.renew_timer = params.renewTimer;
-		if (params.rebindTimer) body.rebind_timer = params.rebindTimer;
-		if (params.pushDefaultRoute !== undefined) body.push_default_route = params.pushDefaultRoute;
-		if (params.pushDnsServer !== undefined) body.push_dns_server = params.pushDnsServer;
-		if (params.dnsServersOverride) body.dns_servers_override = params.dnsServersOverride;
-		if (params.dnsSearch) body.dns_search = params.dnsSearch;
-		if (params.dnsLocalName) body.dns_local_name = params.dnsLocalName;
-
-		const response = await client.fetch({
-			method: "POST",
-			path: buildV1Url(params.zone, "/dhcps"),
-			body: JSON.stringify(body),
-			headers: { "Content-Type": "application/json" },
-		});
-		return formatResponse(response);
-	} catch (error) {
-		return formatErrorResponse(mapScalewayError(error));
-	}
-}
-
-export async function handleUpdateDHCP(params: z.infer<typeof UpdateDHCPParams>) {
-	try {
-		const client = getClient();
-		const body: Record<string, unknown> = {};
-		if (params.subnet !== undefined) body.subnet = params.subnet;
-		if (params.address !== undefined) body.address = params.address;
-		if (params.poolLow !== undefined) body.pool_low = params.poolLow;
-		if (params.poolHigh !== undefined) body.pool_high = params.poolHigh;
-		if (params.enableDynamic !== undefined) body.enable_dynamic = params.enableDynamic;
-		if (params.validLifetime !== undefined) body.valid_lifetime = params.validLifetime;
-		if (params.renewTimer !== undefined) body.renew_timer = params.renewTimer;
-		if (params.rebindTimer !== undefined) body.rebind_timer = params.rebindTimer;
-		if (params.pushDefaultRoute !== undefined) body.push_default_route = params.pushDefaultRoute;
-		if (params.pushDnsServer !== undefined) body.push_dns_server = params.pushDnsServer;
-		if (params.dnsServersOverride !== undefined)
-			body.dns_servers_override = params.dnsServersOverride;
-		if (params.dnsSearch !== undefined) body.dns_search = params.dnsSearch;
-		if (params.dnsLocalName !== undefined) body.dns_local_name = params.dnsLocalName;
-
-		const response = await client.fetch({
-			method: "PATCH",
-			path: buildV1Url(params.zone, `/dhcps/${params.dhcpId}`),
-			body: JSON.stringify(body),
-			headers: { "Content-Type": "application/json" },
-		});
-		return formatResponse(response);
-	} catch (error) {
-		return formatErrorResponse(mapScalewayError(error));
-	}
-}
-
-export async function handleDeleteDHCP(params: z.infer<typeof DeleteDHCPParams>) {
-	try {
-		const client = getClient();
-		await client.fetch({
-			method: "DELETE",
-			path: buildV1Url(params.zone, `/dhcps/${params.dhcpId}`),
-		});
-		return formatResponse({ success: true });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}

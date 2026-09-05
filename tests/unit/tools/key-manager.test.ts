@@ -119,7 +119,7 @@ describe("key-manager handlers", () => {
 			expect(data.page).toBe(1);
 			expect(data.pageSize).toBe(50);
 			expect(mockListKeys).toHaveBeenCalledWith(
-				expect.objectContaining({ page: 1, page_size: 50, scheduledForDeletion: false }),
+				expect.objectContaining({ page: 1, pageSize: 50, scheduledForDeletion: false }),
 			);
 		});
 
@@ -148,9 +148,18 @@ describe("key-manager handlers", () => {
 					usage: "symmetric_encryption",
 					scheduledForDeletion: true,
 					page: 2,
-					page_size: 10,
+					pageSize: 10,
 				}),
 			);
+		});
+
+		it("forwards a non-default page size as camelCase pageSize (SDK contract)", async () => {
+			mockListKeys.mockResolvedValueOnce({ keys: [], totalCount: 0 });
+			await handleListKeys(fakeClient, { page: 3, pageSize: 7, scheduledForDeletion: false });
+			const request = mockListKeys.mock.lastCall?.[0] as Record<string, unknown>;
+			expect(request.page).toBe(3);
+			expect(request.pageSize).toBe(7);
+			expect(request).not.toHaveProperty("page_size");
 		});
 
 		it("returns error on failure", async () => {

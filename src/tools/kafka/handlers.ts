@@ -20,7 +20,7 @@ import type {
 	UpdateUserParams,
 } from "./types.js";
 
-const KAFKA_API_PREFIX = "kafka/v1alpha1/regions";
+const KAFKA_API_PREFIX = "/kafka/v1alpha1/regions";
 
 function getClient() {
 	const config = loadAuthConfig();

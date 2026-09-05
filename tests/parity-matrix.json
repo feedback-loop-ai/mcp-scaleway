@@ -122,82 +122,77 @@
 	},
 	"autoscaling": {
 		"create_instance_group": {
-			"api": "POST /autoscaling/v1alpha1/zones/{zone}/instance-groups",
+			"api": "POST /autoscaling/v1alpha2/zones/{zone}/groups",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_create_instance_group"
 		},
-		"create_instance_policy": {
-			"api": "POST /autoscaling/v1alpha1/zones/{zone}/instance-policies",
-			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
-			"tool": "scaleway_autoscaling_create_instance_policy"
-		},
 		"create_instance_template": {
-			"api": "POST /autoscaling/v1alpha1/zones/{zone}/instance-templates",
+			"api": "POST /instance/v2alpha1/zones/{zone}/templates",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_create_instance_template"
 		},
 		"delete_instance_group": {
-			"api": "DELETE /autoscaling/v1alpha1/zones/{zone}/instance-groups/{instance_group_id}",
+			"api": "DELETE /autoscaling/v1alpha2/zones/{zone}/groups/{group_id}",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_delete_instance_group"
 		},
-		"delete_instance_policy": {
-			"api": "DELETE /autoscaling/v1alpha1/zones/{zone}/instance-policies/{instance_policy_id}",
-			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
-			"tool": "scaleway_autoscaling_delete_instance_policy"
-		},
 		"delete_instance_template": {
-			"api": "DELETE /autoscaling/v1alpha1/zones/{zone}/instance-templates/{instance_template_id}",
+			"api": "DELETE /instance/v2alpha1/zones/{zone}/templates/{template_id}",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_delete_instance_template"
 		},
 		"get_instance_group": {
-			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-groups/{instance_group_id}",
+			"api": "GET /autoscaling/v1alpha2/zones/{zone}/groups/{group_id}",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_get_instance_group"
 		},
-		"get_instance_policy": {
-			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-policies/{instance_policy_id}",
-			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
-			"tool": "scaleway_autoscaling_get_instance_policy"
-		},
 		"get_instance_template": {
-			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-templates/{instance_template_id}",
+			"api": "GET /instance/v2alpha1/zones/{zone}/templates/{template_id}",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_get_instance_template"
 		},
+		"get_instance_template_cloud_init": {
+			"api": "GET /instance/v2alpha1/zones/{zone}/templates/{template_id}/user-data/cloud-init",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_get_instance_template_cloud_init"
+		},
+		"list_instance_group_alerts": {
+			"api": "GET /autoscaling/v1alpha2/zones/{zone}/alerts",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_list_instance_group_alerts"
+		},
 		"list_instance_group_events": {
-			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-groups/{instance_group_id}/events",
+			"api": "GET /autoscaling/v1alpha2/zones/{zone}/logs",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_list_instance_group_events"
 		},
+		"list_instance_group_servers": {
+			"api": "GET /autoscaling/v1alpha2/zones/{zone}/servers",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_list_instance_group_servers"
+		},
 		"list_instance_groups": {
-			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-groups",
+			"api": "GET /autoscaling/v1alpha2/zones/{zone}/groups",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_list_instance_groups"
 		},
-		"list_instance_policies": {
-			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-policies",
-			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
-			"tool": "scaleway_autoscaling_list_instance_policies"
-		},
 		"list_instance_templates": {
-			"api": "GET /autoscaling/v1alpha1/zones/{zone}/instance-templates",
+			"api": "GET /instance/v2alpha1/zones/{zone}/templates",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_list_instance_templates"
 		},
+		"set_instance_template_cloud_init": {
+			"api": "PUT /instance/v2alpha1/zones/{zone}/templates/{template_id}/user-data/cloud-init",
+			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
+			"tool": "scaleway_autoscaling_set_instance_template_cloud_init"
+		},
 		"update_instance_group": {
-			"api": "PATCH /autoscaling/v1alpha1/zones/{zone}/instance-groups/{instance_group_id}",
+			"api": "PATCH /autoscaling/v1alpha2/zones/{zone}/groups/{group_id}",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_update_instance_group"
 		},
-		"update_instance_policy": {
-			"api": "PATCH /autoscaling/v1alpha1/zones/{zone}/instance-policies/{instance_policy_id}",
-			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
-			"tool": "scaleway_autoscaling_update_instance_policy"
-		},
 		"update_instance_template": {
-			"api": "PATCH /autoscaling/v1alpha1/zones/{zone}/instance-templates/{instance_template_id}",
+			"api": "PATCH /instance/v2alpha1/zones/{zone}/templates/{template_id}",
 			"contract_test": "tests/contract/autoscaling/autoscaling.contract.test.ts",
 			"tool": "scaleway_autoscaling_update_instance_template"
 		}
@@ -310,6 +305,7 @@
 		"CreateGrafanaUser": {
 			"api": "POST /cockpit/v1/grafana/users",
 			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"deprecated_upstream": true,
 			"tool": "scaleway_cockpit_create_grafana_user"
 		},
 		"CreateToken": {
@@ -335,6 +331,7 @@
 		"DeleteGrafanaUser": {
 			"api": "DELETE /cockpit/v1/grafana/users/{grafana_user_id}",
 			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"deprecated_upstream": true,
 			"tool": "scaleway_cockpit_delete_grafana_user"
 		},
 		"DeleteToken": {
@@ -350,6 +347,7 @@
 		"DisableManagedAlerts": {
 			"api": "POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/disable",
 			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"deprecated_upstream": true,
 			"tool": "scaleway_cockpit_disable_managed_alerts"
 		},
 		"EnableAlertManager": {
@@ -360,6 +358,7 @@
 		"EnableManagedAlerts": {
 			"api": "POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/enable",
 			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"deprecated_upstream": true,
 			"tool": "scaleway_cockpit_enable_managed_alerts"
 		},
 		"GetAlertManager": {
@@ -385,6 +384,7 @@
 		"ListGrafanaUsers": {
 			"api": "GET /cockpit/v1/grafana/users",
 			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"deprecated_upstream": true,
 			"tool": "scaleway_cockpit_list_grafana_users"
 		},
 		"ListManagedAlertsContactPoints": {
@@ -400,107 +400,93 @@
 		"ResetGrafanaUserPassword": {
 			"api": "POST /cockpit/v1/grafana/users/{grafana_user_id}/reset-password",
 			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
+			"deprecated_upstream": true,
 			"tool": "scaleway_cockpit_reset_grafana_user_password"
 		}
 	},
 	"containers": {
 		"create_container": {
-			"api": "POST /containers/v1beta1/regions/{region}/containers",
+			"api": "POST /containers/v1/regions/{region}/containers",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_create_container"
 		},
 		"create_cron": {
-			"api": "POST /containers/v1beta1/regions/{region}/crons",
+			"api": "POST /containers/v1/regions/{region}/triggers",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_create_cron"
 		},
 		"create_domain": {
-			"api": "POST /containers/v1beta1/regions/{region}/domains",
+			"api": "POST /containers/v1/regions/{region}/domains",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_create_domain"
 		},
 		"create_namespace": {
-			"api": "POST /containers/v1beta1/regions/{region}/namespaces",
+			"api": "POST /containers/v1/regions/{region}/namespaces",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_create_namespace"
 		},
-		"create_token": {
-			"api": "POST /containers/v1beta1/regions/{region}/tokens",
-			"contract_test": "tests/contract/containers/containers.contract.test.ts",
-			"tool": "scaleway_containers_create_token"
-		},
 		"delete_container": {
-			"api": "DELETE /containers/v1beta1/regions/{region}/containers/{container_id}",
+			"api": "DELETE /containers/v1/regions/{region}/containers/{container_id}",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_delete_container"
 		},
 		"delete_cron": {
-			"api": "DELETE /containers/v1beta1/regions/{region}/crons/{cron_id}",
+			"api": "DELETE /containers/v1/regions/{region}/triggers/{trigger_id}",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_delete_cron"
 		},
 		"delete_domain": {
-			"api": "DELETE /containers/v1beta1/regions/{region}/domains/{domain_id}",
+			"api": "DELETE /containers/v1/regions/{region}/domains/{domain_id}",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_delete_domain"
 		},
 		"delete_namespace": {
-			"api": "DELETE /containers/v1beta1/regions/{region}/namespaces/{namespace_id}",
+			"api": "DELETE /containers/v1/regions/{region}/namespaces/{namespace_id}",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_delete_namespace"
 		},
-		"delete_token": {
-			"api": "DELETE /containers/v1beta1/regions/{region}/tokens/{token_id}",
-			"contract_test": "tests/contract/containers/containers.contract.test.ts",
-			"tool": "scaleway_containers_delete_token"
-		},
-		"deploy_container": {
-			"api": "POST /containers/v1beta1/regions/{region}/containers/{container_id}/deploy",
-			"contract_test": "tests/contract/containers/containers.contract.test.ts",
-			"tool": "scaleway_containers_deploy_container"
-		},
 		"get_container": {
-			"api": "GET /containers/v1beta1/regions/{region}/containers/{container_id}",
+			"api": "GET /containers/v1/regions/{region}/containers/{container_id}",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_get_container"
 		},
 		"get_namespace": {
-			"api": "GET /containers/v1beta1/regions/{region}/namespaces/{namespace_id}",
+			"api": "GET /containers/v1/regions/{region}/namespaces/{namespace_id}",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_get_namespace"
 		},
 		"list_containers": {
-			"api": "GET /containers/v1beta1/regions/{region}/containers",
+			"api": "GET /containers/v1/regions/{region}/containers",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_list_containers"
 		},
 		"list_crons": {
-			"api": "GET /containers/v1beta1/regions/{region}/crons",
+			"api": "GET /containers/v1/regions/{region}/triggers",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_list_crons"
 		},
 		"list_domains": {
-			"api": "GET /containers/v1beta1/regions/{region}/domains",
+			"api": "GET /containers/v1/regions/{region}/domains",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_list_domains"
 		},
 		"list_namespaces": {
-			"api": "GET /containers/v1beta1/regions/{region}/namespaces",
+			"api": "GET /containers/v1/regions/{region}/namespaces",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_list_namespaces"
 		},
 		"update_container": {
-			"api": "PATCH /containers/v1beta1/regions/{region}/containers/{container_id}",
+			"api": "PATCH /containers/v1/regions/{region}/containers/{container_id}",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_update_container"
 		},
 		"update_cron": {
-			"api": "PATCH /containers/v1beta1/regions/{region}/crons/{cron_id}",
+			"api": "PATCH /containers/v1/regions/{region}/triggers/{trigger_id}",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_update_cron"
 		},
 		"update_namespace": {
-			"api": "PATCH /containers/v1beta1/regions/{region}/namespaces/{namespace_id}",
+			"api": "PATCH /containers/v1/regions/{region}/namespaces/{namespace_id}",
 			"contract_test": "tests/contract/containers/containers.contract.test.ts",
 			"tool": "scaleway_containers_update_namespace"
 		}
@@ -1044,8 +1030,8 @@
 			"tool": "scaleway_elastic_metal_add_server_private_network"
 		},
 		"create_ip": {
-			"api": "POST /baremetal/v1/zones/{zone}/ips",
-			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"api": "POST /flexible-ip/v1alpha1/zones/{zone}/fips",
+			"contract_test": "tests/contract/tools/elastic-metal/flexible-ip.transport.test.ts",
 			"tool": "scaleway_elastic_metal_create_ip"
 		},
 		"create_server": {
@@ -1054,8 +1040,8 @@
 			"tool": "scaleway_elastic_metal_create_server"
 		},
 		"delete_ip": {
-			"api": "DELETE /baremetal/v1/zones/{zone}/ips/{ip_id}",
-			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"api": "DELETE /flexible-ip/v1alpha1/zones/{zone}/fips/{fip_id}",
+			"contract_test": "tests/contract/tools/elastic-metal/flexible-ip.transport.test.ts",
 			"tool": "scaleway_elastic_metal_delete_ip"
 		},
 		"delete_server": {
@@ -1084,8 +1070,8 @@
 			"tool": "scaleway_elastic_metal_install_server"
 		},
 		"list_ips": {
-			"api": "GET /baremetal/v1/zones/{zone}/ips",
-			"contract_test": "tests/contract/tools/elastic-metal/contract.test.ts",
+			"api": "GET /flexible-ip/v1alpha1/zones/{zone}/fips",
+			"contract_test": "tests/contract/tools/elastic-metal/flexible-ip.transport.test.ts",
 			"tool": "scaleway_elastic_metal_list_ips"
 		},
 		"list_offers": {
@@ -2749,12 +2735,6 @@
 		}
 	},
 	"public-gateway": {
-		"create_dhcp": {
-			"api": "POST /vpc-gw/v1/zones/{zone}/dhcps",
-			"contract_test": "tests/contract/public-gateway.test.ts",
-			"deprecated_upstream": true,
-			"tool": "scaleway_public_gateway_create_dhcp"
-		},
 		"create_gateway": {
 			"api": "POST /vpc-gw/v2/zones/{zone}/gateways",
 			"contract_test": "tests/contract/public-gateway.test.ts",
@@ -2774,12 +2754,6 @@
 			"api": "POST /vpc-gw/v2/zones/{zone}/pat-rules",
 			"contract_test": "tests/contract/public-gateway.test.ts",
 			"tool": "scaleway_public_gateway_create_pat_rule"
-		},
-		"delete_dhcp": {
-			"api": "DELETE /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}",
-			"contract_test": "tests/contract/public-gateway.test.ts",
-			"deprecated_upstream": true,
-			"tool": "scaleway_public_gateway_delete_dhcp"
 		},
 		"delete_gateway": {
 			"api": "DELETE /vpc-gw/v2/zones/{zone}/gateways/{gateway_id}",
@@ -2801,12 +2775,6 @@
 			"contract_test": "tests/contract/public-gateway.test.ts",
 			"tool": "scaleway_public_gateway_delete_pat_rule"
 		},
-		"get_dhcp": {
-			"api": "GET /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}",
-			"contract_test": "tests/contract/public-gateway.test.ts",
-			"deprecated_upstream": true,
-			"tool": "scaleway_public_gateway_get_dhcp"
-		},
 		"get_gateway": {
 			"api": "GET /vpc-gw/v2/zones/{zone}/gateways/{gateway_id}",
 			"contract_test": "tests/contract/public-gateway.test.ts",
@@ -2826,12 +2794,6 @@
 			"api": "GET /vpc-gw/v2/zones/{zone}/pat-rules/{pat_rule_id}",
 			"contract_test": "tests/contract/public-gateway.test.ts",
 			"tool": "scaleway_public_gateway_get_pat_rule"
-		},
-		"list_dhcps": {
-			"api": "GET /vpc-gw/v1/zones/{zone}/dhcps",
-			"contract_test": "tests/contract/public-gateway.test.ts",
-			"deprecated_upstream": true,
-			"tool": "scaleway_public_gateway_list_dhcps"
 		},
 		"list_gateway_networks": {
 			"api": "GET /vpc-gw/v2/zones/{zone}/gateway-networks",
@@ -2857,12 +2819,6 @@
 			"api": "GET /vpc-gw/v2/zones/{zone}/pat-rules",
 			"contract_test": "tests/contract/public-gateway.test.ts",
 			"tool": "scaleway_public_gateway_list_pat_rules"
-		},
-		"update_dhcp": {
-			"api": "PATCH /vpc-gw/v1/zones/{zone}/dhcps/{dhcp_id}",
-			"contract_test": "tests/contract/public-gateway.test.ts",
-			"deprecated_upstream": true,
-			"tool": "scaleway_public_gateway_update_dhcp"
 		},
 		"update_gateway": {
 			"api": "PATCH /vpc-gw/v2/zones/{zone}/gateways/{gateway_id}",

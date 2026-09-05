@@ -11,7 +11,7 @@ specs/scaleway-api/
 ├── instances/        # Instance API reference
 ├── elastic-metal/    # Elastic Metal API reference
 ├── k8s/              # Kubernetes API reference
-├── ...               # One per product (36 total)
+├── ...               # One per product (50 total)
 └── README.md         # This file
 ```
 
@@ -19,4 +19,4 @@ specs/scaleway-api/
 
 - Source of truth for Scaleway API shapes used by contract tests
 - Enables contract test traceability (Constitution VIII)
-- Referenced by `tests/parity-matrix.json` entries
+- Cited by the header comments of contract tests under `tests/contract/`; `tests/parity-matrix.json` maps every Scaleway API operation to its MCP tool and contract test

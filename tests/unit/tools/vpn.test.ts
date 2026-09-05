@@ -117,7 +117,7 @@ describe("vpn handlers", () => {
 
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(callArgs.method).toBe("GET");
-			expect(callArgs.path).toBe("s2s-vpn/v1alpha1/regions/fr-par/vpn-gateways");
+			expect(callArgs.path).toBe("/s2s-vpn/v1alpha1/regions/fr-par/vpn-gateways");
 			expect(callArgs.urlParams.get("page")).toBe("2");
 			expect(callArgs.urlParams.get("page_size")).toBe("10");
 			expect(callArgs.urlParams.get("project_id")).toBe(PROJECT);
@@ -148,7 +148,7 @@ describe("vpn handlers", () => {
 			const result = await handleGetVpnGateway({ region: REGION, gatewayId: ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `s2s-vpn/v1alpha1/regions/fr-par/vpn-gateways/${ID}`,
+				path: `/s2s-vpn/v1alpha1/regions/fr-par/vpn-gateways/${ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("gw");
 		});
@@ -179,7 +179,7 @@ describe("vpn handlers", () => {
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "s2s-vpn/v1alpha1/regions/fr-par/vpn-gateways",
+				path: "/s2s-vpn/v1alpha1/regions/fr-par/vpn-gateways",
 				body: JSON.stringify({
 					name: "gw",
 					gateway_type: "VGW-S",
@@ -258,7 +258,7 @@ describe("vpn handlers", () => {
 			const result = await handleDeleteVpnGateway({ region: REGION, gatewayId: ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `s2s-vpn/v1alpha1/regions/fr-par/vpn-gateways/${ID}`,
+				path: `/s2s-vpn/v1alpha1/regions/fr-par/vpn-gateways/${ID}`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);
@@ -280,7 +280,7 @@ describe("vpn handlers", () => {
 			mockFetch.mockResolvedValue({ gateway_types: [{ name: "VGW-S" }], total_count: 1 });
 			const result = await handleListVpnGatewayTypes({ region: REGION, page: 1, pageSize: 50 });
 			const callArgs = mockFetch.mock.calls[0][0];
-			expect(callArgs.path).toBe("s2s-vpn/v1alpha1/regions/fr-par/vpn-gateway-types");
+			expect(callArgs.path).toBe("/s2s-vpn/v1alpha1/regions/fr-par/vpn-gateway-types");
 			expect(callArgs.urlParams.get("page")).toBe("1");
 			expect(JSON.parse(result.content[0].text).items[0].name).toBe("VGW-S");
 		});
@@ -312,7 +312,7 @@ describe("vpn handlers", () => {
 				orderBy: "created_at_desc",
 			});
 			const callArgs = mockFetch.mock.calls[0][0];
-			expect(callArgs.path).toBe("s2s-vpn/v1alpha1/regions/fr-par/customer-gateways");
+			expect(callArgs.path).toBe("/s2s-vpn/v1alpha1/regions/fr-par/customer-gateways");
 			expect(callArgs.urlParams.get("order_by")).toBe("created_at_desc");
 			expect(JSON.parse(result.content[0].text).totalCount).toBe(1);
 		});
@@ -337,7 +337,7 @@ describe("vpn handlers", () => {
 			const result = await handleGetCustomerGateway({ region: REGION, customerGatewayId: ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `s2s-vpn/v1alpha1/regions/fr-par/customer-gateways/${ID}`,
+				path: `/s2s-vpn/v1alpha1/regions/fr-par/customer-gateways/${ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("cg");
 		});
@@ -442,7 +442,7 @@ describe("vpn handlers", () => {
 			const result = await handleDeleteCustomerGateway({ region: REGION, customerGatewayId: ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `s2s-vpn/v1alpha1/regions/fr-par/customer-gateways/${ID}`,
+				path: `/s2s-vpn/v1alpha1/regions/fr-par/customer-gateways/${ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).deleted).toBe(true);
 		});
@@ -475,7 +475,7 @@ describe("vpn handlers", () => {
 				orderBy: "status_desc",
 			});
 			const callArgs = mockFetch.mock.calls[0][0];
-			expect(callArgs.path).toBe("s2s-vpn/v1alpha1/regions/fr-par/connections");
+			expect(callArgs.path).toBe("/s2s-vpn/v1alpha1/regions/fr-par/connections");
 			expect(callArgs.urlParams.get("is_ipv6")).toBe("true");
 			expect(callArgs.urlParams.get("vpn_gateway_ids")).toBe(ID);
 			expect(callArgs.urlParams.get("customer_gateway_ids")).toBe(ID);
@@ -502,7 +502,7 @@ describe("vpn handlers", () => {
 			const result = await handleGetConnection({ region: REGION, connectionId: ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}`,
+				path: `/s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("conn");
 		});
@@ -623,7 +623,7 @@ describe("vpn handlers", () => {
 			const result = await handleDeleteConnection({ region: REGION, connectionId: ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}`,
+				path: `/s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).deleted).toBe(true);
 		});
@@ -646,7 +646,7 @@ describe("vpn handlers", () => {
 			await handleRenewConnectionPsk({ region: REGION, connectionId: ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/renew-psk`,
+				path: `/s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/renew-psk`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -677,7 +677,7 @@ describe("vpn handlers", () => {
 				secret: { id: ID, revision: 3 },
 			});
 			expect(mockFetch.mock.calls[0][0].path).toBe(
-				`s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/change-psk`,
+				`/s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/change-psk`,
 			);
 		});
 
@@ -717,7 +717,7 @@ describe("vpn handlers", () => {
 				routing_policy_v6: ID,
 			});
 			expect(mockFetch.mock.calls[0][0].path).toBe(
-				`s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/set-routing-policy`,
+				`/s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/set-routing-policy`,
 			);
 		});
 
@@ -760,7 +760,7 @@ describe("vpn handlers", () => {
 				routing_policy_v6: ID,
 			});
 			expect(mockFetch.mock.calls[0][0].path).toBe(
-				`s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/detach-routing-policy`,
+				`/s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/detach-routing-policy`,
 			);
 		});
 
@@ -792,7 +792,7 @@ describe("vpn handlers", () => {
 			mockFetch.mockResolvedValue({ id: ID });
 			await handleEnableRoutePropagation({ region: REGION, connectionId: ID });
 			expect(mockFetch.mock.calls[0][0].path).toBe(
-				`s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/enable-route-propagation`,
+				`/s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/enable-route-propagation`,
 			);
 		});
 
@@ -813,7 +813,7 @@ describe("vpn handlers", () => {
 			mockFetch.mockResolvedValue({ id: ID });
 			await handleDisableRoutePropagation({ region: REGION, connectionId: ID });
 			expect(mockFetch.mock.calls[0][0].path).toBe(
-				`s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/disable-route-propagation`,
+				`/s2s-vpn/v1alpha1/regions/fr-par/connections/${ID}/disable-route-propagation`,
 			);
 		});
 
@@ -842,7 +842,7 @@ describe("vpn handlers", () => {
 				isIpv6: false,
 			});
 			const callArgs = mockFetch.mock.calls[0][0];
-			expect(callArgs.path).toBe("s2s-vpn/v1alpha1/regions/fr-par/routing-policies");
+			expect(callArgs.path).toBe("/s2s-vpn/v1alpha1/regions/fr-par/routing-policies");
 			expect(callArgs.urlParams.get("is_ipv6")).toBe("false");
 			expect(JSON.parse(result.content[0].text).totalCount).toBe(1);
 		});
@@ -866,7 +866,7 @@ describe("vpn handlers", () => {
 			const result = await handleGetRoutingPolicy({ region: REGION, routingPolicyId: ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `s2s-vpn/v1alpha1/regions/fr-par/routing-policies/${ID}`,
+				path: `/s2s-vpn/v1alpha1/regions/fr-par/routing-policies/${ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("rp");
 		});
@@ -982,7 +982,7 @@ describe("vpn handlers", () => {
 			const result = await handleDeleteRoutingPolicy({ region: REGION, routingPolicyId: ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `s2s-vpn/v1alpha1/regions/fr-par/routing-policies/${ID}`,
+				path: `/s2s-vpn/v1alpha1/regions/fr-par/routing-policies/${ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).id).toBe(ID);
 		});

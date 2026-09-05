@@ -22,7 +22,7 @@ import type {
 	UpgradeDeploymentInput,
 } from "./types.js";
 
-const RABBITMQ_API_PREFIX = "messageq/v1alpha1/regions";
+const RABBITMQ_API_PREFIX = "/messageq/v1alpha1/regions";
 
 function getClient() {
 	const config = loadAuthConfig();

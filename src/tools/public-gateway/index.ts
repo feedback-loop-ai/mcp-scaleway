@@ -1,55 +1,45 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
-	handleCreateDHCP,
 	handleCreateGateway,
 	handleCreateGatewayNetwork,
 	handleCreateIP,
 	handleCreatePatRule,
-	handleDeleteDHCP,
 	handleDeleteGateway,
 	handleDeleteGatewayNetwork,
 	handleDeleteIP,
 	handleDeletePatRule,
-	handleGetDHCP,
 	handleGetGateway,
 	handleGetGatewayNetwork,
 	handleGetIP,
 	handleGetPatRule,
-	handleListDHCPs,
 	handleListGatewayNetworks,
 	handleListGatewayTypes,
 	handleListGateways,
 	handleListIPs,
 	handleListPatRules,
-	handleUpdateDHCP,
 	handleUpdateGateway,
 	handleUpdateGatewayNetwork,
 	handleUpdateIP,
 	handleUpdatePatRule,
 } from "./handlers.js";
 import {
-	CreateDHCPParams,
 	CreateGatewayNetworkParams,
 	CreateGatewayParams,
 	CreateIPParams,
 	CreatePatRuleParams,
-	DeleteDHCPParams,
 	DeleteGatewayNetworkParams,
 	DeleteGatewayParams,
 	DeleteIPParams,
 	DeletePatRuleParams,
-	GetDHCPParams,
 	GetGatewayNetworkParams,
 	GetGatewayParams,
 	GetIPParams,
 	GetPatRuleParams,
-	ListDHCPsParams,
 	ListGatewayNetworksParams,
 	ListGatewayTypesParams,
 	ListGatewaysParams,
 	ListIPsParams,
 	ListPatRulesParams,
-	UpdateDHCPParams,
 	UpdateGatewayNetworkParams,
 	UpdateGatewayParams,
 	UpdateIPParams,
@@ -129,43 +119,6 @@ export function registerPublicGatewayTools(server: McpServer): void {
 		"Detach a Public Gateway from a Private Network by deleting the GatewayNetwork.",
 		DeleteGatewayNetworkParams.shape,
 		handleDeleteGatewayNetwork,
-	);
-
-	// ─── DHCP ────────────────────────────────────────────────────────────────
-
-	server.tool(
-		"scaleway_public_gateway_list_dhcps",
-		"List DHCP configurations for Public Gateways (v1 API). Filter by project, address, or subnet.",
-		ListDHCPsParams.shape,
-		handleListDHCPs,
-	);
-
-	server.tool(
-		"scaleway_public_gateway_get_dhcp",
-		"Get a DHCP configuration by ID, including subnet, pool range, DNS settings, and timers.",
-		GetDHCPParams.shape,
-		handleGetDHCP,
-	);
-
-	server.tool(
-		"scaleway_public_gateway_create_dhcp",
-		"Create a DHCP configuration for a Private Network with subnet, address pool, DNS, and lease settings.",
-		CreateDHCPParams.shape,
-		handleCreateDHCP,
-	);
-
-	server.tool(
-		"scaleway_public_gateway_update_dhcp",
-		"Update a DHCP configuration's subnet, pool range, DNS settings, or lease timers.",
-		UpdateDHCPParams.shape,
-		handleUpdateDHCP,
-	);
-
-	server.tool(
-		"scaleway_public_gateway_delete_dhcp",
-		"Delete a DHCP configuration by ID.",
-		DeleteDHCPParams.shape,
-		handleDeleteDHCP,
 	);
 
 	// ─── PAT Rules ───────────────────────────────────────────────────────────

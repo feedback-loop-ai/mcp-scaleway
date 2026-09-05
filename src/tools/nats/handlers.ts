@@ -15,7 +15,7 @@ import type {
 	UpdateNatsAccountParams,
 } from "./types.js";
 
-const NATS_API_PREFIX = "mnq/v1beta1/regions";
+const NATS_API_PREFIX = "/mnq/v1beta1/regions";
 
 function getClient() {
 	const config = loadAuthConfig();

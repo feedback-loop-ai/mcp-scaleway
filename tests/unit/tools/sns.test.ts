@@ -429,7 +429,7 @@ describe("sns handlers", () => {
 				projectId: "test-project-id",
 				orderBy: "created_at_desc",
 				page: 1,
-				page_size: 50,
+				pageSize: 50,
 			});
 			const data = JSON.parse(result.content[0].text);
 			expect(data.totalCount).toBe(1);
@@ -438,6 +438,24 @@ describe("sns handlers", () => {
 			expect(data.items[0].createdAt).toBe("2025-01-01T00:00:00.000Z");
 			expect(data.page).toBe(1);
 			expect(data.pageSize).toBe(50);
+		});
+
+		it("forwards a non-default page size as camelCase pageSize (SDK contract)", async () => {
+			const api = getMockApi();
+			vi.mocked(api.listSnsCredentials).mockResolvedValue({
+				totalCount: 0,
+				snsCredentials: [],
+			});
+
+			await handleListSnsCredentials({ page: 2, pageSize: 7 });
+
+			const request = vi.mocked(api.listSnsCredentials).mock.lastCall?.[0] as Record<
+				string,
+				unknown
+			>;
+			expect(request.page).toBe(2);
+			expect(request.pageSize).toBe(7);
+			expect(request).not.toHaveProperty("page_size");
 		});
 
 		it("handles errors", async () => {

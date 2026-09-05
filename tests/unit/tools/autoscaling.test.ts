@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import * as handlers from "../../../src/tools/autoscaling/handlers.js";
 import { registerAutoscalingTools } from "../../../src/tools/autoscaling/index.js";
 
 // Mock the shared modules
@@ -18,7 +19,7 @@ vi.mock("../../../src/shared/client.js", () => ({
 	createScalewayClient: () => ({ fetch: mockFetch }),
 }));
 
-interface ErrorResult {
+interface ToolResult {
 	content: { type: "text"; text: string }[];
 	isError?: boolean;
 }
@@ -26,15 +27,41 @@ interface ErrorResult {
 const ZONE = "fr-par-1";
 const GROUP_ID = "00000000-0000-0000-0000-000000000010";
 const TEMPLATE_ID = "00000000-0000-0000-0000-000000000020";
-const POLICY_ID = "00000000-0000-0000-0000-000000000030";
+const LB_ID = "00000000-0000-0000-0000-000000000040";
+const BACKEND_ID = "00000000-0000-0000-0000-000000000041";
+const PN_ID = "00000000-0000-0000-0000-000000000042";
+const SNAPSHOT_ID = "00000000-0000-0000-0000-000000000043";
 const PROJECT_ID = "00000000-0000-0000-0000-000000000001";
+const OTHER_PROJECT_ID = "00000000-0000-0000-0000-000000000002";
 
-function errorWith(status?: number): Error {
+const GROUPS_PATH = `/autoscaling/v1alpha2/zones/${ZONE}/groups`;
+const LOGS_PATH = `/autoscaling/v1alpha2/zones/${ZONE}/logs`;
+const SERVERS_PATH = `/autoscaling/v1alpha2/zones/${ZONE}/servers`;
+const ALERTS_PATH = `/autoscaling/v1alpha2/zones/${ZONE}/alerts`;
+const TEMPLATES_PATH = `/instance/v2alpha1/zones/${ZONE}/templates`;
+const JSON_HEADERS = { "Content-Type": "application/json" };
+
+/** Mimic @scaleway/sdk-client ScalewayError: numeric `.status`, no `.statusCode`. */
+function scalewayError(status?: number): Error {
 	const err = new Error("boom");
 	if (status !== undefined) {
-		(err as unknown as { statusCode: number }).statusCode = status;
+		(err as unknown as { status: number }).status = status;
 	}
 	return err;
+}
+
+function lastCall() {
+	return mockFetch.mock.calls[mockFetch.mock.calls.length - 1][0] as {
+		method: string;
+		path: string;
+		urlParams?: URLSearchParams;
+		body?: string;
+		headers?: Record<string, string>;
+	};
+}
+
+function parsed(result: ToolResult) {
+	return JSON.parse(result.content[0].text);
 }
 
 describe("autoscaling module registration", () => {
@@ -43,11 +70,11 @@ describe("autoscaling module registration", () => {
 		expect(() => registerAutoscalingTools(server)).not.toThrow();
 	});
 
-	it("registers all 16 autoscaling tools", () => {
+	it("registers all 15 autoscaling tools in order", () => {
 		const server = new McpServer({ name: "test", version: "0.0.1" });
 		const toolSpy = vi.spyOn(server, "tool");
 		registerAutoscalingTools(server);
-		expect(toolSpy).toHaveBeenCalledTimes(16);
+		expect(toolSpy).toHaveBeenCalledTimes(15);
 
 		const toolNames = toolSpy.mock.calls.map((call) => call[0]);
 		expect(toolNames).toEqual([
@@ -57,731 +84,770 @@ describe("autoscaling module registration", () => {
 			"scaleway_autoscaling_update_instance_group",
 			"scaleway_autoscaling_delete_instance_group",
 			"scaleway_autoscaling_list_instance_group_events",
+			"scaleway_autoscaling_list_instance_group_servers",
+			"scaleway_autoscaling_list_instance_group_alerts",
 			"scaleway_autoscaling_list_instance_templates",
 			"scaleway_autoscaling_get_instance_template",
 			"scaleway_autoscaling_create_instance_template",
 			"scaleway_autoscaling_update_instance_template",
 			"scaleway_autoscaling_delete_instance_template",
-			"scaleway_autoscaling_list_instance_policies",
-			"scaleway_autoscaling_get_instance_policy",
-			"scaleway_autoscaling_create_instance_policy",
-			"scaleway_autoscaling_update_instance_policy",
-			"scaleway_autoscaling_delete_instance_policy",
+			"scaleway_autoscaling_get_instance_template_cloud_init",
+			"scaleway_autoscaling_set_instance_template_cloud_init",
 		]);
 	});
 
-	it("wires tool handlers to their implementations", async () => {
+	it("does not register the removed v1alpha1 instance-policy tools", () => {
 		const server = new McpServer({ name: "test", version: "0.0.1" });
-		const handlers: Record<string, (args: unknown) => Promise<unknown>> = {};
-		vi.spyOn(server, "tool").mockImplementation(
-			// biome-ignore lint/suspicious/noExplicitAny: test shim for MCP tool signature
-			(name: string, _desc: string, _schema: unknown, cb: any) => {
-				handlers[name] = cb;
-				return undefined as never;
-			},
-		);
+		const toolSpy = vi.spyOn(server, "tool");
 		registerAutoscalingTools(server);
-		mockFetch.mockResolvedValue({ instance_groups: [], total_count: 0 });
-		const result = (await handlers.scaleway_autoscaling_list_instance_groups({
-			zone: ZONE,
-			page: 1,
-			pageSize: 50,
-		})) as ErrorResult;
-		expect(JSON.parse(result.content[0].text).totalCount).toBe(0);
+		const toolNames = toolSpy.mock.calls.map((call) => call[0] as string);
+		expect(toolNames.filter((n) => n.includes("instance_polic"))).toEqual([]);
+	});
+
+	describe("tool wiring", () => {
+		const registered: Record<string, (args: unknown) => Promise<unknown>> = {};
+
+		beforeEach(() => {
+			mockFetch.mockReset();
+			const server = new McpServer({ name: "test", version: "0.0.1" });
+			vi.spyOn(server, "tool").mockImplementation(
+				// biome-ignore lint/suspicious/noExplicitAny: test shim for MCP tool signature
+				(name: string, _desc: string, _schema: unknown, cb: any) => {
+					registered[name] = cb;
+					return undefined as never;
+				},
+			);
+			registerAutoscalingTools(server);
+		});
+
+		const cases: [string, Record<string, unknown>, string, string][] = [
+			["scaleway_autoscaling_list_instance_groups", { zone: ZONE }, "GET", GROUPS_PATH],
+			[
+				"scaleway_autoscaling_get_instance_group",
+				{ zone: ZONE, instanceGroupId: GROUP_ID },
+				"GET",
+				`${GROUPS_PATH}/${GROUP_ID}`,
+			],
+			[
+				"scaleway_autoscaling_create_instance_group",
+				{ zone: ZONE, name: "g", templateId: TEMPLATE_ID },
+				"POST",
+				GROUPS_PATH,
+			],
+			[
+				"scaleway_autoscaling_update_instance_group",
+				{ zone: ZONE, instanceGroupId: GROUP_ID, name: "n" },
+				"PATCH",
+				`${GROUPS_PATH}/${GROUP_ID}`,
+			],
+			[
+				"scaleway_autoscaling_delete_instance_group",
+				{ zone: ZONE, instanceGroupId: GROUP_ID },
+				"DELETE",
+				`${GROUPS_PATH}/${GROUP_ID}`,
+			],
+			[
+				"scaleway_autoscaling_list_instance_group_events",
+				{ zone: ZONE, instanceGroupId: GROUP_ID },
+				"GET",
+				LOGS_PATH,
+			],
+			[
+				"scaleway_autoscaling_list_instance_group_servers",
+				{ zone: ZONE, instanceGroupId: GROUP_ID },
+				"GET",
+				SERVERS_PATH,
+			],
+			["scaleway_autoscaling_list_instance_group_alerts", { zone: ZONE }, "GET", ALERTS_PATH],
+			["scaleway_autoscaling_list_instance_templates", { zone: ZONE }, "GET", TEMPLATES_PATH],
+			[
+				"scaleway_autoscaling_get_instance_template",
+				{ zone: ZONE, instanceTemplateId: TEMPLATE_ID },
+				"GET",
+				`${TEMPLATES_PATH}/${TEMPLATE_ID}`,
+			],
+			[
+				"scaleway_autoscaling_create_instance_template",
+				{ zone: ZONE, name: "t", serverType: "PLAY2-NANO" },
+				"POST",
+				TEMPLATES_PATH,
+			],
+			[
+				"scaleway_autoscaling_update_instance_template",
+				{ zone: ZONE, instanceTemplateId: TEMPLATE_ID, name: "n" },
+				"PATCH",
+				`${TEMPLATES_PATH}/${TEMPLATE_ID}`,
+			],
+			[
+				"scaleway_autoscaling_delete_instance_template",
+				{ zone: ZONE, instanceTemplateId: TEMPLATE_ID },
+				"DELETE",
+				`${TEMPLATES_PATH}/${TEMPLATE_ID}`,
+			],
+			[
+				"scaleway_autoscaling_get_instance_template_cloud_init",
+				{ zone: ZONE, instanceTemplateId: TEMPLATE_ID },
+				"GET",
+				`${TEMPLATES_PATH}/${TEMPLATE_ID}/user-data/cloud-init`,
+			],
+			[
+				"scaleway_autoscaling_set_instance_template_cloud_init",
+				{ zone: ZONE, instanceTemplateId: TEMPLATE_ID, content: "#cloud-config" },
+				"PUT",
+				`${TEMPLATES_PATH}/${TEMPLATE_ID}/user-data/cloud-init`,
+			],
+		];
+
+		it.each(cases)("%s parses input and calls %s %s", async (name, args, method, path) => {
+			mockFetch.mockResolvedValue({ ok: "yes" });
+			const result = (await registered[name](args)) as ToolResult;
+			expect(result.isError).toBeUndefined();
+			expect(mockFetch).toHaveBeenCalledTimes(1);
+			expect(mockFetch).toHaveBeenCalledWith(expect.objectContaining({ method, path }));
+		});
+
+		it("rejects invalid input before calling the API", async () => {
+			await expect(
+				registered.scaleway_autoscaling_get_instance_group({
+					zone: ZONE,
+					instanceGroupId: "not-a-uuid",
+				}),
+			).rejects.toThrow();
+			expect(mockFetch).not.toHaveBeenCalled();
+		});
 	});
 });
 
-describe("autoscaling instance group handlers", () => {
+describe("autoscaling group handlers", () => {
 	beforeEach(() => {
 		mockFetch.mockReset();
 	});
 
 	describe("handleListInstanceGroups", () => {
-		it("returns paginated list", async () => {
-			const { handleListInstanceGroups } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ instance_groups: [{ id: GROUP_ID }], total_count: 1 });
-			const result = await handleListInstanceGroups({ zone: ZONE, page: 1, pageSize: 50 });
+		it("lists groups with the default project and returns the raw page", async () => {
+			const page = {
+				group_summaries: [{ id: GROUP_ID, name: "grp" }],
+				next_page_token: "tok-2",
+				total_count: 7,
+			};
+			mockFetch.mockResolvedValue(page);
+			const result = await handlers.handleListInstanceGroups({ zone: ZONE });
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({
-					method: "GET",
-					path: `autoscaling/v1alpha1/zones/${ZONE}/instance-groups`,
-					urlParams: expect.any(URLSearchParams),
-				}),
+				expect.objectContaining({ method: "GET", path: GROUPS_PATH }),
 			);
-			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.totalCount).toBe(1);
-			expect(parsed.items).toHaveLength(1);
+			const call = lastCall();
+			expect(call.urlParams).toBeInstanceOf(URLSearchParams);
+			expect(call.urlParams?.toString()).toBe(`project_id=${PROJECT_ID}`);
+			expect(call.body).toBeUndefined();
+			expect(parsed(result)).toEqual(page);
 		});
 
-		it("passes orderBy filter", async () => {
-			const { handleListInstanceGroups } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ instance_groups: [], total_count: 0 });
-			await handleListInstanceGroups({
+		it("passes every filter and token pagination as query params", async () => {
+			mockFetch.mockResolvedValue({ group_summaries: [], total_count: 0 });
+			await handlers.handleListInstanceGroups({
 				zone: ZONE,
-				page: 2,
-				pageSize: 10,
+				projectId: OTHER_PROJECT_ID,
 				orderBy: "created_at_asc",
+				templateId: TEMPLATE_ID,
+				loadBalancerId: LB_ID,
+				pageSize: 10,
+				pageToken: "tok-1",
 			});
-			const callArgs = mockFetch.mock.calls[0][0];
-			expect(callArgs.urlParams.get("page")).toBe("2");
-			expect(callArgs.urlParams.get("page_size")).toBe("10");
-			expect(callArgs.urlParams.get("order_by")).toBe("created_at_asc");
+			const q = lastCall().urlParams as URLSearchParams;
+			expect(q.get("project_id")).toBe(OTHER_PROJECT_ID);
+			expect(q.get("order_by")).toBe("created_at_asc");
+			expect(q.get("template_id")).toBe(TEMPLATE_ID);
+			expect(q.get("load_balancer_id")).toBe(LB_ID);
+			expect(q.get("page_size")).toBe("10");
+			expect(q.get("page_token")).toBe("tok-1");
+			expect(q.has("page")).toBe(false);
 		});
 
-		it("returns error on failure", async () => {
-			const { handleListInstanceGroups } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(401));
-			const result: ErrorResult = await handleListInstanceGroups({
-				zone: ZONE,
-				page: 1,
-				pageSize: 50,
-			});
+		it("maps a ScalewayError 401 to permission_denied", async () => {
+			mockFetch.mockRejectedValue(scalewayError(401));
+			const result: ToolResult = await handlers.handleListInstanceGroups({ zone: ZONE });
 			expect(result.isError).toBe(true);
-			expect(JSON.parse(result.content[0].text).error.type).toBe("permission_denied");
+			expect(parsed(result).error.type).toBe("permission_denied");
+			expect(parsed(result).error.statusCode).toBe(401);
 		});
 	});
 
 	describe("handleGetInstanceGroup", () => {
-		it("returns instance group details", async () => {
-			const { handleGetInstanceGroup } = await import("../../../src/tools/autoscaling/handlers.js");
-			mockFetch.mockResolvedValue({ id: GROUP_ID, name: "grp" });
-			const result = await handleGetInstanceGroup({ zone: ZONE, instanceGroupId: GROUP_ID });
+		it("returns group details", async () => {
+			mockFetch.mockResolvedValue({ id: GROUP_ID, name: "grp", status: "active" });
+			const result = await handlers.handleGetInstanceGroup({
+				zone: ZONE,
+				instanceGroupId: GROUP_ID,
+			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-groups/${GROUP_ID}`,
+				path: `${GROUPS_PATH}/${GROUP_ID}`,
 			});
-			expect(JSON.parse(result.content[0].text).name).toBe("grp");
+			expect(parsed(result).name).toBe("grp");
+			expect(parsed(result).status).toBe("active");
 		});
 
-		it("returns error on 404", async () => {
-			const { handleGetInstanceGroup } = await import("../../../src/tools/autoscaling/handlers.js");
-			mockFetch.mockRejectedValue(errorWith(404));
-			const result: ErrorResult = await handleGetInstanceGroup({
+		it("maps 404 to not_found", async () => {
+			mockFetch.mockRejectedValue(scalewayError(404));
+			const result: ToolResult = await handlers.handleGetInstanceGroup({
 				zone: ZONE,
 				instanceGroupId: GROUP_ID,
 			});
 			expect(result.isError).toBe(true);
-			expect(JSON.parse(result.content[0].text).error.type).toBe("not_found");
+			expect(parsed(result).error.type).toBe("not_found");
 		});
 	});
 
 	describe("handleCreateInstanceGroup", () => {
-		it("creates with full body", async () => {
-			const { handleCreateInstanceGroup } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
+		it("creates with full v1alpha2 body", async () => {
 			mockFetch.mockResolvedValue({ id: GROUP_ID });
-			await handleCreateInstanceGroup({
+			const scalingPolicySpec = {
+				minimum_size: 2,
+				maximum_size: 8,
+				scale_out_cooldown: "300s",
+				scale_in_cooldown: "600s",
+				scale_in_step: 1,
+				scale_out_step: 2,
+				cpu_target: { target_avg_percent: 30 },
+			};
+			const loadBalancerConfigurationSpec = {
+				load_balancer_id: LB_ID,
+				backends: [
+					{ backend_id: BACKEND_ID, address_family: "ipv4" as const, private_network_id: PN_ID },
+				],
+				auto_healing: { enabled: true, grace_period: "300s" },
+			};
+			const result = await handlers.handleCreateInstanceGroup({
 				zone: ZONE,
 				name: "grp",
 				templateId: TEMPLATE_ID,
-				capacity: { min_replicas: 1, max_replicas: 5, cooldown_delay: "300s" },
-				projectId: PROJECT_ID,
+				projectId: OTHER_PROJECT_ID,
 				tags: ["prod"],
-				loadbalancer: {
-					id: "00000000-0000-0000-0000-000000000040",
-					backend_ids: ["b1"],
-					private_network_id: "pn1",
-				},
+				scalingPolicySpec,
+				loadBalancerConfigurationSpec,
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-groups`,
+				path: GROUPS_PATH,
 				body: JSON.stringify({
+					project_id: OTHER_PROJECT_ID,
 					name: "grp",
-					template_id: TEMPLATE_ID,
-					capacity: { min_replicas: 1, max_replicas: 5, cooldown_delay: "300s" },
-					project_id: PROJECT_ID,
 					tags: ["prod"],
-					loadbalancer: {
-						id: "00000000-0000-0000-0000-000000000040",
-						backend_ids: ["b1"],
-						private_network_id: "pn1",
-					},
-				}),
-				headers: { "Content-Type": "application/json" },
-			});
-		});
-
-		it("creates with minimal body (optionals omitted)", async () => {
-			const { handleCreateInstanceGroup } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ id: GROUP_ID });
-			await handleCreateInstanceGroup({
-				zone: ZONE,
-				name: "grp",
-				templateId: TEMPLATE_ID,
-				capacity: { min_replicas: 1, max_replicas: 3 },
-			});
-			expect(mockFetch).toHaveBeenCalledWith({
-				method: "POST",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-groups`,
-				body: JSON.stringify({
-					name: "grp",
 					template_id: TEMPLATE_ID,
-					capacity: { min_replicas: 1, max_replicas: 3 },
+					scaling_policy_spec: scalingPolicySpec,
+					load_balancer_configuration_spec: loadBalancerConfigurationSpec,
 				}),
-				headers: { "Content-Type": "application/json" },
+				headers: JSON_HEADERS,
 			});
+			expect(parsed(result).id).toBe(GROUP_ID);
 		});
 
-		it("returns error on 400", async () => {
-			const { handleCreateInstanceGroup } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(400));
-			const result: ErrorResult = await handleCreateInstanceGroup({
+		it("creates with minimal body and defaults project_id", async () => {
+			mockFetch.mockResolvedValue({ id: GROUP_ID });
+			await handlers.handleCreateInstanceGroup({
 				zone: ZONE,
 				name: "grp",
 				templateId: TEMPLATE_ID,
-				capacity: { min_replicas: 1, max_replicas: 3 },
+			});
+			const call = lastCall();
+			expect(call.method).toBe("POST");
+			expect(JSON.parse(call.body as string)).toEqual({
+				project_id: PROJECT_ID,
+				name: "grp",
+				template_id: TEMPLATE_ID,
+			});
+			expect(call.headers).toEqual(JSON_HEADERS);
+		});
+
+		it("maps 400 to invalid_input", async () => {
+			mockFetch.mockRejectedValue(scalewayError(400));
+			const result: ToolResult = await handlers.handleCreateInstanceGroup({
+				zone: ZONE,
+				name: "grp",
+				templateId: TEMPLATE_ID,
 			});
 			expect(result.isError).toBe(true);
-			expect(JSON.parse(result.content[0].text).error.type).toBe("invalid_input");
+			expect(parsed(result).error.type).toBe("invalid_input");
 		});
 	});
 
 	describe("handleUpdateInstanceGroup", () => {
-		it("updates fields", async () => {
-			const { handleUpdateInstanceGroup } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
+		it("patches provided fields only", async () => {
 			mockFetch.mockResolvedValue({ id: GROUP_ID });
-			await handleUpdateInstanceGroup({
+			await handlers.handleUpdateInstanceGroup({
 				zone: ZONE,
 				instanceGroupId: GROUP_ID,
 				name: "new",
-				capacity: { min_replicas: 2, max_replicas: 8 },
+				templateId: TEMPLATE_ID,
+				scalingPolicySpec: { minimum_size: 1, maximum_size: 4, fixed_size: { size: 3 } },
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-groups/${GROUP_ID}`,
-				body: JSON.stringify({ name: "new", capacity: { min_replicas: 2, max_replicas: 8 } }),
-				headers: { "Content-Type": "application/json" },
+				path: `${GROUPS_PATH}/${GROUP_ID}`,
+				body: JSON.stringify({
+					name: "new",
+					template_id: TEMPLATE_ID,
+					scaling_policy_spec: { minimum_size: 1, maximum_size: 4, fixed_size: { size: 3 } },
+				}),
+				headers: JSON_HEADERS,
 			});
 		});
 
-		it("sends empty body when no fields provided", async () => {
-			const { handleUpdateInstanceGroup } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
+		it("sends an empty body when no fields are provided", async () => {
 			mockFetch.mockResolvedValue({ id: GROUP_ID });
-			await handleUpdateInstanceGroup({ zone: ZONE, instanceGroupId: GROUP_ID });
+			await handlers.handleUpdateInstanceGroup({ zone: ZONE, instanceGroupId: GROUP_ID });
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({ method: "PATCH", body: JSON.stringify({}) }),
 			);
 		});
 
-		it("returns error on server failure", async () => {
-			const { handleUpdateInstanceGroup } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith());
-			const result: ErrorResult = await handleUpdateInstanceGroup({
+		it("maps an error without status to server_error", async () => {
+			mockFetch.mockRejectedValue(scalewayError());
+			const result: ToolResult = await handlers.handleUpdateInstanceGroup({
 				zone: ZONE,
 				instanceGroupId: GROUP_ID,
 			});
 			expect(result.isError).toBe(true);
-			expect(JSON.parse(result.content[0].text).error.type).toBe("server_error");
+			expect(parsed(result).error.type).toBe("server_error");
+			expect(parsed(result).error.statusCode).toBe(500);
 		});
 	});
 
 	describe("handleDeleteInstanceGroup", () => {
-		it("deletes and confirms", async () => {
-			const { handleDeleteInstanceGroup } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue(undefined);
-			const result = await handleDeleteInstanceGroup({ zone: ZONE, instanceGroupId: GROUP_ID });
+		it("deletes and returns the group in deleting status (200, not 204)", async () => {
+			mockFetch.mockResolvedValue({ id: GROUP_ID, status: "deleting" });
+			const result = await handlers.handleDeleteInstanceGroup({
+				zone: ZONE,
+				instanceGroupId: GROUP_ID,
+			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-groups/${GROUP_ID}`,
+				path: `${GROUPS_PATH}/${GROUP_ID}`,
 			});
-			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.deleted).toBe(true);
-			expect(parsed.id).toBe(GROUP_ID);
+			expect(parsed(result)).toEqual({ id: GROUP_ID, status: "deleting" });
 		});
 
-		it("returns error on 403", async () => {
-			const { handleDeleteInstanceGroup } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(403));
-			const result: ErrorResult = await handleDeleteInstanceGroup({
+		it("maps 403 to permission_denied", async () => {
+			mockFetch.mockRejectedValue(scalewayError(403));
+			const result: ToolResult = await handlers.handleDeleteInstanceGroup({
 				zone: ZONE,
 				instanceGroupId: GROUP_ID,
 			});
 			expect(result.isError).toBe(true);
-			expect(JSON.parse(result.content[0].text).error.type).toBe("permission_denied");
+			expect(parsed(result).error.type).toBe("permission_denied");
 		});
 	});
 
-	describe("handleListInstanceGroupEvents", () => {
-		it("returns paginated events", async () => {
-			const { handleListInstanceGroupEvents } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ instance_events: [{ id: "e1" }], total_count: 1 });
-			const result = await handleListInstanceGroupEvents({
+	describe("handleListInstanceGroupEvents (logs)", () => {
+		it("lists logs via /logs?group_id=", async () => {
+			const page = {
+				logs: [{ level: "info", message: "scaled out", timestamp: "2025-06-01T12:00:00Z" }],
+				total_count: 1,
+			};
+			mockFetch.mockResolvedValue(page);
+			const result = await handlers.handleListInstanceGroupEvents({
 				zone: ZONE,
 				instanceGroupId: GROUP_ID,
-				page: 1,
-				pageSize: 50,
-				orderBy: "created_at_desc",
 			});
-			const callArgs = mockFetch.mock.calls[0][0];
-			expect(callArgs.path).toBe(
-				`autoscaling/v1alpha1/zones/${ZONE}/instance-groups/${GROUP_ID}/events`,
+			expect(mockFetch).toHaveBeenCalledWith(
+				expect.objectContaining({ method: "GET", path: LOGS_PATH }),
 			);
-			expect(callArgs.urlParams.get("order_by")).toBe("created_at_desc");
-			expect(JSON.parse(result.content[0].text).totalCount).toBe(1);
+			expect(lastCall().urlParams?.toString()).toBe(`group_id=${GROUP_ID}`);
+			expect(parsed(result)).toEqual(page);
 		});
 
-		it("returns error on 429", async () => {
-			const { handleListInstanceGroupEvents } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(429));
-			const result: ErrorResult = await handleListInstanceGroupEvents({
+		it("passes time window and pagination", async () => {
+			mockFetch.mockResolvedValue({ logs: [], total_count: 0 });
+			await handlers.handleListInstanceGroupEvents({
 				zone: ZONE,
 				instanceGroupId: GROUP_ID,
-				page: 1,
-				pageSize: 50,
+				startTime: "2025-06-01T00:00:00Z",
+				endTime: "2025-06-02T00:00:00Z",
+				pageSize: 25,
+				pageToken: "tok",
+			});
+			const q = lastCall().urlParams as URLSearchParams;
+			expect(q.get("group_id")).toBe(GROUP_ID);
+			expect(q.get("start_time")).toBe("2025-06-01T00:00:00Z");
+			expect(q.get("end_time")).toBe("2025-06-02T00:00:00Z");
+			expect(q.get("page_size")).toBe("25");
+			expect(q.get("page_token")).toBe("tok");
+		});
+
+		it("maps 429 to rate_limited", async () => {
+			mockFetch.mockRejectedValue(scalewayError(429));
+			const result: ToolResult = await handlers.handleListInstanceGroupEvents({
+				zone: ZONE,
+				instanceGroupId: GROUP_ID,
 			});
 			expect(result.isError).toBe(true);
-			expect(JSON.parse(result.content[0].text).error.type).toBe("rate_limited");
+			expect(parsed(result).error.type).toBe("rate_limited");
+		});
+	});
+
+	describe("handleListInstanceGroupServers", () => {
+		it("lists servers via /servers?group_id=", async () => {
+			const page = { servers: [{ server_id: "srv-1" }], total_count: 1 };
+			mockFetch.mockResolvedValue(page);
+			const result = await handlers.handleListInstanceGroupServers({
+				zone: ZONE,
+				instanceGroupId: GROUP_ID,
+				pageSize: 5,
+				pageToken: "t",
+			});
+			expect(mockFetch).toHaveBeenCalledWith(
+				expect.objectContaining({ method: "GET", path: SERVERS_PATH }),
+			);
+			const q = lastCall().urlParams as URLSearchParams;
+			expect(q.get("group_id")).toBe(GROUP_ID);
+			expect(q.get("page_size")).toBe("5");
+			expect(q.get("page_token")).toBe("t");
+			expect(parsed(result)).toEqual(page);
+		});
+
+		it("maps 404 to not_found", async () => {
+			mockFetch.mockRejectedValue(scalewayError(404));
+			const result: ToolResult = await handlers.handleListInstanceGroupServers({
+				zone: ZONE,
+				instanceGroupId: GROUP_ID,
+			});
+			expect(result.isError).toBe(true);
+			expect(parsed(result).error.type).toBe("not_found");
+		});
+	});
+
+	describe("handleListInstanceGroupAlerts", () => {
+		it("scopes by group_id when instanceGroupId is given (wins over projectId)", async () => {
+			const page = {
+				alerts: [{ type: "out_of_stock", group_id: GROUP_ID, failing_quotas: [] }],
+				total_count: 1,
+			};
+			mockFetch.mockResolvedValue(page);
+			const result = await handlers.handleListInstanceGroupAlerts({
+				zone: ZONE,
+				instanceGroupId: GROUP_ID,
+				projectId: OTHER_PROJECT_ID,
+				pageSize: 20,
+				pageToken: "tok",
+			});
+			expect(mockFetch).toHaveBeenCalledWith(
+				expect.objectContaining({ method: "GET", path: ALERTS_PATH }),
+			);
+			const q = lastCall().urlParams as URLSearchParams;
+			expect(q.get("group_id")).toBe(GROUP_ID);
+			expect(q.has("project_id")).toBe(false);
+			expect(q.get("page_size")).toBe("20");
+			expect(q.get("page_token")).toBe("tok");
+			expect(parsed(result)).toEqual(page);
+		});
+
+		it("scopes by explicit project_id when no group is given", async () => {
+			mockFetch.mockResolvedValue({ alerts: [], total_count: 0 });
+			await handlers.handleListInstanceGroupAlerts({ zone: ZONE, projectId: OTHER_PROJECT_ID });
+			expect(lastCall().urlParams?.toString()).toBe(`project_id=${OTHER_PROJECT_ID}`);
+		});
+
+		it("falls back to the default project when neither scope is given", async () => {
+			mockFetch.mockResolvedValue({ alerts: [], total_count: 0 });
+			await handlers.handleListInstanceGroupAlerts({ zone: ZONE });
+			expect(lastCall().urlParams?.toString()).toBe(`project_id=${PROJECT_ID}`);
+		});
+
+		it("maps 401 to permission_denied", async () => {
+			mockFetch.mockRejectedValue(scalewayError(401));
+			const result: ToolResult = await handlers.handleListInstanceGroupAlerts({ zone: ZONE });
+			expect(result.isError).toBe(true);
+			expect(parsed(result).error.type).toBe("permission_denied");
 		});
 	});
 });
 
-describe("autoscaling instance template handlers", () => {
+describe("autoscaling instance template handlers (Instance API v2alpha1)", () => {
 	beforeEach(() => {
 		mockFetch.mockReset();
 	});
 
 	describe("handleListInstanceTemplates", () => {
-		it("returns paginated list", async () => {
-			const { handleListInstanceTemplates } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ instance_templates: [{ id: TEMPLATE_ID }], total_count: 1 });
-			const result = await handleListInstanceTemplates({ zone: ZONE, page: 1, pageSize: 50 });
+		it("lists templates with the default project", async () => {
+			const page = { templates: [{ id: TEMPLATE_ID }], next_page_token: null, total_count: 1 };
+			mockFetch.mockResolvedValue(page);
+			const result = await handlers.handleListInstanceTemplates({ zone: ZONE });
 			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({
-					method: "GET",
-					path: `autoscaling/v1alpha1/zones/${ZONE}/instance-templates`,
-				}),
+				expect.objectContaining({ method: "GET", path: TEMPLATES_PATH }),
 			);
-			expect(JSON.parse(result.content[0].text).items).toHaveLength(1);
+			expect(lastCall().urlParams?.toString()).toBe(`project_id=${PROJECT_ID}`);
+			expect(parsed(result)).toEqual(page);
 		});
 
-		it("returns error on failure", async () => {
-			const { handleListInstanceTemplates } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(500));
-			const result: ErrorResult = await handleListInstanceTemplates({
+		it("passes filters, repeated array params and token pagination", async () => {
+			mockFetch.mockResolvedValue({ templates: [], total_count: 0 });
+			await handlers.handleListInstanceTemplates({
 				zone: ZONE,
-				page: 1,
-				pageSize: 50,
+				projectId: OTHER_PROJECT_ID,
+				orderBy: "updated_at_desc",
+				name: "web",
+				tags: ["a", "b"],
+				templateIds: [TEMPLATE_ID],
+				pageSize: 10,
+				pageToken: "tok-1",
 			});
+			const q = lastCall().urlParams as URLSearchParams;
+			expect(q.get("project_id")).toBe(OTHER_PROJECT_ID);
+			expect(q.get("order_by")).toBe("updated_at_desc");
+			expect(q.get("name")).toBe("web");
+			expect(q.getAll("tags")).toEqual(["a", "b"]);
+			expect(q.getAll("template_ids")).toEqual([TEMPLATE_ID]);
+			expect(q.get("page_size")).toBe("10");
+			expect(q.get("page_token")).toBe("tok-1");
+		});
+
+		it("maps 500 to server_error", async () => {
+			mockFetch.mockRejectedValue(scalewayError(500));
+			const result: ToolResult = await handlers.handleListInstanceTemplates({ zone: ZONE });
 			expect(result.isError).toBe(true);
+			expect(parsed(result).error.type).toBe("server_error");
 		});
 	});
 
 	describe("handleGetInstanceTemplate", () => {
 		it("returns template details", async () => {
-			const { handleGetInstanceTemplate } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ id: TEMPLATE_ID, name: "tmpl" });
-			const result = await handleGetInstanceTemplate({
+			mockFetch.mockResolvedValue({ id: TEMPLATE_ID, server_type: "PLAY2-NANO" });
+			const result = await handlers.handleGetInstanceTemplate({
 				zone: ZONE,
 				instanceTemplateId: TEMPLATE_ID,
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-templates/${TEMPLATE_ID}`,
+				path: `${TEMPLATES_PATH}/${TEMPLATE_ID}`,
 			});
-			expect(JSON.parse(result.content[0].text).name).toBe("tmpl");
+			expect(parsed(result).server_type).toBe("PLAY2-NANO");
 		});
 
-		it("returns error on 404", async () => {
-			const { handleGetInstanceTemplate } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(404));
-			const result: ErrorResult = await handleGetInstanceTemplate({
+		it("maps 404 to not_found", async () => {
+			mockFetch.mockRejectedValue(scalewayError(404));
+			const result: ToolResult = await handlers.handleGetInstanceTemplate({
 				zone: ZONE,
 				instanceTemplateId: TEMPLATE_ID,
 			});
 			expect(result.isError).toBe(true);
+			expect(parsed(result).error.type).toBe("not_found");
 		});
 	});
 
 	describe("handleCreateInstanceTemplate", () => {
 		it("creates with full body", async () => {
-			const { handleCreateInstanceTemplate } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
 			mockFetch.mockResolvedValue({ id: TEMPLATE_ID });
-			await handleCreateInstanceTemplate({
+			const volumes = [
+				{ volume_type: "sbs" as const, name: "boot", image_label: "ubuntu_noble", size: 20e9 },
+				{ volume_type: "sbs" as const, name: "data", base_snapshot_id: SNAPSHOT_ID, tags: ["d"] },
+			];
+			await handlers.handleCreateInstanceTemplate({
 				zone: ZONE,
-				name: "tmpl",
-				commercialType: "DEV1-S",
-				imageId: "img",
-				volumes: {
-					"0": { name: "root", volume_type: "sbs", boot: true, from_empty: { size: 10000000000 } },
-				},
-				tags: ["t"],
-				securityGroupId: "00000000-0000-0000-0000-000000000050",
-				placementGroupId: "00000000-0000-0000-0000-000000000060",
-				publicIpsV4Count: 1,
-				publicIpsV6Count: 0,
-				projectId: PROJECT_ID,
-				privateNetworkIds: ["pn1"],
-				cloudInit: "base64data",
+				name: "tpl",
+				serverType: "PLAY2-NANO",
+				projectId: OTHER_PROJECT_ID,
+				tags: ["web"],
+				serverTags: ["srv"],
+				securityGroupId: LB_ID,
+				placementGroupId: BACKEND_ID,
+				volumes,
+				privateNetworks: [{ private_network_id: PN_ID }],
+				filesystemIds: [SNAPSHOT_ID],
+				publicIpV4Count: 1,
+				publicIpV6Count: 0,
+				windowsRdpSshKeyId: PN_ID,
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-templates`,
+				path: TEMPLATES_PATH,
 				body: JSON.stringify({
-					name: "tmpl",
-					commercial_type: "DEV1-S",
-					image_id: "img",
-					volumes: {
-						"0": {
-							name: "root",
-							volume_type: "sbs",
-							boot: true,
-							from_empty: { size: 10000000000 },
-						},
-					},
-					tags: ["t"],
-					security_group_id: "00000000-0000-0000-0000-000000000050",
-					placement_group_id: "00000000-0000-0000-0000-000000000060",
-					public_ips_v4_count: 1,
-					public_ips_v6_count: 0,
-					project_id: PROJECT_ID,
-					private_network_ids: ["pn1"],
-					cloud_init: "base64data",
+					project_id: OTHER_PROJECT_ID,
+					name: "tpl",
+					tags: ["web"],
+					server_tags: ["srv"],
+					server_type: "PLAY2-NANO",
+					security_group_id: LB_ID,
+					placement_group_id: BACKEND_ID,
+					volumes,
+					private_networks: [{ private_network_id: PN_ID }],
+					filesystem_ids: [SNAPSHOT_ID],
+					public_ip_v4_count: 1,
+					public_ip_v6_count: 0,
+					windows_rdp_ssh_key_id: PN_ID,
 				}),
-				headers: { "Content-Type": "application/json" },
+				headers: JSON_HEADERS,
 			});
 		});
 
-		it("creates with minimal body", async () => {
-			const { handleCreateInstanceTemplate } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
+		it("creates with minimal body and defaults project_id", async () => {
 			mockFetch.mockResolvedValue({ id: TEMPLATE_ID });
-			await handleCreateInstanceTemplate({ zone: ZONE, name: "tmpl", commercialType: "DEV1-S" });
-			expect(mockFetch).toHaveBeenCalledWith({
-				method: "POST",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-templates`,
-				body: JSON.stringify({ name: "tmpl", commercial_type: "DEV1-S" }),
-				headers: { "Content-Type": "application/json" },
+			await handlers.handleCreateInstanceTemplate({
+				zone: ZONE,
+				name: "tpl",
+				serverType: "DEV1-S",
+			});
+			const call = lastCall();
+			expect(call.path).toBe(TEMPLATES_PATH);
+			expect(JSON.parse(call.body as string)).toEqual({
+				project_id: PROJECT_ID,
+				name: "tpl",
+				server_type: "DEV1-S",
 			});
 		});
 
-		it("returns error on failure", async () => {
-			const { handleCreateInstanceTemplate } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(400));
-			const result: ErrorResult = await handleCreateInstanceTemplate({
+		it("maps 400 to invalid_input", async () => {
+			mockFetch.mockRejectedValue(scalewayError(400));
+			const result: ToolResult = await handlers.handleCreateInstanceTemplate({
 				zone: ZONE,
-				name: "tmpl",
-				commercialType: "DEV1-S",
+				name: "tpl",
+				serverType: "DEV1-S",
 			});
 			expect(result.isError).toBe(true);
+			expect(parsed(result).error.type).toBe("invalid_input");
 		});
 	});
 
 	describe("handleUpdateInstanceTemplate", () => {
-		it("updates fields", async () => {
-			const { handleUpdateInstanceTemplate } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
+		it("wraps volumes and private networks in update_* envelopes", async () => {
 			mockFetch.mockResolvedValue({ id: TEMPLATE_ID });
-			await handleUpdateInstanceTemplate({
+			const volumes = [{ volume_type: "l_ssd" as const, name: "boot", image_label: "debian_12" }];
+			await handlers.handleUpdateInstanceTemplate({
 				zone: ZONE,
 				instanceTemplateId: TEMPLATE_ID,
-				commercialType: "DEV1-M",
-				tags: ["x"],
+				name: "new",
+				serverType: "PLAY2-MICRO",
+				tags: ["t"],
+				serverTags: ["s"],
+				securityGroupId: LB_ID,
+				placementGroupId: BACKEND_ID,
+				volumes,
+				privateNetworks: [{ private_network_id: PN_ID }],
+				filesystemIds: [],
+				publicIpV4Count: 2,
+				publicIpV6Count: 1,
+				windowsRdpSshKeyId: PN_ID,
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-templates/${TEMPLATE_ID}`,
-				body: JSON.stringify({ commercial_type: "DEV1-M", tags: ["x"] }),
-				headers: { "Content-Type": "application/json" },
+				path: `${TEMPLATES_PATH}/${TEMPLATE_ID}`,
+				body: JSON.stringify({
+					name: "new",
+					tags: ["t"],
+					server_tags: ["s"],
+					server_type: "PLAY2-MICRO",
+					security_group_id: LB_ID,
+					placement_group_id: BACKEND_ID,
+					update_volumes: { volumes },
+					update_private_networks: { private_networks: [{ private_network_id: PN_ID }] },
+					filesystem_ids: [],
+					public_ip_v4_count: 2,
+					public_ip_v6_count: 1,
+					windows_rdp_ssh_key_id: PN_ID,
+				}),
+				headers: JSON_HEADERS,
 			});
 		});
 
-		it("sends empty body when no fields provided", async () => {
-			const { handleUpdateInstanceTemplate } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
+		it("omits update_* envelopes and sends an empty body when nothing is provided", async () => {
 			mockFetch.mockResolvedValue({ id: TEMPLATE_ID });
-			await handleUpdateInstanceTemplate({ zone: ZONE, instanceTemplateId: TEMPLATE_ID });
+			await handlers.handleUpdateInstanceTemplate({
+				zone: ZONE,
+				instanceTemplateId: TEMPLATE_ID,
+			});
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({ method: "PATCH", body: JSON.stringify({}) }),
 			);
 		});
 
-		it("returns error on failure", async () => {
-			const { handleUpdateInstanceTemplate } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith());
-			const result: ErrorResult = await handleUpdateInstanceTemplate({
+		it("maps 404 to not_found", async () => {
+			mockFetch.mockRejectedValue(scalewayError(404));
+			const result: ToolResult = await handlers.handleUpdateInstanceTemplate({
 				zone: ZONE,
 				instanceTemplateId: TEMPLATE_ID,
 			});
 			expect(result.isError).toBe(true);
+			expect(parsed(result).error.type).toBe("not_found");
 		});
 	});
 
 	describe("handleDeleteInstanceTemplate", () => {
-		it("deletes and confirms", async () => {
-			const { handleDeleteInstanceTemplate } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
+		it("deletes with the required empty JSON body and confirms", async () => {
 			mockFetch.mockResolvedValue(undefined);
-			const result = await handleDeleteInstanceTemplate({
+			const result = await handlers.handleDeleteInstanceTemplate({
 				zone: ZONE,
 				instanceTemplateId: TEMPLATE_ID,
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-templates/${TEMPLATE_ID}`,
+				path: `${TEMPLATES_PATH}/${TEMPLATE_ID}`,
+				body: "{}",
+				headers: JSON_HEADERS,
 			});
-			expect(JSON.parse(result.content[0].text).id).toBe(TEMPLATE_ID);
+			expect(parsed(result)).toEqual({ deleted: true, id: TEMPLATE_ID });
 		});
 
-		it("returns error on failure", async () => {
-			const { handleDeleteInstanceTemplate } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(403));
-			const result: ErrorResult = await handleDeleteInstanceTemplate({
+		it("maps 403 to permission_denied", async () => {
+			mockFetch.mockRejectedValue(scalewayError(403));
+			const result: ToolResult = await handlers.handleDeleteInstanceTemplate({
 				zone: ZONE,
 				instanceTemplateId: TEMPLATE_ID,
 			});
 			expect(result.isError).toBe(true);
+			expect(parsed(result).error.type).toBe("permission_denied");
 		});
 	});
-});
 
-describe("autoscaling instance policy handlers", () => {
-	beforeEach(() => {
-		mockFetch.mockReset();
-	});
-
-	describe("handleListInstancePolicies", () => {
-		it("returns paginated list with instance_group_id filter", async () => {
-			const { handleListInstancePolicies } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ policies: [{ id: POLICY_ID }], total_count: 1 });
-			const result = await handleListInstancePolicies({
+	describe("handleGetInstanceTemplateCloudInit", () => {
+		it("returns the cloud-init user data", async () => {
+			mockFetch.mockResolvedValue({ key: "cloud-init", content: "#cloud-config\n" });
+			const result = await handlers.handleGetInstanceTemplateCloudInit({
 				zone: ZONE,
-				page: 1,
-				pageSize: 50,
-				instanceGroupId: GROUP_ID,
+				instanceTemplateId: TEMPLATE_ID,
 			});
-			const callArgs = mockFetch.mock.calls[0][0];
-			expect(callArgs.path).toBe(`autoscaling/v1alpha1/zones/${ZONE}/instance-policies`);
-			expect(callArgs.urlParams.get("instance_group_id")).toBe(GROUP_ID);
-			expect(JSON.parse(result.content[0].text).items).toHaveLength(1);
-		});
-
-		it("returns error on failure", async () => {
-			const { handleListInstancePolicies } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(500));
-			const result: ErrorResult = await handleListInstancePolicies({
-				zone: ZONE,
-				page: 1,
-				pageSize: 50,
-			});
-			expect(result.isError).toBe(true);
-		});
-	});
-
-	describe("handleGetInstancePolicy", () => {
-		it("returns policy details", async () => {
-			const { handleGetInstancePolicy } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ id: POLICY_ID, name: "pol" });
-			const result = await handleGetInstancePolicy({ zone: ZONE, instancePolicyId: POLICY_ID });
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-policies/${POLICY_ID}`,
+				path: `${TEMPLATES_PATH}/${TEMPLATE_ID}/user-data/cloud-init`,
 			});
-			expect(JSON.parse(result.content[0].text).name).toBe("pol");
+			expect(parsed(result)).toEqual({ key: "cloud-init", content: "#cloud-config\n" });
 		});
 
-		it("returns error on 404", async () => {
-			const { handleGetInstancePolicy } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(404));
-			const result: ErrorResult = await handleGetInstancePolicy({
+		it("maps 404 to not_found", async () => {
+			mockFetch.mockRejectedValue(scalewayError(404));
+			const result: ToolResult = await handlers.handleGetInstanceTemplateCloudInit({
 				zone: ZONE,
-				instancePolicyId: POLICY_ID,
+				instanceTemplateId: TEMPLATE_ID,
 			});
 			expect(result.isError).toBe(true);
+			expect(parsed(result).error.type).toBe("not_found");
 		});
 	});
 
-	describe("handleCreateInstancePolicy", () => {
-		it("creates policy", async () => {
-			const { handleCreateInstancePolicy } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ id: POLICY_ID });
-			const metric = {
-				name: "cpu",
-				managed_metric: "managed_metric_instance_cpu" as const,
-				operator: "operator_greater_than" as const,
-				aggregate: "aggregate_average" as const,
-				sampling_range_min: 5,
-				threshold: 70,
-			};
-			await handleCreateInstancePolicy({
-				zone: ZONE,
-				name: "pol",
-				metric,
-				action: "scale_up",
-				type: "flat_count",
-				value: 1,
-				priority: 1,
-				instanceGroupId: GROUP_ID,
-			});
-			expect(mockFetch).toHaveBeenCalledWith({
-				method: "POST",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-policies`,
-				body: JSON.stringify({
-					name: "pol",
-					metric,
-					action: "scale_up",
-					type: "flat_count",
-					value: 1,
-					priority: 1,
-					instance_group_id: GROUP_ID,
-				}),
-				headers: { "Content-Type": "application/json" },
-			});
-		});
-
-		it("returns error on failure", async () => {
-			const { handleCreateInstancePolicy } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(400));
-			const result: ErrorResult = await handleCreateInstancePolicy({
-				zone: ZONE,
-				name: "pol",
-				metric: {
-					name: "cpu",
-					operator: "operator_greater_than",
-					aggregate: "aggregate_average",
-					sampling_range_min: 5,
-					threshold: 70,
-				},
-				action: "scale_up",
-				type: "flat_count",
-				value: 1,
-				priority: 1,
-				instanceGroupId: GROUP_ID,
-			});
-			expect(result.isError).toBe(true);
-		});
-	});
-
-	describe("handleUpdateInstancePolicy", () => {
-		it("updates fields", async () => {
-			const { handleUpdateInstancePolicy } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ id: POLICY_ID });
-			await handleUpdateInstancePolicy({
-				zone: ZONE,
-				instancePolicyId: POLICY_ID,
-				action: "scale_down",
-				value: 2,
-			});
-			expect(mockFetch).toHaveBeenCalledWith({
-				method: "PATCH",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-policies/${POLICY_ID}`,
-				body: JSON.stringify({ action: "scale_down", value: 2 }),
-				headers: { "Content-Type": "application/json" },
-			});
-		});
-
-		it("sends empty body when no fields provided", async () => {
-			const { handleUpdateInstancePolicy } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockResolvedValue({ id: POLICY_ID });
-			await handleUpdateInstancePolicy({ zone: ZONE, instancePolicyId: POLICY_ID });
-			expect(mockFetch).toHaveBeenCalledWith(
-				expect.objectContaining({ method: "PATCH", body: JSON.stringify({}) }),
-			);
-		});
-
-		it("returns error on failure", async () => {
-			const { handleUpdateInstancePolicy } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith());
-			const result: ErrorResult = await handleUpdateInstancePolicy({
-				zone: ZONE,
-				instancePolicyId: POLICY_ID,
-			});
-			expect(result.isError).toBe(true);
-		});
-	});
-
-	describe("handleDeleteInstancePolicy", () => {
-		it("deletes and confirms", async () => {
-			const { handleDeleteInstancePolicy } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
+	describe("handleSetInstanceTemplateCloudInit", () => {
+		it("PUTs the content and confirms on 204", async () => {
 			mockFetch.mockResolvedValue(undefined);
-			const result = await handleDeleteInstancePolicy({
+			const result = await handlers.handleSetInstanceTemplateCloudInit({
 				zone: ZONE,
-				instancePolicyId: POLICY_ID,
+				instanceTemplateId: TEMPLATE_ID,
+				content: "#cloud-config\npackages: [nginx]",
 			});
 			expect(mockFetch).toHaveBeenCalledWith({
-				method: "DELETE",
-				path: `autoscaling/v1alpha1/zones/${ZONE}/instance-policies/${POLICY_ID}`,
+				method: "PUT",
+				path: `${TEMPLATES_PATH}/${TEMPLATE_ID}/user-data/cloud-init`,
+				body: JSON.stringify({ content: "#cloud-config\npackages: [nginx]" }),
+				headers: JSON_HEADERS,
 			});
-			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.deleted).toBe(true);
-			expect(parsed.id).toBe(POLICY_ID);
+			expect(parsed(result)).toEqual({ updated: true, id: TEMPLATE_ID, key: "cloud-init" });
 		});
 
-		it("returns error on failure", async () => {
-			const { handleDeleteInstancePolicy } = await import(
-				"../../../src/tools/autoscaling/handlers.js"
-			);
-			mockFetch.mockRejectedValue(errorWith(403));
-			const result: ErrorResult = await handleDeleteInstancePolicy({
+		it("maps 400 to invalid_input", async () => {
+			mockFetch.mockRejectedValue(scalewayError(400));
+			const result: ToolResult = await handlers.handleSetInstanceTemplateCloudInit({
 				zone: ZONE,
-				instancePolicyId: POLICY_ID,
+				instanceTemplateId: TEMPLATE_ID,
+				content: "",
 			});
 			expect(result.isError).toBe(true);
+			expect(parsed(result).error.type).toBe("invalid_input");
 		});
 	});
 });

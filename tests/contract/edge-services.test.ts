@@ -8,7 +8,15 @@
  * SDK Package: @scaleway/sdk-edge-services
  * Parity Matrix: tests/parity-matrix.json -> edge-services
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import {
+	handleListBackendStages,
+	handleListCacheStages,
+	handleListDNSStages,
+	handleListPipelines,
+	handleListPurgeRequests,
+	handleListTLSStages,
+} from "../../src/tools/edge-services/handlers.js";
 import {
 	CreateBackendStageParams,
 	CreateCacheStageParams,
@@ -39,6 +47,38 @@ import {
 	UpdatePipelineParams,
 	UpdateTLSStageParams,
 } from "../../src/tools/edge-services/types.js";
+
+// Wire-level fixtures: the real @scaleway/sdk-edge-services marshaller runs
+// against a fake client so the query string it builds can be asserted directly.
+vi.mock("../../src/shared/auth.js", () => ({
+	loadAuthConfig: () => ({
+		accessKey: "SCW-ACCESS",
+		secretKey: "SCW-SECRET",
+		defaultProjectId: "00000000-0000-0000-0000-000000000001",
+		defaultRegion: "fr-par",
+		defaultZone: "fr-par-1",
+	}),
+}));
+
+const mockFetch = vi.fn();
+vi.mock("../../src/shared/client.js", () => ({
+	createScalewayClient: () => ({
+		fetch: mockFetch,
+		settings: {
+			defaultRegion: "fr-par",
+			defaultZone: "fr-par-1",
+			defaultProjectId: "00000000-0000-0000-0000-000000000001",
+		},
+	}),
+}));
+
+function lastRequest(): { method: string; path: string; urlParams: URLSearchParams } {
+	return mockFetch.mock.lastCall?.[0] as {
+		method: string;
+		path: string;
+		urlParams: URLSearchParams;
+	};
+}
 
 describe("edge-services contract tests", () => {
 	// ── Pipeline Contracts ─────────────────────────────────────────────────
@@ -518,5 +558,73 @@ describe("edge-services contract tests", () => {
 			const result = GetPurgeRequestParams.parse({ purgeRequestId: "purge-123" });
 			expect(result.purgeRequestId).toBe("purge-123");
 		});
+	});
+});
+
+// ── Wire contract: pagination reaches the Scaleway API ───────────────────
+// specs/scaleway-api/edge-services/api-reference.md — every list endpoint
+// takes `page` and `page_size` (SDK `page` / `pageSize`). The handlers must
+// hand the SDK camelCase `pageSize` so it is marshalled to `page_size`.
+
+describe("contract: list endpoints marshal page/page_size to the wire", () => {
+	const PIPELINE_ID = "11111111-1111-1111-1111-111111111111";
+	const emptyStages = { stages: [], totalCount: 0 };
+
+	it("GET /edge-services/v1beta1/pipelines", async () => {
+		mockFetch.mockResolvedValueOnce({ pipelines: [], totalCount: 0 });
+		await handleListPipelines({ page: 3, pageSize: 7, name: "cdn" });
+		const request = lastRequest();
+		expect(request.method).toBe("GET");
+		expect(request.path).toBe("/edge-services/v1beta1/pipelines");
+		expect(request.urlParams).toBeInstanceOf(URLSearchParams);
+		expect(request.urlParams.get("page")).toBe("3");
+		expect(request.urlParams.get("page_size")).toBe("7");
+		expect(request.urlParams.get("name")).toBe("cdn");
+	});
+
+	it("GET /edge-services/v1beta1/pipelines/{pipeline_id}/dns-stages", async () => {
+		mockFetch.mockResolvedValueOnce(emptyStages);
+		await handleListDNSStages({ pipelineId: PIPELINE_ID, page: 2, pageSize: 5 });
+		const request = lastRequest();
+		expect(request.path).toBe(`/edge-services/v1beta1/pipelines/${PIPELINE_ID}/dns-stages`);
+		expect(request.urlParams.get("page")).toBe("2");
+		expect(request.urlParams.get("page_size")).toBe("5");
+	});
+
+	it("GET /edge-services/v1beta1/pipelines/{pipeline_id}/tls-stages", async () => {
+		mockFetch.mockResolvedValueOnce(emptyStages);
+		await handleListTLSStages({ pipelineId: PIPELINE_ID, page: 2, pageSize: 6 });
+		const request = lastRequest();
+		expect(request.path).toBe(`/edge-services/v1beta1/pipelines/${PIPELINE_ID}/tls-stages`);
+		expect(request.urlParams.get("page")).toBe("2");
+		expect(request.urlParams.get("page_size")).toBe("6");
+	});
+
+	it("GET /edge-services/v1beta1/pipelines/{pipeline_id}/cache-stages", async () => {
+		mockFetch.mockResolvedValueOnce(emptyStages);
+		await handleListCacheStages({ pipelineId: PIPELINE_ID, page: 4, pageSize: 8 });
+		const request = lastRequest();
+		expect(request.path).toBe(`/edge-services/v1beta1/pipelines/${PIPELINE_ID}/cache-stages`);
+		expect(request.urlParams.get("page")).toBe("4");
+		expect(request.urlParams.get("page_size")).toBe("8");
+	});
+
+	it("GET /edge-services/v1beta1/pipelines/{pipeline_id}/backend-stages", async () => {
+		mockFetch.mockResolvedValueOnce(emptyStages);
+		await handleListBackendStages({ pipelineId: PIPELINE_ID, page: 2, pageSize: 4 });
+		const request = lastRequest();
+		expect(request.path).toBe(`/edge-services/v1beta1/pipelines/${PIPELINE_ID}/backend-stages`);
+		expect(request.urlParams.get("page")).toBe("2");
+		expect(request.urlParams.get("page_size")).toBe("4");
+	});
+
+	it("GET /edge-services/v1beta1/purge-requests", async () => {
+		mockFetch.mockResolvedValueOnce({ purgeRequests: [], totalCount: 0 });
+		await handleListPurgeRequests({ page: 6, pageSize: 12, pipelineId: PIPELINE_ID });
+		const request = lastRequest();
+		expect(request.path).toBe("/edge-services/v1beta1/purge-requests");
+		expect(request.urlParams.get("page")).toBe("6");
+		expect(request.urlParams.get("page_size")).toBe("12");
+		expect(request.urlParams.get("pipeline_id")).toBe(PIPELINE_ID);
 	});
 });

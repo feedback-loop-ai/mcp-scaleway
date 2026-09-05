@@ -104,7 +104,7 @@ describe("opensearch handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "searchdb/v1alpha1/regions/fr-par/deployments",
+					path: "/searchdb/v1alpha1/regions/fr-par/deployments",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -163,7 +163,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("os");
 		});
@@ -203,7 +203,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "searchdb/v1alpha1/regions/fr-par/deployments",
+				path: "/searchdb/v1alpha1/regions/fr-par/deployments",
 				body: JSON.stringify({
 					name: "os",
 					node_type: "SEARCHDB-SHARED-2C-8G",
@@ -234,7 +234,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "searchdb/v1alpha1/regions/fr-par/deployments",
+				path: "/searchdb/v1alpha1/regions/fr-par/deployments",
 				body: JSON.stringify({
 					name: "os",
 					node_type: "SEARCHDB-SHARED-2C-8G",
@@ -274,7 +274,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 				body: JSON.stringify({ name: "renamed", tags: ["a"] }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -288,7 +288,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -321,7 +321,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/upgrade`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/upgrade`,
 				body: JSON.stringify({ node_count: 5 }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -339,7 +339,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/upgrade`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/upgrade`,
 				body: JSON.stringify({ volume_size_bytes: 10000000000 }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -372,7 +372,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("deleting");
 		});
@@ -405,7 +405,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/certificate-authority`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/certificate-authority`,
 			});
 			expect(JSON.parse(result.content[0].text).content).toBe("PEM");
 		});
@@ -442,7 +442,7 @@ describe("opensearch handlers", () => {
 
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(callArgs.method).toBe("GET");
-			expect(callArgs.path).toBe("searchdb/v1alpha1/regions/fr-par/node-types");
+			expect(callArgs.path).toBe("/searchdb/v1alpha1/regions/fr-par/node-types");
 			expect(callArgs.urlParams.get("order_by")).toBe("vcpus_desc");
 		});
 
@@ -475,7 +475,7 @@ describe("opensearch handlers", () => {
 			});
 
 			const callArgs = mockFetch.mock.calls[0][0];
-			expect(callArgs.path).toBe("searchdb/v1alpha1/regions/fr-par/versions");
+			expect(callArgs.path).toBe("/searchdb/v1alpha1/regions/fr-par/versions");
 			expect(callArgs.urlParams.get("version")).toBe("2.0");
 			expect(callArgs.urlParams.get("order_by")).toBe("version_desc");
 			expect(JSON.parse(result.content[0].text).items[0].version).toBe("2.0");
@@ -513,7 +513,7 @@ describe("opensearch handlers", () => {
 
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(callArgs.path).toBe(
-				`searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
+				`/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
 			);
 			expect(callArgs.urlParams.get("name")).toBe("adm");
 			expect(callArgs.urlParams.get("order_by")).toBe("name_desc");
@@ -549,7 +549,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
 				body: JSON.stringify({ username: "admin", password: "secret" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -585,7 +585,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
 				body: JSON.stringify({ password: "newpass" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -603,7 +603,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -637,7 +637,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
+				path: `/searchdb/v1alpha1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/admin`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);
@@ -674,7 +674,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "searchdb/v1alpha1/regions/fr-par/endpoints",
+				path: "/searchdb/v1alpha1/regions/fr-par/endpoints",
 				body: JSON.stringify({
 					deployment_id: DEPLOYMENT_ID,
 					endpoint_spec: { public: {} },
@@ -695,7 +695,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "searchdb/v1alpha1/regions/fr-par/endpoints",
+				path: "/searchdb/v1alpha1/regions/fr-par/endpoints",
 				body: JSON.stringify({
 					deployment_id: DEPLOYMENT_ID,
 					endpoint_spec: { private_network: { private_network_id: PN_ID } },
@@ -729,7 +729,7 @@ describe("opensearch handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `searchdb/v1alpha1/regions/fr-par/endpoints/${ENDPOINT_ID}`,
+				path: `/searchdb/v1alpha1/regions/fr-par/endpoints/${ENDPOINT_ID}`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);

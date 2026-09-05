@@ -93,7 +93,7 @@ describe("data-warehouse handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "datawarehouse/v1beta1/regions/fr-par/deployments",
+					path: "/datawarehouse/v1beta1/regions/fr-par/deployments",
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
@@ -157,7 +157,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("dw");
 		});
@@ -201,7 +201,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "datawarehouse/v1beta1/regions/fr-par/deployments",
+				path: "/datawarehouse/v1beta1/regions/fr-par/deployments",
 				body: JSON.stringify({
 					name: "dw",
 					project_id: "00000000-0000-0000-0000-000000000001",
@@ -230,7 +230,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "datawarehouse/v1beta1/regions/fr-par/deployments",
+				path: "/datawarehouse/v1beta1/regions/fr-par/deployments",
 				body: JSON.stringify({ name: "dw" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -268,7 +268,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 				body: JSON.stringify({
 					name: "new",
 					tags: ["x"],
@@ -291,7 +291,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -326,7 +326,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}`,
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("deleting");
 		});
@@ -360,7 +360,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/start`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/start`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -392,7 +392,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/stop`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/stop`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -431,7 +431,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "GET",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/certificate`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/certificate`,
 			});
 			expect(JSON.parse(result.content[0].text).name).toBe("cert.pem");
 		});
@@ -470,7 +470,7 @@ describe("data-warehouse handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/databases`,
+					path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/databases`,
 				}),
 			);
 			expect(JSON.parse(result.content[0].text).items[0].name).toBe("analytics");
@@ -524,7 +524,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/databases`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/databases`,
 				body: JSON.stringify({ name: "analytics" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -561,7 +561,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/databases/analytics`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/databases/analytics`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);
@@ -603,7 +603,7 @@ describe("data-warehouse handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
+					path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
 				}),
 			);
 			expect(JSON.parse(result.content[0].text).items[0].name).toBe("admin");
@@ -656,7 +656,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
 				body: JSON.stringify({ name: "reader", password: "p4ss", is_admin: false }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -675,7 +675,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users`,
 				body: JSON.stringify({ name: "reader", password: "p4ss" }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -710,7 +710,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/reader`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/reader`,
 				body: JSON.stringify({ password: "newp4ss", is_admin: true }),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -728,7 +728,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "PATCH",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/reader`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/reader`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -760,7 +760,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/reader`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/deployments/${DEPLOYMENT_ID}/users/reader`,
 				body: JSON.stringify({}),
 				headers: { "Content-Type": "application/json" },
 			});
@@ -799,7 +799,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "datawarehouse/v1beta1/regions/fr-par/endpoints",
+				path: "/datawarehouse/v1beta1/regions/fr-par/endpoints",
 				body: JSON.stringify({
 					deployment_id: DEPLOYMENT_ID,
 					endpoint: { private_network: { private_network_id: PN_ID } },
@@ -818,7 +818,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
-				path: "datawarehouse/v1beta1/regions/fr-par/endpoints",
+				path: "/datawarehouse/v1beta1/regions/fr-par/endpoints",
 				body: JSON.stringify({
 					deployment_id: DEPLOYMENT_ID,
 					endpoint: { public: {} },
@@ -852,7 +852,7 @@ describe("data-warehouse handlers", () => {
 
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "DELETE",
-				path: `datawarehouse/v1beta1/regions/fr-par/endpoints/${ENDPOINT_ID}`,
+				path: `/datawarehouse/v1beta1/regions/fr-par/endpoints/${ENDPOINT_ID}`,
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.deleted).toBe(true);
@@ -888,7 +888,7 @@ describe("data-warehouse handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "datawarehouse/v1beta1/regions/fr-par/presets",
+					path: "/datawarehouse/v1beta1/regions/fr-par/presets",
 				}),
 			);
 			expect(JSON.parse(result.content[0].text).items[0].name).toBe("small");
@@ -920,7 +920,7 @@ describe("data-warehouse handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
 					method: "GET",
-					path: "datawarehouse/v1beta1/regions/fr-par/versions",
+					path: "/datawarehouse/v1beta1/regions/fr-par/versions",
 				}),
 			);
 			expect(JSON.parse(result.content[0].text).items[0].version).toBe("24.8");

@@ -516,7 +516,7 @@ describe("secret-manager handlers", () => {
 			expect(data.page).toBe(1);
 			expect(data.pageSize).toBe(50);
 			expect(mockApi.listSecrets).toHaveBeenCalledWith(
-				expect.objectContaining({ page: 1, page_size: 50, scheduledForDeletion: false }),
+				expect.objectContaining({ page: 1, pageSize: 50, scheduledForDeletion: false }),
 			);
 		});
 
@@ -544,6 +544,17 @@ describe("secret-manager handlers", () => {
 					ephemeral: true,
 				}),
 			);
+		});
+
+		it("forwards a non-default page size as camelCase pageSize (SDK contract)", async () => {
+			mockApi.listSecrets.mockResolvedValue({ secrets: [], totalCount: 0 });
+
+			await handleListSecrets({ page: 2, pageSize: 9 });
+
+			const request = mockApi.listSecrets.mock.lastCall?.[0] as Record<string, unknown>;
+			expect(request.page).toBe(2);
+			expect(request.pageSize).toBe(9);
+			expect(request).not.toHaveProperty("page_size");
 		});
 
 		it("returns error response on API failure", async () => {
@@ -714,6 +725,18 @@ describe("secret-manager handlers", () => {
 			expect(mockApi.listSecretVersions).toHaveBeenCalledWith(
 				expect.objectContaining({ status: ["enabled"] }),
 			);
+		});
+
+		it("forwards page and pageSize as camelCase to the SDK", async () => {
+			mockApi.listSecretVersions.mockResolvedValue({ versions: [], totalCount: 0 });
+
+			await handleListSecretVersions({ secretId: SECRET_ID, page: 4, pageSize: 3 });
+
+			const request = mockApi.listSecretVersions.mock.lastCall?.[0] as Record<string, unknown>;
+			expect(request.secretId).toBe(SECRET_ID);
+			expect(request.page).toBe(4);
+			expect(request.pageSize).toBe(3);
+			expect(request).not.toHaveProperty("page_size");
 		});
 
 		it("returns error on failure", async () => {
@@ -959,6 +982,17 @@ describe("secret-manager handlers", () => {
 			expect(mockApi.listTags).toHaveBeenCalledWith(
 				expect.objectContaining({ region: "fr-par", projectId: PROJECT_ID }),
 			);
+		});
+
+		it("forwards page and pageSize as camelCase to the SDK", async () => {
+			mockApi.listTags.mockResolvedValue({ tags: [], totalCount: 0 });
+
+			await handleListTags({ page: 5, pageSize: 11 });
+
+			const request = mockApi.listTags.mock.lastCall?.[0] as Record<string, unknown>;
+			expect(request.page).toBe(5);
+			expect(request.pageSize).toBe(11);
+			expect(request).not.toHaveProperty("page_size");
 		});
 
 		it("returns error on failure", async () => {

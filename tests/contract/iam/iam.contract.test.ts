@@ -6,8 +6,10 @@
  *
  * API base: https://api.scaleway.com/iam/v1alpha1
  */
+import { type Client, createAdvancedClient, withProfile } from "@scaleway/sdk-client";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
+import * as httpHandlers from "../../../src/tools/iam/handlers.js";
 import {
 	AddGroupMemberInput,
 	CreateApiKeyInput,
@@ -515,4 +517,299 @@ describe("contract: pagination bounds", () => {
 	it("rejects page_size below 1", () => {
 		expect(() => ListGroupsInput.parse({ page_size: 0 })).toThrow();
 	});
+});
+
+// Exercise the installed SDK's Request construction, JSON parsing, and real HTTP errors.
+// Only the HTTP transport is replaced: no environment credentials or network calls.
+describe("SDK HTTP request contracts", () => {
+	function recordingClient(
+		response: unknown = { id: "http-response", status: "ready" },
+		status = 200,
+	) {
+		const requests: Request[] = [];
+		const client = createAdvancedClient(
+			withProfile({
+				accessKey: "SCWXXXXXXXXXXXXXXXXX",
+				secretKey: "00000000-0000-0000-0000-000000000000",
+			}),
+			(settings) => ({
+				...settings,
+				apiURL: "https://scaleway.invalid",
+				httpClient: (async (input: RequestInfo | URL, init?: RequestInit) => {
+					requests.push(new Request(input, init));
+					return new Response(status === 204 ? null : JSON.stringify(response), {
+						status,
+						headers: { "Content-Type": "application/json" },
+					});
+				}) as typeof fetch,
+			}),
+		);
+		return { client, requests };
+	}
+
+	const jsonCases = [
+		{
+			name: "CreateUser",
+			method: "POST",
+			path: "/iam/v1alpha1/users",
+			call: (client: Client) =>
+				httpHandlers.handleCreateUser(client, {
+					organization_id: "11111111-1111-1111-1111-111111111111",
+					email: "user@example.test",
+				}),
+			body: { organization_id: "11111111-1111-1111-1111-111111111111", email: "user@example.test" },
+		},
+		{
+			name: "UpdateUser",
+			method: "PATCH",
+			path: "/iam/v1alpha1/users/11111111-1111-1111-1111-111111111111",
+			call: (client: Client) =>
+				httpHandlers.handleUpdateUser(client, { user_id: "11111111-1111-1111-1111-111111111111" }),
+			body: {},
+		},
+		{
+			name: "CreateApplication",
+			method: "POST",
+			path: "/iam/v1alpha1/applications",
+			call: (client: Client) =>
+				httpHandlers.handleCreateApplication(client, {
+					organization_id: "11111111-1111-1111-1111-111111111111",
+					name: "test",
+					description: "",
+				}),
+			body: {
+				organization_id: "11111111-1111-1111-1111-111111111111",
+				name: "test",
+				description: "",
+			},
+		},
+		{
+			name: "UpdateApplication",
+			method: "PATCH",
+			path: "/iam/v1alpha1/applications/11111111-1111-1111-1111-111111111111",
+			call: (client: Client) =>
+				httpHandlers.handleUpdateApplication(client, {
+					application_id: "11111111-1111-1111-1111-111111111111",
+					description: "",
+				}),
+			body: { description: "" },
+		},
+		{
+			name: "CreateApiKey",
+			method: "POST",
+			path: "/iam/v1alpha1/api-keys",
+			call: (client: Client) =>
+				httpHandlers.handleCreateApiKey(client, {
+					application_id: "11111111-1111-1111-1111-111111111111",
+					description: "test",
+				}),
+			body: { application_id: "11111111-1111-1111-1111-111111111111", description: "test" },
+		},
+		{
+			name: "UpdateApiKey",
+			method: "PATCH",
+			path: "/iam/v1alpha1/api-keys/SCWTESTONLY",
+			call: (client: Client) =>
+				httpHandlers.handleUpdateApiKey(client, { access_key: "SCWTESTONLY", description: "" }),
+			body: { description: "" },
+		},
+		{
+			name: "CreatePolicy",
+			method: "POST",
+			path: "/iam/v1alpha1/policies",
+			call: (client: Client) =>
+				httpHandlers.handleCreatePolicy(client, {
+					organization_id: "11111111-1111-1111-1111-111111111111",
+					name: "test",
+					description: "",
+					application_id: "11111111-1111-1111-1111-111111111111",
+					rules: [],
+				}),
+			body: {
+				organization_id: "11111111-1111-1111-1111-111111111111",
+				name: "test",
+				description: "",
+				application_id: "11111111-1111-1111-1111-111111111111",
+				rules: [],
+			},
+		},
+		{
+			name: "UpdatePolicy",
+			method: "PATCH",
+			path: "/iam/v1alpha1/policies/11111111-1111-1111-1111-111111111111",
+			call: (client: Client) =>
+				httpHandlers.handleUpdatePolicy(client, {
+					policy_id: "11111111-1111-1111-1111-111111111111",
+					user_id: null,
+					group_id: null,
+					application_id: "11111111-1111-1111-1111-111111111111",
+				}),
+			body: {
+				user_id: null,
+				group_id: null,
+				application_id: "11111111-1111-1111-1111-111111111111",
+			},
+		},
+		{
+			name: "CreateGroup",
+			method: "POST",
+			path: "/iam/v1alpha1/groups",
+			call: (client: Client) =>
+				httpHandlers.handleCreateGroup(client, {
+					organization_id: "11111111-1111-1111-1111-111111111111",
+					name: "test",
+					description: "",
+				}),
+			body: {
+				organization_id: "11111111-1111-1111-1111-111111111111",
+				name: "test",
+				description: "",
+			},
+		},
+		{
+			name: "UpdateGroup",
+			method: "PATCH",
+			path: "/iam/v1alpha1/groups/11111111-1111-1111-1111-111111111111",
+			call: (client: Client) =>
+				httpHandlers.handleUpdateGroup(client, {
+					group_id: "11111111-1111-1111-1111-111111111111",
+					description: "",
+				}),
+			body: { description: "" },
+		},
+		{
+			name: "AddGroupMember",
+			method: "POST",
+			path: "/iam/v1alpha1/groups/11111111-1111-1111-1111-111111111111/add-member",
+			call: (client: Client) =>
+				httpHandlers.handleAddGroupMember(client, {
+					group_id: "11111111-1111-1111-1111-111111111111",
+					user_id: "11111111-1111-1111-1111-111111111111",
+				}),
+			body: { user_id: "11111111-1111-1111-1111-111111111111" },
+		},
+		{
+			name: "RemoveGroupMember",
+			method: "POST",
+			path: "/iam/v1alpha1/groups/11111111-1111-1111-1111-111111111111/remove-member",
+			call: (client: Client) =>
+				httpHandlers.handleRemoveGroupMember(client, {
+					group_id: "11111111-1111-1111-1111-111111111111",
+					application_id: "11111111-1111-1111-1111-111111111111",
+				}),
+			body: { application_id: "11111111-1111-1111-1111-111111111111" },
+		},
+	];
+
+	it.each(jsonCases)(
+		"$name: $method $path sends application/json",
+		async ({ call, method, path, body }) => {
+			const response = { id: "http-response", status: "ready" };
+			const { client, requests } = recordingClient(response);
+			const result = await call(client);
+			expect(requests).toHaveLength(1);
+			const [request] = requests;
+			expect(request.url).toBe(`https://scaleway.invalid${path}`);
+			expect(request.method).toBe(method);
+			expect(request.headers.get("Content-Type")).toBe("application/json");
+			expect(request.headers.get("Accept")).toBe("application/json");
+			expect(request.headers.get("X-Auth-Token")).toBe("00000000-0000-0000-0000-000000000000");
+			expect(JSON.parse(await request.text())).toEqual(body);
+			expect(result).toEqual({
+				content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+			});
+		},
+	);
+
+	it.each([
+		[400, "invalid_input"],
+		[401, "permission_denied"],
+		[403, "permission_denied"],
+		[404, "not_found"],
+		[429, "rate_limited"],
+		[500, "server_error"],
+	] as const)("maps SDK HTTP %i errors to %s", async (status, type) => {
+		const { client, requests } = recordingClient({ message: "HTTP contract error" }, status);
+		const result = await jsonCases[0].call(client);
+		expect(requests).toHaveLength(1);
+		expect(result).toMatchObject({ isError: true });
+		expect(JSON.parse(result.content[0].text)).toMatchObject({
+			error: { type, statusCode: status },
+		});
+	});
+
+	// API: GET /iam/v1alpha1/rules then PUT /iam/v1alpha1/rules (SetRules).
+	// The three rule tools share the one JSON writer; preserve the other rule's scope.
+	it.each(["create", "update", "delete"] as const)(
+		"%s rule sends JSON through the SDK SetRules request",
+		async (operation) => {
+			const preserved = {
+				permission_set_names: ["InstanceReadOnly"],
+				project_ids: [VALID_UUID],
+				condition: "",
+			};
+			const target = {
+				permission_set_names: ["VPCReadOnly"],
+				organization_id: VALID_UUID,
+				condition: "",
+			};
+			const response = {
+				rules: [
+					{ id: "preserved", ...preserved },
+					{ id: "target", ...target },
+				],
+				total_count: 2,
+			};
+			const { client, requests } = recordingClient(response);
+			const result =
+				operation === "create"
+					? await httpHandlers.handleCreateRule(client, {
+							policy_id: VALID_UUID,
+							permission_set_names: ["InstanceFullAccess"],
+							project_ids: [],
+						})
+					: operation === "update"
+						? await httpHandlers.handleUpdateRule(client, {
+								policy_id: VALID_UUID,
+								rule_id: "target",
+								permission_set_names: ["InstanceFullAccess"],
+								project_ids: [],
+							})
+						: await httpHandlers.handleDeleteRule(client, {
+								policy_id: VALID_UUID,
+								rule_id: "target",
+							});
+			expect(requests).toHaveLength(2);
+			const [get, put] = requests;
+			expect(get.method).toBe("GET");
+			const url = new URL(get.url);
+			expect(url.origin + url.pathname).toBe("https://scaleway.invalid/iam/v1alpha1/rules");
+			expect(Object.fromEntries(url.searchParams)).toEqual({
+				policy_id: VALID_UUID,
+				page: "1",
+				page_size: "100",
+			});
+			expect(get.body).toBeNull();
+			expect(put.method).toBe("PUT");
+			expect(put.url).toBe("https://scaleway.invalid/iam/v1alpha1/rules");
+			expect(put.headers.get("Content-Type")).toBe("application/json");
+			expect(put.headers.get("Accept")).toBe("application/json");
+			expect(put.headers.get("X-Auth-Token")).toBe("00000000-0000-0000-0000-000000000000");
+			const changed = {
+				permission_set_names: ["InstanceFullAccess"],
+				project_ids: [],
+				condition: "",
+			};
+			const rules =
+				operation === "create"
+					? [preserved, target, changed]
+					: operation === "update"
+						? [preserved, changed]
+						: [preserved];
+			expect(JSON.parse(await put.text())).toEqual({ policy_id: VALID_UUID, rules });
+			expect(JSON.parse(result.content[0].text)).toEqual(
+				operation === "delete" ? { message: "Rule deleted successfully" } : response,
+			);
+		},
+	);
 });

@@ -712,12 +712,21 @@ describe("edge-services handlers", () => {
 			});
 			expect(mockListPipelines).toHaveBeenCalledWith({
 				page: 2,
-				page_size: 10,
+				pageSize: 10,
 				name: "test",
 				projectId: "proj-123",
 				organizationId: "org-123",
 				orderBy: "name_asc",
 			});
+		});
+
+		it("forwards a non-default page size as camelCase pageSize (SDK contract)", async () => {
+			mockListPipelines.mockResolvedValue({ pipelines: [], totalCount: 0 });
+			await handleListPipelines({ page: 3, pageSize: 7 });
+			const request = mockListPipelines.mock.lastCall?.[0] as Record<string, unknown>;
+			expect(request.page).toBe(3);
+			expect(request.pageSize).toBe(7);
+			expect(request).not.toHaveProperty("page_size");
 		});
 
 		it("returns error response on failure", async () => {
@@ -853,6 +862,16 @@ describe("edge-services handlers", () => {
 			);
 		});
 
+		it("forwards page and pageSize as camelCase to the SDK", async () => {
+			mockListDNSStages.mockResolvedValue({ stages: [], totalCount: 0 });
+			await handleListDNSStages({ pipelineId: "pipe-1", page: 2, pageSize: 5 });
+			const request = mockListDNSStages.mock.lastCall?.[0] as Record<string, unknown>;
+			expect(request.pipelineId).toBe("pipe-1");
+			expect(request.page).toBe(2);
+			expect(request.pageSize).toBe(5);
+			expect(request).not.toHaveProperty("page_size");
+		});
+
 		it("returns error on failure", async () => {
 			mockListDNSStages.mockRejectedValue(new Error("fail"));
 			const result = await handleListDNSStages({
@@ -970,6 +989,16 @@ describe("edge-services handlers", () => {
 			);
 		});
 
+		it("forwards page and pageSize as camelCase to the SDK", async () => {
+			mockListTLSStages.mockResolvedValue({ stages: [], totalCount: 0 });
+			await handleListTLSStages({ pipelineId: "pipe-1", page: 2, pageSize: 6 });
+			const request = mockListTLSStages.mock.lastCall?.[0] as Record<string, unknown>;
+			expect(request.pipelineId).toBe("pipe-1");
+			expect(request.page).toBe(2);
+			expect(request.pageSize).toBe(6);
+			expect(request).not.toHaveProperty("page_size");
+		});
+
 		it("returns error on failure", async () => {
 			mockListTLSStages.mockRejectedValue(new Error("fail"));
 			const result = await handleListTLSStages({
@@ -1079,6 +1108,22 @@ describe("edge-services handlers", () => {
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.items).toHaveLength(1);
+		});
+
+		it("forwards page and pageSize as camelCase to the SDK", async () => {
+			mockListCacheStages.mockResolvedValue({ stages: [], totalCount: 0 });
+			await handleListCacheStages({
+				pipelineId: "pipe-1",
+				page: 4,
+				pageSize: 8,
+				orderBy: "created_at_asc" as const,
+			});
+			const request = mockListCacheStages.mock.lastCall?.[0] as Record<string, unknown>;
+			expect(request.pipelineId).toBe("pipe-1");
+			expect(request.orderBy).toBe("created_at_asc");
+			expect(request.page).toBe(4);
+			expect(request.pageSize).toBe(8);
+			expect(request).not.toHaveProperty("page_size");
 		});
 
 		it("returns error on failure", async () => {
@@ -1194,6 +1239,16 @@ describe("edge-services handlers", () => {
 					lbId: "lb-123",
 				}),
 			);
+		});
+
+		it("forwards page and pageSize as camelCase to the SDK", async () => {
+			mockListBackendStages.mockResolvedValue({ stages: [], totalCount: 0 });
+			await handleListBackendStages({ pipelineId: "pipe-1", page: 2, pageSize: 4 });
+			const request = mockListBackendStages.mock.lastCall?.[0] as Record<string, unknown>;
+			expect(request.pipelineId).toBe("pipe-1");
+			expect(request.page).toBe(2);
+			expect(request.pageSize).toBe(4);
+			expect(request).not.toHaveProperty("page_size");
 		});
 
 		it("returns error on failure", async () => {
@@ -1367,6 +1422,15 @@ describe("edge-services handlers", () => {
 					orderBy: "created_at_desc",
 				}),
 			);
+		});
+
+		it("forwards page and pageSize as camelCase to the SDK", async () => {
+			mockListPurgeRequests.mockResolvedValue({ purgeRequests: [], totalCount: 0 });
+			await handleListPurgeRequests({ page: 6, pageSize: 12 });
+			const request = mockListPurgeRequests.mock.lastCall?.[0] as Record<string, unknown>;
+			expect(request.page).toBe(6);
+			expect(request.pageSize).toBe(12);
+			expect(request).not.toHaveProperty("page_size");
 		});
 
 		it("returns error on failure", async () => {

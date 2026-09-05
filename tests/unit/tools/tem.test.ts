@@ -106,7 +106,7 @@ describe("tem handlers", () => {
 			});
 			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("GET");
-			expect(call.path).toBe("transactional-email/v1alpha1/regions/nl-ams/domains");
+			expect(call.path).toBe("/transactional-email/v1alpha1/regions/nl-ams/domains");
 			expect(call.urlParams.get("page")).toBe("2");
 			expect(call.urlParams.get("page_size")).toBe("10");
 			expect(call.urlParams.get("project_id")).toBe("proj-1");
@@ -139,7 +139,7 @@ describe("tem handlers", () => {
 			await handleGetDomain({ domain_id: "dom-1", region: "nl-ams" });
 			expect(mockFetch).toHaveBeenCalledWith(
 				expect.objectContaining({
-					path: "transactional-email/v1alpha1/regions/nl-ams/domains/dom-1",
+					path: "/transactional-email/v1alpha1/regions/nl-ams/domains/dom-1",
 				}),
 			);
 		});
@@ -275,7 +275,7 @@ describe("tem handlers", () => {
 				pageSize: 25,
 			});
 			const call = mockFetch.mock.calls[0][0];
-			expect(call.path).toBe("transactional-email/v1alpha1/regions/nl-ams/emails");
+			expect(call.path).toBe("/transactional-email/v1alpha1/regions/nl-ams/emails");
 			expect(call.urlParams.get("page")).toBe("3");
 			expect(call.urlParams.get("page_size")).toBe("25");
 			expect(call.urlParams.get("project_id")).toBe("proj-1");
@@ -400,7 +400,7 @@ describe("tem handlers", () => {
 				mail_from: "a@b.com",
 			});
 			const call = mockFetch.mock.calls[0][0];
-			expect(call.path).toBe("transactional-email/v1alpha1/regions/nl-ams/statistics");
+			expect(call.path).toBe("/transactional-email/v1alpha1/regions/nl-ams/statistics");
 			expect(call.urlParams.get("project_id")).toBe("proj-1");
 			expect(call.urlParams.get("domain_id")).toBe("dom-1");
 			expect(call.urlParams.get("since")).toBe("2025-01-01T00:00:00Z");

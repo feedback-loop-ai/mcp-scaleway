@@ -23,7 +23,7 @@ import type {
 	UpdateServerParams,
 } from "./types.js";
 
-const DEDIBOX_API_PREFIX = "dedibox/v1/zones";
+const DEDIBOX_API_PREFIX = "/dedibox/v1/zones";
 
 function getClient() {
 	const config = loadAuthConfig();

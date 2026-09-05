@@ -6,7 +6,11 @@
  *
  * API base: https://api.scaleway.com/domain/v2beta1
  */
-import { describe, expect, it } from "vitest";
+import { createAdvancedClient, withProfile } from "@scaleway/sdk-client";
+import { createScalewayClient } from "../../../src/shared/client.js";
+import * as httpHandlers from "../../../src/tools/dns/handlers.js";
+
+import { describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 import {
 	ClearDnsRecordsParams,
@@ -31,6 +35,11 @@ import {
 	UpdateDnsZoneParams,
 	UpdateNameserversParams,
 } from "../../../src/tools/dns/types.js";
+
+vi.mock("../../../src/shared/auth.js", () => ({
+	loadAuthConfig: vi.fn(() => ({ defaultRegion: "fr-par" })),
+}));
+vi.mock("../../../src/shared/client.js", () => ({ createScalewayClient: vi.fn() }));
 
 // --- Shared fixtures ---
 
@@ -526,5 +535,178 @@ describe("contract: pagination", () => {
 
 	it("rejects page 0", () => {
 		expect(() => ListDnsZonesParams.parse({ page: 0 })).toThrow();
+	});
+});
+
+// Exercise the installed SDK's Request construction, JSON parsing, and real HTTP errors.
+// Only the HTTP transport is replaced: no environment credentials or network calls.
+describe("SDK HTTP request contracts", () => {
+	function recordingClient(
+		response: unknown = { id: "http-response", status: "ready" },
+		status = 200,
+	) {
+		const requests: Request[] = [];
+		const client = createAdvancedClient(
+			withProfile({
+				accessKey: "SCWXXXXXXXXXXXXXXXXX",
+				secretKey: "00000000-0000-0000-0000-000000000000",
+			}),
+			(settings) => ({
+				...settings,
+				apiURL: "https://scaleway.invalid",
+				httpClient: (async (input: RequestInfo | URL, init?: RequestInit) => {
+					requests.push(new Request(input, init));
+					return new Response(status === 204 ? null : JSON.stringify(response), {
+						status,
+						headers: { "Content-Type": "application/json" },
+					});
+				}) as typeof fetch,
+			}),
+		);
+		vi.mocked(createScalewayClient).mockReturnValue(client);
+		return { client, requests };
+	}
+
+	const jsonCases = [
+		{
+			name: "CreateDnsZone",
+			method: "POST",
+			path: "/domain/v2beta1/dns-zones",
+			call: () =>
+				httpHandlers.handleCreateDnsZone({
+					domain: "example.test",
+					subdomain: "",
+					project_id: "11111111-1111-1111-1111-111111111111",
+				}),
+			body: {
+				domain: "example.test",
+				subdomain: "",
+				project_id: "11111111-1111-1111-1111-111111111111",
+			},
+		},
+		{
+			name: "UpdateDnsZone",
+			method: "PATCH",
+			path: "/domain/v2beta1/dns-zones/example.test",
+			call: () =>
+				httpHandlers.handleUpdateDnsZone({
+					dns_zone: "example.test",
+					new_dns_zone: "sub.example.test",
+				}),
+			body: { new_dns_zone: "sub.example.test" },
+		},
+		{
+			name: "CloneDnsZone",
+			method: "POST",
+			path: "/domain/v2beta1/dns-zones/example.test/clone",
+			call: () =>
+				httpHandlers.handleCloneDnsZone({
+					dns_zone: "example.test",
+					dest_dns_zone: "copy.test",
+					overwrite: false,
+				}),
+			body: { dest_dns_zone: "copy.test", overwrite: false },
+		},
+		{
+			name: "RefreshDnsZone",
+			method: "POST",
+			path: "/domain/v2beta1/dns-zones/example.test/refresh",
+			call: () =>
+				httpHandlers.handleRefreshDnsZone({
+					dns_zone: "example.test",
+					recreate_dns_zone: false,
+					recreate_sub_dns_zone: false,
+				}),
+			body: { recreate_dns_zone: false, recreate_sub_dns_zone: false },
+		},
+		{
+			name: "UpdateDnsRecords",
+			method: "PATCH",
+			path: "/domain/v2beta1/dns-zones/example.test/records",
+			call: () =>
+				httpHandlers.handleUpdateDnsRecords({
+					dns_zone: "example.test",
+					changes: [{ clear: {} }],
+					disallow_new_zone_creation: true,
+					return_all_records: false,
+					serial: 0,
+				}),
+			body: {
+				changes: [{ clear: {} }],
+				disallow_new_zone_creation: true,
+				return_all_records: false,
+				serial: 0,
+			},
+		},
+		{
+			name: "ImportRawDnsZone",
+			method: "POST",
+			path: "/domain/v2beta1/dns-zones/example.test/raw",
+			call: () =>
+				httpHandlers.handleImportRawDnsZone({
+					dns_zone: "example.test",
+					content: "@ 3600 IN A 192.0.2.1",
+				}),
+			body: { bind_source: { content: "@ 3600 IN A 192.0.2.1" } },
+		},
+		{
+			name: "UpdateNameservers",
+			method: "PUT",
+			path: "/domain/v2beta1/dns-zones/example.test/nameservers",
+			call: () =>
+				httpHandlers.handleUpdateNameservers({
+					dns_zone: "example.test",
+					ns: [{ name: "ns.example.test", ip: ["192.0.2.1"] }],
+				}),
+			body: { ns: [{ name: "ns.example.test", ip: ["192.0.2.1"] }] },
+		},
+		{
+			name: "CreateSslCertificate",
+			method: "POST",
+			path: "/domain/v2beta1/ssl-certificates",
+			call: () =>
+				httpHandlers.handleCreateSslCertificate({
+					dns_zone: "example.test",
+					alternative_dns_zones: [],
+				}),
+			body: { dns_zone: "example.test", alternative_dns_zones: [] },
+		},
+	];
+
+	it.each(jsonCases)(
+		"$name: $method $path sends application/json",
+		async ({ call, method, path, body }) => {
+			const response = { id: "http-response", status: "ready" };
+			const { requests } = recordingClient(response);
+			const result = await call();
+			expect(requests).toHaveLength(1);
+			const [request] = requests;
+			expect(request.url).toBe(`https://scaleway.invalid${path}`);
+			expect(request.method).toBe(method);
+			expect(request.headers.get("Content-Type")).toBe("application/json");
+			expect(request.headers.get("Accept")).toBe("application/json");
+			expect(request.headers.get("X-Auth-Token")).toBe("00000000-0000-0000-0000-000000000000");
+			expect(JSON.parse(await request.text())).toEqual(body);
+			expect(result).toEqual({
+				content: [{ type: "text", text: JSON.stringify(response, null, 2) }],
+			});
+		},
+	);
+
+	it.each([
+		[400, "invalid_input"],
+		[401, "permission_denied"],
+		[403, "permission_denied"],
+		[404, "not_found"],
+		[429, "rate_limited"],
+		[500, "server_error"],
+	] as const)("maps SDK HTTP %i errors to %s", async (status, type) => {
+		const { requests } = recordingClient({ message: "HTTP contract error" }, status);
+		const result = await jsonCases[0].call();
+		expect(requests).toHaveLength(1);
+		expect(result).toMatchObject({ isError: true });
+		expect(JSON.parse(result.content[0].text)).toMatchObject({
+			error: { type, statusCode: status },
+		});
 	});
 });
