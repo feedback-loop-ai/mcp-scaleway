@@ -1,5 +1,6 @@
 import { loadAuthConfig } from "../../shared/auth.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
+import { guardedFetch } from "../../shared/route-guard.js";
 import {
 	type ChatCompletionInput,
 	type ChatCompletionResponse,
@@ -27,7 +28,7 @@ function buildBaseUrl(region: string): string {
 export async function handleListModels(input: ListModelsInput) {
 	try {
 		const baseUrl = buildBaseUrl(input.region);
-		const response = await fetch(`${baseUrl}/v1/models`, {
+		const response = await guardedFetch(`${baseUrl}/v1/models`, {
 			method: "GET",
 			headers: buildHeaders(),
 		});
@@ -51,7 +52,7 @@ export async function handleListModels(input: ListModelsInput) {
 export async function handleGetModel(input: GetModelInput) {
 	try {
 		const baseUrl = buildBaseUrl(input.region);
-		const response = await fetch(`${baseUrl}/v1/models`, {
+		const response = await guardedFetch(`${baseUrl}/v1/models`, {
 			method: "GET",
 			headers: buildHeaders(),
 		});
@@ -92,7 +93,7 @@ export async function handleChatCompletion(input: ChatCompletionInput) {
 			stream: false,
 		};
 
-		const response = await fetch(`${baseUrl}/v1/chat/completions`, {
+		const response = await guardedFetch(`${baseUrl}/v1/chat/completions`, {
 			method: "POST",
 			headers: buildHeaders(),
 			body: JSON.stringify(body),
@@ -122,7 +123,7 @@ export async function handleCreateEmbedding(input: CreateEmbeddingInput) {
 			input: input.input,
 		};
 
-		const response = await fetch(`${baseUrl}/v1/embeddings`, {
+		const response = await guardedFetch(`${baseUrl}/v1/embeddings`, {
 			method: "POST",
 			headers: buildHeaders(),
 			body: JSON.stringify(body),

@@ -1,6 +1,7 @@
 import { loadAuthConfig } from "../../shared/auth.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
 import { buildPaginatedResponse, paginationToQuery } from "../../shared/pagination.js";
+import { guardedFetch } from "../../shared/route-guard.js";
 import type {
 	CreateDeviceParams,
 	CreateHubParams,
@@ -55,7 +56,7 @@ async function scalewayFetch(method: string, url: string, body?: unknown): Promi
 		"X-Auth-Token": config.secretKey,
 	};
 
-	const response = await fetch(url, {
+	const response = await guardedFetch(url, {
 		method,
 		headers,
 		body: body ? JSON.stringify(body) : undefined,
