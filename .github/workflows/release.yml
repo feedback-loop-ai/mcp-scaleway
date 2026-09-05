@@ -153,7 +153,7 @@ jobs:
             echo "Release ${{ steps.version.outputs.tag }} already exists, skipping"
             exit 0
           fi
-          FLAGS="--generate-notes"
+          FLAGS="--generate-notes --notes-file CHANGELOG.md"
           if [ "${{ steps.version.outputs.prerelease }}" = "true" ]; then
             FLAGS="$FLAGS --prerelease"
           fi

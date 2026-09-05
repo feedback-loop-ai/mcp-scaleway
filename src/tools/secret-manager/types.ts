@@ -114,10 +114,15 @@ export const ListSecretVersionsInput = PaginationParams.extend({
 	status: z.array(SecretVersionStatus).optional().describe("Filter by version status"),
 });
 
+const SecretRevision = z
+	.string()
+	.regex(/^(?:[0-9]+|latest|latest_enabled)$/, "Use a decimal revision, latest or latest_enabled")
+	.describe("Revision number, latest, or latest_enabled");
+
 export const GetSecretVersionInput = z.object({
 	region: ScalewayRegion.optional().describe("Region to target (e.g. fr-par)"),
 	secretId: z.string().uuid().describe("ID of the secret"),
-	revision: z.string().describe("Revision number, 'latest', or 'latest_enabled'"),
+	revision: SecretRevision,
 });
 
 export const CreateSecretVersionInput = z.object({
@@ -132,25 +137,25 @@ export const CreateSecretVersionInput = z.object({
 export const AccessSecretVersionInput = z.object({
 	region: ScalewayRegion.optional().describe("Region to target (e.g. fr-par)"),
 	secretId: z.string().uuid().describe("ID of the secret"),
-	revision: z.string().describe("Revision number, 'latest', or 'latest_enabled'"),
+	revision: SecretRevision,
 });
 
 export const DisableSecretVersionInput = z.object({
 	region: ScalewayRegion.optional().describe("Region to target (e.g. fr-par)"),
 	secretId: z.string().uuid().describe("ID of the secret"),
-	revision: z.string().describe("Revision number, 'latest', or 'latest_enabled'"),
+	revision: SecretRevision,
 });
 
 export const EnableSecretVersionInput = z.object({
 	region: ScalewayRegion.optional().describe("Region to target (e.g. fr-par)"),
 	secretId: z.string().uuid().describe("ID of the secret"),
-	revision: z.string().describe("Revision number, 'latest', or 'latest_enabled'"),
+	revision: SecretRevision,
 });
 
 export const DestroySecretVersionInput = z.object({
 	region: ScalewayRegion.optional().describe("Region to target (e.g. fr-par)"),
 	secretId: z.string().uuid().describe("ID of the secret"),
-	revision: z.string().describe("Revision number, 'latest', or 'latest_enabled'"),
+	revision: SecretRevision,
 });
 
 export const ProtectSecretInput = z.object({

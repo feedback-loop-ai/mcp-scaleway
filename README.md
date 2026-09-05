@@ -19,7 +19,7 @@ An MCP (Model Context Protocol) server that gives AI assistants like Claude full
   - [Claude Code](#claude-code)
   - [Other MCP Clients](#other-mcp-clients)
 - [Usage Examples](#usage-examples)
-- [Tool Reference](#tool-reference)
+- [Operation Reference](#operation-reference)
   - [Compute](#compute)
   - [Storage & Databases](#storage--databases)
   - [Networking](#networking)
@@ -28,7 +28,7 @@ An MCP (Model Context Protocol) server that gives AI assistants like Claude full
   - [Security & Identity](#security--identity)
   - [Managed Services](#managed-services)
   - [Account & Billing](#account--billing)
-- [Managing Tool Access](#managing-tool-access)
+- [Compact discovery and tool access](#compact-discovery-and-tool-access)
 - [Development](#development)
 - [Architecture](#architecture)
 - [Troubleshooting](#troubleshooting)
@@ -38,12 +38,12 @@ An MCP (Model Context Protocol) server that gives AI assistants like Claude full
 
 ## Overview
 
-**mcp-scaleway** is a stateless MCP server that acts as a bridge between AI assistants and the [Scaleway](https://www.scaleway.com) cloud platform. It exposes 724 tools across 50 Scaleway services, enabling AI agents to provision infrastructure, manage databases, deploy applications, and operate cloud resources on your behalf.
+**mcp-scaleway** is a stateless MCP server that acts as a bridge between AI assistants and the [Scaleway](https://www.scaleway.com) cloud platform. It exposes four discovery/execution tools with access to 724 operations across 50 Scaleway services, enabling AI agents to provision infrastructure, manage databases, deploy applications, and operate cloud resources on your behalf.
 
 **Why use this?**
 
 - **Natural language cloud management** - Ask your AI assistant to "create a Kubernetes cluster with 3 nodes" instead of writing API calls
-- **Full Scaleway coverage** - 50 services, 724 operations, from compute to AI to networking
+- **Compact default discovery** - four tools exposing 724 supported operations across 50 services; legacy flat mode remains available
 - **Zero state** - Pure proxy to Scaleway APIs; no data stored, no side effects beyond what you request
 - **Type-safe** - Every input validated with Zod schemas before reaching Scaleway
 
@@ -80,7 +80,7 @@ Then configure your MCP client (see [Configuration](#configuration) below).
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org) 18+ (or [Bun](https://bun.sh) 1.x)
+- [Node.js](https://nodejs.org) 20.20.2+ (or [Bun](https://bun.sh) 1.x)
 - A [Scaleway account](https://console.scaleway.com) with API credentials
 
 ### Via npx (no install needed)
@@ -243,7 +243,10 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 
 > "List all IAM users and show which groups they belong to"
 
-## Tool Reference
+## Operation Reference
+
+The tables below show legacy flat-mode names. In gateway mode use the same name without
+`scaleway_` as the operation ID passed to `scaleway_describe`, `scaleway_read` or `scaleway_call`.
 
 ### Compute
 
@@ -1385,44 +1388,68 @@ Once configured, you can ask your AI assistant to manage Scaleway resources usin
 
 </details>
 
-## Managing Tool Access
+## Compact discovery and tool access
 
-With 724 tools available, you may want to limit which tools are exposed to your AI assistant for focused sessions.
+By default, the server advertises four tools instead of the whole operation catalog:
 
-### Claude Code
+| Tool | Purpose |
+| --- | --- |
+| `scaleway_search` | Find allowed operations by product, resource and action; page using `nextOffset`. |
+| `scaleway_describe` | Retrieve exact input schemas for up to ten operation IDs. |
+| `scaleway_read` | Execute a permitted read operation. Sensitive data and IAM permissions still apply. |
+| `scaleway_call` | Execute any allowed operation, including destructive mutations. |
 
-Use the `allowedTools` field in your `.mcp.json` to filter tools by pattern:
+Operation IDs are the legacy tool name without its `scaleway_` prefix. For example:
 
 ```json
-{
-  "mcpServers": {
-    "scaleway": {
-      "command": "npx",
-      "args": ["mcp-scaleway"],
-      "env": {
-        "SCW_ACCESS_KEY": "...",
-        "SCW_SECRET_KEY": "...",
-        "SCW_DEFAULT_PROJECT_ID": "..."
-      },
-      "allowedTools": ["scaleway_k8s_*", "scaleway_instances_*"]
-    }
-  }
-}
+{"query":"rdb list databases"}
 ```
 
-### Common Filter Patterns
+Pass that input to `scaleway_search`, then request the matching schema:
 
-| Use Case | Pattern |
-|----------|---------|
-| Kubernetes only | `scaleway_k8s_*` |
-| Compute only | `scaleway_instances_*`, `scaleway_elastic_metal_*`, `scaleway_apple_silicon_*`, `scaleway_dedibox_*`, `scaleway_autoscaling_*` |
-| Databases only | `scaleway_rdb_*`, `scaleway_mongodb_*`, `scaleway_redis_*`, `scaleway_data_warehouse_*`, `scaleway_opensearch_*` |
-| Serverless only | `scaleway_functions_*`, `scaleway_containers_*`, `scaleway_jobs_*` |
-| Networking only | `scaleway_vpc_*`, `scaleway_lb_*`, `scaleway_dns_*`, `scaleway_vpn_*`, `scaleway_interlink_*` |
-| Messaging only | `scaleway_nats_*`, `scaleway_sqs_*`, `scaleway_sns_*`, `scaleway_kafka_*`, `scaleway_rabbitmq_*` |
-| AI only | `scaleway_inference_*`, `scaleway_generative_apis_*`, `scaleway_data_lab_*` |
-| Security only | `scaleway_iam_*`, `scaleway_secret_manager_*`, `scaleway_key_manager_*`, `scaleway_audit_trail_*` |
-| Read-only | `scaleway_*_list_*`, `scaleway_*_get_*` |
+```json
+{"ops":["rdb_list_databases"]}
+```
+
+Finally, call `scaleway_read` with the required instance ID:
+
+```json
+{"op":"rdb_list_databases","params":{"region":"fr-par","instance_id":"11111111-1111-4111-8111-111111111111"}}
+```
+
+These are tool inputs, not shell commands. Descriptions preserve required fields, enum values, bounds, defaults, record value types and substantive warnings. The original Zod validators and callbacks still run. Search is bounded; follow `nextOffset` until absent rather than assuming the first page is exhaustive.
+
+### Server-side filters
+
+Set these variables in the MCP server process environment:
+
+| Variable | Default | Behavior |
+| --- | --- | --- |
+| `SCW_MCP_MODE` | `gateway` | `gateway`, `flat` for legacy tool names, or `both`. |
+| `SCW_TOOLSETS` | `all` | Comma-separated area slugs or documented presets. |
+| `SCW_TOOLS` | unset | Adds exact operation IDs or legacy tool names to the selected areas. |
+| `SCW_EXCLUDE_TOOLS` | unset | Removes matching exact names or `*` globs after inclusion. |
+| `SCW_READ_ONLY` | `false` | `true`/`1` retains only classified read operations; `false`/`0` disables it. |
+
+Exclusion and read-only restrictions always win, including calls through `scaleway_call`. Invalid values and empty selections fail startup rather than expose everything. `SCW_TOOLS` is additive, not an allowlist by itself. All modes use the same immutable filtered registry.
+
+Presets: `compute`, `storage`, `networking`, `security`, `serverless`, `data`, `ai`, `messaging`, `observability`, `business`, and `core`. Exact memberships are defined in `src/shared/toolsets.ts`. The `core` preset includes Instances, Elastic Metal, Apple Silicon, Kubernetes, Registry, Functions, Containers, Jobs, Block Storage, Object Storage, VPC, DNS, IAM and Marketplace.
+
+Legacy compatibility example, restricted to RDB:
+
+```json
+{"env":{"SCW_MCP_MODE":"flat","SCW_TOOLSETS":"rdb"}}
+```
+
+Merge that `env` fragment into your MCP server configuration while retaining your existing credentials. Never commit real secret keys. Reconnect or restart the MCP server after changing environment variables. Updating the package does not replace an already running process or clear schemas already loaded into an existing conversation.
+
+### Permissions and limits
+
+Tool annotations are hints, not authorization. Gateway calls consolidate legacy per-operation approval names; review client permission rules when migrating. Use server-side exclusions or read-only configuration for an enforceable operation boundary. Scaleway IAM remains authoritative. Secret-version access is conservatively excluded from read-only mode because accessing an ephemeral secret can consume, disable or delete it.
+
+Claude Code's provider-dependent deferred discovery can reduce client context further, but it is not required for this server's compact mode. This implementation does not change Bifrost routing, client permissions, credential storage or the user's running MCP configuration. Permissions that merely auto-approve tools do not reduce the catalog.
+
+Measurement distinguishes discovery payload size from billing. Repeated schemas can be cached; do not multiply a token count by full-price input rates without checking actual cache usage. Use `bun run measure:discovery` for reproducible local byte counts. Published token measurements name their model and count method separately.
 
 ## Development
 
@@ -1483,6 +1510,7 @@ bun run test:parity
 
 ```
 src/
+├── gateway/                    # Compact discovery, operation registry and generated metadata
 ├── main.ts                      # Entry point
 ├── server.ts                    # MCP server creation and tool registration
 ├── shared/

@@ -72,7 +72,7 @@ operations invoked by those SDK methods, verified against the official reference
 
 ### Get Secret Version — `scaleway_secret_manager_get_secret_version`
 `GET /secrets/{secret_id}/versions/{revision}`
-- `revision`: an integer, `"latest"`, or `"latest_enabled"`.
+- `revision`: a decimal version number as a string, `"latest"`, or `"latest_enabled"`. Revision values must match `^(?:[0-9]+|latest|latest_enabled)$`; slashes, query/fragment delimiters and encoded path characters are rejected before dispatch so metadata reads cannot reach the access endpoint.
 - Response: SecretVersion object
 
 ### Create Secret Version — `scaleway_secret_manager_create_secret_version`

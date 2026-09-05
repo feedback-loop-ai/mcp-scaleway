@@ -50,7 +50,7 @@ Test organization:
 - `tests/api/` - Integration tests (require Scaleway, run locally only)
 - `tests/parity-matrix.json` - Machine-readable map of Scaleway API operations to contract tests
 
-## Testing Requirements (Constitution v1.1.0)
+## Testing Requirements (Constitution v1.2.0)
 
 - **100% code coverage**: Line and branch. No exceptions, no exclusions
 - **Full API contract parity**: Every Scaleway API endpoint exposed by this server MUST have a contract test validating request shape, response shape, pagination, auth, and error codes
@@ -59,14 +59,16 @@ Test organization:
 
 ## Architecture
 
-Stateless MCP server exposing ~724 tools across 50 Scaleway product areas.
+Stateless MCP server exposing four gateway tools over 724 supported operations across 50 Scaleway product areas. SCW_MCP_MODE=flat exposes the supported legacy tool names; both mode combines them.
 
-- `src/main.ts` - Entry point (stdio transport); `src/server.ts` - creates the MCP server and calls `registerAllTools`.
+- `src/main.ts` - Entry point (stdio transport); `src/server.ts` - creates the MCP server, immutable filtered operation registry and gateway/flat/both surface.
 - `src/tools/<area>/` - one directory per product area, each with three files:
   - `types.ts` - Zod input schemas for the area's tools
   - `handlers.ts` - Scaleway API call logic + response formatting
   - `index.ts` - `register<Area>Tools(server)` registering each tool via `server.tool(name, description, schema.shape, handler)`
 - `src/tools/index.ts` - `registerAllTools(server)` invokes every area's register function.
+- `src/gateway/` - recorder-based operation registry, search/describe/read/call, generated runtime operations metadata. Run `bun run gen:operations` after changing the parity matrix.
+- `src/shared/mode.ts` and `toolsets.ts` - startup environment boundary and filters. `SCW_TOOLSETS`, `SCW_TOOLS`, `SCW_EXCLUDE_TOOLS`, `SCW_READ_ONLY` apply to discovery and execution.
 - `src/shared/` - cross-cutting helpers: `auth.ts` (env-var credential loading), `client.ts` (Scaleway SDK client singleton), `errors.ts` (HTTP error mapping), `pagination.ts` (pagination helpers), `s3-signer.ts` (AWS SigV4 signing for Object Storage/S3 requests), `types.ts` (shared Zod schemas).
 - `tests/` - `unit/` and `contract/` run in CI; `api/` are local-only integration tests. `tests/parity-matrix.json` maps every Scaleway API operation to its tool + contract test; `tests/unit/parity.test.ts` (run via `bun run test:parity`) gates that every matrix entry is covered.
 - `specs/scaleway-api/<area>/api-reference.md` - authoritative Scaleway API Reference Spec (request/response shapes, error codes, pagination patterns) per product area.
@@ -86,4 +88,5 @@ Stateless MCP server exposing ~724 tools across 50 Scaleway product areas.
 - N/A (stateless proxy) (041-quota-query-tool)
 
 ## Recent Changes
+- Constitution v1.2.0 permits explicitly contract-tested gateway meta-tools while retaining underlying endpoint parity and full coverage.
 - Constitution v1.1.0: Added Principle VIII (100% Test Coverage & API Parity), expanded Contract-First API Design with Scaleway API Reference Spec requirement
