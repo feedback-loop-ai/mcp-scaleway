@@ -82,6 +82,13 @@ export const IamPermissionSet = z.object({
 });
 export type IamPermissionSet = z.infer<typeof IamPermissionSet>;
 
+// Identifiers are interpolated into IAM URL paths. Use URI-unreserved ASCII only,
+// excluding dot segments, so URL parsing/decoding cannot change the operation.
+// The final lookahead requires absolute end-of-input; $ alone allows a trailing newline.
+const IamIdentifier = z
+	.string()
+	.regex(/^(?!\.{1,2}$)[A-Za-z0-9._~-]+(?![\s\S])/, "Expected a safe IAM identifier (not a path)");
+
 // ── Input Schemas ───────────────────────────────────────────────────────
 
 // Users
@@ -94,7 +101,7 @@ export const ListUsersInput = z.object({
 export type ListUsersInput = z.infer<typeof ListUsersInput>;
 
 export const GetUserInput = z.object({
-	user_id: z.string().describe("User ID"),
+	user_id: IamIdentifier.describe("User ID"),
 });
 export type GetUserInput = z.infer<typeof GetUserInput>;
 
@@ -105,12 +112,12 @@ export const CreateUserInput = z.object({
 export type CreateUserInput = z.infer<typeof CreateUserInput>;
 
 export const UpdateUserInput = z.object({
-	user_id: z.string().describe("User ID"),
+	user_id: IamIdentifier.describe("User ID"),
 });
 export type UpdateUserInput = z.infer<typeof UpdateUserInput>;
 
 export const DeleteUserInput = z.object({
-	user_id: z.string().describe("User ID"),
+	user_id: IamIdentifier.describe("User ID"),
 });
 export type DeleteUserInput = z.infer<typeof DeleteUserInput>;
 
@@ -124,7 +131,7 @@ export const ListApplicationsInput = z.object({
 export type ListApplicationsInput = z.infer<typeof ListApplicationsInput>;
 
 export const GetApplicationInput = z.object({
-	application_id: z.string().describe("Application ID"),
+	application_id: IamIdentifier.describe("Application ID"),
 });
 export type GetApplicationInput = z.infer<typeof GetApplicationInput>;
 
@@ -136,22 +143,22 @@ export const CreateApplicationInput = z.object({
 export type CreateApplicationInput = z.infer<typeof CreateApplicationInput>;
 
 export const UpdateApplicationInput = z.object({
-	application_id: z.string().describe("Application ID"),
+	application_id: IamIdentifier.describe("Application ID"),
 	name: z.string().optional().describe("New name"),
 	description: z.string().optional().describe("New description"),
 });
 export type UpdateApplicationInput = z.infer<typeof UpdateApplicationInput>;
 
 export const DeleteApplicationInput = z.object({
-	application_id: z.string().describe("Application ID"),
+	application_id: IamIdentifier.describe("Application ID"),
 });
 export type DeleteApplicationInput = z.infer<typeof DeleteApplicationInput>;
 
 // API Keys
 export const ListApiKeysInput = z.object({
 	organization_id: z.string().optional().describe("Filter by organization ID"),
-	application_id: z.string().optional().describe("Filter by application ID"),
-	user_id: z.string().optional().describe("Filter by user ID"),
+	application_id: IamIdentifier.optional().describe("Filter by application ID"),
+	user_id: IamIdentifier.optional().describe("Filter by user ID"),
 	page: z.number().int().positive().optional().default(1).describe("Page number"),
 	page_size: z.number().int().min(1).max(100).optional().default(50).describe("Items per page"),
 	order_by: z.string().optional().describe("Order by field"),
@@ -159,16 +166,15 @@ export const ListApiKeysInput = z.object({
 export type ListApiKeysInput = z.infer<typeof ListApiKeysInput>;
 
 export const GetApiKeyInput = z.object({
-	access_key: z.string().describe("API key access key"),
+	access_key: IamIdentifier.describe("API key access key"),
 });
 export type GetApiKeyInput = z.infer<typeof GetApiKeyInput>;
 
 export const CreateApiKeyInput = z.object({
-	application_id: z
-		.string()
-		.optional()
-		.describe("Application ID (mutually exclusive with user_id)"),
-	user_id: z.string().optional().describe("User ID (mutually exclusive with application_id)"),
+	application_id: IamIdentifier.optional().describe(
+		"Application ID (mutually exclusive with user_id)",
+	),
+	user_id: IamIdentifier.optional().describe("User ID (mutually exclusive with application_id)"),
 	description: z.string().optional().default("").describe("API key description"),
 	expires_at: z.string().optional().describe("Expiration date (ISO 8601)"),
 	default_project_id: z.string().optional().describe("Default project ID"),
@@ -176,14 +182,14 @@ export const CreateApiKeyInput = z.object({
 export type CreateApiKeyInput = z.infer<typeof CreateApiKeyInput>;
 
 export const UpdateApiKeyInput = z.object({
-	access_key: z.string().describe("API key access key"),
+	access_key: IamIdentifier.describe("API key access key"),
 	description: z.string().optional().describe("New description"),
 	default_project_id: z.string().optional().describe("New default project ID"),
 });
 export type UpdateApiKeyInput = z.infer<typeof UpdateApiKeyInput>;
 
 export const DeleteApiKeyInput = z.object({
-	access_key: z.string().describe("API key access key"),
+	access_key: IamIdentifier.describe("API key access key"),
 });
 export type DeleteApiKeyInput = z.infer<typeof DeleteApiKeyInput>;
 
@@ -197,7 +203,7 @@ export const ListPoliciesInput = z.object({
 export type ListPoliciesInput = z.infer<typeof ListPoliciesInput>;
 
 export const GetPolicyInput = z.object({
-	policy_id: z.string().describe("Policy ID"),
+	policy_id: IamIdentifier.describe("Policy ID"),
 });
 export type GetPolicyInput = z.infer<typeof GetPolicyInput>;
 
@@ -205,9 +211,9 @@ export const CreatePolicyInput = z.object({
 	name: z.string().describe("Policy name"),
 	organization_id: z.string().optional().describe("Organization ID"),
 	description: z.string().optional().default("").describe("Policy description"),
-	user_id: z.string().optional().describe("User ID to attach the policy to"),
-	group_id: z.string().optional().describe("Group ID to attach the policy to"),
-	application_id: z.string().optional().describe("Application ID to attach the policy to"),
+	user_id: IamIdentifier.optional().describe("User ID to attach the policy to"),
+	group_id: IamIdentifier.optional().describe("Group ID to attach the policy to"),
+	application_id: IamIdentifier.optional().describe("Application ID to attach the policy to"),
 	rules: z
 		.array(
 			z.object({
@@ -222,30 +228,30 @@ export const CreatePolicyInput = z.object({
 export type CreatePolicyInput = z.infer<typeof CreatePolicyInput>;
 
 export const UpdatePolicyInput = z.object({
-	policy_id: z.string().describe("Policy ID"),
+	policy_id: IamIdentifier.describe("Policy ID"),
 	name: z.string().optional().describe("New name"),
 	description: z.string().optional().describe("New description"),
-	user_id: z.string().nullable().optional().describe("User ID"),
-	group_id: z.string().nullable().optional().describe("Group ID"),
-	application_id: z.string().nullable().optional().describe("Application ID"),
+	user_id: IamIdentifier.nullable().optional().describe("User ID"),
+	group_id: IamIdentifier.nullable().optional().describe("Group ID"),
+	application_id: IamIdentifier.nullable().optional().describe("Application ID"),
 });
 export type UpdatePolicyInput = z.infer<typeof UpdatePolicyInput>;
 
 export const DeletePolicyInput = z.object({
-	policy_id: z.string().describe("Policy ID"),
+	policy_id: IamIdentifier.describe("Policy ID"),
 });
 export type DeletePolicyInput = z.infer<typeof DeletePolicyInput>;
 
 // Rules
 export const ListRulesInput = z.object({
-	policy_id: z.string().describe("Policy ID to list rules for"),
+	policy_id: IamIdentifier.describe("Policy ID to list rules for"),
 	page: z.number().int().positive().optional().default(1).describe("Page number"),
 	page_size: z.number().int().min(1).max(100).optional().default(50).describe("Items per page"),
 });
 export type ListRulesInput = z.infer<typeof ListRulesInput>;
 
 export const CreateRuleInput = z.object({
-	policy_id: z.string().describe("Policy ID"),
+	policy_id: IamIdentifier.describe("Policy ID"),
 	permission_set_names: z.array(z.string()).describe("Permission set names"),
 	condition: z.string().optional().describe("Condition expression to evaluate"),
 	project_ids: z.array(z.string()).optional().describe("Project IDs"),
@@ -254,8 +260,8 @@ export const CreateRuleInput = z.object({
 export type CreateRuleInput = z.infer<typeof CreateRuleInput>;
 
 export const UpdateRuleInput = z.object({
-	policy_id: z.string().describe("Policy ID the rule belongs to"),
-	rule_id: z.string().describe("Rule ID"),
+	policy_id: IamIdentifier.describe("Policy ID the rule belongs to"),
+	rule_id: IamIdentifier.describe("Rule ID"),
 	permission_set_names: z.array(z.string()).optional().describe("Permission set names"),
 	condition: z.string().optional().describe("Condition expression to evaluate"),
 	project_ids: z.array(z.string()).optional().describe("Project IDs"),
@@ -264,8 +270,8 @@ export const UpdateRuleInput = z.object({
 export type UpdateRuleInput = z.infer<typeof UpdateRuleInput>;
 
 export const DeleteRuleInput = z.object({
-	policy_id: z.string().describe("Policy ID the rule belongs to"),
-	rule_id: z.string().describe("Rule ID"),
+	policy_id: IamIdentifier.describe("Policy ID the rule belongs to"),
+	rule_id: IamIdentifier.describe("Rule ID"),
 });
 export type DeleteRuleInput = z.infer<typeof DeleteRuleInput>;
 
@@ -279,7 +285,7 @@ export const ListGroupsInput = z.object({
 export type ListGroupsInput = z.infer<typeof ListGroupsInput>;
 
 export const GetGroupInput = z.object({
-	group_id: z.string().describe("Group ID"),
+	group_id: IamIdentifier.describe("Group ID"),
 });
 export type GetGroupInput = z.infer<typeof GetGroupInput>;
 
@@ -291,28 +297,28 @@ export const CreateGroupInput = z.object({
 export type CreateGroupInput = z.infer<typeof CreateGroupInput>;
 
 export const UpdateGroupInput = z.object({
-	group_id: z.string().describe("Group ID"),
+	group_id: IamIdentifier.describe("Group ID"),
 	name: z.string().optional().describe("New name"),
 	description: z.string().optional().describe("New description"),
 });
 export type UpdateGroupInput = z.infer<typeof UpdateGroupInput>;
 
 export const DeleteGroupInput = z.object({
-	group_id: z.string().describe("Group ID"),
+	group_id: IamIdentifier.describe("Group ID"),
 });
 export type DeleteGroupInput = z.infer<typeof DeleteGroupInput>;
 
 export const AddGroupMemberInput = z.object({
-	group_id: z.string().describe("Group ID"),
-	user_id: z.string().optional().describe("User ID to add"),
-	application_id: z.string().optional().describe("Application ID to add"),
+	group_id: IamIdentifier.describe("Group ID"),
+	user_id: IamIdentifier.optional().describe("User ID to add"),
+	application_id: IamIdentifier.optional().describe("Application ID to add"),
 });
 export type AddGroupMemberInput = z.infer<typeof AddGroupMemberInput>;
 
 export const RemoveGroupMemberInput = z.object({
-	group_id: z.string().describe("Group ID"),
-	user_id: z.string().optional().describe("User ID to remove"),
-	application_id: z.string().optional().describe("Application ID to remove"),
+	group_id: IamIdentifier.describe("Group ID"),
+	user_id: IamIdentifier.optional().describe("User ID to remove"),
+	application_id: IamIdentifier.optional().describe("Application ID to remove"),
 });
 export type RemoveGroupMemberInput = z.infer<typeof RemoveGroupMemberInput>;
 

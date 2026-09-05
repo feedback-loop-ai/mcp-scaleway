@@ -21,3 +21,13 @@ Walk schema nodes, not arbitrary JSON keys: property names such as format, descr
 ## Compatibility
 
 Register normal calls with the public SDK API and replace tools/list only after registration via the public underlying Server.setRequestHandler. Construct projected listing from our recorded catalog rather than accessing SDK private maps. No dynamic enable/disable, execution engine, new transport or private SDK access is required.
+
+
+## Endpoint confinement
+
+Operation metadata alone is not sufficient for an execution boundary. Identifiers used as
+URL path segments must not permit slash/backslash traversal, percent-encoded separators,
+query or fragment delimiters, or dot segments that route to another operation. A filtered
+read must never construct an excluded endpoint by changing an ID or revision. Protocol
+regressions must test the same attack in gateway, flat and both modes before HTTP dispatch.
+Free-form body/query text and supported object keys retain their own documented semantics.

@@ -9,12 +9,13 @@ Prerelease implementation, not published by this change.
 - Four default tools: search, describe, read and call, covering every supported operation.
 - Stable operation IDs, bounded search pagination, faithful schemas and original asynchronous validation.
 - SCW_MCP_MODE=flat preserves supported legacy names; both mode combines surfaces.
-- Immutable toolset/additive-name/exclusion/read-only filters govern discovery and execution. Secret revision inputs reject path fragments before dispatch to prevent metadata reads from reaching the excluded access endpoint.
+- Immutable toolset/additive-name/exclusion/read-only filters govern discovery and execution.
+- Endpoint confinement: every dispatched request is checked on its raw path against the operation's declared endpoint before HTTP, so identifier fields cannot traverse to excluded, cross-area or mutating endpoints (found in review; also constrains IAM identifiers and secret revisions at the schema level).
 - Generated runtime metadata and gateway contract-test parity gates prevent drift.
 - Enabled CI for slash-named branches and stacked pull requests, which the previous branch filters skipped.
 - Fixed package imports to resolve to a bundled server module, without starting stdio on import.
 - No SDK private-field dependency and no requirement for client-side deferred loading.
-- Measured listing: 2,162 bytes plus 1,233 instruction bytes, versus 553,063 listing bytes in current flat mode. Exact post-change token recount was unavailable because the configured provider pool returned 503; these bytes are not claimed as token counts.
+- Measured listing: 2,162 bytes plus 1,233 instruction bytes, versus 554,857 listing bytes in current flat mode. Exact post-change token recount was unavailable because the configured provider pool returned 503; these bytes are not claimed as token counts.
 - Conservative schema projection retains validation semantics. The earlier aggressive flat-mode estimate is not an implemented guarantee.
 
 

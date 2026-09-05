@@ -2,6 +2,7 @@ import type { McpServer, ToolCallback } from "@modelcontextprotocol/sdk/server/m
 import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import { inputSchemaFor } from "../shared/catalog.js";
+import { withRouteContext } from "../shared/route-guard.js";
 import {
 	DescribeInput,
 	ExecuteInput,
@@ -70,7 +71,7 @@ export async function executeOperation(
 	try {
 		const parsed = await op.schema.safeParseAsync(params);
 		if (!parsed.success) return validationError(op, parsed.error);
-		return await op.callback(parsed.data, extra);
+		return await withRouteContext(op.tool, op.api, () => op.callback(parsed.data, extra));
 	} catch (error) {
 		if (error instanceof z.ZodError) return validationError(op, error);
 		// Raw exception text can contain credentials or request bodies. Existing structured

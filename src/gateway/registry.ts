@@ -2,6 +2,7 @@ import type { McpServer, ToolCallback } from "@modelcontextprotocol/sdk/server/m
 import type { Tool } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import { inputSchemaFor } from "../shared/catalog.js";
+import { withRouteContext } from "../shared/route-guard.js";
 import { type ToolsetConfig, createToolFilter, operationId } from "../shared/toolsets.js";
 import { registerAllTools } from "../tools/index.js";
 import { type OperationMetadata, OperationMetadataSchema, isReadOnly } from "./metadata.js";
@@ -110,7 +111,7 @@ export function registerFlatTools(server: McpServer, registry: OperationRegistry
 		server.registerTool(
 			op.tool,
 			{ description: op.description, inputSchema: op.shape, annotations },
-			op.callback,
+			(args, extra) => withRouteContext(op.tool, op.api, () => op.callback(args, extra)),
 		);
 		return { name: op.tool, description: op.description, inputSchema: op.inputSchema, annotations };
 	});
