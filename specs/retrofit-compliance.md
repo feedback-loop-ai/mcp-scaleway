@@ -18,13 +18,17 @@ No new release or governance change is authorized by completion of this document
 
 | ID | Principle | State | Required closure evidence | Responsibility |
 | --- | --- | --- | --- | --- |
-| R-I | I: usage examples | OPEN | Valid examples for every advertised operation; schema-validation tests for examples, not merely substring checks | Project maintainers; not assigned to a person |
+| [R-I](https://github.com/feedback-loop-ai/mcp-scaleway/issues/59) | I: usage examples | OPEN | Valid examples for every advertised operation; schema-validation tests for examples, not merely substring checks | Project maintainers; not assigned to a person |
 | R-II | II: specification before implementation | HISTORICAL BREACH | Preserve chronology; enforce the sequence for future work. A later document cannot erase this breach | Project owner controls governance decisions |
 | R-III | III: contracts before code | HISTORICAL ORDERING GAP | Preserve dated contract/code evidence and supersession; no unverified pre-code claim | Project owner controls governance decisions |
-| R-IV | IV: logging and health | OPEN | Parameter-free structured trace logs in gateway and flat paths; a stdio-appropriate health signal; tests proving secrets never enter logs | Project maintainers |
-| R-VI | VI: hot reload | OPEN | Documented, tested development reload command. Unit-only timing separately measured without substituting combined-suite or CI timings | Project maintainers |
-| R-VII | VII: response validation | OPEN | Runtime response schemas per endpoint plus malformed-response negatives; generic type parameters and JSON parsing are insufficient | Project maintainers |
-| R-VIII | VIII: full endpoint contract depth | OPEN | Per-operation evidence for request/response shape, pagination, auth/error/rate-limit behavior. File-existence parity and transport smoke alone do not satisfy this | Project maintainers |
+| [R-IV](https://github.com/feedback-loop-ai/mcp-scaleway/issues/60) | IV: logging and health | OPEN | Parameter-free structured trace logs in gateway and flat paths; a stdio-appropriate health signal; tests proving secrets never enter logs | Project maintainers |
+| [R-VI](https://github.com/feedback-loop-ai/mcp-scaleway/issues/61) | VI: hot reload | OPEN | Documented, tested development reload command. Unit-only timing separately measured without substituting combined-suite or CI timings | Project maintainers |
+| [R-VII](https://github.com/feedback-loop-ai/mcp-scaleway/issues/62) | VII: response validation | OPEN | Runtime response schemas per endpoint plus malformed-response negatives; generic type parameters and JSON parsing are insufficient | Project maintainers |
+| [R-VIII](https://github.com/feedback-loop-ai/mcp-scaleway/issues/63) | VIII: full endpoint contract depth | OPEN | Per-operation evidence for request/response shape, pagination, auth/error/rate-limit behavior. File-existence parity and transport smoke alone do not satisfy this | Project maintainers |
+
+Backlog issues: R-I #59, R-IV #60, R-VI #61, R-VII #62, R-VIII #63. R-II and R-III are historical
+breaches with no closure path, so they carry no issue. Adjacent (not constitutional): MCP SDK
+upgrade #64, structured tool output #65.
 
 Tracked in [059 analysis](059-discovery-token-reduction/analysis.md) and [059 tasks](059-discovery-token-reduction/tasks.md), plus [060 analysis](060-api-correctness/analysis.md) and [060 tasks](060-api-correctness/tasks.md).
 

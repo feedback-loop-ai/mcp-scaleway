@@ -164,9 +164,9 @@ Single project: `src/`, `tests/`, `scripts/`, `specs/` at repository root.
 - [x] T053 Write the spec quality checklist in specs/059-discovery-token-reduction/checklists/requirements.md
 - [ ] T054 Close implementation gaps R-I, R-IV, R-VI, R-VII and R-VIII in ../retrofit-compliance.md. Analysis ran; R-II/R-III remain permanent historical findings, not tasks that a later document can close.
 - [ ] T055 Measure post-change token counts on an Anthropic-served route and append to specs/059-discovery-token-reduction/validation.md (blocked: provider pool returned 503)
-- [ ] T056 Follow-up (Principle IV, repo-wide): add structured logging and a stdio-appropriate health self-check in src/main.ts
-- [ ] T057 Follow-up (Principle VII, repo-wide): runtime-validate upstream response shapes in src/tools/*/handlers.ts, starting with the most-used reads
-- [ ] T058 Follow-up (Principle I, repo-wide): surface usage examples for legacy operations through describe or descriptions in src/gateway/discovery.ts
+- [ ] T056 Follow-up (Principle IV, repo-wide): add structured logging and a stdio-appropriate health self-check in src/main.ts Tracked as #60.
+- [ ] T057 Follow-up (Principle VII, repo-wide): runtime-validate upstream response shapes in src/tools/*/handlers.ts, starting with the most-used reads Tracked as #62.
+- [ ] T058 Follow-up (Principle I, repo-wide): surface usage examples for legacy operations through describe or descriptions in src/gateway/discovery.ts Tracked as #59.
 - [x] T059 [P] [US3] Document the FR-026 support window (flat mode for the whole 0.x series; removal needs a major bump preceded by a deprecation minor) in README.md and the next CHANGELOG entry
 - [x] T060 [P] [US3] Enumerate family-preset memberships in README.md (FR-015/US3 "without consulting source") instead of pointing at src/shared/toolsets.ts
 - [x] T061 [P] [US1] Add a test asserting gateway listing bytes are identical for the small fixture registry and the full catalog (SC-002) in tests/unit/gateway/
