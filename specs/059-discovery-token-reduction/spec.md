@@ -1,6 +1,7 @@
 # Feature Specification: Compact Operation Discovery
 
-**Feature Branch**: `059-discovery-token-reduction`
+**Feature ID**: `059-discovery-token-reduction`
+**Retrofit branch**: `docs/spec-retrofit-final`
 **Created**: 2026-09-05 (retrofitted to full specification form 2026-09-06)
 **Status**: Shipped in 0.4.0; specification retrofitted
 **Input**: User description: "Optimize our token usage - we consume close to 200k tokens for discovery, I need that optimized. Investigate up-to-date Scaleway code, infrastructure and architecture."
@@ -8,6 +9,8 @@
 ## Clarifications
 
 ### Session 2026-09-06
+
+Recorded choices were selected by Claude under delegated autonomy, not individually answered by the user. No choice grants constitutional exemptions.
 
 - Q: What does read-only mode exclude beyond upstream read methods? → A: Read-only means "cannot change cloud state". Only reads with upstream side effects are denied; sensitivity of returned data is handled by operator exclusions and upstream access control, not by the mode.
 - Q: What is the `core` preset for? → A: A curated getting-started set covering the most common provisioning workflows, deliberately smaller than the union of family presets. Membership is fixed per release and documented; changes are release-noted.
@@ -64,7 +67,7 @@ A user who built prompts, permission rules or automations against the previous p
 
 **Acceptance Scenarios**:
 
-1. **Given** a server started in flat compatibility mode, **When** a client lists tools, **Then** every supported legacy operation appears under its original name, with input contracts unchanged except the documented security tightening of IAM identifier and secret-revision formats (feature 060/059 security work, disclosed in the release notes).
+1. **Given** a server started in flat compatibility mode, **When** a client lists tools, **Then** every supported legacy operation appears under its original name, with input contracts unchanged except the documented security tightening of IAM identifier and secret-revision formats (feature 059 security work, disclosed in the release notes).
 2. **Given** a server started in combined mode, **When** a client lists tools, **Then** both the four discovery tools and the selected legacy tools are present, and area or read-only filters apply to both surfaces identically.
 3. **Given** the upgrade notes, **When** a user reads them, **Then** they can map any legacy tool name to its new operation identifier without consulting source code.
 
@@ -117,7 +120,7 @@ When an assistant calls an operation with wrong or missing parameters, or refers
 - **FR-014**: Invalid configuration (unknown area, unknown preset, unknown explicit operation, exclusion pattern matching nothing, invalid mode value, or a selection enabling zero operations) MUST fail startup with a message naming the problem.
 - **FR-015**: Named presets MUST have fixed membership that is documented and changes only with a release note. Family presets partition the catalog by domain: compute, storage, networking, security, serverless, data, AI, messaging, observability and business. The `core` preset is a curated getting-started selection for common provisioning workflows, not a superset of families; it covers instances, elastic metal, Apple silicon, Kubernetes, registry, functions, containers, jobs, block storage, object storage, VPC, DNS, IAM and marketplace.
 - **FR-016**: Every request dispatched on behalf of an operation MUST be confined to that operation's declared upstream endpoint(s), checked on the raw request path before any normalization, so that identifier values cannot redirect a request to a different endpoint.
-- **FR-017**: On the gateway surface, validation errors MUST report stable error codes and top-level field names only, MUST include the operation's contract when it is within a bounded size, and MUST NOT echo submitted values. Flat and combined modes keep the MCP SDK's native validation-error format for legacy compatibility; operators needing value-free error reporting use the gateway surface.
+- **FR-017**: For gateway-authored operation-parameter errors after outer tool-input validation, validation errors MUST report stable error codes and top-level field names only, MUST include the operation's contract when it is within a bounded size, and MUST NOT echo submitted values. Outer input validation in every mode and legacy-tool validation remain MCP SDK-native and may include rejected values. The no-value-echo guarantee applies only to gateway-authored inner-operation validation errors.
 - **FR-018**: Unknown or disabled operation identifiers MUST produce an error with up to five suggested enabled identifiers.
 - **FR-019**: Unhandled execution failures MUST be reported with an actionable, non-sensitive message.
 - **FR-020**: The server MUST offer three surface modes: compact discovery (default), flat compatibility exposing legacy tool names, and combined.
@@ -151,7 +154,7 @@ Glossary (spec term → runtime name): identifier → `op` / operation ID; compa
 - **SC-004**: For a representative set of at least 20 keyword queries drawn from real catalog areas (product, resource and action words; not necessarily full natural-language sentences), the intended operation appears on the first page of results in 100% of cases. Natural-language semantic recall beyond keyword matching is out of scope.
 - **SC-005**: The offline byte cost of a representative discovery sequence (one search, one describe of one operation) stays within a fixed, measured budget that is at least two orders of magnitude below the flat-mode listing it replaces; the budget is emitted by the committed measurement script. Model-specific token counts are informational until an Anthropic-served counting route is available.
 - **SC-006**: Every attempt to reach a filtered, excluded or endpoint-redirected operation, by any route and in every surface mode, is refused with zero upstream requests, verified automatically.
-- **SC-007**: In flat compatibility mode, every supported legacy tool is present with an unchanged name, and input contracts are unchanged except the documented identifier/revision security tightening; existing integrations require no change to keep working.
+- **SC-007**: In flat compatibility mode, every supported legacy tool is present with an unchanged name, and input contracts retain the post-migration operation behavior subject to documented API migrations and identifier/revision security tightening. Callers of removed or changed APIs must migrate.
 - **SC-008**: The complete automated suite, including protocol-level tests for all four tools and all three modes, passes with full line and branch coverage.
 - **SC-009**: Discovery calls (search and describe) complete with zero upstream requests, verified automatically by failing any test in which a discovery call touches the network.
 - **SC-010**: The published package can be imported programmatically without starting the stdio server, and a clean installed package passes a real stdio handshake in all three modes without credentials.

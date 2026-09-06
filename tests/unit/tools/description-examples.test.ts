@@ -5,6 +5,7 @@
  */
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 import { registerAutoscalingTools } from "../../../src/tools/autoscaling/index.js";
 import { registerCockpitTools } from "../../../src/tools/cockpit/index.js";
 import { registerContainersTools } from "../../../src/tools/containers/index.js";
@@ -42,4 +43,26 @@ describe("usage examples in tool descriptions", () => {
 			expect(description, name).toMatch(EXAMPLE);
 		}
 	});
+});
+
+describe("examples validate against the registered contract", () => {
+	it.each([registerAutoscalingTools, registerContainersTools, registerCockpitTools])(
+		"validates required fields and rejects invented keys",
+		(register) => {
+			register({
+				tool(name: string, description: string, shape: z.ZodRawShape) {
+					const marker = ". Example: ";
+					if (!description.includes(marker)) return;
+					// Parse the deliberately restricted object-literal examples as JSON, never eval.
+					const source = description.slice(description.indexOf(marker) + marker.length);
+					const json = source
+						.replace(/'/g, '"')
+						.replace(/([{,]\s*)([a-zA-Z_$][\w$]*):/g, '$1"$2":');
+					const args = JSON.parse(json);
+					const result = z.object(shape).strict().safeParse(args);
+					expect(result.success, name).toBe(true);
+				},
+			} as unknown as McpServer);
+		},
+	);
 });

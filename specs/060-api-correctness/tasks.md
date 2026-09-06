@@ -5,7 +5,7 @@
 
 **Tests**: REQUIRED by Constitution VIII. Real-transport contract tests are the proof standard for this feature (Clarification Q3).
 
-**Status**: Shipped in 0.4.0 (commit `ce01175`, PR #54; error-mapper fix in `4cf689c`); analyzer remediations landed on the retrofit branch. Completed tasks are checked with the file each landed in.
+**Status**: Core repairs shipped in 0.4.0 (commit `ce01175`, PR #54; error-mapper fix in `4cf689c`). Retrofit additions are unreleased: T003/T004 only for shared `unsupported_operation` (501), T005, T045–T049 and T050–T054. Checked items denote implemented artifacts, not chronology or constitutional clearance.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -29,7 +29,7 @@ Single project: `src/`, `tests/`, `specs/` at repository root.
 
 **⚠️ CRITICAL**: All stories depend on error mapping and the shared transport behaving correctly
 
-- [x] T003 Map both `.statusCode` and SDK `.status` to error types, and add the shared `unsupported_operation` (501) type, in src/shared/errors.ts and src/shared/types.ts
+- [x] T003 Map both `.statusCode` and SDK `.status` to error types, and add the shared `unsupported_operation` (501) type (retrofit branch, unreleased), in src/shared/errors.ts and src/shared/types.ts
 - [x] T004 [P] Unit-test SDK ScalewayError mapping, precedence, non-numeric statuses and the 501 mapping in tests/unit/shared/errors.test.ts
 - [x] T005 Commit the whole-catalog real-transport smoke as a CI test (every operation, per area, allowed host + path + auth) in tests/contract/transport/catalog-smoke.contract.test.ts
 
@@ -149,8 +149,8 @@ Single project: `src/`, `tests/`, `specs/` at repository root.
 - [x] T052 [P] Write research.md, data-model.md and quickstart.md in specs/060-api-correctness/
 - [x] T053 [P] Write tool contracts for the migrated surfaces in specs/060-api-correctness/contracts/{autoscaling,containers,elastic-metal}-tools.md and add superseded banners to specs/045-instance-scaling-groups/contracts/autoscaling-tools.md and specs/008-containers/contracts/tool-contract.md
 - [x] T054 Write the spec quality checklist in specs/060-api-correctness/checklists/requirements.md
-- [x] T055 Run an independent `/speckit.analyze` pass and remediate every CRITICAL and HIGH finding in code or documents (findings C1–C4, U1–U3, I1 closed; MEDIUM/LOW A1, A2, E1, E2, E3, E4, I2, I3, T1, U4 closed)
-- [ ] T056 Manual verification checkpoint for SC-002: re-verify specs/scaleway-api/supported-versions.json against upstream (expected 401/2xx, not 404) and update its `verified` date; run outside CI
+- [ ] T055 Close implementation gaps R-I, R-IV, R-VI, R-VII and R-VIII tracked in ../retrofit-compliance.md; preserve R-II/R-III as historical findings. No waivers were granted.
+- [ ] T056 Optional future live-availability investigation, separately authorized and dated. SC-002 is an offline supported-version consistency gate, not a claim that HTTP 401 establishes endpoint liveness.
 
 Out-of-scope follow-ups (not tasks of this feature; see spec Out of Scope and 059 T057): adopt official product SDKs for hand-rolled areas; runtime-validate upstream response shapes.
 
@@ -158,7 +158,7 @@ Out-of-scope follow-ups (not tasks of this feature; see spec Out of Scope and 05
 
 ## Dependencies & Execution Order
 
-- Setup → Foundational → US1 (MVP) → US2, US3, US4 (independent of each other; all depend on Foundational) → Polish → Retrofit. Delivery branches: PR #54 (`fix/live-api-correctness`) for the code; `docs/spec-retrofit` for this retrofit.
+- Setup → Foundational → US1 (MVP) → US2, US3, US4 (independent of each other; all depend on Foundational) → Polish → Retrofit. Delivery branches: PR #54 (`fix/live-api-correctness`) for the code; `docs/spec-retrofit-final` for this retrofit.
 - US2's containers migration depends on US1's transport rewrite of the same handler file (T017 before T027).
 - Parallel: within US1, T014–T020 touch disjoint files and ran concurrently in the original delivery; within US2, T028/T029/T031 are independent.
 

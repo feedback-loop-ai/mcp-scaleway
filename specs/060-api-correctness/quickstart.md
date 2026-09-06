@@ -6,7 +6,7 @@
 bun x vitest run --config tests/vitest.config.ts tests/contract/transport tests/contract/tools/elastic-metal/flexible-ip.transport.test.ts
 ```
 
-These build the real SDK client with injected HTTP and dummy credentials, stub global fetch to throw, and assert host, path, method, authentication header and error-status mapping for representative operations in every repaired area.
+These use injected HTTP and dummy credentials. The representative and migrated-area tests assert specific paths, headers, bodies and error handling. The catalog smoke replaces SDK HTTP and direct global-fetch paths with local recorders; it proves minimal-input dispatch for each registered operation, not full per-endpoint response semantics.
 
 ## Whole-catalog smoke (committed, runs in CI)
 
@@ -14,7 +14,7 @@ These build the real SDK client with injected HTTP and dummy credentials, stub g
 bun x vitest run --config tests/vitest.config.ts tests/contract/transport/catalog-smoke.contract.test.ts
 ```
 
-Invokes every registered operation once through the real SDK client with synthesized valid input and a recording HTTP layer; asserts allowed host, well-formed path and authentication header for all 724 operations, grouped per area.
+Invokes every registered operation once through its SDK or direct-fetch path with synthesized valid input and a recording HTTP layer; asserts allowed host, well-formed path and authentication header for all 724 operations, grouped per area.
 
 ## Check parity and documentation agreement
 

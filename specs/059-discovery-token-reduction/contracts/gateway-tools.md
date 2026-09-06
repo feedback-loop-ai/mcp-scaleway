@@ -34,8 +34,7 @@ Free-form body/query text and supported object keys retain their own documented 
 
 ## Error envelope (gateway surface)
 
-Gateway pre-dispatch errors use one shape, aligned with the shared `ApiError` so both gateway
-and flat clients see consistent codes:
+Gateway pre-dispatch errors use one shape, aligned with the shared `ApiError` for gateway-authored domain errors:
 
 ```
 { "error": { "type": <ApiErrorType>, "message": string, "statusCode": number },
@@ -47,7 +46,6 @@ Classification: invalid parameters → `invalid_input` (400); unknown or disable
 `not_found` (404); read refusal of a mutating operation → `permission_denied` (403);
 unexpected execution failure → `server_error` (500). `issues` carries only stable codes and
 declared top-level field names; submitted values are never echoed. `inputSchema` is included
-only when within the bounded size, else `schemaOmitted: true`. Search and describe
-validation, unknown-area and unknown-operation errors use the same envelope. Successful
+only when within the bounded size, else `schemaOmitted: true`. Unknown-area and unknown-operation errors use the same envelope. Outer tool-input validation remains owned by the MCP SDK in every mode; oversized batches and malformed outer arguments may produce SDK-native non-JSON error text. Successful
 operation results are the original handler result, unchanged. Flat and combined modes retain
 the MCP SDK's native validation-error format for legacy compatibility (FR-017 scope).

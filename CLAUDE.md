@@ -87,6 +87,9 @@ Stateless MCP server exposing four gateway tools over 724 supported operations a
 - TypeScript 5.x (strict mode) with Bun 1.x + `@modelcontextprotocol/sdk` ^1.25.x, `@scaleway/sdk-client` ^1.0.0, `zod` ^3.25.x (041-quota-query-tool)
 - N/A (stateless proxy) (041-quota-query-tool)
 - TypeScript 5.x (strict mode) with Bun 1.x + `@modelcontextprotocol/sdk` ^1.25.x, `zod` ^3.25.x, `zod-to-json-schema` 3.25.1 (059-discovery-token-reduction)
+- TypeScript 5.x strict mode, Bun 1.3.x runtime (CI pins 1.3.6); published bin runs on Node ≥ 20.20.2 + `@modelcontextprotocol/sdk` ^1.25 (installed 1.27.1), `zod` ^3.25, `zod-to-json-schema` 3.25.1 (promoted to a direct dependency by this feature), `@scaleway/sdk-client` ^2.7 (059-discovery-token-reduction)
+- N/A (stateless proxy; one generated JSON metadata file bundled at build time) (059-discovery-token-reduction)
+- TypeScript 5.x strict, Bun 1.3.x; Node ≥ 20.20.2 for the published bin + `@scaleway/sdk-client` ^2.7 (bumped from ^1.0 to satisfy installed product-SDK peers), `@scaleway/sdk-{account,edge-services,key-manager,mnq,secret}` 2.x, `@modelcontextprotocol/sdk` ^1.25, `zod` ^3.25 (060-api-correctness)
 
 ## Recent Changes
 - Constitution v1.2.0 permits explicitly contract-tested gateway meta-tools while retaining underlying endpoint parity and full coverage.

@@ -90,3 +90,5 @@ Enforcement: raw path must contain no dot segments, backslashes, controls or whi
 Startup: env → ServerOptions → ToolsetConfig validated → metadata validated → registrars replayed → registry filtered and frozen → surfaces registered → projected listing installed. Any failure aborts startup. No transitions after startup; reconfiguration requires a restart.
 
 Per call: input parsed by the SDK against the gateway tool's own shape → identifier resolved in the registry (unknown/disabled → lookup error) → read-only check (read only) → original schema `safeParseAsync` (invalid → ValidationErrorResult) → callback invoked inside RouteContext → each outgoing request checked → original result returned unchanged (thrown errors → sanitized error result).
+
+Outer gateway-argument validation and legacy tool validation are SDK-native protocol error results; the structured inner-operation error envelope is not claimed for those paths.

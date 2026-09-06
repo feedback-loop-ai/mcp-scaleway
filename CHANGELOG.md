@@ -2,8 +2,9 @@
 
 ## Unreleased
 
-Specification retrofit (features 059 and 060) brought the shipped 0.4.x behavior under full
-speckit governance. Runtime changes in this pass:
+Specification retrofit (features 059 and 060) records the shipped 0.4.x behavior and adds
+targeted conformance fixes. Full constitutional compliance remains blocked by the explicit
+findings in specs/retrofit-compliance.md. Runtime changes in this pass:
 
 - Gateway surface now returns a single consistent error envelope `{error:{type,message,statusCode},...}`
   (shared with the legacy `ApiError` types) instead of an ad-hoc string, for validation failures,

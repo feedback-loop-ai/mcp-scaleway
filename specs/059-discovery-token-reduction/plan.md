@@ -1,6 +1,6 @@
 # Implementation Plan: Compact Operation Discovery
 
-**Branch**: `059-discovery-token-reduction` | **Date**: 2026-09-05 (retrofitted 2026-09-06) | **Spec**: [spec.md](spec.md)
+**Feature**: `059-discovery-token-reduction` | **Retrofit branch**: `docs/spec-retrofit-final` | **Date**: 2026-09-05 (retrofitted 2026-09-06) | **Spec**: [spec.md](spec.md)
 **Input**: Feature specification from `/specs/059-discovery-token-reduction/spec.md`
 
 **Note**: This plan was retrofitted after the feature shipped in 0.4.0. It describes the design as built and evaluates it against Constitution v1.2.0 honestly, including gaps.
@@ -18,7 +18,7 @@ Replace the eager catalog (733 tools at audit time, measured at 219,400 input to
 **Target Platform**: stdio MCP server launched by an MCP client (Claude Code, other MCP hosts); Linux/macOS
 **Project Type**: single project, library + CLI bin
 **Performance Goals**: tool listing ≥ 99% smaller than the full catalog and constant in size; discovery calls served from memory with zero upstream requests; registry build in single-digit milliseconds at startup
-**Constraints**: no SDK private-field access; no change to per-area handler files; filters immutable per process; 100% coverage with no exclusions; test suite under 5 s
+**Constraints**: no SDK private-field access; reuse existing handlers with documented routing/security changes; filters immutable per process; 100% coverage with no exclusions; unit-only suite target under 5 s; combined coverage measured separately
 **Scale/Scope**: 724 operations across 50 product areas; 4 gateway tools; 3 surface modes; 11 named presets
 
 ## Constitution Check
@@ -27,16 +27,16 @@ Replace the eager catalog (733 tools at audit time, measured at 219,400 input to
 
 | Principle | Status | Evidence / gap |
 |---|---|---|
-| I. AI-Native Development | PARTIAL (exception documented) | The four gateway tools carry usage examples and structured errors. 679 of 724 legacy descriptions served through describe lack usage examples (Constitution I MUST). Exception granted by the repo owner via the 2026-09-06 autonomous-retrofit directive; remediation tracked in issue for T058 with an incremental target: each area gains examples when next touched, enforced by tests/unit/tools/description-examples.test.ts as it grows. |
-| II. Spec-Driven Development | EXCEPTION (documented, owner directive 2026-09-05) | Implementation preceded the full spec; the owner directed shipping under time pressure and later directed the autonomous retrofit (2026-09-06). All artifacts now exist and were clarified and analyzed. The chronological violation cannot be cured; it is recorded per Governance §Compliance. |
-| III. Contract-First API Design | PASS with ordering caveat | Gateway meta-tools specified in `contracts/gateway-tools.md`; 1:1 identifiers; filters apply to discovery and execution; original validation enforced (v1.2.0 clauses). Caveat: contract, code and the v1.2.0 amendment landed in one commit (f46a252); the contract draft predates the code in the timestamped audit artifacts (project memory dir `audit-2026-09-05-discovery-tokens/`). Process rule adopted: future constitution amendments land in their own PR before dependent code. |
-| IV. Operational Excellence | PARTIAL (exception documented) | Error mapping and graceful degradation hold; no sensitive data in errors (validated by tests). Structured JSON logging and a health signal are absent repo-wide AND on the new gateway dispatch path. Exception granted by the owner via the 2026-09-06 directive; tracked in issue for T056 with target 0.5.0. A stdio server has no HTTP surface; the follow-up defines a suitable liveness signal. |
+| I. AI-Native Development | OPEN: examples debt | Gateway descriptions and the 38 changed descriptions have examples. Other legacy descriptions still lack them. See ../retrofit-compliance.md#r-i; this is not an approved exception. |
+| II. Spec-Driven Development | HISTORICAL BREACH | The full specifications were written after implementation. Retrofitting records the design but cannot establish past spec-first compliance. No exception grant was requested or given. See ../retrofit-compliance.md#r-ii. |
+| III. Contract-First API Design | CURRENT CONTRACTS; historical ordering gap | Contracts and parity mappings are present. Gateway-authored domain errors now use the shared error object; SDK-native outer validation errors remain protocol errors. Contract/code/amendment commit ordering does not prove the required pre-implementation sequence. See ../retrofit-compliance.md#r-iii. |
+| IV. Operational Excellence | OPEN: operational controls | Structured per-operation logging and an explicit operational health signal are not implemented, including on gateway dispatch. No exemption is granted. See ../retrofit-compliance.md#r-iv. |
 | V. Simplicity & YAGNI | PASS with justified complexity | Registry and route guard are additions; each cites a measured requirement (219,400-token baseline; reviewer-proven traversal bypass). Rejected simpler alternatives recorded in research.md. |
-| VI. Fast Feedback Loops | PASS | Bun start; full suite 4.46 s measured (under the 5 s clause, with ~0.5 s headroom); single toolchain. |
-| VII. Type Safety & Validation | PASS for this feature; PARTIAL repo-wide (exception documented) | No `any` in gateway or shared code (verified); all tool inputs Zod-validated; configuration validated at startup and fails closed. Repo-wide gap: upstream responses typed via generics but not runtime-validated in 49 of 50 areas; FR-009 returns handler results unchanged so read/call inherit this. Exception granted by the owner via the 2026-09-06 directive; tracked in issue for T057 with first milestone = the 20 SC-004 operations. |
-| VIII. 100% Coverage & API Parity | PASS | 100% lines and branches with NO exclusions (the pre-existing `src/main.ts` coverage exclusion was removed and main.ts is now covered by tests/unit/main.test.ts); parity matrix `meta` section maps each gateway tool to `tests/contract/gateway.test.ts`; CI asserts the default surface equals that record and generated metadata equals a fresh derivation. |
+| VI. Fast Feedback Loops | OPEN: hot reload; unit timing PASS | The unit-only suite must be measured separately against the under-five-second clause; combined coverage timing is not that measurement. A dedicated hot-reload development command remains absent. See ../retrofit-compliance.md#r-vi. |
+| VII. Type Safety & Validation | OPEN: response validation | Strict TypeScript and input/config validation are enforced. Generic SDK return types and JSON parsing do not provide runtime validation of every upstream response. These inherited gaps remain relevant to gateway pass-through. See ../retrofit-compliance.md#r-vii. |
+| VIII. 100% Coverage & API Parity | OPEN: endpoint contract depth; coverage PASS | src/main.ts is covered and no executable source exclusion remains. Parity and generated-metadata gates pass. Every operation has a mapped test, but existence of a file and a minimum-input transport smoke do not prove every endpoint response, pagination, authorization and error contract. See ../retrofit-compliance.md#r-viii. |
 
-**Gate result**: proceed. One documented chronological EXCEPTION (II), one PASS-with-caveat (III), and three PARTIAL/EXCEPTION rows (I, IV, VII) each carry an owner-granted exception record (owner directive 2026-09-06), a tracked issue and a target. None is closed silently.
+**Gate result**: BLOCKED for an unconditional constitution-compliance claim. The retrospective documents can be reviewed and committed with these findings visible. Zero unresolved specification choices is not zero implementation noncompliance. No owner waiver is inferred from authorization to work autonomously.
 
 ## Project Structure
 
@@ -44,6 +44,10 @@ Replace the eager catalog (733 tools at audit time, measured at 219,400 input to
 
 ```text
 specs/059-discovery-token-reduction/
+├── analysis.md          # final findings and evidence
+├── analysis-history.md  # initial independent analysis
+├── traceability.md      # requirements to tasks
+├── workflow-record.md   # retrospective execution record
 ├── spec.md              # retrofitted full specification with Clarifications
 ├── plan.md              # this file
 ├── research.md          # decisions, rationale, rejected alternatives
@@ -75,7 +79,7 @@ src/
 │   ├── mode.ts               # ModeSchema, resolveServerOptions (env boundary)
 │   ├── route-guard.ts        # endpoint confinement on raw paths (AsyncLocalStorage context)
 │   └── client.ts             # SDK client singleton; wraps fetch with assertScwPathAllowed
-└── tools/<area>/             # unchanged per-area types/handlers/index (50 areas)
+└── tools/<area>/             # reused area implementation with documented routing/schema changes
 
 scripts/
 ├── gen-operations.ts         # regenerates src/gateway/operations.json from tests/parity-matrix.json
@@ -91,7 +95,7 @@ tests/
 └── contract/iam-path-confinement.test.ts
 ```
 
-**Structure Decision**: single project. New code is confined to `src/gateway/` and four files in `src/shared/`; the 50 per-area directories are untouched, which is what keeps handler behavior identical between flat and gateway modes.
+**Structure Decision**: reuse the existing area registrars and callbacks. Gateway/shared modules add discovery and routing confinement; IAM/secret input schemas and the three raw-fetch handlers also changed for security. Flat mode preserves supported names, not byte-identical historical schemas.
 
 ## Complexity Tracking
 
@@ -100,11 +104,13 @@ tests/
 | In-process operation registry (new abstraction over per-area registrars) | Measured 219,400-token discovery cost; per-tool API overhead (~42 tokens/tool) means only registering fewer tools removes it | Schema slimming alone reached only −28.5% in the audit; area-level filtering cannot reach a large cut because cost is flat across areas |
 | Route guard at the transport boundary | Independent review reproduced read-only and exclusion bypasses via path traversal in identifier fields across 11 areas | Per-field regex patches are unbounded (284 raw interpolation sites) and were shown insufficient; confinement at one choke point covers all areas uniformly |
 | Replacing the SDK's tools/list handler with a projected listing | Needed to strip SDK-injected boilerplate and serve one immutable definition set in flat/both modes | Reading SDK private `_registeredTools` was rejected; the public `setRequestHandler` path is used instead |
-| Implementation preceded the full spec (Principle II) | Owner requested shipping under an explicit "no matter the effort" directive; adversarial review workflows served as the interim gate | Retrofit performed 2026-09-06: full spec, clarifications, plan, research, data model, quickstart, tasks, and analyze pass |
+| Full specification/contract ordering was not completed before implementation | Historical process breach; autonomous execution did not authorize skipping required gates | Record the actual sequence and require spec/clarify/plan/tasks/analyze before future implementation. This is not a retroactive waiver. |
 
-## Follow-ups (not blocking this feature)
+## Remaining compliance work
 
 - Principle IV: add structured logging and a liveness signal appropriate to a stdio server (e.g. a `--health` self-check flag). Repo-wide, pre-existing.
 - Principle VII: runtime-validate upstream response shapes in handlers, starting with the most-used read operations. Repo-wide, pre-existing.
 - Principle I: add usage examples to legacy operation descriptions, or surface examples through `describe`. Repo-wide, pre-existing.
 - Measure post-change token counts on an Anthropic-served route when one is available; validation.md records bytes only.
+
+Final reference run (2026-09-06): unit-only 3,245 tests in 2.98 s; full coverage 6,106 tests in 5.44 s. Coverage includes every executable src/**/*.ts file. This satisfies the measured unit-time and coverage clauses, not the OPEN hot-reload or endpoint-contract-depth clauses.
