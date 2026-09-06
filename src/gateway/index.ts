@@ -8,6 +8,7 @@ import {
 	ExecuteInput,
 	SearchInput,
 	describeOperations,
+	gatewayError,
 	lookupError,
 	searchOperations,
 } from "./discovery.js";
@@ -39,13 +40,15 @@ function validationError(op: Operation, error: z.ZodError): CallToolResult {
 	}));
 	const schemaFits = Buffer.byteLength(JSON.stringify(op.inputSchema)) <= MAX_ERROR_SCHEMA_BYTES;
 	return jsonResult(
-		{
-			error:
-				"Invalid operation parameters. Correct these fields using the schema; scaleway_describe returns the full contract.",
-			op: op.op,
-			issues,
-			...(schemaFits ? { inputSchema: op.inputSchema } : { schemaOmitted: true }),
-		},
+		gatewayError(
+			"invalid_input",
+			"Invalid operation parameters. Correct these fields using the schema; scaleway_describe returns the full contract.",
+			{
+				op: op.op,
+				issues,
+				...(schemaFits ? { inputSchema: op.inputSchema } : { schemaOmitted: true }),
+			},
+		),
 		true,
 	);
 }
@@ -56,32 +59,37 @@ export async function executeOperation(
 	extra: OperationExtra,
 	readOnly: boolean,
 ): Promise<CallToolResult> {
+	// Envelope validation ({op, params} shape) deliberately throws: the SDK reports those as
+	// native tool-call errors exactly as it does for flat tools, so existing clients keep parity.
 	const { op: id, params = {} } = ExecuteInput.parse(input);
 	const op = registry.get(id);
 	if (!op) return jsonResult(lookupError(registry, id), true);
 	if (readOnly && !op.readOnly) {
 		return jsonResult(
-			{
-				error:
-					"This operation is not read-only. Use scaleway_call if authorized; IAM and configured filters still apply.",
-			},
+			gatewayError(
+				"permission_denied",
+				"This operation is not read-only. Use scaleway_call if authorized; IAM and configured filters still apply.",
+				{ op: op.op },
+			),
 			true,
 		);
 	}
 	try {
 		const parsed = await op.schema.safeParseAsync(params);
 		if (!parsed.success) return validationError(op, parsed.error);
+		// Handler results (including their own {error:{type,message,statusCode}} bodies) pass
+		// through untouched.
 		return await withRouteContext(op.tool, op.api, () => op.callback(parsed.data, extra));
 	} catch (error) {
 		if (error instanceof z.ZodError) return validationError(op, error);
 		// Raw exception text can contain credentials or request bodies. Existing structured
 		// handler results are preserved above; unhandled exceptions are deliberately sanitized.
 		return jsonResult(
-			{
-				error:
-					"Operation failed. Check scaleway_describe for parameters, Scaleway IAM permissions and service availability before retrying.",
-				op: op.op,
-			},
+			gatewayError(
+				"server_error",
+				"Operation failed. Check scaleway_describe for parameters, Scaleway IAM permissions and service availability before retrying.",
+				{ op: op.op },
+			),
 			true,
 		);
 	}

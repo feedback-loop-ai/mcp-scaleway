@@ -109,7 +109,7 @@ describe("cockpit module", () => {
 			"scaleway_cockpit_disable_managed_alerts",
 		];
 		for (const name of deprecated) {
-			expect(descriptions.get(name), name).toMatch(/ \(deprecated upstream\)$/);
+			expect(descriptions.get(name), name).toMatch(/ \(deprecated upstream\)\. Example: \{/);
 		}
 
 		const flagged = [...descriptions.entries()]

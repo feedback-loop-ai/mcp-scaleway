@@ -1,3 +1,5 @@
+> **Superseded (2026-09-05, feature 060 / release 0.4.0).** This contract describes a retired upstream API version. The current tool contract is `specs/060-api-correctness/contracts/autoscaling-tools.md` and the authoritative endpoint reference is under `specs/scaleway-api/`. Kept for history; do not implement against it.
+
 # Tool Contracts: Instance Scaling Groups (Autoscaling)
 
 All tools are zoned. `zone` is required and validated against `xx-xxx-N`. List tools

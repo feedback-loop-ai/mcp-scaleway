@@ -21,6 +21,7 @@ export const ApiErrorType = z.enum([
 	"permission_denied",
 	"invalid_input",
 	"rate_limited",
+	"unsupported_operation",
 	"server_error",
 ]);
 export type ApiErrorType = z.infer<typeof ApiErrorType>;

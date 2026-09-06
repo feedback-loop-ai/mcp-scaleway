@@ -6,22 +6,21 @@
 bun x vitest run --config tests/vitest.config.ts tests/contract/transport tests/contract/tools/elastic-metal/flexible-ip.transport.test.ts
 ```
 
-These build the real SDK client with injected HTTP and dummy credentials, stub global fetch to throw, and assert host, path, method, authentication header and error-status mapping for representative operations in every repaired area.
+These use injected HTTP and dummy credentials. The representative and migrated-area tests assert specific paths, headers, bodies and error handling. The catalog smoke replaces SDK HTTP and direct global-fetch paths with local recorders; it proves minimal-input dispatch for each registered operation, not full per-endpoint response semantics.
 
-## Whole-catalog smoke (local, no network)
+## Whole-catalog smoke (committed, runs in CI)
 
-The audit harness under `/tmp/scw-audit/smoke/smoke.ts` invokes every registered operation with synthesized valid input against a fake fetch and classifies each request. Expected: 724 OK, 0 BAD_URL, 0 NO_AUTH.
+```bash
+bun x vitest run --config tests/vitest.config.ts tests/contract/transport/catalog-smoke.contract.test.ts
+```
+
+Invokes every registered operation once through its SDK or direct-fetch path with synthesized valid input and a recording HTTP layer; asserts allowed host, well-formed path and authentication header for all 724 operations, grouped per area.
 
 ## Check parity and documentation agreement
 
 ```bash
 bun run test:parity
-python3 - <<'PY'
-import json,re
-m=json.load(open('tests/parity-matrix.json')); ops={e['tool'] for k,v in m.items() if k!='meta' for e in v.values()}
-doc=set(re.findall(r'`(scaleway_[a-z0-9_]+)`', open('README.md').read()))
-print('matrix',len(ops),'documented',len(ops & doc),'undocumented',sorted(ops-doc)[:5])
-PY
+bun x vitest run --config tests/vitest.config.ts tests/unit/docs-parity.test.ts tests/unit/supported-versions.test.ts
 ```
 
 ## Migration reminders for consumers

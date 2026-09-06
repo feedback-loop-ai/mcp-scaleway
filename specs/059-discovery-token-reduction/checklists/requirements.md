@@ -1,36 +1,29 @@
-# Specification Quality Checklist: Compact Operation Discovery
+# Specification Quality Checklist: 059-discovery-token-reduction
 
-**Purpose**: Validate specification completeness and quality before proceeding to planning
+**Purpose**: Separate document completeness from implementation compliance.
 **Created**: 2026-09-06
 **Feature**: [spec.md](../spec.md)
 
-## Content Quality
+## Content and requirements
 
-- [x] No implementation details (languages, frameworks, APIs)
-- [x] Focused on user value and business needs
-- [x] Written for non-technical stakeholders
-- [x] All mandatory sections completed
+- [x] Prioritized user stories and acceptance scenarios are present.
+- [x] Functional requirements and measurable success criteria have stable identifiers.
+- [x] Scope, edge cases, dependencies and glossary are explicit.
+- [x] Five clarification decisions are recorded as delegated assistant selections, not user-authored answers.
+- [x] The specification contains no unresolved clarification markers.
+- [x] Retrospective chronology is stated, without claiming pre-code compliance.
+- [x] Measurement methods distinguish bytes, tokens, transport dispatch and live execution.
+- [x] Runtime terminology appears only where needed to specify observable contracts or in the explicit glossary.
 
-## Requirement Completeness
+## Evidence and readiness
 
-- [x] No [NEEDS CLARIFICATION] markers remain (3 resolved in Clarifications, Session 2026-09-06)
-- [x] Requirements are testable and unambiguous
-- [x] Success criteria are measurable
-- [x] Success criteria are technology-agnostic (no implementation details)
-- [x] All acceptance scenarios are defined
-- [x] Edge cases are identified
-- [x] Scope is clearly bounded
-- [x] Dependencies and assumptions identified
-
-## Feature Readiness
-
-- [x] All functional requirements have clear acceptance criteria
-- [x] User scenarios cover primary flows
-- [x] Feature meets measurable outcomes defined in Success Criteria
-- [x] No implementation details leak into specification
+- [x] Research, data model, plan, contracts, quickstart and tasks are present.
+- [x] Current source/test evidence and historical audit reports are distinguished.
+- [x] Scope limitations are explicit: passing coverage is not full per-endpoint proof.
+- [ ] Every constitutional MUST is satisfied. See [analysis.md](../analysis.md).
+- [ ] Unconditional implementation/release clearance. No waiver is inferred from autonomy.
 
 ## Notes
 
-- Validation pass 2 (2026-09-06, post-clarify): all 16 items pass; 5 clarifications recorded (3 markers plus 2 scan findings on latency and duplicate results).
-- Validation pass 1 (2026-09-06): spec names no language, framework, file or environment-variable identifiers; "environment configuration" and "prefix" are described functionally. Three clarifications remain by design (scope of read-only, intent of the `core` preset, support window for compatibility mode); all are decisions the owner must make and all are within the three-marker limit.
-- Items marked incomplete require spec updates before `/speckit.clarify` or `/speckit.plan`.
+Document choices are resolved. Constitutional violations remain OPEN or HISTORICAL in
+[retrofit-compliance.md](../../retrofit-compliance.md); a checklist tick cannot waive them.

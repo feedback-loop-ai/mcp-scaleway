@@ -24,7 +24,16 @@ describe("parseApiMatchers", () => {
 				"api.scaleway.ai",
 			),
 		).toBe(true);
-		expect(parseApiMatchers("scaleway_iam_update_rule", "PUT /iam/v1alpha1/rules")).toHaveLength(2);
+		// Composite legs come only from the declaration; the generated IAM rule metadata names both.
+		const iamRules =
+			"GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules (SetRules read+set: no per-rule endpoint)";
+		for (const label of [
+			"scaleway_iam_create_rule",
+			"scaleway_iam_update_rule",
+			"scaleway_iam_delete_rule",
+		]) {
+			expect(parseApiMatchers(label, iamRules).map((leg) => leg.method)).toEqual(["GET", "PUT"]);
+		}
 		// Relative S3 legs (composite get_bucket_info) default to the regional S3 host.
 		const [head] = parseApiMatchers("scaleway_object_storage_get_bucket_info", "HEAD /{bucket}");
 		expect(head.host.test("s3.fr-par.scw.cloud")).toBe(true);
@@ -33,6 +42,19 @@ describe("parseApiMatchers", () => {
 	it("fails closed on malformed metadata", () => {
 		expect(() => parseApiMatchers("x", "FETCH /a")).toThrow("Invalid endpoint metadata");
 		expect(() => parseApiMatchers("x", "GET relative/path")).toThrow("Invalid endpoint metadata");
+	});
+	it("never lets a label authorize legs the declaration does not name", () => {
+		const single = "PUT /iam/v1alpha1/rules";
+		for (const label of [
+			"scaleway_iam_create_rule",
+			"scaleway_iam_update_rule",
+			"scaleway_iam_delete_rule",
+			"scaleway_object_storage_get_bucket_info",
+		]) {
+			expect(parseApiMatchers(label, single).map((leg) => leg.method)).toEqual(["PUT"]);
+			blocked(label, single, "https://api.scaleway.com/iam/v1alpha1/rules?policy_id=x", "GET");
+		}
+		ok("scaleway_iam_update_rule", single, "https://api.scaleway.com/iam/v1alpha1/rules", "PUT");
 	});
 });
 
@@ -156,7 +178,8 @@ describe("assertRouteAllowed", () => {
 		);
 	});
 	it("accepts any leg of a composite operation", () => {
-		const composite = "GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules";
+		const composite =
+			"GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules (SetRules read+set: no per-rule endpoint)";
 		ok(
 			"scaleway_iam_update_rule",
 			composite,
@@ -195,5 +218,18 @@ describe("guardedFetch", () => {
 			),
 		).rejects.toThrow("endpoint confinement");
 		expect(spy).not.toHaveBeenCalled();
+	});
+});
+
+describe("committed operation metadata compiles for the route guard", () => {
+	it("every generated endpoint declaration parses without a per-label override", async () => {
+		const { default: metadata } = await import("../../../src/gateway/operations.json");
+		expect(metadata.length).toBeGreaterThan(700);
+		for (const entry of metadata as Array<{ tool: string; api: string }>) {
+			// parseApiMatchers must accept the declaration as written; a failure here means a tool
+			// would only error at first dispatch. Passing the tool name proves no label special-case
+			// is needed for any entry.
+			expect(() => parseApiMatchers(entry.tool, entry.api), entry.tool).not.toThrow();
+		}
 	});
 });

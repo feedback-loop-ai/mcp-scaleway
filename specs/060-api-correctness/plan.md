@@ -1,6 +1,6 @@
 # Implementation Plan: Scaleway API Correctness Repairs
 
-**Branch**: `060-api-correctness` | **Date**: 2026-09-05 (retrofitted 2026-09-06) | **Spec**: [spec.md](spec.md)
+**Feature**: `060-api-correctness` | **Retrofit branch**: `docs/spec-retrofit-final` | **Date**: 2026-09-05 (retrofitted 2026-09-06) | **Spec**: [spec.md](spec.md)
 **Input**: Feature specification from `/specs/060-api-correctness/spec.md`
 
 **Note**: Retrofitted after shipping in 0.4.0 (commit `ce01175`, PR #54). Describes the design as built and evaluates it against Constitution v1.2.0.
@@ -17,7 +17,7 @@ Repair request construction across 33 product areas so operations reach Scaleway
 **Testing**: Vitest 3 + v8 coverage at 100% line/branch; new real-transport contract tests via `createAdvancedClient(withProfile, withHTTPClient(fake))` with a fail-closed global fetch
 **Target Platform**: stdio MCP server; requests to `api.scaleway.com`, `s3.<region>.scw.cloud`, `api.scaleway.ai`
 **Project Type**: single project
-**Performance Goals**: no behavioural latency change; suite stays under 5 s
+**Performance Goals**: preserve request semantics; unit-only suite under 5 s on the reference machine; combined coverage suite measured separately
 **Constraints**: preserve tool names and input contracts wherever a faithful mapping exists; no invented endpoints; no live network in tests; keep 100% coverage
 **Scale/Scope**: 33 areas touched; 733 → 724 operations (−5 DHCP, −3 container legacy, −1 net autoscaling); 2 API-version migrations; 1 API relocation
 
@@ -27,16 +27,16 @@ Repair request construction across 33 product areas so operations reach Scaleway
 
 | Principle | Status | Evidence / gap |
 |---|---|---|
-| I. AI-Native Development | PASS | Structured, actionable errors now carry real upstream statuses; unsupported combinations return explicit errors instead of silent reinterpretation. Pre-existing gap: legacy descriptions lack usage examples (tracked in 059 follow-ups). |
-| II. Spec-Driven Development | PASS (retrofitted) | Full spec/plan/tasks/research/data-model/quickstart now exist; implementation preceded them under the owner's explicit directive (Complexity Tracking). |
-| III. Contract-First API Design | PASS | Per-area API references updated before or with each migration (autoscaling, containers, elastic-metal, public-gateway, cockpit, product-catalog, iam, secret-manager); every operation maps to a documented endpoint; breaking changes versioned in 0.4.0 with CHANGELOG. |
-| IV. Operational Excellence | PARTIAL (pre-existing) | Error mapping fixed repo-wide; graceful failures preserved. Structured logging and a health signal remain absent repo-wide; not introduced here. Tracked in 059 follow-ups. |
+| I. AI-Native Development | OPEN: examples debt | Gateway descriptions and the 38 changed descriptions have examples. Other legacy descriptions still lack them. See ../retrofit-compliance.md#r-i; this is not an approved exception. |
+| II. Spec-Driven Development | HISTORICAL BREACH | The full specifications were written after implementation. Retrofitting records the design but cannot establish past spec-first compliance. No exception grant was requested or given. See ../retrofit-compliance.md#r-ii. |
+| III. Contract-First API Design | CURRENT CONTRACTS; historical ordering gap | Contracts and parity mappings are present. Gateway-authored domain errors now use the shared error object; SDK-native outer validation errors remain protocol errors. Contract/code/amendment commit ordering does not prove the required pre-implementation sequence. See ../retrofit-compliance.md#r-iii. |
+| IV. Operational Excellence | OPEN: operational controls | Structured per-operation logging and an explicit operational health signal are not implemented, including on gateway dispatch. No exemption is granted. See ../retrofit-compliance.md#r-iv. |
 | V. Simplicity & YAGNI | PASS | Repairs are in-place corrections; removed operations deleted rather than stubbed (dead code is negative value); no new abstractions. |
-| VI. Fast Feedback Loops | PASS | Suite 4.46 s measured after all changes. |
-| VII. Type Safety & Validation | PASS for this feature; PARTIAL repo-wide | Inputs Zod-validated; new schema constraints for IAM identifiers, secret revisions and autoscaling inputs; startup fails fast on misconfiguration. Upstream responses still not runtime-validated in most areas (pre-existing, tracked). |
-| VIII. 100% Coverage & API Parity | PASS | 100% lines/branches; parity matrix updated for every removal and migration; new contract tests referenced from the matrix; real-transport tests added for the whole catalog (`tests/contract/transport/path-auth.contract.test.ts`) and per migrated area. |
+| VI. Fast Feedback Loops | OPEN: hot reload; unit timing PASS | The unit-only suite must be measured separately against the under-five-second clause; combined coverage timing is not that measurement. A dedicated hot-reload development command remains absent. See ../retrofit-compliance.md#r-vi. |
+| VII. Type Safety & Validation | OPEN: response validation | Strict TypeScript and input/config validation are enforced. Generic SDK return types and JSON parsing do not provide runtime validation of every upstream response. These inherited gaps remain relevant to gateway pass-through. See ../retrofit-compliance.md#r-vii. |
+| VIII. 100% Coverage & API Parity | OPEN: endpoint contract depth; coverage PASS | src/main.ts is covered and no executable source exclusion remains. Parity and generated-metadata gates pass. Every operation has a mapped test, but existence of a file and a minimum-input transport smoke do not prove every endpoint response, pagination, authorization and error contract. See ../retrofit-compliance.md#r-viii. |
 
-**Gate result**: proceed. PARTIAL rows are repo-wide and predate this feature; they are tracked, not diluted.
+**Gate result**: BLOCKED for an unconditional constitution-compliance claim. The retrospective documents can be reviewed and committed with these findings visible. Zero unresolved specification choices is not zero implementation noncompliance. No owner waiver is inferred from authorization to work autonomously.
 
 ## Project Structure
 
@@ -44,16 +44,24 @@ Repair request construction across 33 product areas so operations reach Scaleway
 
 ```text
 specs/060-api-correctness/
+├── analysis.md          # final findings and evidence
+├── analysis-history.md  # initial independent analysis
+├── traceability.md      # requirements to tasks
+├── workflow-record.md   # retrospective execution record
 ├── spec.md
 ├── plan.md
 ├── research.md
 ├── data-model.md
 ├── quickstart.md
+├── contracts/
+│   ├── autoscaling-tools.md
+│   ├── containers-tools.md
+│   └── elastic-metal-tools.md
 ├── checklists/requirements.md
 └── tasks.md
 ```
 
-Per-area authoritative references updated under `specs/scaleway-api/<area>/api-reference.md` for autoscaling, containers, elastic-metal, public-gateway, cockpit, product-catalog, iam and secret-manager.
+Per-area authoritative references updated under `specs/scaleway-api/<area>/api-reference.md` for autoscaling, containers, elastic-metal, public-gateway and cockpit. Tool contracts for migrated surfaces: `contracts/`. Offline supported-version inventory: `specs/scaleway-api/supported-versions.json`.
 
 ### Source Code (repository root)
 
@@ -76,7 +84,13 @@ src/
 └── tools/cockpit/index.ts                        # deprecation notices
 
 tests/
-├── contract/transport/path-auth.contract.test.ts          # real SDK, whole-catalog GET paths + auth + error statuses
+├── contract/transport/path-auth.contract.test.ts          # real SDK, representative GET paths + auth + error statuses
+├── contract/transport/catalog-smoke.contract.test.ts      # real SDK, every operation: host, path, auth (per area)
+├── contract/transport/migrated-areas.transport.test.ts    # autoscaling v1alpha2, generated-client page_size, SigV4/bearer
+├── unit/main.test.ts                                      # entry point (coverage exclusion removed)
+├── unit/docs-parity.test.ts                               # matrix ⇔ metadata ⇔ README ⇔ counts
+├── unit/supported-versions.test.ts                             # every endpoint on a documented supported product/version pair
+├── unit/tools/description-examples.test.ts                # Constitution I usage examples for areas authored here
 ├── contract/tools/elastic-metal/flexible-ip.transport.test.ts
 ├── contract/containers/containers.contract.test.ts        # real-transport v1 contracts
 ├── contract/autoscaling/autoscaling.contract.test.ts
@@ -92,10 +106,12 @@ tests/
 |-----------|------------|-------------------------------------|
 | Breaking removal of 8 operations (DHCP ×5, container deploy/tokens ×3) | Upstream endpoints removed; stubs would violate "no invented abstractions" and the 1:1 parity invariant | Keeping stubs that return "unsupported" was prototyped and rejected: it fails the parity gate honestly (api: null) and still misleads discovery |
 | sdk-client major bump (1.x → 2.x) and Node floor 18 → 20.20.2 | Installed product SDKs declared a 2.x peer and Node ≥ 20.19; the 1.x client was silently unsupported | Pinning product SDKs back to 1.x-compatible versions would have lost the upstream fixes the migrations depend on |
-| Implementation preceded the full spec (Principle II) | Owner directive to fix correctness before token work, shipped under time pressure; adversarial review workflows served as the interim gate | Retrofit performed 2026-09-06 with clarify and analyze passes |
+| Full specification/contract ordering was not completed before implementation | Historical process breach; autonomous execution did not authorize skipping required gates | Record the actual sequence and require spec/clarify/plan/tasks/analyze before future implementation. This is not a retroactive waiver. |
 
-## Follow-ups (not blocking)
+## Remaining compliance work
 
-- Adopt official `@scaleway/sdk-<product>` packages for the 45 hand-rolled areas; this would also retire the leading-slash class of bug structurally.
-- Runtime-validate upstream response shapes (Principle VII, repo-wide).
-- Live smoke test against a sandbox project with real credentials, run manually and outside CI.
+- Adopt official `@scaleway/sdk-<product>` packages for the 45 hand-rolled areas (out of scope per spec; separate feature).
+- Runtime-validate upstream response shapes (Principle VII, repo-wide; 059 T057).
+- Re-verify `specs/scaleway-api/supported-versions.json` against upstream on a schedule; a manual live smoke against a sandbox project is the verification step (060 T056).
+
+Final reference run (2026-09-06): unit-only 3,245 tests in 2.98 s; full coverage 6,106 tests in 5.44 s. Coverage includes every executable src/**/*.ts file. This satisfies the measured unit-time and coverage clauses, not the OPEN hot-reload or endpoint-contract-depth clauses.

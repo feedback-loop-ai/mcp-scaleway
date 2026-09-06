@@ -6,6 +6,7 @@ const STATUS_TO_ERROR_TYPE: Record<number, ApiErrorType> = {
 	403: "permission_denied",
 	404: "not_found",
 	429: "rate_limited",
+	501: "unsupported_operation",
 };
 
 /**

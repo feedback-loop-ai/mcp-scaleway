@@ -5,11 +5,13 @@
 | Mode | Tool definitions | Compact tool-array bytes | Instruction bytes |
 | --- | ---: | ---: | ---: |
 | gateway | 4 | 2,162 | 1,233 |
-| flat | 724 | 554,857 | 1,060 |
-| both | 728 | 557,018 | 1,230 |
+| flat | 724 | 557,833 | 1,060 |
+| both | 728 | 559,994 | 1,230 |
+
+Baseline note (I6): the audit measured 733 tools at 219,400 tokens on the 0.3.x catalog. Feature 060 then removed 9 operations (733 → 724). The 99.61% listing-byte reduction below is gateway versus the 724-tool flat mode; SC-001's "99% smaller than the previous full catalog" holds against both the 733 and 724 baselines.
 
 Measured with a real MCP Client and InMemoryTransport using `bun run measure:discovery`.
-Listing-byte reduction gateway versus flat: 99.61%. These are not tokenizer estimates.
+Listing-byte reduction gateway versus flat: 99.61% (2,162 / 557,833). The 38 usage examples added to legacy operation descriptions during the spec retrofit (Constitution I) increased the flat/both listings slightly versus the 0.4.0 figures (554,857 / 557,018); the gateway listing is unchanged at 2,162 bytes because the four gateway tools carry their own descriptions. These are bytes, not tokenizer estimates.
 The original 733-tool audit counted 219,400 input tokens on its Opus route. After implementation,
 the official Anthropic SDK countTokens call returned HTTP 503 for all tested modes:
 `All accounts are temporarily unavailable`. Final model-specific token count is unverified.
@@ -37,5 +39,4 @@ payloads remain unchanged. Read-only is not a confidentiality guarantee or an IA
 The runtime config is immutable for a server lifetime; reconnect after changing profiles.
 Source changes do not remove previously loaded tool schemas from existing conversations.
 
-Reviews are delivered as correctness PR #54 and stacked compact-discovery PR #55.
-Neither PR authorizes merging, tagging, npm publication or production configuration changes.
+Reviews were delivered as correctness PR #54 and compact-discovery PR #55, both merged to main; 0.4.0 was published to npm and released on GitHub. This validation file is a historical record of the pre-release measurements and verification boundaries; it does not authorize further release actions.

@@ -1315,7 +1315,7 @@
 			"tool": "scaleway_iam_create_policy"
 		},
 		"CreateRule": {
-			"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+			"api": "GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules (SetRules read+set: no per-rule endpoint)",
 			"contract_test": "tests/contract/iam/iam.contract.test.ts",
 			"tool": "scaleway_iam_create_rule"
 		},
@@ -1345,7 +1345,7 @@
 			"tool": "scaleway_iam_delete_policy"
 		},
 		"DeleteRule": {
-			"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+			"api": "GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules (SetRules read+set: no per-rule endpoint)",
 			"contract_test": "tests/contract/iam/iam.contract.test.ts",
 			"tool": "scaleway_iam_delete_rule"
 		},
@@ -1440,7 +1440,7 @@
 			"tool": "scaleway_iam_update_policy"
 		},
 		"UpdateRule": {
-			"api": "PUT /iam/v1alpha1/rules (SetRules read+set: GET /rules?policy_id= then PUT /rules)",
+			"api": "GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules (SetRules read+set: no per-rule endpoint)",
 			"contract_test": "tests/contract/iam/iam.contract.test.ts",
 			"tool": "scaleway_iam_update_rule"
 		},

@@ -5,10 +5,15 @@
  * specs/scaleway-api/<area>/api-reference.md; these four tools are not cloud endpoints.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+	DISCOVERY_FLOW_BYTE_BUDGET,
+	measureDiscoveryFlow,
+} from "../../scripts/measure-discovery.js";
 import { registerGatewayTools } from "../../src/gateway/index.js";
 import metadata from "../../src/gateway/operations.json";
 import {
 	type OperationCallback,
+	type OperationRegistry,
 	createOperationRegistry,
 	registerFlatTools,
 } from "../../src/gateway/registry.js";
@@ -90,6 +95,35 @@ describe("scaleway_search contract", () => {
 			await instance.close();
 		}
 	});
+	it("lists byte-identical gateway tool definitions for the fixture registry and the real catalog", async () => {
+		const listings: string[] = [];
+		for (const registry of [fixtureRegistry(), createOperationRegistry()] as OperationRegistry[]) {
+			const instance = server();
+			installCatalogListing(instance, registerGatewayTools(instance, registry));
+			const client = await connect(instance);
+			try {
+				listings.push(JSON.stringify(await client.listTools()));
+			} finally {
+				await client.close();
+				await instance.close();
+			}
+		}
+		expect(listings[0]).toBe(listings[1]);
+		expect(Buffer.byteLength(listings[1])).toBeLessThan(12_000);
+	});
+	it("keeps the representative offline search->describe flow inside its byte budget", async () => {
+		// Measured 2026-09: search 310 B + describe 1051 B = 1361 B over the in-memory transport.
+		// Bytes are not tokens and no operation is executed; this guards discovery payload drift only.
+		const flow = await measureDiscoveryFlow("rdb list databases", "rdb_list_databases");
+		expect(flow.searchHits).toContain("rdb_list_databases");
+		expect(flow.describedOps).toEqual(["rdb_list_databases"]);
+		expect(flow.searchBytes).toBeGreaterThan(0);
+		expect(flow.describeBytes).toBeGreaterThan(flow.searchBytes);
+		expect(flow.totalBytes).toBe(flow.searchBytes + flow.describeBytes);
+		expect(flow.totalBytes).toBeLessThanOrEqual(DISCOVERY_FLOW_BYTE_BUDGET);
+		expect(DISCOVERY_FLOW_BYTE_BUDGET).toBe(2_048);
+		expect(fetch).not.toHaveBeenCalled();
+	});
 });
 
 describe("scaleway_describe contract", () => {
@@ -114,18 +148,49 @@ describe("scaleway_describe contract", () => {
 			).toEqual({ type: "string" });
 			expect(response.operations[1].inputSchema.properties.page.default).toBe(1);
 			expect(JSON.stringify(response.operations[2].inputSchema)).toContain("anyOf");
-			expect(
-				(
-					await client.callTool({
-						name: "scaleway_describe",
-						arguments: { ops: Array(11).fill("instances_list_servers") },
-					})
-				).isError,
-			).toBe(true);
-			expect(
-				(await client.callTool({ name: "scaleway_describe", arguments: { ops: ["not_real"] } }))
-					.isError,
-			).toBe(true);
+			// Oversized batches are SDK-native outer validation errors (left to the SDK on purpose).
+			const oversized = await client.callTool({
+				name: "scaleway_describe",
+				arguments: { ops: Array(11).fill("instances_list_servers") },
+			});
+			expect(oversized.isError).toBe(true);
+			expect(() => textJson(oversized)).toThrow();
+			const unknown = await client.callTool({
+				name: "scaleway_describe",
+				arguments: { ops: ["not_real"] },
+			});
+			expect(unknown.isError).toBe(true);
+			expect(textJson(unknown)).toEqual({
+				error: {
+					type: "not_found",
+					message:
+						"Unknown or disabled operation. Use scaleway_search to find an allowed ID; filters apply to execution too.",
+					statusCode: 404,
+				},
+				suggestions: [],
+			});
+			const typo = textJson(
+				await client.callTool({
+					name: "scaleway_describe",
+					arguments: { ops: ["rdb_list_databse"] },
+				}),
+			);
+			expect(typo.error).toMatchObject({ type: "not_found", statusCode: 404 });
+			expect(typo.suggestions[0]).toBe("rdb_list_databases");
+			expect(typo.suggestions.length).toBeLessThanOrEqual(5);
+			const badArea = await client.callTool({
+				name: "scaleway_search",
+				arguments: { area: "not-real" },
+			});
+			expect(badArea.isError).toBe(true);
+			expect(textJson(badArea)).toMatchObject({
+				error: {
+					type: "not_found",
+					message: "Unknown or disabled area. Use an enabled area slug or omit area to list them.",
+					statusCode: 404,
+				},
+				areas: expect.arrayContaining(["rdb", "instances"]),
+			});
 		} finally {
 			await client.close();
 			await instance.close();
@@ -171,13 +236,39 @@ describe("scaleway_read and scaleway_call contracts", () => {
 				const invalid = await client.callTool({ name: "scaleway_call", arguments: args });
 				expect(invalid.isError).toBe(true);
 				expect(JSON.stringify(invalid)).not.toContain("SECRET_");
-				expect(textJson(invalid)).toHaveProperty("inputSchema");
+				const body = textJson(invalid);
+				expect(body).toMatchObject({
+					error: {
+						type: "invalid_input",
+						message: expect.stringContaining("Invalid operation parameters"),
+						statusCode: 400,
+					},
+					op: args.op,
+					issues: expect.arrayContaining([{ code: expect.any(String), field: expect.any(String) }]),
+				});
+				expect(body).toHaveProperty("inputSchema");
+				expect(Object.keys(body).sort()).toEqual(["error", "inputSchema", "issues", "op"]);
 			}
 			expect(callback).toHaveBeenCalledTimes(2);
+			// Handler-produced results, including their own error bodies, are never re-wrapped.
 			callback.mockReturnValue({ ...result, isError: true });
 			expect(
 				await client.callTool({ name: "scaleway_read", arguments: { op: "dns_get_zone" } }),
 			).toMatchObject({ ...result, isError: true });
+			const refused = await client.callTool({
+				name: "scaleway_read",
+				arguments: { op: "instances_create_server" },
+			});
+			expect(refused.isError).toBe(true);
+			expect(textJson(refused)).toEqual({
+				error: {
+					type: "permission_denied",
+					message:
+						"This operation is not read-only. Use scaleway_call if authorized; IAM and configured filters still apply.",
+					statusCode: 403,
+				},
+				op: "instances_create_server",
+			});
 			callback.mockImplementation(() => {
 				throw new Error("credential-sensitive error");
 			});
@@ -187,6 +278,19 @@ describe("scaleway_read and scaleway_call contracts", () => {
 			});
 			expect(thrown.isError).toBe(true);
 			expect(JSON.stringify(thrown)).not.toContain("credential-sensitive");
+			expect(textJson(thrown)).toEqual({
+				error: {
+					type: "server_error",
+					message:
+						"Operation failed. Check scaleway_describe for parameters, Scaleway IAM permissions and service availability before retrying.",
+					statusCode: 500,
+				},
+				op: "dns_get_zone",
+			});
+			// The {op, params} envelope itself stays SDK-native validation, as for flat tools.
+			const native = await client.callTool({ name: "scaleway_call", arguments: { op: "" } });
+			expect(native.isError).toBe(true);
+			expect(() => textJson(native)).toThrow();
 		} finally {
 			await client.close();
 			await instance.close();
@@ -222,14 +326,28 @@ describe("scaleway_read and scaleway_call contracts", () => {
 						"secret_manager_access_secret_version",
 					]) {
 						for (const op of [id, `scaleway_${id}`]) {
-							for (const tool of ["scaleway_read", "scaleway_call"])
-								expect((await client.callTool({ name: tool, arguments: { op } })).isError).toBe(
-									true,
-								);
-							expect(
-								(await client.callTool({ name: "scaleway_describe", arguments: { ops: [op] } }))
-									.isError,
-							).toBe(true);
+							for (const tool of ["scaleway_read", "scaleway_call"]) {
+								const denied = await client.callTool({ name: tool, arguments: { op } });
+								expect(denied.isError).toBe(true);
+								expect(textJson(denied)).toMatchObject({
+									error: { type: "not_found", statusCode: 404 },
+								});
+							}
+							const described = await client.callTool({
+								name: "scaleway_describe",
+								arguments: { ops: [op] },
+							});
+							expect(described.isError).toBe(true);
+							// Suggestions rank only the allowed registry: disabled IDs never leak.
+							const body = textJson(described);
+							expect(body).toEqual({
+								error: { type: "not_found", message: expect.any(String), statusCode: 404 },
+								suggestions: expect.any(Array),
+							});
+							expect(body.suggestions.length).toBeLessThanOrEqual(5);
+							for (const suggested of body.suggestions) {
+								expect(suggested).toBe("instances_list_servers");
+							}
 						}
 					}
 				}
