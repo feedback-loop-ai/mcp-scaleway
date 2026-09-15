@@ -67,6 +67,58 @@ Test organization:
 - **Contract traceability**: Every contract test MUST reference its Scaleway API endpoint and the corresponding entry in `specs/scaleway-api/`
 - **No tool without tests**: MCP tools cannot merge without 100% contract test coverage
 
+## Declared Namespaces (Decision 2, approved 2026-09-15)
+
+Declared constants may use the product's short wire name: a constant head such
+as `datalab` or `mnq` is a declaration, not a published namespace, and is not a
+defect while the assembled request route matches a published route. The
+parity-matrix `api` field records the published form. Every legitimate alias is
+a row in the checked table below (alias-table markers bound to
+`.forge/reports/governance/declared-namespace-aliases.json`, which stays the
+single source of truth — it lives under the ignored `.forge/` evidence tree, so
+the table is inlined at this section; regenerate it from the JSON if the two
+drift). (the 11 mismatched heads are listed today:
+`datalab`, `datawarehouse`, `domain` (dns and domain-registrar), `flexible-ip`,
+`file`, `functions`, `kafka`, `mnq` (nats and sqs), `searchdb`, `product-catalog`,
+`messageq`, plus the `rdb`/`mongodb` short heads). The scan reads the table: an
+alias that resolves is recorded as the approved class; a head that differs with
+no alias row is a plain mismatch listed (one exists today: `serverless-sqldb`,
+held behind its Tier-C document); and a route outside the published set entirely
+— the webhosting class, the subject of `bun run probe:webhosting` — is no alias's
+to explain and stays visible as itself.
+
+
+<!-- alias-table:start (regenerated from the JSON source of truth) -->
+| area | declared head | published | kind |
+|---|---|---|---|
+| `apple-silicon` | apple-silicon | `apple-silicon/v1alpha1` | resolves-to-published |
+| `audit-trail` | audit-trail | `audit-trail/v1alpha1` | resolves-to-published |
+| `autoscaling` | autoscaling / instance | `autoscaling/v1alpha2 or autoscaling/v2alpha1` | short-name-of-published; note: v2alpha1 is itself a published head (the published doc serves v1alpha2 and v2alpha1) |
+| `billing` | billing | `billing/v2beta1` | resolves-to-published |
+| `block-storage` | block | `block-storage/v1` | short-name-of-published |
+| `data-lab` | datalab | `data-lab/v1beta1` | short-name-of-published |
+| `data-warehouse` | datawarehouse | `data-warehouse/v1beta1` | short-name-of-published |
+| `dns` | domain | `domains-and-dns/v2beta1` | short-name-of-published |
+| `domain-registrar` | domain | `domains-and-dns/registrar/v2beta1` | short-name-of-published |
+| `elastic-metal` | flexiple-ip | `elastic-metal/v1` | short-name-of-published |
+| `environmental-footprint` | environmental-footprint | `environmental-footprint/v1alpha1` | resolves-to-published |
+| `file-storage` | file | `file-storage/v1alpha1` | short-name-of-published |
+| `functions` | functions | `serverless-functions/v1beta1` | short-name-of-published |
+| `iam` | iam | `iam/v1alpha1` | resolves-to-published |
+| `interlink` | interlink | `interlink/v1beta1` | resolves-to-published |
+| `kafka` | kafka | `clusters-for-kafka/v1alpha1` | short-name-of-published |
+| `mailbox` | mailbox | `mailbox/v1alpha1` | resolves-to-published |
+| `mongodb` | mongodb | `managed-database-mongodb/v1` | short-name-of-published |
+| `nats` | mnq | `messaging-and-queuing/nats/v1beta1` | shared-prefix-of-two; mnq fronts both nats and sqs published heads — resolves only once the target product is known |
+| `opensearch` | searchdb | `cloud-essentials-for-opensearch/v1alpha1` | short-name-of-published |
+| `product-catalog` | product-catalog | `product-catalog/public-catalog/v2alpha1` | short-name-of-published |
+| `rabbitmq` | messageq | `message-queue-for-rabbitmq/v1alpha1` | short-name-of-published |
+| `rdb` | rdb | `managed-database-postgre-mysql/v1` | short-name-of-published |
+| `sqs` | mnq | `messaging-and-queuing/sqs/v1beta1` | shared-prefix-of-two; see nats |
+| `tem` | transactional-email | `transactional-email/v1alpha1` | resolves-to-published |
+| `vpn` | s2s-vpn | `site-to-site-vpn/v1alpha1` | short-name-of-published |
+<!-- alias-table:end -->
+
 ## Envelope Boundary (Decision 1, approved 2026-09-15)
 
 Upstream Scaleway JSON is snake_case and is passed through by this server without

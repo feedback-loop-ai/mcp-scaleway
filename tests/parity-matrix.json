@@ -3743,6 +3743,200 @@
 				"tool": "scaleway_call",
 				"contract_test": "tests/contract/gateway.test.ts"
 			}
-		]
+		],
+		"schemaFiles": {
+			"account": {
+				"url": "https://www.scaleway.com/en/developers/api/account/project/v3/schema.yml",
+				"sha256": "af3ce4c35fd9825aa0228051c19be91427462d5c250a6d30490cad5028f7bad1"
+			},
+			"apple-silicon": {
+				"url": "https://www.scaleway.com/en/developers/api/apple-silicon/v1alpha1/schema.yml",
+				"sha256": "8efee6682483f17edde6acbccf294a7fc4a96d30e5ea31adab89d9a267d46a0c"
+			},
+			"audit-trail": {
+				"url": "https://www.scaleway.com/en/developers/api/audit-trail/v1alpha1/schema.yml",
+				"sha256": "4bf6d0a55d856ec7432db29e72a08144dd169841d3421c45c051215dc29c7ded"
+			},
+			"autoscaling": {
+				"url": "https://www.scaleway.com/en/developers/api/autoscaling/v1alpha2/schema.yml",
+				"sha256": "c8c07616aed5bd043fe5370a9791806ab2e0fe2dbcfc238bb056a31e5bc0a76e"
+			},
+			"billing": {
+				"url": "https://www.scaleway.com/en/developers/api/billing/v2beta1/schema.yml",
+				"sha256": "ada4004c54d882eae93025ae05cd4c4f6e81e4395fdc8b90ace9f4f4693a171a"
+			},
+			"block-storage": {
+				"url": "https://www.scaleway.com/en/developers/api/block/v1/schema.yml",
+				"sha256": "3cb4d9185b06f810835d58bd01d1858b52a59fd7bdd39301dcaabb43f5c58c33"
+			},
+			"cockpit": {
+				"url": "https://www.scaleway.com/en/developers/api/cockpit/regional/v1/schema.yml",
+				"sha256": "9c82d620dc451a71cd597432efc6cd6a72d3f8a0528b885c69167e4c809feb84"
+			},
+			"containers": {
+				"url": "https://www.scaleway.com/en/developers/api/serverless-containers/v1/schema.yml",
+				"sha256": "91966d4c1f291c6fa3ac4652ffc84f9f65b095ada11a7d2c8539c082e309ad2a"
+			},
+			"data-lab": {
+				"url": "https://www.scaleway.com/en/developers/api/data-lab/v1beta1/schema.yml",
+				"sha256": "c3216cfd5cd75d724c5e67a74a566383ef0d59a3858a77f0b40242c80b80408a"
+			},
+			"data-warehouse": {
+				"url": "https://www.scaleway.com/en/developers/api/data-warehouse/v1beta1/schema.yml",
+				"sha256": "e30441749c0af7cab3ac670b053e4f778a8eaae85592838d09c85917e3c3bbc5"
+			},
+			"dedibox": {
+				"url": "https://www.scaleway.com/en/developers/api/dedibox/v1/schema.yml",
+				"sha256": "bc58fe8ea1321ca025f93794770969d500b5d99c2eb22b6870636c8c72f108b5"
+			},
+			"dns": {
+				"url": "https://www.scaleway.com/en/developers/api/domains-and-dns/v2beta1/schema.yml",
+				"sha256": "d21384c8651d4457d8b051e7b5883b5a39f0198ed5fb9a2f53e0c286e7c01ac8"
+			},
+			"domain-registrar": {
+				"url": "https://www.scaleway.com/en/developers/api/domains-and-dns/registrar/v2beta1/schema.yml",
+				"sha256": "4a4f0bb2ce6e15a46af84bd8c57a51ec2a37450ffe4c197538b3265d6a3fd6e9"
+			},
+			"edge-services": {
+				"url": "https://www.scaleway.com/en/developers/api/edge-services/v1beta1/schema.yml",
+				"sha256": "37837af6b658980dbbcd0026644cc2eda859576740ec074ecd4768021f59c6bc"
+			},
+			"elastic-metal": {
+				"url": "https://www.scaleway.com/en/developers/api/elastic-metal/v1/schema.yml",
+				"sha256": "62fd3167e1c20c2554f81271593e76bebeae5501cd94a3eb1b72241962ea76ab"
+			},
+			"environmental-footprint": {
+				"url": "https://www.scaleway.com/en/developers/api/environmental-footprint/v1alpha1/schema.yml",
+				"sha256": "27d3325ee6432973e475bb54b927a223a95d54b89ef2cba2691e157a38888f6c"
+			},
+			"file-storage": {
+				"url": "https://www.scaleway.com/en/developers/api/file-storage/v1alpha1/schema.yml",
+				"sha256": "3f4707d4c1c1f543b02d2ee5ce808c02f3c784ed7b1de68c7762e86f7a9257f9"
+			},
+			"functions": {
+				"url": "https://www.scaleway.com/en/developers/api/serverless-functions/v1beta1/schema.yml",
+				"sha256": "b5c95a7fe7ad4f69a610dfb554042b627f530aeafa28d872aeb7b0ef144af73a"
+			},
+			"generative-apis": {
+				"url": "https://www.scaleway.com/en/developers/api/generative-apis/v1/schema.yml",
+				"sha256": "8abd85f2940bf6afbf067195b20e3d2c2f3168c9a2849d0e94cb02a6416bf112"
+			},
+			"iam": {
+				"url": "https://www.scaleway.com/en/developers/api/iam/v1alpha1/schema.yml",
+				"sha256": "2418e401cf9b170aa8834f4355bb597eff1d3e3aee2ed94b6f4ca459248ed534"
+			},
+			"inference": {
+				"url": "https://www.scaleway.com/en/developers/api/inference/v1/schema.yml",
+				"sha256": "0faaac28b190784940809a0d6e7ffedbdfc7484613d795726b9cfb447d9c44bc"
+			},
+			"instances": {
+				"url": "https://www.scaleway.com/en/developers/api/instance/v1/schema.yml",
+				"sha256": "0060261d69766fab9064abd7cc81088b69184b6f69be9801d15c4e3758aef165"
+			},
+			"interlink": {
+				"url": "https://www.scaleway.com/en/developers/api/interlink/v1beta1/schema.yml",
+				"sha256": "dbcd47d3b410efc22644e661fbeb3d7f267b34c0cd15adf30fa92ba6e2cc9ab5"
+			},
+			"iot": {
+				"url": "https://www.scaleway.com/en/developers/api/iot/v1/schema.yml",
+				"sha256": "a626925d21721fc0dc7b08bb53766b0f82ad4acb96097caa1fa6a4691061eacb"
+			},
+			"ipam": {
+				"url": "https://www.scaleway.com/en/developers/api/ipam/v1/schema.yml",
+				"sha256": "af4ceaa20c3b5df210454aab9e17207145f9d5de6f4df146399c99af35cd1575"
+			},
+			"jobs": {
+				"url": "https://www.scaleway.com/en/developers/api/serverless-jobs/v1alpha2/schema.yml",
+				"sha256": "2fad7476135325531ef0d338da45da64db917338c7f61d7f6da8e028d339fab7"
+			},
+			"k8s": {
+				"url": "https://www.scaleway.com/en/developers/api/kubernetes/v1/schema.yml",
+				"sha256": "57fe1f868632c716bfee1e235e0fdb67222129aea7be70f1b162a2e536f28451"
+			},
+			"kafka": {
+				"url": "https://www.scaleway.com/en/developers/api/clusters-for-kafka/v1alpha1/schema.yml",
+				"sha256": "652d7d4567427e4a3b98697bfbfa4be7d528868400b0067704ed77fae7dbff08"
+			},
+			"key-manager": {
+				"url": "https://www.scaleway.com/en/developers/api/key-manager/v1alpha1/schema.yml",
+				"sha256": "9d0ba64e59efc8653d6cce82db248ceb7d3edfa4b40501287e9c32534415ba78"
+			},
+			"lb": {
+				"url": "https://www.scaleway.com/en/developers/api/load-balancer/zoned/v1/schema.yml",
+				"sha256": "14b21ef3c9332fc13e35a8b465396464e64022eb1a1f733055b330b921975dc0"
+			},
+			"mailbox": {
+				"url": "https://www.scaleway.com/en/developers/api/mailbox/v1alpha1/schema.yml",
+				"sha256": "d97d6f02603dbf42023fab444d5d3905e36755cbf469b75384bc2df8442adeb9"
+			},
+			"marketplace": {
+				"url": "https://www.scaleway.com/en/developers/api/marketplace/v2/schema.yml",
+				"sha256": "30179eca9c1fb6c60aa39810d809335a56c6401d387e04b2dcbb24f72b3a885c"
+			},
+			"mongodb": {
+				"url": "https://www.scaleway.com/en/developers/api/managed-database-mongodb/v1/schema.yml",
+				"sha256": "410038b539a20ca2e93ea3ffd2a3bf42c81850c5e7829beda87d7e61202ea698"
+			},
+			"nats": {
+				"url": "https://www.scaleway.com/en/developers/api/messaging-and-queuing/nats/v1beta1/schema.yml",
+				"sha256": "0256529ebdd0685b3ab1286f34ecaff0f494e056b1ddcb505b63fdf86f646e60"
+			},
+			"opensearch": {
+				"url": "https://www.scaleway.com/en/developers/api/cloud-essentials-for-opensearch/v1alpha1/schema.yml",
+				"sha256": "c540004820d503738478f2bdd801d0b5ecb5137f5cd586ade70235c3d90aefc2"
+			},
+			"product-catalog": {
+				"url": "https://www.scaleway.com/en/developers/api/product-catalog/public-catalog/v2alpha1/schema.yml",
+				"sha256": "e2f76ed760618557e457799d7bf9cebf7afb5526d134d7a1f779e6ebdd3d4dfb"
+			},
+			"public-gateway": {
+				"url": "https://www.scaleway.com/en/developers/api/public-gateway/v2/schema.yml",
+				"sha256": "c7099bdb5403183f292ab8d5f86cdf343665919d65a6163bbe2fd11d4beb502a"
+			},
+			"rabbitmq": {
+				"url": "https://www.scaleway.com/en/developers/api/messageq/v1alpha1/schema.yml",
+				"sha256": "07eb66d0f1f8530bc6b4f50837e0254e5067bcbbf6aaf6e49128c1501b5ffa27"
+			},
+			"rdb": {
+				"url": "https://www.scaleway.com/en/developers/api/managed-database-postgre-mysql/v1/schema.yml",
+				"sha256": "efd9b27cb7702a8afb548d02315c97a22d950152267ab7591945619c3f571a87"
+			},
+			"redis": {
+				"url": "https://www.scaleway.com/en/developers/api/managed-database-redis/v1/schema.yml",
+				"sha256": "2f70c3af917fe4193a59bbe146eb57a49b7f31ba1d6c7a6bb07b4d78a5594790"
+			},
+			"registry": {
+				"url": "https://www.scaleway.com/en/developers/api/registry/v1/schema.yml",
+				"sha256": "a02011c11a432324db07f4420c71d054ad423ea8bbcc0786d722f023584b91b3"
+			},
+			"secret-manager": {
+				"url": "https://www.scaleway.com/en/developers/api/secret-manager/v1beta1/schema.yml",
+				"sha256": "4dfcc8dfdf05520738c62e97a1d628b8e0929999235e0cab79668cc2e6398846"
+			},
+			"sns": {
+				"url": "https://www.scaleway.com/en/developers/api/messaging-and-queuing/sns/v1beta1/schema.yml",
+				"sha256": "104258b9564962bab6550752e5611d204b24e8a6889aaf6dacb529a821db39a7"
+			},
+			"sqs": {
+				"url": "https://www.scaleway.com/en/developers/api/messaging-and-queuing/sqs/v1beta1/schema.yml",
+				"sha256": "ddb8728937c60eeb5637667135f8b41ac26e8a73f3e939f689f2ffb59261164b"
+			},
+			"tem": {
+				"url": "https://www.scaleway.com/en/developers/api/transactional-email/v1alpha1/schema.yml",
+				"sha256": "56891ddf1723e4138a6880ea8a60ffdf8eb82c6a3d0bd19daf3a0ef4ebdba91e"
+			},
+			"vpc": {
+				"url": "https://www.scaleway.com/en/developers/api/vpc/v2/schema.yml",
+				"sha256": "6dfe72f4fc2a2dd09f41a74f4042e83b2dd72244ed4d3ac6c18de03c32ae2be1"
+			},
+			"vpn": {
+				"url": "https://www.scaleway.com/en/developers/api/s2s-vpn/v1alpha1/schema.yml",
+				"sha256": "f968e2d176d4febc5b94c879f2b67c11ca83380eda40c73aaa4edbe49e2ea68d"
+			},
+			"webhosting": {
+				"url": "https://www.scaleway.com/en/developers/api/webhosting/hosting/v1/schema.yml",
+				"sha256": "3d7ded4dff75421de4b62c4c95c86d8ce75b1f885ec4cc841ddb215bac14e95d"
+			}
+		}
 	}
 }
