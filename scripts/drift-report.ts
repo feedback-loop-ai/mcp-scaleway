@@ -8,7 +8,7 @@ import { createHash } from "node:crypto";
  * `api` string ("<VERB> /path") directly against the fetched schema document
  * for its area (`.forge/scratch/scw-<area>.yml` — the very documents the
  * three-way scan resolved against), and re-hashes every document against the
- * digest recorded next to it in the matrix (`<area>_schema: {url, sha256}` rows).
+ * digest recorded next to it in the matrix (`meta.schemaFiles: {<area>: {url, sha256}}` block).
  *
  * It reports five things and asserts none of them:
  *  - rows that resolve to a published path+verb of their own area's document;
@@ -100,18 +100,14 @@ type Row = { area: string; op: string; api: string; tool: string };
 const main = async () => {
 	const matrix: Record<string, unknown> = JSON.parse(await readFile(MATRIX, "utf8"));
 	const rows: Row[] = [];
-	const schemaRows: Record<string, { url: string; sha256: string }> = {};
+	// The provenance half the matrix now carries: `meta.schemaFiles` maps each
+	// area to { url, sha256 } — the digest of the fetched document behind it.
+	const meta = (matrix.meta ?? {}) as {
+		schemaFiles?: Record<string, { url: string; sha256: string }>;
+	};
+	const schemaRows = meta.schemaFiles ?? {};
 	for (const [area, val] of Object.entries(matrix)) {
 		if (area === "meta") continue;
-		if (
-			typeof val === "object" &&
-			val !== null &&
-			"url" in (val as Record<string, unknown>) &&
-			"sha256" in (val as Record<string, unknown>)
-		) {
-			schemaRows[area] = val as { url: string; sha256: string };
-			continue;
-		}
 		for (const [op, raw] of Object.entries(val as Record<string, unknown>)) {
 			const row = raw as { api?: unknown; tool?: unknown } | null;
 			if (row && typeof row.api === "string" && typeof row.tool === "string")
