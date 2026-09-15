@@ -1,5 +1,11 @@
 # Scaleway Managed Database (RDB) API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/managed-database-postgre-mysql/v1/schema.yml
+> - version: v1
+> - fetched: 2026-09-11
+> - sha256: efd9b27cb7702a8afb548d02315c97a22d950152267ab7591945619c3f571a87
+
 Base URL: `https://api.scaleway.com/rdb/v1/regions/{region}`
 
 Regions: `fr-par`, `nl-ams`, `pl-waw`

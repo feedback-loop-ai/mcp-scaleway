@@ -1,5 +1,11 @@
 # Scaleway RabbitMQ (Cloud Essentials MessageQ) API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/messageq/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: 07eb66d0f1f8530bc6b4f50837e0254e5067bcbbf6aaf6e49128c1501b5ffa27
+
 Official reference: https://www.scaleway.com/en/developers/api/messageq/
 Product docs: https://www.scaleway.com/en/docs/rabbitmq/
 Verified against the generated Go SDK:

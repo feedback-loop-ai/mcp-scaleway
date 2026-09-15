@@ -1,5 +1,11 @@
 # Scaleway Apple Silicon API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/apple-silicon/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: 8efee6682483f17edde6acbccf294a7fc4a96d30e5ea31adab89d9a267d46a0c
+
 Base URL: `https://api.scaleway.com/apple-silicon/v1alpha1/zones/{zone}`
 
 - Official docs: https://www.scaleway.com/en/developers/api/apple-silicon/

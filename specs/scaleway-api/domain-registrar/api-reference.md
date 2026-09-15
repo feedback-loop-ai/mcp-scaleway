@@ -10,6 +10,12 @@
 > envelope field. `total_pages` is neither: it belongs to the MCP envelope only
 > when this server computes it — it is not an upstream Scaleway field.
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/domains-and-dns/registrar/v2beta1/schema.yml
+> - version: v2beta1
+> - fetched: 2026-09-11
+> - sha256: 4a4f0bb2ce6e15a46af84bd8c57a51ec2a37450ffe4c197538b3265d6a3fd6e9
+
 Official reference: https://www.scaleway.com/en/developers/api/domains-and-dns/registrar-api/
 
 Base URL: `https://api.scaleway.com/domain/v2beta1`

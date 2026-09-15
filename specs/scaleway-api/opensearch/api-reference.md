@@ -1,5 +1,11 @@
 # Scaleway Cloud Essentials for OpenSearch API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/cloud-essentials-for-opensearch/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: c540004820d503738478f2bdd801d0b5ecb5137f5cd586ade70235c3d90aefc2
+
 Official reference: https://www.scaleway.com/en/developers/api/cloud-essentials-for-opensearch/
 Authoritative shapes verified against the Scaleway Go SDK generated client:
 https://github.com/scaleway/scaleway-sdk-go/blob/main/api/searchdb/v1alpha1/searchdb_sdk.go

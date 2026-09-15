@@ -1,5 +1,11 @@
 # Scaleway Clusters for Apache Kafka® API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/clusters-for-kafka/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: 652d7d4567427e4a3b98697bfbfa4be7d528868400b0067704ed77fae7dbff08
+
 Product status: **Public Beta**.
 
 Base URL: `https://api.scaleway.com/kafka/v1alpha1/regions/{region}`

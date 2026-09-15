@@ -1,5 +1,11 @@
 # Scaleway Block Storage (SBS) API Reference — block/v1 (GA)
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/block/v1/schema.yml
+> - version: v1
+> - fetched: 2026-09-11
+> - sha256: 3cb4d9185b06f810835d58bd01d1858b52a59fd7bdd39301dcaabb43f5c58c33
+
 Base URL: `https://api.scaleway.com/block/v1/zones/{zone}`
 
 This documents the GA `block/v1` API. It replaces the deprecated `block/v1alpha1`

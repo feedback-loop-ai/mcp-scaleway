@@ -1,5 +1,11 @@
 # Scaleway Data Warehouse for ClickHouse® API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/data-warehouse/v1beta1/schema.yml
+> - version: v1beta1
+> - fetched: 2026-09-11
+> - sha256: e30441749c0af7cab3ac670b053e4f778a8eaae85592838d09c85917e3c3bbc5
+
 Official reference: https://www.scaleway.com/en/developers/api/data-warehouse/
 OpenAPI schema (source of truth): https://www.scaleway.com/en/developers/api/data-warehouse/v1beta1/schema.yml
 

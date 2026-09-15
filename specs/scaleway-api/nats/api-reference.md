@@ -1,5 +1,11 @@
 # Scaleway Messaging and Queuing — NATS API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/messaging-and-queuing/nats/v1beta1/schema.yml
+> - version: v1beta1
+> - fetched: 2026-09-11
+> - sha256: 0256529ebdd0685b3ab1286f34ecaff0f494e056b1ddcb505b63fdf86f646e60
+
 Base URL: `https://api.scaleway.com/mnq/v1beta1/regions/{region}`
 
 NATS is part of Scaleway Messaging and Queuing (MnQ). Regions: `fr-par`, `nl-ams`.

@@ -1,5 +1,11 @@
 # Scaleway IAM API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/iam/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: 2418e401cf9b170aa8834f4355bb597eff1d3e3aee2ed94b6f4ca459248ed534
+
 Base URL: `https://api.scaleway.com/iam/v1alpha1`
 
 Official docs: https://www.scaleway.com/en/developers/api/iam/

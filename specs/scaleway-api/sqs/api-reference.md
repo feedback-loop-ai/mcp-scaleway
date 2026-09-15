@@ -1,5 +1,11 @@
 # Scaleway SQS (Queues) Management API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/messaging-and-queuing/sqs/v1beta1/schema.yml
+> - version: v1beta1
+> - fetched: 2026-09-11
+> - sha256: ddb8728937c60eeb5637667135f8b41ac26e8a73f3e939f689f2ffb59261164b
+
 **Base URL**: `https://api.scaleway.com/mnq/v1beta1/regions/{region}`
 
 Queues (branded "SQS" in the API) is part of Scaleway Messaging and Queuing (MnQ) and exposes an Amazon

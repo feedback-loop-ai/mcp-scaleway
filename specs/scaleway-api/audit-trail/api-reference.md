@@ -1,5 +1,11 @@
 # Scaleway Audit Trail API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/audit-trail/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: 4bf6d0a55d856ec7432db29e72a08144dd169841d3421c45c051215dc29c7ded
+
 Base URL: `https://api.scaleway.com/audit-trail/v1alpha1/regions/{region}`
 
 - **API slug**: `audit-trail`
