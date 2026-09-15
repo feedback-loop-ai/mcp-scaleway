@@ -1,0 +1,43 @@
+{
+	"binary": "claude",
+	"binding_grant": false,
+	"driver": ["{brokkr}", "driver", "claude", "--", "--permission-mode", "acceptEdits"],
+	"effort_flag": "--effort",
+	"efforts": ["low", "medium", "high", "xhigh", "max"],
+	"judges": ["fable", "opus"],
+	"mcp": {
+		"flag": "--mcp-config",
+		"servers": {}
+	},
+	"hands": {
+		"workspace": [
+			"--tools",
+			"",
+			"--strict-mcp-config",
+			"--mcp-config",
+			"{hands_mcp_json}",
+			"--allowedTools",
+			"mcp__brokkr__workspace"
+		]
+	},
+	"model_flag": "--model",
+	"models": {
+		"fable": "claude-fable-5-1",
+		"haiku": "claude-haiku-4-5-20251001",
+		"opus": "claude-opus-5",
+		"sonnet": "claude-sonnet-5"
+	},
+	"provider": "claude",
+	"tool_permissions": {
+		"flag": "--allowedTools",
+		"names": {
+			"bun": "Bash(bun:*)",
+			"git": "Bash(git:*)",
+			"ls": "Bash(ls:*)",
+			"mkdir": "Bash(mkdir:*)",
+			"rg": "Bash(rg:*)"
+		},
+		"separator": ","
+	},
+	"trust_tier": "trusted"
+}

@@ -1,0 +1,38 @@
+{
+	"provider": "codex",
+	"trust_tier": "trusted",
+	"binding_grant": false,
+	"binary": "codex",
+	"driver": ["{brokkr}", "driver", "codex", "--"],
+	"models": {
+		"astra": "gpt-6-astra",
+		"sol": "gpt-5.6-sol",
+		"terra": "gpt-5.6-terra",
+		"luna": "gpt-5.6-luna"
+	},
+	"judges": ["astra", "sol"],
+	"model_flag": "--model",
+	"efforts": ["none", "minimal", "low", "medium", "high", "xhigh", "max"],
+	"effort_flag": "--effort",
+	"tool_permissions": {
+		"unsupported": "codex-cli 0.148.0 restricts by sandbox CLASS, not by tool name: `codex exec -s|--sandbox` takes read-only|workspace-write|danger-full-access and there is no per-tool allow-list flag (no --allowedTools analogue) to map a seat's declared tools onto; --ask-for-approval exists on the interactive `codex` but not on `codex exec`"
+	},
+	"mcp": "unsupported",
+	"hands": {
+		"workspace": [
+			"--sandbox",
+			"read-only",
+			"-c",
+			"mcp_servers.brokkr.command=\"{brokkr}\"",
+			"-c",
+			"mcp_servers.brokkr.args={hands_args_toml}",
+			"-c",
+			"mcp_servers.brokkr.default_tools_approval_mode=\"approve\""
+		],
+		"harness": {
+			"gate": ["--sandbox", "read-only", "--output-last-message", "{result_path}"],
+			"work": ["--sandbox", "workspace-write"],
+			"result": "last-message"
+		}
+	}
+}

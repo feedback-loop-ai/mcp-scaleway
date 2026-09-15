@@ -1,5 +1,15 @@
 # Scaleway Edge Services API Reference
 
+> **Envelope boundary (Decision 1).** Upstream Scaleway JSON is snake_case and is
+> passed through by this server without renaming — `total_count` and any other
+> `*count*` field in a response body is the upstream field, verbatim. The MCP
+> list envelope is this server's own camelCase boundary and is defined once in
+> `src/shared/pagination.ts` (`buildPaginatedResponse`): `{ items, totalCount,
+> page, pageSize }`. Wherever this document says `total_count`, that is the
+> upstream field on the wire; wherever it says `totalCount`, that is the MCP
+> envelope field. `total_pages` is neither: it belongs to the MCP envelope only
+> when this server computes it — it is not an upstream Scaleway field.
+
 Official reference: https://www.scaleway.com/en/developers/api/edge-services/
 
 Base URL: `https://api.scaleway.com/edge-services/v1beta1`

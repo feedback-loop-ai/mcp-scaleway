@@ -1,0 +1,17 @@
+{
+	"charter": "charters/surveyor.md",
+	"description": "Reads one area's shipped code and states what it actually does, blind to the specification.",
+	"efforts": {
+		"qwen-flash": "high",
+		"opus": "high"
+	},
+	"limits": {
+		"max_attempts": 2,
+		"timeout_seconds": 3600
+	},
+	"models": ["qwen-flash", "opus"],
+	"tools": {
+		"allow": ["bun", "git", "ls", "rg", "mkdir"],
+		"mcp": []
+	}
+}

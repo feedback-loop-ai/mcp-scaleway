@@ -34,6 +34,16 @@ bun run test -- --coverage.enabled
 
 # Validate API parity matrix
 bun run test:parity  # checks tests/parity-matrix.json completeness
+
+# Drift alarm (non-blocking, local): reads the matrix's api strings against the
+# fetched OpenAPI documents under .forge/scratch/ and re-hashes their provenance.
+# It reports and exits 0 whatever it finds; it is not a gate. See .forge/reports/DECISIONS.md.
+bun run test:drift
+
+# Webhosting live 404 probe (LOCAL ONLY — requires credentials, like tests/api/):
+# existence checks at the true verb of the four webhosting routes the fetched
+# schema does not publish. Read-only by design; creates nothing.
+bun run probe:webhosting
 ```
 
 ## CI/CD
@@ -56,6 +66,18 @@ Test organization:
 - **Full API contract parity**: Every Scaleway API endpoint exposed by this server MUST have a contract test validating request shape, response shape, pagination, auth, and error codes
 - **Contract traceability**: Every contract test MUST reference its Scaleway API endpoint and the corresponding entry in `specs/scaleway-api/`
 - **No tool without tests**: MCP tools cannot merge without 100% contract test coverage
+
+## Envelope Boundary (Decision 1, approved 2026-09-15)
+
+Upstream Scaleway JSON is snake_case and is passed through by this server without
+renaming: any `total_count` (or other `*count*`) field in a response body is the
+upstream field, verbatim. The MCP list envelope is this server's own camelCase
+boundary and is defined once in `src/shared/pagination.ts` (`buildPaginatedResponse`):
+`{ items, totalCount, page, pageSize }`. In the reference specs, `total_count` names
+the upstream wire field and `totalCount` names the MCP envelope field. `total_pages`
+is an upstream field nowhere; it belongs to the MCP envelope only where this server
+computes it. Each mixed-spelling doc under `specs/scaleway-api/` carries this
+statement inline; the canonical wording lives here.
 
 ## Architecture
 
