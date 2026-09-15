@@ -1,5 +1,11 @@
 # Scaleway Billing API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/billing/v2beta1/schema.yml
+> - version: v2beta1
+> - fetched: 2026-09-11
+> - sha256: ada4004c54d882eae93025ae05cd4c4f6e81e4395fdc8b90ace9f4f4693a171a
+
 Official docs: https://www.scaleway.com/en/developers/api/billing/
 
 Base URL: `https://api.scaleway.com/billing/v2beta1`

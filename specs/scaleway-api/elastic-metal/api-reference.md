@@ -1,5 +1,11 @@
 # Scaleway Elastic Metal (Bare Metal) API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/elastic-metal/v1/schema.yml
+> - version: v1
+> - fetched: 2026-09-11
+> - sha256: 62fd3167e1c20c2554f81271593e76bebeae5501cd94a3eb1b72241962ea76ab
+
 > **Envelope boundary (Decision 1).** Upstream Scaleway JSON is snake_case and is
 > passed through by this server without renaming — `total_count` and any other
 > `*count*` field in a response body is the upstream field, verbatim. The MCP

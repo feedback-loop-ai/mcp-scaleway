@@ -44,6 +44,10 @@ bun run test:drift
 # existence checks at the true verb of the four webhosting routes the fetched
 # schema does not publish. Read-only by design; creates nothing.
 bun run probe:webhosting
+
+# Re-fetch every cited schema.yml and report which digests moved (no state
+# written; the record is only due a date bump — see DECISIONS.md).
+bun run fetch:schemas
 ```
 
 ## CI/CD

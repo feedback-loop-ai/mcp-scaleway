@@ -1,5 +1,11 @@
 # Scaleway Serverless Functions API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/serverless-functions/v1beta1/schema.yml
+> - version: v1beta1
+> - fetched: 2026-09-11
+> - sha256: b5c95a7fe7ad4f69a610dfb554042b627f530aeafa28d872aeb7b0ef144af73a
+
 Base URL: `https://api.scaleway.com/functions/v1beta1/regions/{region}`
 
 Official docs: https://www.scaleway.com/en/developers/api/serverless-functions/

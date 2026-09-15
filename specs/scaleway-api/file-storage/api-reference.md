@@ -1,5 +1,11 @@
 # Scaleway File Storage API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/file-storage/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: 3f4707d4c1c1f543b02d2ee5ce808c02f3c784ed7b1de68c7762e86f7a9257f9
+
 Official reference: https://www.scaleway.com/en/developers/api/file-storage/
 Cross-checked against the Scaleway SDK definition (`scaleway-sdk-go/api/file/v1alpha1`).
 

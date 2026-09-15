@@ -10,6 +10,12 @@
 > envelope field. `total_pages` is neither: it belongs to the MCP envelope only
 > when this server computes it — it is not an upstream Scaleway field.
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/product-catalog/public-catalog/v2alpha1/schema.yml
+> - version: public-catalog
+> - fetched: 2026-09-11
+> - sha256: e2f76ed760618557e457799d7bf9cebf7afb5526d134d7a1f779e6ebdd3d4dfb
+
 Product area: **Product Catalog** (public catalog of products, SKUs, and pricing)
 
 - **API slug**: `product-catalog`

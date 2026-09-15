@@ -1,5 +1,11 @@
 # Scaleway Managed MongoDB® API Reference (v1 — GA)
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/managed-database-mongodb/v1/schema.yml
+> - version: v1
+> - fetched: 2026-09-11
+> - sha256: 410038b539a20ca2e93ea3ffd2a3bf42c81850c5e7829beda87d7e61202ea698
+
 Official reference: https://www.scaleway.com/en/developers/api/managed-database-mongodb
 Cross-checked against the Go SDK: https://pkg.go.dev/github.com/scaleway/scaleway-sdk-go/api/mongodb/v1
 

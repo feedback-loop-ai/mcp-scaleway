@@ -1,5 +1,11 @@
 # Scaleway Site-to-Site VPN API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/s2s-vpn/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: f968e2d176d4febc5b94c879f2b67c11ca83380eda40c73aaa4edbe49e2ea68d
+
 Base URL: `https://api.scaleway.com/s2s-vpn/v1alpha1/regions/{region}`
 
 - **API slug / version**: `s2s-vpn/v1alpha1`

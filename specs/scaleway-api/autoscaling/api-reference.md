@@ -1,5 +1,11 @@
 # Scaleway Instance Autoscaling Groups API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/autoscaling/v1alpha2/schema.yml
+> - version: v1alpha2
+> - fetched: 2026-09-11
+> - sha256: c8c07616aed5bd043fe5370a9791806ab2e0fe2dbcfc238bb056a31e5bc0a76e
+
 - API slug: `autoscaling`
 - Version: `v1alpha2` (**`v1alpha1` is dead**: every `v1alpha1` path now returns
   `404 {"message":"Not Found"}` — see "Migration from v1alpha1" below)

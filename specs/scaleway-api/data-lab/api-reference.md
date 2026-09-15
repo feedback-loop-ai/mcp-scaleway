@@ -1,5 +1,11 @@
 # Scaleway Data Lab for Apache Spark™ API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/data-lab/v1beta1/schema.yml
+> - version: v1beta1
+> - fetched: 2026-09-11
+> - sha256: c3216cfd5cd75d724c5e67a74a566383ef0d59a3858a77f0b40242c80b80408a
+
 Official reference: https://www.scaleway.com/en/developers/api/data-lab/
 
 - API slug: `datalab`

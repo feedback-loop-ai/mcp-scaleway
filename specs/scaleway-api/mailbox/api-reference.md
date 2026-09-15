@@ -10,6 +10,12 @@
 > envelope field. `total_pages` is neither: it belongs to the MCP envelope only
 > when this server computes it — it is not an upstream Scaleway field.
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/mailbox/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: d97d6f02603dbf42023fab444d5d3905e36755cbf469b75384bc2df8442adeb9
+
 Official reference: https://www.scaleway.com/en/developers/api/mailbox/
 Verified against the auto-generated SDK definition
 `scaleway-sdk-go/api/mailbox/v1alpha1/mailbox_sdk.go` (authoritative source of exact paths).

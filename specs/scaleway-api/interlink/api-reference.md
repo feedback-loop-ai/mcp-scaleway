@@ -1,5 +1,11 @@
 # Scaleway InterLink API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/interlink/v1beta1/schema.yml
+> - version: v1beta1
+> - fetched: 2026-09-11
+> - sha256: dbcd47d3b410efc22644e661fbeb3d7f267b34c0cd15adf30fa92ba6e2cc9ab5
+
 InterLink provides dedicated (self-hosted) and partner-hosted private Layer 3
 connectivity between a customer network and Scaleway VPCs, over a BGP peering
 session.

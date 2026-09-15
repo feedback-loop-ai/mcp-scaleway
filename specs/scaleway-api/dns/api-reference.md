@@ -1,5 +1,11 @@
 # Scaleway Domains & DNS API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/domains-and-dns/v2beta1/schema.yml
+> - version: v2beta1
+> - fetched: 2026-09-11
+> - sha256: d21384c8651d4457d8b051e7b5883b5a39f0198ed5fb9a2f53e0c286e7c01ac8
+
 Base URL: `https://api.scaleway.com/domain/v2beta1`
 
 Official docs: https://www.scaleway.com/en/developers/api/domains-and-dns/

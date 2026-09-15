@@ -1,5 +1,11 @@
 # Scaleway Transactional Email (TEM) API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/transactional-email/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: 56891ddf1723e4138a6880ea8a60ffdf8eb82c6a3d0bd19daf3a0ef4ebdba91e
+
 Base URL: `https://api.scaleway.com/transactional-email/v1alpha1/regions/{region}`
 
 - Current API version: **v1alpha1** (verified against the official reference and the

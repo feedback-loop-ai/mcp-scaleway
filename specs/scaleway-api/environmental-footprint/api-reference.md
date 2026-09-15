@@ -1,5 +1,11 @@
 # Scaleway Environmental Footprint API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/environmental-footprint/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-11
+> - sha256: 27d3325ee6432973e475bb54b927a223a95d54b89ef2cba2691e157a38888f6c
+
 Official reference: https://www.scaleway.com/en/developers/api/environmental-footprint/user-api/
 
 Base URL: `https://api.scaleway.com/environmental-footprint/v1alpha1`
