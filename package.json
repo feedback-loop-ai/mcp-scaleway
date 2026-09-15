@@ -23,6 +23,8 @@
 		"test": "vitest run --config tests/vitest.config.ts",
 		"test:watch": "vitest --config tests/vitest.config.ts",
 		"test:parity": "vitest run --config tests/vitest.config.ts tests/unit/parity.test.ts",
+		"test:drift": "bun run scripts/drift-report.ts",
+		"probe:webhosting": "bun run scripts/probe-webhosting-404.ts",
 		"build": "bun run bun.build.ts",
 		"gen:operations": "bun run scripts/gen-operations.ts",
 		"measure:discovery": "bun run scripts/measure-discovery.ts"

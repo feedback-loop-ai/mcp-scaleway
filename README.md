@@ -1510,7 +1510,24 @@ bun run test -- --coverage.enabled
 
 # Validate API parity matrix
 bun run test:parity
+
+# Drift alarm (non-blocking; reads the matrix against fetched OpenAPI docs)
+bun run test:drift
 ```
+
+### Brokkr
+
+The repository includes a Brokkr bundle for intake, implementation, verification,
+review, and delivery closeout. From the repository root:
+
+```bash
+bun install --frozen-lockfile
+brokkr doctor --bundle .
+brokkr run --bundle . --repo . --feature "Describe the change and its acceptance criteria"
+```
+
+See [the Brokkr setup](agents/README.md) for verification commands, model and tool
+configuration, and the Spec Kit dialect. Run evidence stays in ignored `.forge/`.
 
 ### Testing Requirements
 
