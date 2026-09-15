@@ -1,0 +1,17 @@
+{
+	"charter": "charters/intake.md",
+	"description": "Frames a raw request into a recorded, actionable task before any code is written.",
+	"efforts": {
+		"sonnet": "medium",
+		"haiku": "medium"
+	},
+	"limits": {
+		"max_attempts": 2,
+		"timeout_seconds": 1800
+	},
+	"models": ["sonnet", "haiku"],
+	"tools": {
+		"allow": ["bun", "git", "ls", "rg", "mkdir"],
+		"mcp": []
+	}
+}

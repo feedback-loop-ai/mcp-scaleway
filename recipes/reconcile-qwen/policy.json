@@ -1,0 +1,43 @@
+{
+	"schema": "forge.phase-machine/v1",
+	"description": "Code-first reconciliation. A surveyor states what the code does without reading the spec; a reconciler diffs that against the record and parks for the operator. Nothing under specs/ is ever written by this machine: it proposes, the operator rules.",
+	"phases": ["survey", "reconcile", "done", "stop"],
+	"initial": "survey",
+	"terminal": ["done", "stop"],
+	"shippable_from": [],
+	"rules": [
+		{
+			"id": "SURVEY-OK",
+			"from": "survey",
+			"result": "surveyed",
+			"next": "reconcile",
+			"reason": "Observed behaviour recorded; hand it to the reconciler."
+		},
+		{
+			"id": "RECONCILE-DRIFT",
+			"from": "reconcile",
+			"result": "reconciled",
+			"when": {
+				"spec_defect": true
+			},
+			"next": "stop",
+			"severity": "hard",
+			"reason": "The record and the code disagree. spec_defect is the seat-declarable key for a defective specification (decision 0041); drift_detected is engine-owned and means repository head movement, not spec drift. The operator rules on the record; the machine never edits specs/."
+		},
+		{
+			"id": "RECONCILE-CLEAN",
+			"from": "reconcile",
+			"result": "reconciled",
+			"next": "done",
+			"reason": "The record and the code agree."
+		},
+		{
+			"id": "RECONCILE-BLOCKED",
+			"from": "reconcile",
+			"result": "blocked",
+			"next": "stop",
+			"severity": "hard",
+			"reason": "No spec directory for this area; the absence is itself the finding."
+		}
+	]
+}

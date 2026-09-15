@@ -1,0 +1,48 @@
+{
+	"schema": "forge.realms/v3",
+	"journal": "/home/vyanakiev/source/feedback-loop-ai/mcp-scaleway/.forge/forge.db",
+	"realms": [
+		{
+			"name": "mcp-scaleway",
+			"path": ".",
+			"default_branch": "main",
+			"house": "CLAUDE.md",
+			"dialect": "speckit"
+		},
+		{
+			"name": "fire-59",
+			"path": "/home/vyanakiev/source/feedback-loop-ai/mcp-scaleway-fire-59",
+			"default_branch": "fire/59-usage-examples",
+			"house": "CLAUDE.md",
+			"dialect": "speckit"
+		},
+		{
+			"name": "fire-60",
+			"path": "/home/vyanakiev/source/feedback-loop-ai/mcp-scaleway-fire-60",
+			"default_branch": "fire/60-structured-logging",
+			"house": "CLAUDE.md",
+			"dialect": "speckit"
+		},
+		{
+			"name": "fire-61",
+			"path": "/home/vyanakiev/source/feedback-loop-ai/mcp-scaleway-fire-61",
+			"default_branch": "fire/61-hot-reload",
+			"house": "CLAUDE.md",
+			"dialect": "speckit"
+		},
+		{
+			"name": "fire-62",
+			"path": "/home/vyanakiev/source/feedback-loop-ai/mcp-scaleway-fire-62",
+			"default_branch": "fire/62-response-validation",
+			"house": "CLAUDE.md",
+			"dialect": "speckit"
+		},
+		{
+			"name": "fire-64",
+			"path": "/home/vyanakiev/source/feedback-loop-ai/mcp-scaleway-fire-64",
+			"default_branch": "fire/64-sdk-upgrade",
+			"house": "CLAUDE.md",
+			"dialect": "speckit"
+		}
+	]
+}

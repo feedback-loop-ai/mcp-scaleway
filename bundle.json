@@ -1,0 +1,71 @@
+{
+	"name": "mcp-scaleway",
+	"policy": "policy.json",
+	"protected_phase": "review",
+	"seats": {
+		"implement": {
+			"agent": "implementer",
+			"class": "work",
+			"results": ["complete", "broken", "blocked"]
+		},
+		"intake": {
+			"agent": "intake",
+			"class": "work",
+			"results": ["resolved"]
+		},
+		"review": {
+			"agent": "reviewer",
+			"class": "gate",
+			"results": ["clean", "residual", "security-hold"]
+		},
+		"ship": {
+			"class": "gate",
+			"driver": {
+				"command": [
+					"{brokkr}",
+					"driver",
+					"exec",
+					"--",
+					"bash",
+					"./scripts/ship-seat.sh",
+					"{prompt_file}",
+					"{brokkr}"
+				]
+			},
+			"hands": {
+				"binds": [],
+				"kind": "workspace",
+				"network": false
+			},
+			"limits": {
+				"max_attempts": 2,
+				"timeout_seconds": 1800
+			},
+			"results": ["ready", "shipped"]
+		},
+		"verify": {
+			"class": "gate",
+			"driver": {
+				"command": [
+					"{brokkr}",
+					"driver",
+					"exec",
+					"--",
+					"bash",
+					"./scripts/verify-seat.sh",
+					"{prompt_file}"
+				]
+			},
+			"hands": {
+				"binds": [{ "path": "~/.bun/bin", "mode": "ro" }],
+				"kind": "workspace",
+				"network": false
+			},
+			"limits": {
+				"max_attempts": 2,
+				"timeout_seconds": 3600
+			},
+			"results": ["pass", "fail"]
+		}
+	}
+}

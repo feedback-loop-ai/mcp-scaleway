@@ -1,5 +1,15 @@
 # Scaleway Serverless Containers v1 API Reference
 
+> **Envelope boundary (Decision 1).** Upstream Scaleway JSON is snake_case and is
+> passed through by this server without renaming — `total_count` and any other
+> `*count*` field in a response body is the upstream field, verbatim. The MCP
+> list envelope is this server's own camelCase boundary and is defined once in
+> `src/shared/pagination.ts` (`buildPaginatedResponse`): `{ items, totalCount,
+> page, pageSize }`. Wherever this document says `total_count`, that is the
+> upstream field on the wire; wherever it says `totalCount`, that is the MCP
+> envelope field. `total_pages` is neither: it belongs to the MCP envelope only
+> when this server computes it — it is not an upstream Scaleway field.
+
 Verified 2026-09-05 against the current official [OpenAPI](https://www.scaleway.com/en/developers/api/serverless-containers/v1/schema.yml), [API reference](https://www.scaleway.com/en/developers/api/serverless-containers/), and published `@scaleway/sdk-container@2.13.1` (`dist/v1/api.gen.js`, `types.gen.d.ts`, `marshalling.gen.js`). Downloaded reference files are inspection inputs, not runtime dependencies. This specification supersedes the previous deferred v1 migration and unsupported nested-path claims.
 
 ## Transport and common response contract

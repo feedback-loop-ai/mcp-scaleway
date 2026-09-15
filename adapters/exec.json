@@ -1,0 +1,15 @@
+{
+	"provider": "exec",
+	"trust_tier": "untrusted",
+	"binding_grant": true,
+	"binary": "sh",
+	"driver": ["{brokkr}", "driver", "exec", "--"],
+	"models": {},
+	"judges": [],
+	"model_flag": "unsupported",
+	"efforts": [],
+	"effort_flag": "unsupported",
+	"tool_permissions": "unsupported",
+	"mcp": "unsupported",
+	"hands": { "workspace": [] }
+}

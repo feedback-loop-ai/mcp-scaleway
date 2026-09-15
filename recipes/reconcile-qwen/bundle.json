@@ -1,0 +1,19 @@
+{
+	"name": "reconcile",
+	"description": "Retrofit and reconcile specs from shipped code: a blind surveyor states what one area does, a reconciler diffs it against specs/ and parks for the operator's ruling. Writes nothing under specs/.",
+	"cost": "medium",
+	"policy": "policy.json",
+	"protected_phase": "reconcile",
+	"seats": {
+		"survey": {
+			"agent": "surveyor",
+			"class": "work",
+			"results": ["surveyed"]
+		},
+		"reconcile": {
+			"agent": "reconciler",
+			"class": "gate",
+			"results": ["reconciled", "blocked"]
+		}
+	}
+}

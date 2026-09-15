@@ -1,0 +1,27 @@
+{
+	"charter": "charters/reconciler.md",
+	"description": "Diffs observed behaviour against the written record and proposes drift findings for the operator to rule.",
+	"efforts": {
+		"opus": "xhigh",
+		"qwen-flash": "high"
+	},
+	"limits": {
+		"max_attempts": 2,
+		"timeout_seconds": 7200
+	},
+	"models": ["opus", "qwen-flash"],
+	"tools": {
+		"allow": ["bun", "git", "ls", "rg", "mkdir", "curl"],
+		"mcp": []
+	},
+	"hands": {
+		"binds": [
+			{
+				"path": "~/.bun/bin",
+				"mode": "ro"
+			}
+		],
+		"kind": "workspace",
+		"network": false
+	}
+}
