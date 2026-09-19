@@ -100,6 +100,35 @@ describe("parity matrix completeness", () => {
 });
 
 describe("gateway traceability", () => {
+	it("maps optional routing to its contract and checks the enabled surface", async () => {
+		const meta = JSON.parse(
+			readFileSync(resolve(repoRoot, "tests/parity-matrix.json"), "utf8"),
+		).meta;
+		const optional = meta.optional_gateway_tools as Array<{ tool: string; contract_test: string }>;
+		expect(optional.map((entry) => entry.tool)).toEqual(["scaleway_route"]);
+		for (const entry of optional)
+			expect(existsSync(resolve(repoRoot, entry.contract_test))).toBe(true);
+		const server = createServer({
+			router: {
+				provider: {
+					async choose() {
+						throw new Error("Discovery must not invoke inference");
+					},
+				},
+			},
+		});
+		const client = new Client({ name: "optional-parity", version: "1" });
+		const [ct, st] = InMemoryTransport.createLinkedPair();
+		try {
+			await Promise.all([client.connect(ct), server.connect(st)]);
+			expect((await client.listTools()).tools.map((tool) => tool.name).sort()).toEqual(
+				[...meta.gateway_tools, ...optional].map((entry: { tool: string }) => entry.tool).sort(),
+			);
+		} finally {
+			await client.close();
+			await server.close();
+		}
+	});
 	it("keeps all underlying operations in generated runtime metadata", () => {
 		expect(generatedMetadata.map((entry) => entry.tool).sort()).toEqual([...registered].sort());
 	});

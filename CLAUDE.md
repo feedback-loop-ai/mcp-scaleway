@@ -140,7 +140,7 @@ statement inline; the canonical wording lives here.
 
 ## Architecture
 
-Stateless MCP server exposing four default gateway tools over 727 supported operations across 50 Scaleway product areas. SCW_MCP_MODE=flat exposes the supported legacy tool names; both mode combines them.
+Stateless MCP server exposing four default gateway tools over 727 supported operations across 50 Scaleway product areas. Optional SCW_ROUTER=jev adds scaleway_route with optional external TypeSafe inference and local fallback; it recommends operations without executing them. SCW_MCP_MODE=flat exposes the supported legacy tool names; both mode combines them.
 
 - `src/main.ts` - Entry point (stdio transport); `src/server.ts` - creates the MCP server, immutable filtered operation registry and gateway/flat/both surface.
 - `src/tools/<area>/` - one directory per product area, each with three files:
@@ -148,6 +148,7 @@ Stateless MCP server exposing four default gateway tools over 727 supported oper
   - `handlers.ts` - Scaleway API call logic + response formatting
   - `index.ts` - `register<Area>Tools(server)` registering each tool via `server.tool(name, description, schema.shape, handler)`
 - `src/tools/index.ts` - `registerAllTools(server)` invokes every area's register function.
+- `src/routing/` - optional provider-neutral intent selection with a native Jev adapter; separate TYPESAFE_API_KEY, bounded model requests, filtered candidates, explicit uncertainty. Missing credentials, provider failures and capacity limits use English-oriented local suggestions requiring review, with source/reason and no model scores; explicit cancellation skips fallback. `bun run eval:routing` evaluates synthetic cases offline; add `--jev` for explicit live inference, which fails on any local fallback. Saved reports preserve diagnostics and effective policy/model settings.
 - `src/gateway/` - recorder-based operation registry, search/describe/read/call, generated runtime operations metadata. Run `bun run gen:operations` after changing the parity matrix.
 - `src/shared/mode.ts` and `toolsets.ts` - startup environment boundary and filters. `SCW_TOOLSETS`, `SCW_TOOLS`, `SCW_EXCLUDE_TOOLS`, `SCW_READ_ONLY` apply to discovery and execution.
 - `src/shared/` - cross-cutting helpers: `auth.ts` (env-var credential loading), `client.ts` (Scaleway SDK client singleton), `errors.ts` (HTTP error mapping), `pagination.ts` (pagination helpers), `s3-signer.ts` (AWS SigV4 signing for Object Storage/S3 requests), `types.ts` (shared Zod schemas).

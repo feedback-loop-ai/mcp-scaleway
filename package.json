@@ -29,7 +29,8 @@
 		"gen:operations": "bun run scripts/gen-operations.ts",
 		"measure:discovery": "bun run scripts/measure-discovery.ts",
 		"fetch:schemas": "bun run scripts/fetch-schemas.ts",
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc --noEmit",
+		"eval:routing": "bun run scripts/evaluate-routing.ts"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.30.0",

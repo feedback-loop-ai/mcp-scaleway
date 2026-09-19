@@ -4,14 +4,20 @@ import type { Tool } from "@modelcontextprotocol/sdk/types.js";
 import pkg from "../package.json";
 import { registerGatewayTools } from "./gateway/index.js";
 import { createOperationRegistry, registerFlatTools } from "./gateway/registry.js";
+import { registerRoutingTool } from "./routing/index.js";
 import { installCatalogListing } from "./shared/catalog.js";
 import { type ServerOptions, resolveServerOptions } from "./shared/mode.js";
 
-export function createServer({ mode = "gateway", filters = {} }: ServerOptions = {}): McpServer {
+export function createServer({
+	mode = "gateway",
+	filters = {},
+	router,
+}: ServerOptions = {}): McpServer {
 	// Validate explicit callers as well as environment configuration.
 	if (mode !== "gateway" && mode !== "flat" && mode !== "both") {
 		throw new Error("Invalid SCW_MCP_MODE. Use gateway, flat or both.");
 	}
+	if (router && mode === "flat") throw new Error("Routing requires gateway or both mode.");
 	const registry = createOperationRegistry(filters);
 	const areas = [...new Set(registry.operations.map((op) => op.area))].sort();
 	const instructions = [
@@ -22,11 +28,17 @@ export function createServer({ mode = "gateway", filters = {} }: ServerOptions =
 		"Filters apply to discovery and execution. Read may reveal sensitive data; approval is not automatic. Obtain authorization before changes. Scaleway IAM always applies.",
 		"Region/zone/project defaults apply only where the operation schema allows omission. Check required fields and units with describe. Credentials come from SCW_* environment variables, not operation parameters.",
 		`Enabled areas: ${areas.join(", ")}.`,
+		...(router
+			? [
+					"scaleway_route optionally suggests allowed operation IDs using an external model. It never executes; confidence is uncalibrated. Missing credentials or provider failures return explicitly marked local suggestions without model probabilities. Local search/describe remain available.",
+				]
+			: []),
 	].join("\n");
 	const server = new McpServer({ name: "mcp-scaleway", version: pkg.version }, { instructions });
 	const definitions: Tool[] = [];
 	if (mode !== "flat") definitions.push(...registerGatewayTools(server, registry));
 	if (mode !== "gateway") definitions.push(...registerFlatTools(server, registry));
+	if (router) definitions.push(registerRoutingTool(server, registry, router));
 	installCatalogListing(server, definitions);
 	return server;
 }

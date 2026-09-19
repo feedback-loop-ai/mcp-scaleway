@@ -19,7 +19,10 @@ for (const [area, ops] of Object.entries<Record<string, { tool: string }>>(matri
 	for (const entry of Object.values(ops)) matrixTools.add(entry.tool);
 }
 const gatewayTools = new Set(
-	(matrix.meta.gateway_tools as Array<{ tool: string }>).map((t) => t.tool),
+	[
+		...(matrix.meta.gateway_tools as Array<{ tool: string }>),
+		...(matrix.meta.optional_gateway_tools as Array<{ tool: string }>),
+	].map((t) => t.tool),
 );
 const documented = new Set(
 	readme.match(/`(scaleway_[a-z0-9_]+)`/g)?.map((m) => m.slice(1, -1)) ?? [],

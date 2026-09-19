@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Added optional `scaleway_route` using an external TypeSafe Jev decision provider.
+  Set `SCW_ROUTER=jev` to enable it and `TYPESAFE_API_KEY` for inference; default discovery stays
+  local and exposes four tools. Routing suggests filtered operation IDs without
+  executing them. Missing credentials, provider failures and choice-capacity limits
+  fall back to local suggestions requiring review, without model probabilities or
+  confidence; caller cancellation stops without fallback. Includes bounded requests,
+  explicit uncertainty and source diagnostics, and an offline/live evaluation runner
+  that fails live runs on local fallback. Initial confidence thresholds are uncalibrated.
 - Corrected RDB snapshot creation/restoration paths and request bodies against the
   published API. Added Containers default-public-endpoint control and Kubernetes
   kubeconfig public/VPC selection.

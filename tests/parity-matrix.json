@@ -4000,6 +4000,12 @@
 				"sha256": "3d7ded4dff75421de4b62c4c95c86d8ce75b1f885ec4cc841ddb215bac14e95d",
 				"fetched": "2026-09-11"
 			}
-		}
+		},
+		"optional_gateway_tools": [
+			{
+				"tool": "scaleway_route",
+				"contract_test": "tests/contract/routing.test.ts"
+			}
+		]
 	}
 }
