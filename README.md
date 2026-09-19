@@ -1584,6 +1584,9 @@ Measurement distinguishes discovery payload size from billing. Repeated schemas 
 # Start the MCP server
 bun run start
 
+# Restart the development server automatically when imported source files change
+bun run dev
+
 # Lint (Biome)
 bun run lint
 bun run lint:fix
@@ -1598,10 +1601,10 @@ bun run test
 bun run test:watch
 
 # Run unit tests only (CI-safe, no external deps)
-bun x vitest run --config tests/vitest.config.ts --dir tests/unit
+bun x vitest run --config tests/vitest.config.ts tests/unit
 
 # Run contract tests only
-bun x vitest run --config tests/vitest.config.ts --dir tests/contract
+bun x vitest run --config tests/vitest.config.ts tests/contract
 
 # Run tests with coverage (100% enforced)
 bun run test -- --coverage.enabled
@@ -1618,6 +1621,23 @@ bun run test:parity
 # Drift alarm (non-blocking; reads the matrix against fetched OpenAPI docs)
 bun run test:drift
 ```
+
+### Automatic restart and stdio transport
+
+`bun run dev` uses [Bun's `--watch` mode](https://bun.sh/docs/runtime/watch-mode)
+to restart the server when an imported source file changes. This is a full restart:
+in-memory state is cleared, and clients must initialize again.
+
+For a local MCP client, set its server command to `bun` and its arguments to
+`["--watch", "run", "/absolute/path/to/mcp-scaleway/src/main.ts"]`. The client owns
+the stdio child process. After saving a change, use the client's reconnect or
+restart control to initialize a fresh session and fetch the current tool list and
+schemas. Some clients require restarting the application instead. A source
+restart does not preserve the initialized session or refresh a client's cached
+tools automatically.
+
+Use `bun run dev` only for local development. `bun run start` runs the source once;
+published installations use the `mcp-scaleway` executable without watch mode.
 
 ### Brokkr
 

@@ -31,6 +31,7 @@ import { createHash } from "node:crypto";
  */
 import { readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { comparePublishedRoute } from "./route-comparison.js";
 
 const ROOT = new URL("..", import.meta.url).pathname.replace(/\/+$/, "");
 const MATRIX = join(ROOT, "tests", "parity-matrix.json");
@@ -124,6 +125,7 @@ const main = async () => {
 
 	const bookkeeping: Array<Row & { why: string }> = [];
 	const schemaSurface: Row[] = [];
+	const queryRoutes: Array<Row & { endpoint: string; query: string }> = [];
 	let resolvable = 0;
 	let resolving = 0;
 	for (const r of rows) {
@@ -140,8 +142,12 @@ const main = async () => {
 		const doc = published[r.area];
 		if (doc === null || doc === undefined) continue; // the held class, counted later
 		resolvable += 1;
-		if (doc.has(`${up(verb)} ${m[2]}`)) {
+		const comparison = comparePublishedRoute(r.api, doc);
+		if (comparison.published) {
 			resolving += 1;
+			if (comparison.query !== undefined) {
+				queryRoutes.push({ ...r, endpoint: comparison.endpoint, query: comparison.query });
+			}
 			continue;
 		}
 		schemaSurface.push(r);
@@ -187,10 +193,22 @@ const main = async () => {
 	L.push(`| matrix operation rows | ${rows.length} |`);
 	L.push(`| rows resolvable against a fetched document | ${resolvable} |`);
 	L.push(`| — of those, resolving to a published path+verb of their own area | ${resolving} |`);
+	L.push(
+		`| — of those, retaining query metadata separately from the path | ${queryRoutes.length} |`,
+	);
 	L.push(`| schema documents recorded next to matrix rows | ${Object.keys(schemaRows).length} |`);
 	L.push(`| documents whose sha256 moved since the recorded digest | ${moved.length} |`);
 	L.push("");
 	L.push("## What it found");
+	L.push("");
+	L.push(
+		"OpenAPI path keys exclude query strings. This comparison checks the exact verb and path; it retains query metadata below for separate parameter-contract review and does not validate query names, types, or values.",
+	);
+	for (const r of queryRoutes) {
+		L.push(
+			`- Query-qualified route resolved: \`${r.area}\` ${r.op} \`${r.tool}\` — matrix: \`${r.api}\`; published endpoint: \`${r.endpoint}\`; query: \`${r.query}\`.`,
+		);
+	}
 	L.push("");
 	L.push(
 		`- **rows the fetched document does not carry (class: schema-surface): ${schemaSurface.length}.**`,

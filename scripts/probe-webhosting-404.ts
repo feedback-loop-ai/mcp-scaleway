@@ -1,130 +1,174 @@
 /**
- * Webhosting live 404 probe — the operator's local, side-effect-free check.
- *
- * The three-way hand pass (`.forge/reports/proposals/webhosting.md`) settled
- * four shipped webhosting routes that the fetched schema's `paths:` block does
- * not publish: `…/hostings/{hosting_id}/restore`, `…/hostings/{hosting_id}/dns-records`,
- * `…/offers`, `…/control-panels`. The record's own lines flag them
- * implementation-verified pending confirmation from the published surface; the
- * schema has since been downloaded and still names none of them as paths, while
- * the schema document's own quickstart text issues `…/offers` against
- * `api.scaleway.com`. The state has three readings and this probe cannot
- * choose between them: the route moved out of the published block, the download
- * predates it, or it lives on a head the block does not show.
- *
- * So: ask the live API directly. The probe performs **existence checks with
- * deliberately non-existent ids** at each route's true verb — the question is
- * purely *"does this path exist?"*, and an absent path answers 404 while a live
- * one answers a business error code. A 401/403 means the gateway's auth layer
- * answered before routing and carries no path information; the probe says so.
- * No metered billing attaches to the calls. Run it as you run every other
- * integration check in this repo: locally, with `.env.test.local` sourced, NOT
- * in CI.
+ * Local Webhosting HTTP diagnostic. Run explicitly with Scaleway credentials:
  *
  *   set -o allexport && . .env.test.local && bun scripts/probe-webhosting-404.ts
  *
- * Reads the region from `SCW_DEFAULT_REGION` (fr-par). Exit code is 0 for every
- * outcome the probe can produce; a non-zero exit means the probe itself could
- * not run (missing env), not that a route is dead. It asserts nothing — an
- * alarm, in the same spirit as `test:drift`.
+ * Sends GET requests only, with a 10-second timeout and redirects disabled.
+ * A placeholder resource ID does not establish that a mutating request is safe,
+ * so the restore POST is reported as skipped. HTTP responses are observations,
+ * not proof that an endpoint exists or matches a published contract. In
+ * particular, 404/410 cannot distinguish an unknown route from a missing or
+ * inaccessible resource. The published control read is subject to the same
+ * ambiguity and never changes the interpretation of another row.
+ *
+ * Reads SCW_SECRET_KEY and optional SCW_DEFAULT_REGION (default fr-par).
+ * Diagnostic outcomes exit 0; invalid/missing configuration exits 1.
  */
 const BASE = "https://api.scaleway.com";
-const secretKey = process.env.SCW_SECRET_KEY;
-const region = process.env.SCW_DEFAULT_REGION ?? "fr-par";
+const PLACEHOLDER_ID = "00000000-0000-4000-8000-000000000000";
+const TIMEOUT_MS = 10_000;
 
-if (!secretKey) {
-	console.error(
-		"SCW_SECRET_KEY is required — source .env.test.local first (see .env.test.local.example).",
-	);
-	process.exit(1);
-}
-
-// An id shaped like a real one but statistically never present: nothing is
-// fetched, and an existing path still reaches its business layer.
-const GHOST = "00000000-0000-4000-8000-000000000000";
-
-type Probe = { method: "GET" | "POST"; path: string; note: string; body?: string };
-
-const probes: Probe[] = [
-	{ method: "GET", path: `/webhosting/v1/regions/${region}/offers`, note: "offers" },
-	{
-		method: "GET",
-		path: `/webhosting/v1/regions/${region}/control-panels`,
-		note: "control-panels",
-	},
-	{
-		method: "GET",
-		path: `/webhosting/v1/regions/${region}/hostings/${GHOST}/dns-records`,
-		note: "hostings/{id}/dns-records",
-	},
-	{
-		method: "POST",
-		path: `/webhosting/v1/regions/${region}/hostings/${GHOST}/restore`,
-		body: "{}",
-		note: "hostings/{id}/restore — probed at its true verb; the ghost id makes it a not-found, it restores nothing",
-	},
-	{
-		method: "GET",
-		path: `/webhosting/v1/regions/${region}/hostings/${GHOST}`,
-		note: "control read: a published path — its status is the probe's yardstick",
-	},
-];
-
-const run = async (p: Probe): Promise<number> => {
-	const res = await fetch(`${BASE}${p.path}`, {
-		method: p.method,
-		headers: {
-			"X-Auth-Token": secretKey as string,
-			...(p.body ? { "Content-Type": "application/json" } : {}),
-		},
-		...(p.body ? { body: p.body } : {}),
-	});
-	return res.status;
+type Interpretation = {
+	outcome: "success" | "inconclusive" | "skipped";
+	explanation: string;
 };
 
-export {};
+export type Observation = Interpretation & {
+	method: "GET" | "POST";
+	path: string;
+	note: string;
+	status?: number;
+};
 
-const lines: string[] = [];
-const verdicts: string[] = [];
-for (const p of probes) {
-	let status = 0;
-	try {
-		status = await run(p);
-	} catch (e) {
-		verdicts.push(`could not probe: ${(e as Error).name} — the probe did not run`);
-		lines.push(
-			`- ${p.method} ${p.path} — probe error (${(e as Error).name}); the probe is silent on this row`,
-		);
-		continue;
-	}
-	let verdict: string;
+export type ProbeReport = { checkedAt: string; observations: Observation[] };
+
+export function interpretStatus(status: number): Interpretation {
+	if (status >= 200 && status < 300)
+		return {
+			outcome: "success",
+			explanation:
+				"Successful HTTP response observed; the published API contract remains unverified.",
+		};
+	if (status === 404 || status === 410)
+		return {
+			outcome: "inconclusive",
+			explanation:
+				"Cannot distinguish an unknown route from a missing or inaccessible resource; does not establish route absence.",
+		};
 	if (status === 401 || status === 403)
-		// The gateway's auth layer answered before routing, so the status carries
-		// no information about the path at all.
-		verdict =
-			"the gateway's auth layer answered before routing — the probe learns nothing about the path (re-run with a valid token from .env.test.local)";
-	else if (status === 404)
-		verdict = "the live API answers 404 — the path is not on the published surface";
-	else if (status >= 200 && status < 300) verdict = "a live path, and it answered in the 2xx band";
-	else
-		verdict = `the live API answered ${status} — the path was reached; the business layer refused it, but it is not a 404`;
-	verdicts.push(verdict);
-	lines.push(`- ${p.method} ${p.path} — ${status} — ${verdict}${p.note ? ` (${p.note})` : ""}`);
+		return {
+			outcome: "inconclusive",
+			explanation: "Authentication or authorization refusal; no route conclusion.",
+		};
+	if (status === 429)
+		return { outcome: "inconclusive", explanation: "Rate limit response; no route conclusion." };
+	if (status >= 300 && status < 400)
+		return {
+			outcome: "inconclusive",
+			explanation: "Redirect was not followed; no route conclusion.",
+		};
+	if (status >= 500)
+		return {
+			outcome: "inconclusive",
+			explanation: "Server or gateway error; no route conclusion.",
+		};
+	return {
+		outcome: "inconclusive",
+		explanation: "HTTP error does not establish whether the requested route exists.",
+	};
 }
 
-const stamp = new Date().toISOString();
-const head = [
-	"# Webhosting live 404 probe",
-	"",
-	`ran ${stamp}; existence checks only, no metered billing; the operator runs it locally, never CI.`,
-	"A non-404 on a probed row says the path exists; a 404 on the control read means the probe",
-	"cannot read this environment and every row here says nothing.",
-	"",
-];
-const out = `${[...head, ...lines, ""].join("\n")}`;
-process.stdout.write(out);
-console.log(
-	`probe done: ${verdicts.filter((v) => v.startsWith("the live API answered")).length} row(s) reached past a business code, ` +
-		`${verdicts.filter((v) => v.startsWith("the live API answers 404")).length} row(s) answered 404, ` +
-		`${verdicts.filter((v) => v.startsWith("a live path")).length} live 2xx; exit 0 — a listing, not a verdict.`,
-);
+/** Injected fetch keeps the diagnostic testable without cloud requests. */
+export async function probeWebhosting(
+	options: { secretKey: string; region?: string },
+	request: typeof fetch = fetch,
+): Promise<ProbeReport> {
+	if (!options.secretKey.trim()) throw new Error("SCW_SECRET_KEY is required.");
+	const region = options.region ?? "fr-par";
+	if (!/^[a-z]{2}-[a-z0-9]+$/.test(region))
+		throw new Error("SCW_DEFAULT_REGION must be a region identifier such as fr-par.");
+	const prefix = `/webhosting/v1/regions/${region}`;
+	const probes = [
+		{ path: `${prefix}/offers`, note: "offers" },
+		{ path: `${prefix}/control-panels`, note: "control-panels" },
+		{
+			path: `${prefix}/hostings/${PLACEHOLDER_ID}/dns-records`,
+			note: "hostings/{id}/dns-records: placeholder resource ID",
+		},
+		{
+			path: `${prefix}/hostings/${PLACEHOLDER_ID}`,
+			note: "published control read: placeholder resource ID; not a route-existence yardstick",
+		},
+	];
+	const observations: Observation[] = [];
+	for (const probe of probes) {
+		const controller = new AbortController();
+		const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+		try {
+			const response = await request(`${BASE}${probe.path}`, {
+				method: "GET",
+				headers: { "X-Auth-Token": options.secretKey },
+				redirect: "manual",
+				signal: controller.signal,
+			});
+			observations.push({
+				...probe,
+				method: "GET",
+				status: response.status,
+				...interpretStatus(response.status),
+			});
+			// Discard bodies rather than printing resource data or upstream error details.
+			await response.body?.cancel().catch(() => {});
+		} catch {
+			observations.push({
+				...probe,
+				method: "GET",
+				outcome: "inconclusive",
+				explanation: controller.signal.aborted
+					? "Request timed out after 10 seconds; no route conclusion."
+					: "Transport failure; no route conclusion. Error details omitted.",
+			});
+		} finally {
+			clearTimeout(timeout);
+		}
+	}
+	observations.push({
+		method: "POST",
+		path: `${prefix}/hostings/${PLACEHOLDER_ID}/restore`,
+		note: "hostings/{id}/restore",
+		outcome: "skipped",
+		explanation:
+			"No request sent: restore is a mutating operation, and a placeholder ID does not establish that calling it is safe.",
+	});
+	return { checkedAt: new Date().toISOString(), observations };
+}
+
+export function renderReport(report: ProbeReport): string {
+	return `${[
+		"# Webhosting HTTP diagnostic",
+		"",
+		`Checked ${report.checkedAt}; GET requests only; restore POST skipped.`,
+		"HTTP responses are observations, not proof of route existence or published contract correctness.",
+		"A failed control read does not determine candidate results; each response is reported independently.",
+		"Response bodies, headers, credentials, and transport error details are omitted.",
+		"",
+		...report.observations.map(
+			(row) =>
+				`- ${row.method} ${row.path} — ${row.status ?? "no HTTP response"} — ${row.outcome}: ${row.explanation} (${row.note})`,
+		),
+		"",
+		"Diagnostic complete; exit 0 reports observations, not a compatibility verdict.",
+		"",
+	].join("\n")}`;
+}
+
+export async function main(
+	env: NodeJS.ProcessEnv = process.env,
+	request: typeof fetch = fetch,
+): Promise<number> {
+	try {
+		const report = await probeWebhosting(
+			{ secretKey: env.SCW_SECRET_KEY ?? "", region: env.SCW_DEFAULT_REGION },
+			request,
+		);
+		console.log(renderReport(report));
+		return 0;
+	} catch {
+		console.error(
+			"Webhosting diagnostic requires SCW_SECRET_KEY and a valid SCW_DEFAULT_REGION (default fr-par). Source .env.test.local before running it.",
+		);
+		return 1;
+	}
+}
+
+if (import.meta.main) process.exitCode = await main();
