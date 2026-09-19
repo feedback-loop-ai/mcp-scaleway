@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Added `bun run dev` with automatic source restart and documented MCP reconnect
+  semantics. Corrected unit/contract-only test commands to select actual test files.
+- Fixed false upstream route alarms caused by comparing query strings with OpenAPI
+  path keys; retain query metadata for separate parameter review. Registrar and NATS
+  findings are backed by current official schema evidence.
+- Corrected the Webhosting diagnostic to report inconclusive errors, bound requests,
+  disable redirects and skip restore POST. A placeholder-resource 404 is not proof
+  that an endpoint is absent.
+- Added isolated tarball-install checks for gateway, flat and combined stdio modes
+  to CI, completing the MCP SDK upgrade's packaging validation.
 - Added optional `scaleway_route` using an external TypeSafe Jev decision provider.
   Set `SCW_ROUTER=jev` to enable it and `TYPESAFE_API_KEY` for inference; default discovery stays
   local and exposes four tools. Routing suggests filtered operation IDs without

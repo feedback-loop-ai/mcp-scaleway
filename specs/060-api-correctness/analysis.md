@@ -7,6 +7,11 @@
 
 ## Final findings
 
+This is the 2026-09-06 analysis snapshot. R-VI was subsequently remediated on
+2026-09-19; see [current compliance status](../retrofit-compliance.md) and
+[closure evidence](../063-remediation-closeout/validation.md). Other open and
+historical findings below retain their original disposition.
+
 | ID | Category | Severity | Evidence | Required resolution |
 | --- | --- | --- | --- | --- |
 | R-I | Constitution I | CRITICAL | Legacy descriptions outside the changed set lack usage examples; tests cover changed descriptions only | Complete schema-valid examples for every advertised operation |

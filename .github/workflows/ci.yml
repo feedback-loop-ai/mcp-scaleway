@@ -132,3 +132,5 @@ jobs:
           node --input-type=module -e
           'import { createServer } from "./dist/server.js";
           await createServer().close();'
+      - name: Install packed package and verify all stdio modes
+        run: bun run scripts/smoke-packed.ts

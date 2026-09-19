@@ -2,6 +2,10 @@
 
 Recorded 2026-09-06 for features 059 and 060 against Constitution 1.2.0.
 
+Remediation status updated 2026-09-19. The historical findings below retain their
+chronology; [063-remediation-closeout](063-remediation-closeout/validation.md)
+records the development reload and SDK packaging closure evidence.
+
 The user authorized autonomous specification retrofitting and recommended choices. They did
 not grant waivers of constitutional requirements. Earlier retrofit drafts incorrectly
 claimed owner-granted exceptions and unconditional PASS. Those claims are withdrawn.
@@ -22,13 +26,14 @@ No new release or governance change is authorized by completion of this document
 | R-II | II: specification before implementation | HISTORICAL BREACH | Preserve chronology; enforce the sequence for future work. A later document cannot erase this breach | Project owner controls governance decisions |
 | R-III | III: contracts before code | HISTORICAL ORDERING GAP | Preserve dated contract/code evidence and supersession; no unverified pre-code claim | Project owner controls governance decisions |
 | [R-IV](https://github.com/feedback-loop-ai/mcp-scaleway/issues/60) | IV: logging and health | OPEN | Parameter-free structured trace logs in gateway and flat paths; a stdio-appropriate health signal; tests proving secrets never enter logs | Project maintainers |
-| [R-VI](https://github.com/feedback-loop-ai/mcp-scaleway/issues/61) | VI: hot reload | OPEN | Documented, tested development reload command. Unit-only timing separately measured without substituting combined-suite or CI timings | Project maintainers |
+| [R-VI](https://github.com/feedback-loop-ai/mcp-scaleway/issues/61) | VI: hot reload | REMEDIATED 2026-09-19 | `bun run dev` restarts imported source; isolated stdio restart/reinitialization verified. Unit-only suite: 3,368 tests / 97 files / 3.74 s. See feature 063 validation | Project maintainers |
 | [R-VII](https://github.com/feedback-loop-ai/mcp-scaleway/issues/62) | VII: response validation | OPEN | Runtime response schemas per endpoint plus malformed-response negatives; generic type parameters and JSON parsing are insufficient | Project maintainers |
 | [R-VIII](https://github.com/feedback-loop-ai/mcp-scaleway/issues/63) | VIII: full endpoint contract depth | OPEN | Per-operation evidence for request/response shape, pagination, auth/error/rate-limit behavior. File-existence parity and transport smoke alone do not satisfy this | Project maintainers |
 
-Backlog issues: R-I #59, R-IV #60, R-VI #61, R-VII #62, R-VIII #63. R-II and R-III are historical
-breaches with no closure path, so they carry no issue. Adjacent (not constitutional): MCP SDK
-upgrade #64, structured tool output #65.
+Open implementation backlog: R-I #59, R-IV #60, R-VII #62, R-VIII #63. R-VI #61 is
+remediated. R-II and R-III are historical breaches with no closure path, so they carry
+no issue. Adjacent (not constitutional): MCP SDK upgrade #64 has implementation and
+packed-install evidence; structured tool output #65 remains open.
 
 Tracked in [059 analysis](059-discovery-token-reduction/analysis.md) and [059 tasks](059-discovery-token-reduction/tasks.md), plus [060 analysis](060-api-correctness/analysis.md) and [060 tasks](060-api-correctness/tasks.md).
 
@@ -70,7 +75,11 @@ Logging and health remain open requirements, not excluded because the server use
 
 ## R-VI
 
-The hot-reload obligation remains open. Timing evidence distinguishes unit and coverage runs.
+`bun run dev` uses Bun `--watch`. An isolated imported-source edit restarted the server
+in 192 ms; a new MCP initialize/list-tools exchange observed the changed server version.
+Runtime state and initialized sessions are not preserved, and clients must reconnect
+and refresh cached tools. README documents those limits. Unit-only timing is 3.74 s
+for 3,368 tests across 97 files, measured separately from the coverage suite.
 
 ## R-VII
 

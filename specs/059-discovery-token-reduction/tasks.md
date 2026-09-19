@@ -162,7 +162,7 @@ Single project: `src/`, `tests/`, `scripts/`, `specs/` at repository root.
 - [x] T051 Retrofit plan.md with Technical Context, honest Constitution Check and Complexity Tracking in specs/059-discovery-token-reduction/plan.md
 - [x] T052 [P] Write research.md, data-model.md and quickstart.md in specs/059-discovery-token-reduction/
 - [x] T053 Write the spec quality checklist in specs/059-discovery-token-reduction/checklists/requirements.md
-- [ ] T054 Close implementation gaps R-I, R-IV, R-VI, R-VII and R-VIII in ../retrofit-compliance.md. Analysis ran; R-II/R-III remain permanent historical findings, not tasks that a later document can close.
+- [ ] T054 Close remaining implementation gaps R-I, R-IV, R-VII and R-VIII in ../retrofit-compliance.md. R-VI was remediated in feature 063 on 2026-09-19. R-II/R-III remain permanent historical findings, not tasks that a later document can close.
 - [ ] T055 Measure post-change token counts on an Anthropic-served route and append to specs/059-discovery-token-reduction/validation.md (blocked: provider pool returned 503)
 - [ ] T056 Follow-up (Principle IV, repo-wide): add structured logging and a stdio-appropriate health self-check in src/main.ts Tracked as #60.
 - [ ] T057 Follow-up (Principle VII, repo-wide): runtime-validate upstream response shapes in src/tools/*/handlers.ts, starting with the most-used reads Tracked as #62.

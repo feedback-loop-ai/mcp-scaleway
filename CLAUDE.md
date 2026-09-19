@@ -12,6 +12,9 @@ MCP (Model Context Protocol) server for Scaleway - a European cloud provider off
 # Start MCP server
 bun run start
 
+# Restart source on changes; reconnect the MCP client after each restart
+bun run dev
+
 # Lint (Biome)
 bun run lint
 bun run lint:fix  # Auto-fix issues
@@ -24,10 +27,10 @@ bun run test
 bun run test:watch
 
 # Run unit tests only (CI-safe, no external dependencies)
-bun x vitest run --config tests/vitest.config.ts --dir tests/unit
+bun x vitest run --config tests/vitest.config.ts tests/unit
 
 # Run contract tests (API shape validation)
-bun x vitest run --config tests/vitest.config.ts --dir tests/contract
+bun x vitest run --config tests/vitest.config.ts tests/contract
 
 # Run tests with coverage (must be 100% - CI enforced)
 bun run test -- --coverage.enabled
@@ -40,10 +43,13 @@ bun run test:parity  # checks tests/parity-matrix.json completeness
 # It reports and exits 0 whatever it finds; it is not a gate. See .forge/reports/DECISIONS.md.
 bun run test:drift
 
-# Webhosting live 404 probe (LOCAL ONLY — requires credentials, like tests/api/):
-# existence checks at the true verb of the four webhosting routes the fetched
-# schema does not publish. Read-only by design; creates nothing.
+# Webhosting HTTP diagnostic (LOCAL ONLY — requires credentials, like tests/api/):
+# GET observations only; restore POST is explicitly skipped. Error statuses,
+# including 404 on a placeholder resource, do not prove route absence.
 bun run probe:webhosting
+
+# After build: install the tarball in isolation and verify all three stdio modes
+bun run scripts/smoke-packed.ts
 
 # Re-fetch cited public schemas and compare hashes/semantic contracts. Upstream
 # changes are review alarms (exit 0); fetch/checker failures exit 1. Accepted

@@ -149,7 +149,7 @@ Single project: `src/`, `tests/`, `specs/` at repository root.
 - [x] T052 [P] Write research.md, data-model.md and quickstart.md in specs/060-api-correctness/
 - [x] T053 [P] Write tool contracts for the migrated surfaces in specs/060-api-correctness/contracts/{autoscaling,containers,elastic-metal}-tools.md and add superseded banners to specs/045-instance-scaling-groups/contracts/autoscaling-tools.md and specs/008-containers/contracts/tool-contract.md
 - [x] T054 Write the spec quality checklist in specs/060-api-correctness/checklists/requirements.md
-- [ ] T055 Close implementation gaps R-I, R-IV, R-VI, R-VII and R-VIII tracked in ../retrofit-compliance.md; preserve R-II/R-III as historical findings. No waivers were granted.
+- [ ] T055 Close remaining implementation gaps R-I, R-IV, R-VII and R-VIII tracked in ../retrofit-compliance.md. R-VI was remediated in feature 063 on 2026-09-19; preserve R-II/R-III as historical findings. No waivers were granted.
 - [ ] T056 Optional future live-availability investigation, separately authorized and dated. SC-002 is an offline supported-version consistency gate, not a claim that HTTP 401 establishes endpoint liveness.
 
 Out-of-scope follow-ups (not tasks of this feature; see spec Out of Scope and 059 T057): adopt official product SDKs for hand-rolled areas; runtime-validate upstream response shapes.
