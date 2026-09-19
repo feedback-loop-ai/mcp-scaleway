@@ -408,7 +408,7 @@
 
 ### scaleway_rdb_create_snapshot
 
-**Scaleway API**: `POST /rdb/v1/regions/{region}/snapshots`
+**Scaleway API**: `POST /rdb/v1/regions/{region}/instances/{instance_id}/snapshots`
 
 **Input**:
 | Field | Type | Required | Description |
@@ -418,13 +418,15 @@
 | name | string | yes | Snapshot name |
 | expires_at | string | no | Expiration date (RFC 3339) |
 
+**Wire body**: `{ name, expires_at? }`; `instance_id` is a path parameter.
+
 **Output**: `{ id, instance_id, name, status, size, created_at, expires_at }`
 
 ---
 
 ### scaleway_rdb_restore_snapshot
 
-**Scaleway API**: `POST /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance-from-snapshot`
+**Scaleway API**: `POST /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance`
 
 **Input**:
 | Field | Type | Required | Description |
@@ -433,7 +435,8 @@
 | snapshot_id | string | yes | Snapshot UUID |
 | instance_name | string | yes | Name for the new instance |
 | node_type | string | no | Node type for restored instance |
-| is_ha_cluster | boolean | no | Enable HA on restored instance |
+| is_ha_cluster | boolean | no | Deprecated upstream; prefer high_availability_mode |
+| high_availability_mode | enum | no | unknown_high_availability_mode, disabled, single_zone, multiple_zone |
 
 **Output**: `{ id, name, engine, node_type, status, ... }`
 

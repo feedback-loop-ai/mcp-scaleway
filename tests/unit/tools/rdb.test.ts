@@ -164,8 +164,7 @@ describe("rdb handlers", () => {
 				new Errors.ResourceNotFoundError(
 					404,
 					{ type: "not_found", resource: "instance", resource_id: "missing" },
-					"instance",
-					"missing",
+					{ resource: "instance", resourceId: "missing" },
 				),
 			);
 			const result = await handlers.handleGetInstance({ instance_id: "missing" });
@@ -1149,8 +1148,8 @@ describe("rdb handlers", () => {
 				name: "my-snap",
 			});
 			expect(result.content[0].text).toContain('"snap-new"');
-			expectJsonRequest("POST", `${BASE}/snapshots`);
-			expect(lastBody()).toEqual({ instance_id: "inst-1", name: "my-snap" });
+			expectJsonRequest("POST", `${BASE}/instances/inst-1/snapshots`);
+			expect(lastBody()).toEqual({ name: "my-snap" });
 		});
 
 		it("creates snapshot with expiration", async () => {
@@ -1162,7 +1161,6 @@ describe("rdb handlers", () => {
 				expires_at: "2026-12-31T23:59:59Z",
 			});
 			expect(lastBody()).toEqual({
-				instance_id: "inst-1",
 				name: "snap-exp",
 				expires_at: "2026-12-31T23:59:59Z",
 			});
@@ -1188,7 +1186,7 @@ describe("rdb handlers", () => {
 				instance_name: "restored-db",
 			});
 			expect(result.content[0].text).toContain('"restored-db"');
-			expectJsonRequest("POST", `${BASE}/snapshots/snap-1/create-instance-from-snapshot`);
+			expectJsonRequest("POST", `${BASE}/snapshots/snap-1/create-instance`);
 			expect(lastBody()).toEqual({ instance_name: "restored-db" });
 		});
 

@@ -1,0 +1,2540 @@
+{
+	"sha256": "b5c95a7fe7ad4f69a610dfb554042b627f530aeafa28d872aeb7b0ef144af73a",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.StringValue": {
+					"type": ["string", "null"]
+				},
+				"scaleway.functions.v1beta1.CreateTriggerRequest.MnqNatsClientConfig": {
+					"properties": {
+						"mnq_nats_account_id": {
+							"type": "string"
+						},
+						"mnq_project_id": {
+							"type": "string"
+						},
+						"mnq_region": {
+							"type": "string"
+						},
+						"subject": {
+							"type": "string"
+						}
+					},
+					"required": ["subject", "mnq_nats_account_id", "mnq_region"],
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.CreateTriggerRequest.MnqSqsClientConfig": {
+					"properties": {
+						"mnq_project_id": {
+							"type": "string"
+						},
+						"mnq_region": {
+							"type": "string"
+						},
+						"queue": {
+							"type": "string"
+						}
+					},
+					"required": ["queue", "mnq_project_id", "mnq_region"],
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Cron": {
+					"properties": {
+						"args": {
+							"properties": {
+								"<fieldKey>": {
+									"type": "object"
+								}
+							},
+							"type": "object"
+						},
+						"function_id": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"schedule": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Cron.Status"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Cron.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "ready", "deleting", "error", "locked", "creating", "pending"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.Domain": {
+					"properties": {
+						"error_message": {
+							"type": ["string", "null"]
+						},
+						"function_id": {
+							"type": "string"
+						},
+						"hostname": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Domain.Status"
+						},
+						"url": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Domain.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "ready", "deleting", "error", "creating", "pending"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.DownloadURL": {
+					"properties": {
+						"headers": {
+							"additionalProperties": true,
+							"properties": {
+								"<headerKey>": {
+									"$ref": "#/components/schemas/scaleway.std.StringsValue"
+								}
+							},
+							"type": "object"
+						},
+						"url": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Function": {
+					"properties": {
+						"build_message": {
+							"type": ["string", "null"]
+						},
+						"cpu_limit": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": ["string", "null"]
+						},
+						"domain_name": {
+							"type": "string"
+						},
+						"environment_variables": {
+							"additionalProperties": true,
+							"properties": {
+								"<environment_variableKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"error_message": {
+							"type": ["string", "null"]
+						},
+						"handler": {
+							"type": "string"
+						},
+						"http_option": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.HttpOption",
+							"default": "enabled"
+						},
+						"id": {
+							"type": "string"
+						},
+						"max_scale": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"memory_limit": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"min_scale": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"namespace_id": {
+							"type": "string"
+						},
+						"privacy": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.Privacy"
+						},
+						"private_network_id": {
+							"type": ["string", "null"]
+						},
+						"ready_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"region": {
+							"type": "string"
+						},
+						"runtime": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.Runtime"
+						},
+						"runtime_message": {
+							"type": "string"
+						},
+						"sandbox": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.Sandbox"
+						},
+						"secret_environment_variables": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.SecretHashedValue"
+							},
+							"type": "array"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"timeout": {
+							"type": ["string", "null"]
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Function.HttpOption": {
+					"default": "unknown_http_option",
+					"enum": ["unknown_http_option", "enabled", "redirected"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.Function.Privacy": {
+					"default": "unknown_privacy",
+					"enum": ["unknown_privacy", "public", "private"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.Function.Runtime": {
+					"default": "unknown_runtime",
+					"enum": [
+						"unknown_runtime",
+						"golang",
+						"python",
+						"python3",
+						"node8",
+						"node10",
+						"node14",
+						"node16",
+						"node17",
+						"python37",
+						"python38",
+						"python39",
+						"python310",
+						"go113",
+						"go117",
+						"go118",
+						"node18",
+						"rust165",
+						"go119",
+						"python311",
+						"php82",
+						"node19",
+						"go120",
+						"node20",
+						"go121",
+						"node22",
+						"python312",
+						"php83",
+						"go122",
+						"rust179",
+						"go123",
+						"go124",
+						"python313",
+						"rust185",
+						"php84",
+						"node24",
+						"node26",
+						"go125",
+						"go126",
+						"php85",
+						"python314",
+						"rust196"
+					],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.Function.Sandbox": {
+					"default": "unknown_sandbox",
+					"enum": ["unknown_sandbox", "v1", "v2"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.Function.Status": {
+					"default": "unknown",
+					"enum": [
+						"unknown",
+						"ready",
+						"deleting",
+						"error",
+						"locked",
+						"creating",
+						"pending",
+						"created"
+					],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.ListCronsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.ListCronsResponse": {
+					"properties": {
+						"crons": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.Cron"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.ListDomainsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "hostname_asc", "hostname_desc"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.ListDomainsResponse": {
+					"properties": {
+						"domains": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.Domain"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.ListFunctionRuntimesResponse": {
+					"properties": {
+						"runtimes": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.Runtime"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.ListFunctionsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.ListFunctionsResponse": {
+					"properties": {
+						"functions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.ListNamespacesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.ListNamespacesResponse": {
+					"properties": {
+						"namespaces": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.Namespace"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.ListTokensRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.ListTokensResponse": {
+					"properties": {
+						"tokens": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.Token"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.ListTriggersRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.ListTriggersResponse": {
+					"properties": {
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"triggers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.Trigger"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Namespace": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": ["string", "null"]
+						},
+						"environment_variables": {
+							"additionalProperties": true,
+							"properties": {
+								"<environment_variableKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"error_message": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"registry_endpoint": {
+							"type": "string"
+						},
+						"registry_namespace_id": {
+							"type": "string"
+						},
+						"secret_environment_variables": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.SecretHashedValue"
+							},
+							"type": "array"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Namespace.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"vpc_integration_activated": {
+							"deprecated": true,
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Namespace.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "ready", "deleting", "error", "locked", "creating", "pending"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.Runtime": {
+					"properties": {
+						"code_sample": {
+							"type": "string"
+						},
+						"default_handler": {
+							"type": "string"
+						},
+						"extension": {
+							"type": "string"
+						},
+						"implementation": {
+							"type": "string"
+						},
+						"language": {
+							"type": "string"
+						},
+						"logo_url": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Runtime.Status"
+						},
+						"status_message": {
+							"type": "string"
+						},
+						"version": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Runtime.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"beta",
+						"available",
+						"deprecated",
+						"end_of_support",
+						"end_of_life"
+					],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.Secret": {
+					"properties": {
+						"key": {
+							"type": "string"
+						},
+						"value": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.SecretHashedValue": {
+					"properties": {
+						"hashed_value": {
+							"type": "string"
+						},
+						"key": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Token": {
+					"properties": {
+						"description": {
+							"type": ["string", "null"]
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"function_id": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"namespace_id": {
+							"type": ["string", "null"]
+						},
+						"public_key": {
+							"deprecated": true,
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Token.Status"
+						},
+						"token": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Token.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "ready", "deleting", "error", "creating"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.Trigger": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"error_message": {
+							"type": ["string", "null"]
+						},
+						"function_id": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"input_type": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Trigger.InputType"
+						},
+						"name": {
+							"type": "string"
+						},
+						"scw_nats_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.functions.v1beta1.Trigger.MnqNatsClientConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"scw_sqs_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.functions.v1beta1.Trigger.MnqSqsClientConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.functions.v1beta1.Trigger.Status"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Trigger.InputType": {
+					"default": "unknown_input_type",
+					"enum": ["unknown_input_type", "sqs", "scw_sqs", "nats", "scw_nats"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.Trigger.MnqNatsClientConfig": {
+					"properties": {
+						"mnq_credential_id": {
+							"type": ["string", "null"]
+						},
+						"mnq_nats_account_id": {
+							"type": "string"
+						},
+						"mnq_project_id": {
+							"type": "string"
+						},
+						"mnq_region": {
+							"type": "string"
+						},
+						"subject": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Trigger.MnqSqsClientConfig": {
+					"properties": {
+						"mnq_credential_id": {
+							"type": ["string", "null"]
+						},
+						"mnq_project_id": {
+							"type": "string"
+						},
+						"mnq_region": {
+							"type": "string"
+						},
+						"queue": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.functions.v1beta1.Trigger.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "ready", "deleting", "error", "creating", "pending"],
+					"type": "string"
+				},
+				"scaleway.functions.v1beta1.UploadURL": {
+					"properties": {
+						"headers": {
+							"additionalProperties": true,
+							"properties": {
+								"<headerKey>": {
+									"type": ["array", "null"]
+								}
+							},
+							"type": "object"
+						},
+						"url": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.StringsValue": {
+					"type": ["array", "null"]
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/functions/v1beta1/regions/{region}/crons": {
+				"get": {
+					"operationId": "ListCrons",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListCronsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "function_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListCronsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Crons"]
+				},
+				"post": {
+					"operationId": "CreateCron",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"args": {
+											"properties": {
+												"<fieldKey>": {
+													"type": "object"
+												}
+											},
+											"type": "object"
+										},
+										"function_id": {
+											"type": "string"
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"schedule": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Cron"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Crons"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/crons/{cron_id}": {
+				"delete": {
+					"operationId": "DeleteCron",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cron_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Cron"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Crons"]
+				},
+				"get": {
+					"operationId": "GetCron",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cron_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Cron"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Crons"]
+				},
+				"patch": {
+					"operationId": "UpdateCron",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cron_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"args": {
+											"properties": {
+												"<fieldKey>": {
+													"type": "object"
+												}
+											},
+											"type": "object"
+										},
+										"function_id": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"schedule": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Cron"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Crons"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/domains": {
+				"get": {
+					"operationId": "ListDomains",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListDomainsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "function_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListDomainsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Domains"]
+				},
+				"post": {
+					"operationId": "CreateDomain",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"function_id": {
+											"type": "string"
+										},
+										"hostname": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Domain"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Domains"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/domains/{domain_id}": {
+				"delete": {
+					"operationId": "DeleteDomain",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "domain_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Domain"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Domains"]
+				},
+				"get": {
+					"operationId": "GetDomain",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "domain_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Domain"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Domains"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/functions": {
+				"get": {
+					"operationId": "ListFunctions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListFunctionsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "namespace_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListFunctionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Functions"]
+				},
+				"post": {
+					"operationId": "CreateFunction",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"environment_variables": {
+											"properties": {
+												"<key>": {
+													"type": "string"
+												}
+											},
+											"type": ["object", "null"]
+										},
+										"handler": {
+											"type": ["string", "null"]
+										},
+										"http_option": {
+											"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.HttpOption"
+										},
+										"max_scale": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"memory_limit": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"min_scale": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"namespace_id": {
+											"type": "string"
+										},
+										"privacy": {
+											"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.Privacy"
+										},
+										"private_network_id": {
+											"type": ["string", "null"]
+										},
+										"runtime": {
+											"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.Runtime"
+										},
+										"sandbox": {
+											"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.Sandbox"
+										},
+										"secret_environment_variables": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.functions.v1beta1.Secret"
+											},
+											"type": "array"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"timeout": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Functions"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/functions/{function_id}": {
+				"delete": {
+					"operationId": "DeleteFunction",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "function_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Functions"]
+				},
+				"get": {
+					"operationId": "GetFunction",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "function_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Functions"]
+				},
+				"patch": {
+					"operationId": "UpdateFunction",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "function_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"environment_variables": {
+											"properties": {
+												"<key>": {
+													"type": "string"
+												}
+											},
+											"type": ["object", "null"]
+										},
+										"handler": {
+											"type": ["string", "null"]
+										},
+										"http_option": {
+											"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.HttpOption"
+										},
+										"max_scale": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"memory_limit": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"min_scale": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"privacy": {
+											"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.Privacy"
+										},
+										"private_network_id": {
+											"type": ["string", "null"]
+										},
+										"redeploy": {
+											"type": ["boolean", "null"]
+										},
+										"runtime": {
+											"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.Runtime"
+										},
+										"sandbox": {
+											"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function.Sandbox"
+										},
+										"secret_environment_variables": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.functions.v1beta1.Secret"
+											},
+											"type": "array"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										},
+										"timeout": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Functions"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/functions/{function_id}/deploy": {
+				"post": {
+					"operationId": "DeployFunction",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "function_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Function"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Functions"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/functions/{function_id}/download-url": {
+				"get": {
+					"operationId": "GetFunctionDownloadURL",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "function_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.DownloadURL"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Functions"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/functions/{function_id}/upload-url": {
+				"get": {
+					"operationId": "GetFunctionUploadURL",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "function_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "content_length",
+							"required": true,
+							"schema": {
+								"format": "uint64",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.UploadURL"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Functions"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/namespaces": {
+				"get": {
+					"operationId": "ListNamespaces",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListNamespacesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListNamespacesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Namespaces"]
+				},
+				"post": {
+					"operationId": "CreateNamespace",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"activate_vpc_integration": {
+											"deprecated": true,
+											"type": "boolean"
+										},
+										"description": {
+											"type": ["string", "null"]
+										},
+										"environment_variables": {
+											"properties": {
+												"<key>": {
+													"type": "string"
+												}
+											},
+											"type": ["object", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"secret_environment_variables": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.functions.v1beta1.Secret"
+											},
+											"type": "array"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Namespace"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Namespaces"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/namespaces/{namespace_id}": {
+				"delete": {
+					"operationId": "DeleteNamespace",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "namespace_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Namespace"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Namespaces"]
+				},
+				"get": {
+					"operationId": "GetNamespace",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "namespace_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Namespace"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Namespaces"]
+				},
+				"patch": {
+					"operationId": "UpdateNamespace",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "namespace_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"environment_variables": {
+											"properties": {
+												"<key>": {
+													"type": "string"
+												}
+											},
+											"type": ["object", "null"]
+										},
+										"secret_environment_variables": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.functions.v1beta1.Secret"
+											},
+											"type": "array"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Namespace"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Namespaces"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/runtimes": {
+				"get": {
+					"operationId": "ListFunctionRuntimes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListFunctionRuntimesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Functions"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/tokens": {
+				"get": {
+					"operationId": "ListTokens",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListTokensRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "function_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "namespace_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListTokensResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Tokens"]
+				},
+				"post": {
+					"deprecated": true,
+					"operationId": "CreateToken",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"expires_at": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"function_id": {
+											"type": ["string", "null"]
+										},
+										"namespace_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Token"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Tokens"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/tokens/{token_id}": {
+				"delete": {
+					"operationId": "DeleteToken",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "token_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Token"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Tokens"]
+				},
+				"get": {
+					"operationId": "GetToken",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "token_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Token"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Tokens"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/triggers": {
+				"get": {
+					"operationId": "ListTriggers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListTriggersRequest.OrderBy"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.ListTriggersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Triggers"]
+				},
+				"post": {
+					"operationId": "CreateTrigger",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"function_id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"scw_nats_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.functions.v1beta1.CreateTriggerRequest.MnqNatsClientConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"scw_sqs_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.functions.v1beta1.CreateTriggerRequest.MnqSqsClientConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"required": ["name", "function_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Trigger"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Triggers"]
+				}
+			},
+			"/functions/v1beta1/regions/{region}/triggers/{trigger_id}": {
+				"delete": {
+					"operationId": "DeleteTrigger",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "trigger_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Trigger"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Triggers"]
+				},
+				"get": {
+					"operationId": "GetTrigger",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "trigger_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Trigger"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Triggers"]
+				},
+				"patch": {
+					"operationId": "UpdateTrigger",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "trigger_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.functions.v1beta1.Trigger"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Triggers"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

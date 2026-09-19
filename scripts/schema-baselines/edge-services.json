@@ -1,0 +1,3270 @@
+{
+	"sha256": "37837af6b658980dbbcd0026644cc2eda859576740ec074ecd4768021f59c6bc",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.type.Money": {
+					"properties": {
+						"currency_code": {
+							"type": "string"
+						},
+						"nanos": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"units": {
+							"format": "int64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.AddRouteRulesResponse": {
+					"properties": {
+						"route_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RouteRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.BackendStage": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"pipeline_id": {
+							"type": "string"
+						},
+						"scaleway_lb": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayLbBackendConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"scaleway_s3": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayS3BackendConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"scaleway_serverless_container": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayServerlessContainerBackendConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"scaleway_serverless_function": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayServerlessFunctionBackendConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.StageStatus"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.CacheStage": {
+					"properties": {
+						"backend_stage_id": {
+							"type": ["string", "null"]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"fallback_ttl": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"include_cookies": {
+							"type": "boolean"
+						},
+						"pipeline_id": {
+							"type": "string"
+						},
+						"route_stage_id": {
+							"type": ["string", "null"]
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.StageStatus"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"waf_stage_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.DNSStage": {
+					"properties": {
+						"backend_stage_id": {
+							"type": ["string", "null"]
+						},
+						"cache_stage_id": {
+							"type": ["string", "null"]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"default_fqdn": {
+							"type": "string"
+						},
+						"fqdns": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"pipeline_id": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.StageStatus"
+						},
+						"tls_stage_id": {
+							"type": ["string", "null"]
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.DNSStage.Type"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"wildcard_domain": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.DNSStage.Type": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "auto", "managed", "custom"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.GetBillingResponse": {
+					"properties": {
+						"current_plan": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.PlanDetails"
+						},
+						"current_plan_cache_usage": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"current_plan_waf_usage": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"extra_cache_cost": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"extra_cache_usage": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"extra_pipelines_cost": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"extra_waf_cost": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"extra_waf_usage": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"pipeline_number": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"plan_cost": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"plans_usage_details": {
+							"additionalProperties": true,
+							"properties": {
+								"<plans_usage_detailKey>": {
+									"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.PlanUsageDetails"
+								}
+							},
+							"type": "object"
+						},
+						"total_cost": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"waf_add_on": {
+							"$ref": "#/components/schemas/google.type.Money"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.HeadStageResponse": {
+					"properties": {
+						"head_stage": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.HeadStageResponse.HeadStage"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.HeadStageResponse.HeadStage": {
+					"properties": {
+						"dns_stage_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListBackendStagesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.ListBackendStagesResponse": {
+					"properties": {
+						"stages": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.BackendStage"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListCacheStagesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.ListCacheStagesResponse": {
+					"properties": {
+						"stages": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.CacheStage"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListDNSStagesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.ListDNSStagesResponse": {
+					"properties": {
+						"stages": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.DNSStage"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListHeadStagesResponse": {
+					"properties": {
+						"head_stages": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListHeadStagesResponse.HeadStage"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListHeadStagesResponse.HeadStage": {
+					"properties": {
+						"dns_stage_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListNodesResponse": {
+					"properties": {
+						"nodes": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Node"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListPipelinesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.ListPipelinesResponse": {
+					"properties": {
+						"pipelines": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Pipeline"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListPlansResponse": {
+					"properties": {
+						"plans": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.PlanDetails"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListPurgeRequestsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.ListPurgeRequestsResponse": {
+					"properties": {
+						"purge_requests": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.PurgeRequest"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListRouteRulesResponse": {
+					"properties": {
+						"route_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RouteRule"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListRouteStagesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.ListRouteStagesResponse": {
+					"properties": {
+						"stages": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RouteStage"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListTLSStagesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.ListTLSStagesResponse": {
+					"properties": {
+						"stages": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.TLSStage"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ListWafStagesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.ListWafStagesResponse": {
+					"properties": {
+						"stages": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.WafStage"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.Node": {
+					"properties": {
+						"ip": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.Pipeline": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"errors": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Pipeline.Error"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Pipeline.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.Pipeline.Error": {
+					"properties": {
+						"code": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Pipeline.Error.Code"
+						},
+						"message": {
+							"type": "string"
+						},
+						"severity": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Pipeline.Error.Severity"
+						},
+						"stage": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Pipeline.Error.Stage"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Pipeline.Error.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.Pipeline.Error.Code": {
+					"default": "unknown_code",
+					"enum": [
+						"unknown_code",
+						"dns_invalid_format",
+						"dns_invalid_tld",
+						"dns_forbidden_root_domain",
+						"dns_forbidden_scw_cloud",
+						"dns_domain_dont_exist",
+						"dns_cname_dont_exist",
+						"dns_cname_resolve",
+						"dns_fqdn_already_exists",
+						"dns_fqdn_already_in_use",
+						"tls_cert_deleted",
+						"tls_cert_disabled",
+						"tls_cert_expired",
+						"tls_cert_invalid_format",
+						"tls_cert_missing",
+						"tls_chain_order",
+						"tls_key_invalid_format",
+						"tls_key_missing",
+						"tls_key_too_many",
+						"tls_managed_domain_rate_limit",
+						"tls_managed_internal",
+						"tls_managed_unsupported",
+						"tls_not_wildcard",
+						"tls_pair_mismatch",
+						"tls_root_inconsistent",
+						"tls_root_incorrect",
+						"tls_root_missing",
+						"tls_san_mismatch",
+						"tls_self_signed",
+						"tls_caa_malfunction",
+						"pipeline_invalid_workflow",
+						"pipeline_missing_head_stage",
+						"pipeline_websocket_limit",
+						"pipeline_configuration_failed"
+					],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.Pipeline.Error.Severity": {
+					"default": "unknown_severity",
+					"enum": ["unknown_severity", "warning", "critical"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.Pipeline.Error.Stage": {
+					"default": "unknown_stage",
+					"enum": ["unknown_stage", "dns", "tls", "cache", "backend"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.Pipeline.Error.Type": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "runtime", "config"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.Pipeline.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "ready", "error", "pending", "warning", "locked"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.Plan": {
+					"properties": {
+						"plan_name": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Plan.Name"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.Plan.Name": {
+					"default": "unknown_name",
+					"enum": ["unknown_name", "starter", "professional", "advanced"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.PlanDetails": {
+					"properties": {
+						"backend_limit": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"package_gb": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"pipeline_limit": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"plan_name": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Plan.Name"
+						},
+						"waf_requests": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"wildcard_domain": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.PlanUsageDetails": {
+					"properties": {
+						"plan_cost": {
+							"$ref": "#/components/schemas/google.type.Money"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.PurgeRequest": {
+					"properties": {
+						"all": {
+							"type": ["boolean", "null"]
+						},
+						"assets": {
+							"type": ["array", "null"]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"pipeline_id": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.PurgeRequest.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.PurgeRequest.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "done", "error", "pending"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.RouteRule": {
+					"properties": {
+						"backend_stage_id": {
+							"type": ["string", "null"]
+						},
+						"position": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"route_stage_id": {
+							"type": "string"
+						},
+						"rule_http_match": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RuleHttpMatch"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"waf_stage_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.RouteStage": {
+					"properties": {
+						"backend_stage_id": {
+							"type": ["string", "null"]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"pipeline_id": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.StageStatus"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"waf_stage_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.RuleHttpMatch": {
+					"properties": {
+						"host_filter": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RuleHttpMatch.HostFilter"
+						},
+						"method_filters": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RuleHttpMatch.MethodFilter"
+							},
+							"type": "array"
+						},
+						"path_filter": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RuleHttpMatch.PathFilter"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.RuleHttpMatch.HostFilter": {
+					"properties": {
+						"host_filter_type": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RuleHttpMatch.HostFilter.HostFilterType"
+						},
+						"value": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.RuleHttpMatch.HostFilter.HostFilterType": {
+					"default": "unknown_host_filter",
+					"enum": ["unknown_host_filter", "regex"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.RuleHttpMatch.MethodFilter": {
+					"default": "unknown_method_filter",
+					"enum": [
+						"unknown_method_filter",
+						"get",
+						"post",
+						"put",
+						"patch",
+						"delete",
+						"head",
+						"options"
+					],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.RuleHttpMatch.PathFilter": {
+					"properties": {
+						"path_filter_type": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RuleHttpMatch.PathFilter.PathFilterType"
+						},
+						"value": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.RuleHttpMatch.PathFilter.PathFilterType": {
+					"default": "unknown_path_filter",
+					"enum": ["unknown_path_filter", "regex"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.ScalewayLb": {
+					"properties": {
+						"domain_name": {
+							"type": ["string", "null"]
+						},
+						"frontend_id": {
+							"type": "string"
+						},
+						"has_websocket": {
+							"type": ["boolean", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"is_ssl": {
+							"type": ["boolean", "null"]
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"required": ["id", "zone", "frontend_id"],
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ScalewayLbBackendConfig": {
+					"properties": {
+						"lbs": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayLb"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ScalewayS3BackendConfig": {
+					"properties": {
+						"bucket_name": {
+							"type": ["string", "null"]
+						},
+						"bucket_region": {
+							"type": ["string", "null"]
+						},
+						"is_website": {
+							"type": ["boolean", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ScalewayServerlessContainerBackendConfig": {
+					"properties": {
+						"container_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						}
+					},
+					"required": ["region", "container_id"],
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.ScalewayServerlessFunctionBackendConfig": {
+					"properties": {
+						"function_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						}
+					},
+					"required": ["region", "function_id"],
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.SetHeadStageRequest.AddNewHeadStage": {
+					"properties": {
+						"new_stage_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.SetHeadStageRequest.RemoveHeadStage": {
+					"properties": {
+						"remove_stage_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.SetHeadStageRequest.SwapHeadStage": {
+					"properties": {
+						"current_stage_id": {
+							"type": "string"
+						},
+						"new_stage_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.SetRouteRulesRequest.RouteRule": {
+					"properties": {
+						"backend_stage_id": {
+							"type": ["string", "null"]
+						},
+						"rule_http_match": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RuleHttpMatch"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"waf_stage_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.SetRouteRulesResponse": {
+					"properties": {
+						"route_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RouteRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.StageStatus": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "inactive", "active"],
+					"type": "string"
+				},
+				"scaleway.edge_services.v1beta1.TLSSecret": {
+					"properties": {
+						"region": {
+							"type": "string"
+						},
+						"secret_id": {
+							"type": "string"
+						}
+					},
+					"required": ["secret_id", "region"],
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.TLSSecretsConfig": {
+					"properties": {
+						"tls_secrets": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.TLSSecret"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.TLSStage": {
+					"properties": {
+						"backend_stage_id": {
+							"type": ["string", "null"]
+						},
+						"cache_stage_id": {
+							"type": ["string", "null"]
+						},
+						"certificate_expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"managed_certificate": {
+							"type": "boolean"
+						},
+						"pipeline_id": {
+							"type": "string"
+						},
+						"route_stage_id": {
+							"type": ["string", "null"]
+						},
+						"secrets": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.TLSSecret"
+							},
+							"type": "array"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.StageStatus"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"waf_stage_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.WafStage": {
+					"properties": {
+						"backend_stage_id": {
+							"type": ["string", "null"]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"mode": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.WafStage.Mode"
+						},
+						"paranoia_level": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"pipeline_id": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.StageStatus"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.edge_services.v1beta1.WafStage.Mode": {
+					"default": "unknown_mode",
+					"enum": ["unknown_mode", "disable", "log_only", "enable"],
+					"type": "string"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/edge-services/v1beta1/backend-stages/{backend_stage_id}": {
+				"delete": {
+					"operationId": "DeleteBackendStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "backend_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backend stages"]
+				},
+				"get": {
+					"operationId": "GetBackendStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "backend_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.BackendStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backend stages"]
+				},
+				"patch": {
+					"operationId": "UpdateBackendStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "backend_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"pipeline_id": {
+											"type": "string"
+										},
+										"scaleway_lb": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayLbBackendConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"scaleway_s3": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayS3BackendConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"scaleway_serverless_container": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayServerlessContainerBackendConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"scaleway_serverless_function": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayServerlessFunctionBackendConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.BackendStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backend stages"]
+				}
+			},
+			"/edge-services/v1beta1/billing/{project_id}": {
+				"get": {
+					"operationId": "GetBilling",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.GetBillingResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Plans"]
+				}
+			},
+			"/edge-services/v1beta1/cache-stages/{cache_stage_id}": {
+				"delete": {
+					"operationId": "DeleteCacheStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "cache_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Cache stages"]
+				},
+				"get": {
+					"operationId": "GetCacheStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "cache_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.CacheStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Cache stages"]
+				},
+				"patch": {
+					"operationId": "UpdateCacheStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "cache_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backend_stage_id": {
+											"type": ["string", "null"]
+										},
+										"fallback_ttl": {
+											"type": ["string", "null"]
+										},
+										"include_cookies": {
+											"type": ["boolean", "null"]
+										},
+										"route_stage_id": {
+											"type": ["string", "null"]
+										},
+										"waf_stage_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.CacheStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Cache stages"]
+				}
+			},
+			"/edge-services/v1beta1/current-plan": {
+				"patch": {
+					"operationId": "SelectPlan",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"plan_name": {
+											"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Plan.Name"
+										},
+										"project_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Plan"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Plans"]
+				}
+			},
+			"/edge-services/v1beta1/current-plan/{project_id}": {
+				"delete": {
+					"operationId": "DeleteCurrentPlan",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Plans"]
+				},
+				"get": {
+					"operationId": "GetCurrentPlan",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Plan"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Plans"]
+				}
+			},
+			"/edge-services/v1beta1/dns-stages/{dns_stage_id}": {
+				"delete": {
+					"operationId": "DeleteDNSStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS stages"]
+				},
+				"get": {
+					"operationId": "GetDNSStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.DNSStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS stages"]
+				},
+				"patch": {
+					"operationId": "UpdateDNSStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backend_stage_id": {
+											"type": ["string", "null"]
+										},
+										"cache_stage_id": {
+											"type": ["string", "null"]
+										},
+										"fqdns": {
+											"type": ["array", "null"]
+										},
+										"tls_stage_id": {
+											"type": ["string", "null"]
+										},
+										"wildcard_domain": {
+											"type": ["boolean", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.DNSStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS stages"]
+				}
+			},
+			"/edge-services/v1beta1/nodes": {
+				"get": {
+					"operationId": "ListNodes",
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListNodesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/edge-services/v1beta1/pipelines": {
+				"get": {
+					"operationId": "ListPipelines",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListPipelinesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "has_backend_stage_lb",
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListPipelinesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pipelines"]
+				},
+				"post": {
+					"operationId": "CreatePipeline",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										}
+									},
+									"required": ["project_id", "name", "description"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Pipeline"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pipelines"]
+				}
+			},
+			"/edge-services/v1beta1/pipelines/{pipeline_id}": {
+				"delete": {
+					"operationId": "DeletePipeline",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pipelines"]
+				},
+				"get": {
+					"operationId": "GetPipeline",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Pipeline"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pipelines"]
+				},
+				"patch": {
+					"operationId": "UpdatePipeline",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.Pipeline"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pipelines"]
+				}
+			},
+			"/edge-services/v1beta1/pipelines/{pipeline_id}/backend-stages": {
+				"get": {
+					"operationId": "ListBackendStages",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListBackendStagesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "bucket_name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "bucket_region",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "lb_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListBackendStagesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backend stages"]
+				},
+				"post": {
+					"operationId": "CreateBackendStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"scaleway_lb": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayLbBackendConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"scaleway_s3": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayS3BackendConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"scaleway_serverless_container": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayServerlessContainerBackendConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"scaleway_serverless_function": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ScalewayServerlessFunctionBackendConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.BackendStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backend stages"]
+				}
+			},
+			"/edge-services/v1beta1/pipelines/{pipeline_id}/cache-stages": {
+				"get": {
+					"operationId": "ListCacheStages",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListCacheStagesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListCacheStagesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Cache stages"]
+				},
+				"post": {
+					"operationId": "CreateCacheStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backend_stage_id": {
+											"type": ["string", "null"]
+										},
+										"fallback_ttl": {
+											"type": ["string", "null"]
+										},
+										"include_cookies": {
+											"type": ["boolean", "null"]
+										},
+										"route_stage_id": {
+											"type": ["string", "null"]
+										},
+										"waf_stage_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.CacheStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Cache stages"]
+				}
+			},
+			"/edge-services/v1beta1/pipelines/{pipeline_id}/dns-stages": {
+				"get": {
+					"operationId": "ListDNSStages",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListDNSStagesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "fqdn",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListDNSStagesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS stages"]
+				},
+				"post": {
+					"operationId": "CreateDNSStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backend_stage_id": {
+											"type": ["string", "null"]
+										},
+										"cache_stage_id": {
+											"type": ["string", "null"]
+										},
+										"fqdns": {
+											"type": ["array", "null"]
+										},
+										"tls_stage_id": {
+											"type": ["string", "null"]
+										},
+										"wildcard_domain": {
+											"type": ["boolean", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.DNSStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS stages"]
+				}
+			},
+			"/edge-services/v1beta1/pipelines/{pipeline_id}/head-stages": {
+				"get": {
+					"operationId": "ListHeadStages",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListHeadStagesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pipelines"]
+				}
+			},
+			"/edge-services/v1beta1/pipelines/{pipeline_id}/route-stages": {
+				"get": {
+					"operationId": "ListRouteStages",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListRouteStagesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListRouteStagesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Route stages"]
+				},
+				"post": {
+					"operationId": "CreateRouteStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backend_stage_id": {
+											"type": ["string", "null"]
+										},
+										"waf_stage_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RouteStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Route stages"]
+				}
+			},
+			"/edge-services/v1beta1/pipelines/{pipeline_id}/set-head-stage": {
+				"post": {
+					"operationId": "SetHeadStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"add_new_head_stage": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.SetHeadStageRequest.AddNewHeadStage"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"remove_head_stage": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.SetHeadStageRequest.RemoveHeadStage"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"swap_head_stage": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.SetHeadStageRequest.SwapHeadStage"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.HeadStageResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pipelines"]
+				}
+			},
+			"/edge-services/v1beta1/pipelines/{pipeline_id}/tls-stages": {
+				"get": {
+					"operationId": "ListTLSStages",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListTLSStagesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "secret_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "secret_region",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListTLSStagesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["TLS stages"]
+				},
+				"post": {
+					"operationId": "CreateTLSStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backend_stage_id": {
+											"type": ["string", "null"]
+										},
+										"cache_stage_id": {
+											"type": ["string", "null"]
+										},
+										"managed_certificate": {
+											"type": ["boolean", "null"]
+										},
+										"route_stage_id": {
+											"type": ["string", "null"]
+										},
+										"secrets": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.TLSSecret"
+											},
+											"type": "array"
+										},
+										"waf_stage_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.TLSStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["TLS stages"]
+				}
+			},
+			"/edge-services/v1beta1/pipelines/{pipeline_id}/waf-stages": {
+				"get": {
+					"operationId": "ListWafStages",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListWafStagesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListWafStagesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["WAF stages"]
+				},
+				"post": {
+					"operationId": "CreateWafStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "pipeline_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backend_stage_id": {
+											"type": ["string", "null"]
+										},
+										"mode": {
+											"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.WafStage.Mode"
+										},
+										"paranoia_level": {
+											"format": "uint32",
+											"type": "integer"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.WafStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["WAF stages"]
+				}
+			},
+			"/edge-services/v1beta1/plans": {
+				"get": {
+					"operationId": "ListPlans",
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListPlansResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Plans"]
+				}
+			},
+			"/edge-services/v1beta1/purge-requests": {
+				"get": {
+					"operationId": "ListPurgeRequests",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListPurgeRequestsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "pipeline_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListPurgeRequestsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Purge requests"]
+				},
+				"post": {
+					"operationId": "CreatePurgeRequest",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"all": {
+											"type": ["boolean", "null"]
+										},
+										"assets": {
+											"type": ["array", "null"]
+										},
+										"pipeline_id": {
+											"type": "string"
+										}
+									},
+									"required": ["pipeline_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.PurgeRequest"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Purge requests"]
+				}
+			},
+			"/edge-services/v1beta1/purge-requests/{purge_request_id}": {
+				"get": {
+					"operationId": "GetPurgeRequest",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "purge_request_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.PurgeRequest"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Purge requests"]
+				}
+			},
+			"/edge-services/v1beta1/route-stages/{route_stage_id}": {
+				"delete": {
+					"operationId": "DeleteRouteStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "route_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Route stages"]
+				},
+				"get": {
+					"operationId": "GetRouteStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "route_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RouteStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Route stages"]
+				},
+				"patch": {
+					"operationId": "UpdateRouteStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "route_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backend_stage_id": {
+											"type": ["string", "null"]
+										},
+										"waf_stage_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.RouteStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Route stages"]
+				}
+			},
+			"/edge-services/v1beta1/route-stages/{route_stage_id}/route-rules": {
+				"get": {
+					"operationId": "ListRouteRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "route_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.ListRouteRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Route stages"]
+				},
+				"post": {
+					"operationId": "AddRouteRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "route_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"after_position": {
+											"format": "uint64",
+											"type": ["integer", "null"]
+										},
+										"before_position": {
+											"format": "uint64",
+											"type": ["integer", "null"]
+										},
+										"route_rules": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.SetRouteRulesRequest.RouteRule"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.AddRouteRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Route stages"]
+				},
+				"put": {
+					"operationId": "SetRouteRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "route_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"route_rules": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.SetRouteRulesRequest.RouteRule"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.SetRouteRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Route stages"]
+				}
+			},
+			"/edge-services/v1beta1/tls-stages/{tls_stage_id}": {
+				"delete": {
+					"operationId": "DeleteTLSStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "tls_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["TLS stages"]
+				},
+				"get": {
+					"operationId": "GetTLSStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "tls_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.TLSStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["TLS stages"]
+				},
+				"patch": {
+					"operationId": "UpdateTLSStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "tls_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backend_stage_id": {
+											"type": ["string", "null"]
+										},
+										"cache_stage_id": {
+											"type": ["string", "null"]
+										},
+										"managed_certificate": {
+											"type": ["boolean", "null"]
+										},
+										"route_stage_id": {
+											"type": ["string", "null"]
+										},
+										"tls_secrets_config": {
+											"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.TLSSecretsConfig"
+										},
+										"waf_stage_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.TLSStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["TLS stages"]
+				}
+			},
+			"/edge-services/v1beta1/waf-stages/{waf_stage_id}": {
+				"delete": {
+					"operationId": "DeleteWafStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "waf_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["WAF stages"]
+				},
+				"get": {
+					"operationId": "GetWafStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "waf_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.WafStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["WAF stages"]
+				},
+				"patch": {
+					"operationId": "UpdateWafStage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "waf_stage_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backend_stage_id": {
+											"type": ["string", "null"]
+										},
+										"mode": {
+											"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.WafStage.Mode"
+										},
+										"paranoia_level": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.edge_services.v1beta1.WafStage"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["WAF stages"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

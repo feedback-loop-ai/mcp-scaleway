@@ -9,6 +9,7 @@ import type {
 	ListAuditTrailEventsParams,
 	ListAuditTrailExportJobsParams,
 	ListAuditTrailProductsParams,
+	TestAuditTrailCustomAlertRuleParams,
 } from "./types.js";
 
 const AUDIT_TRAIL_API_PREFIX = "/audit-trail/v1alpha1/regions";
@@ -22,6 +23,27 @@ function jsonResponse(data: unknown) {
 	return {
 		content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }],
 	};
+}
+
+export async function handleTestAuditTrailCustomAlertRule(
+	params: TestAuditTrailCustomAlertRuleParams,
+) {
+	try {
+		const response = await getClient().fetch<{ firing: boolean }>({
+			method: "POST",
+			path: `${AUDIT_TRAIL_API_PREFIX}/${params.region}/test-custom-alert-rule`,
+			body: JSON.stringify({
+				organization_id: params.organizationId,
+				query: params.query,
+				evaluation_window: params.evaluationWindow,
+				occurrences: params.occurrences,
+			}),
+			headers: { "Content-Type": "application/json" },
+		});
+		return jsonResponse(response);
+	} catch (error) {
+		return formatErrorResponse(mapScalewayError(error));
+	}
 }
 
 // --- Events ---

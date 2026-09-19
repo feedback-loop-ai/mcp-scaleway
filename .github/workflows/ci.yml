@@ -45,7 +45,7 @@ jobs:
           key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
           restore-keys: bun-${{ runner.os }}-
       - run: bun install --frozen-lockfile
-      - run: bun x tsc --noEmit
+      - run: bun run typecheck
 
   test:
     name: Test
@@ -105,3 +105,30 @@ jobs:
           restore-keys: bun-${{ runner.os }}-
       - run: bun install --frozen-lockfile
       - run: bun run test:parity
+
+  build:
+    name: Build and Node Smoke Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.20.2"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - name: Verify package contents without publishing
+        run: npm pack --dry-run
+      - name: Initialize bundled server on the minimum supported Node version
+        run: >-
+          node --input-type=module -e
+          'import { createServer } from "./dist/server.js";
+          await createServer().close();'

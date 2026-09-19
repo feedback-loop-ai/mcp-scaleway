@@ -1,0 +1,2389 @@
+{
+	"sha256": "f968e2d176d4febc5b94c879f2b67c11ca83380eda40c73aaa4edbe49e2ea68d",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.s2s_vpn.v1alpha1.BgpSession": {
+					"properties": {
+						"peer_private_ip": {
+							"type": "string"
+						},
+						"private_ip": {
+							"type": "string"
+						},
+						"routing_policy_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.BgpSession.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "up", "down", "disabled"],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ChangeConnectionPskRequest.Secret": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"revision": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ChangeConnectionPskResponse": {
+					"properties": {
+						"connection": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.Connection": {
+					"properties": {
+						"bgp_session_ipv4": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.BgpSession"
+						},
+						"bgp_session_ipv6": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.BgpSession"
+						},
+						"bgp_status_ipv4": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.BgpSession.Status"
+						},
+						"bgp_status_ipv6": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.BgpSession.Status"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"customer_gateway_id": {
+							"type": "string"
+						},
+						"esp_ciphers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.Cipher"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"ikev2_ciphers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.Cipher"
+							},
+							"type": "array"
+						},
+						"initiation_policy": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.InitiationPolicy"
+						},
+						"is_ipv6": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"route_propagation_enabled": {
+							"type": "boolean"
+						},
+						"secret_id": {
+							"type": "string"
+						},
+						"secret_revision": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"tunnel_status": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.TunnelStatus"
+						},
+						"tunnel_status_ipv4": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.TunnelStatus",
+							"deprecated": true
+						},
+						"tunnel_status_ipv6": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.TunnelStatus",
+							"deprecated": true
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"vpn_gateway_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.Connection.Cipher": {
+					"properties": {
+						"dh_group": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.DhGroup"
+						},
+						"encryption": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.Encryption"
+						},
+						"integrity": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.Integrity"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.Connection.DhGroup": {
+					"default": "unknown_dhgroup",
+					"enum": [
+						"unknown_dhgroup",
+						"modp2048",
+						"modp3072",
+						"modp4096",
+						"ecp256",
+						"ecp384",
+						"ecp521",
+						"curve25519"
+					],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.Connection.Encryption": {
+					"default": "unknown_encryption",
+					"enum": [
+						"unknown_encryption",
+						"aes128",
+						"aes192",
+						"aes256",
+						"aes128gcm",
+						"aes192gcm",
+						"aes256gcm",
+						"aes128ccm",
+						"aes256ccm",
+						"chacha20poly1305"
+					],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.Connection.InitiationPolicy": {
+					"default": "unknown_initiation_policy",
+					"enum": ["unknown_initiation_policy", "vpn_gateway", "customer_gateway"],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.Connection.Integrity": {
+					"default": "unknown_integrity",
+					"enum": ["unknown_integrity", "sha256", "sha384", "sha512"],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.Connection.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "active", "limited_connectivity", "down", "locked"],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.CreateConnectionRequest.BgpConfig": {
+					"properties": {
+						"peer_private_ip": {
+							"type": ["string", "null"]
+						},
+						"private_ip": {
+							"type": ["string", "null"]
+						},
+						"routing_policy_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.CreateConnectionRequest.InitiationPolicy": {
+					"default": "unknown_initiation_policy",
+					"enum": ["unknown_initiation_policy", "vpn_gateway", "customer_gateway"],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.CreateConnectionRequest.Secret": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"revision": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.CreateConnectionResponse": {
+					"properties": {
+						"connection": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection"
+						},
+						"pre_shared_key": {
+							"deprecated": true,
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.CreateVpnGatewayRequest.DualIpTunnel": {
+					"properties": {
+						"ipam_ipv4_id": {
+							"type": ["string", "null"]
+						},
+						"ipam_ipv6_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.CreateVpnGatewayRequest.PublicConfig": {
+					"properties": {
+						"ipam_ipv4_id": {
+							"type": ["string", "null"]
+						},
+						"ipam_ipv6_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.CreateVpnGatewayRequest.PublicTunnelConfig": {
+					"properties": {
+						"dual_ipv4v6_tunnel": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateVpnGatewayRequest.DualIpTunnel"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"single_ipv4_tunnel": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateVpnGatewayRequest.SingleIpTunnel"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"single_ipv6_tunnel": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateVpnGatewayRequest.SingleIpTunnel"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.CreateVpnGatewayRequest.SingleIpTunnel": {
+					"properties": {
+						"ipam_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.CustomerGateway": {
+					"properties": {
+						"asn": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"connection_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"public_ipv4": {
+							"type": ["string", "null"]
+						},
+						"public_ipv6": {
+							"type": ["string", "null"]
+						},
+						"region": {
+							"type": "string"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.GatewayType": {
+					"properties": {
+						"allowed_connections": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"bandwidth": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"zones": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ListConnectionsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ListConnectionsResponse": {
+					"properties": {
+						"connections": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ListCustomerGatewaysRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ListCustomerGatewaysResponse": {
+					"properties": {
+						"gateways": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CustomerGateway"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ListRoutingPoliciesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ListRoutingPoliciesResponse": {
+					"properties": {
+						"routing_policies": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.RoutingPolicy"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ListVpnGatewaysRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"name_asc",
+						"name_desc",
+						"type_asc",
+						"type_desc",
+						"status_asc",
+						"status_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ListVpnGatewaysResponse": {
+					"properties": {
+						"gateways": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.VpnGateway"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.ListVpnGatewayTypesResponse": {
+					"properties": {
+						"gateway_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.GatewayType"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.RenewConnectionPskResponse": {
+					"properties": {
+						"connection": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection"
+						},
+						"pre_shared_key": {
+							"deprecated": true,
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.RoutingPolicy": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"is_ipv6": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"prefix_filter_in": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"prefix_filter_out": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.TunnelStatus": {
+					"default": "unknown_tunnel_status",
+					"enum": ["unknown_tunnel_status", "up", "down"],
+					"type": "string"
+				},
+				"scaleway.s2s_vpn.v1alpha1.VpnGateway": {
+					"properties": {
+						"asn": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"connection_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"gateway_type": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"ipam_private_ipv4_id": {
+							"type": "string"
+						},
+						"ipam_private_ipv6_id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"private_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.VpnGateway.PrivateConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"private_network_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"public_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.VpnGateway.PublicConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"region": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.VpnGateway.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.VpnGateway.PrivateConfig": {
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.VpnGateway.PublicConfig": {
+					"properties": {
+						"ipam_ipv4_id": {
+							"type": ["string", "null"]
+						},
+						"ipam_ipv6_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.s2s_vpn.v1alpha1.VpnGateway.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"configuring",
+						"failed",
+						"provisioning",
+						"active",
+						"deprovisioning",
+						"locked"
+					],
+					"type": "string"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/s2s-vpn/v1alpha1/regions/{region}/connections": {
+				"get": {
+					"operationId": "ListConnections",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ListConnectionsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "statuses",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.Status"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "is_ipv6",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "routing_policy_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "route_propagation_enabled",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "vpn_gateway_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "customer_gateway_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ListConnectionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				},
+				"post": {
+					"operationId": "CreateConnection",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"bgp_config_ipv4": {
+											"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateConnectionRequest.BgpConfig"
+										},
+										"bgp_config_ipv6": {
+											"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateConnectionRequest.BgpConfig"
+										},
+										"customer_gateway_id": {
+											"type": "string"
+										},
+										"enable_route_propagation": {
+											"type": "boolean"
+										},
+										"esp_ciphers": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.Cipher"
+											},
+											"type": "array"
+										},
+										"ikev2_ciphers": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.Cipher"
+											},
+											"type": "array"
+										},
+										"initiation_policy": {
+											"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateConnectionRequest.InitiationPolicy"
+										},
+										"is_ipv6": {
+											"type": "boolean"
+										},
+										"name": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"secret": {
+											"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateConnectionRequest.Secret"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"vpn_gateway_id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"project_id",
+										"name",
+										"initiation_policy",
+										"ikev2_ciphers",
+										"esp_ciphers",
+										"vpn_gateway_id",
+										"customer_gateway_id"
+									],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateConnectionResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/connections/{connection_id}": {
+				"delete": {
+					"operationId": "DeleteConnection",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "connection_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				},
+				"get": {
+					"operationId": "GetConnection",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "connection_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				},
+				"patch": {
+					"operationId": "UpdateConnection",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "connection_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"esp_ciphers": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.Cipher"
+											},
+											"type": "array"
+										},
+										"ikev2_ciphers": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection.Cipher"
+											},
+											"type": "array"
+										},
+										"initiation_policy": {
+											"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateConnectionRequest.InitiationPolicy"
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/connections/{connection_id}/change-psk": {
+				"post": {
+					"operationId": "ChangeConnectionPsk",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "connection_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"secret": {
+											"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ChangeConnectionPskRequest.Secret"
+										}
+									},
+									"required": ["secret"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ChangeConnectionPskResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/connections/{connection_id}/detach-routing-policy": {
+				"post": {
+					"operationId": "DetachRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "connection_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"routing_policy_v4": {
+											"type": ["string", "null"]
+										},
+										"routing_policy_v6": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/connections/{connection_id}/disable-route-propagation": {
+				"post": {
+					"operationId": "DisableRoutePropagation",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "connection_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/connections/{connection_id}/enable-route-propagation": {
+				"post": {
+					"operationId": "EnableRoutePropagation",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "connection_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/connections/{connection_id}/renew-psk": {
+				"post": {
+					"operationId": "RenewConnectionPsk",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "connection_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"generate_revision": {
+											"type": ["boolean", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.RenewConnectionPskResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/connections/{connection_id}/set-routing-policy": {
+				"post": {
+					"operationId": "SetRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "connection_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"routing_policy_v4": {
+											"type": ["string", "null"]
+										},
+										"routing_policy_v6": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.Connection"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/customer-gateways": {
+				"get": {
+					"operationId": "ListCustomerGateways",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ListCustomerGatewaysRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ListCustomerGatewaysResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Customer Gateways"]
+				},
+				"post": {
+					"operationId": "CreateCustomerGateway",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"asn": {
+											"format": "uint32",
+											"type": "integer"
+										},
+										"ipv4_public": {
+											"type": ["string", "null"]
+										},
+										"ipv6_public": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["project_id", "name", "asn"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CustomerGateway"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Customer Gateways"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/customer-gateways/{gateway_id}": {
+				"delete": {
+					"operationId": "DeleteCustomerGateway",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "gateway_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Customer Gateways"]
+				},
+				"get": {
+					"operationId": "GetCustomerGateway",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "gateway_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CustomerGateway"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Customer Gateways"]
+				},
+				"patch": {
+					"operationId": "UpdateCustomerGateway",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "gateway_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"asn": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"ipv4_public": {
+											"type": ["string", "null"]
+										},
+										"ipv6_public": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CustomerGateway"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Customer Gateways"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/routing-policies": {
+				"get": {
+					"operationId": "ListRoutingPolicies",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ListRoutingPoliciesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "ipv6",
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ListRoutingPoliciesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Routing Policies"]
+				},
+				"post": {
+					"operationId": "CreateRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"is_ipv6": {
+											"type": "boolean"
+										},
+										"name": {
+											"type": "string"
+										},
+										"prefix_filter_in": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"prefix_filter_out": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["project_id", "name"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.RoutingPolicy"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Routing Policies"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/routing-policies/{routing_policy_id}": {
+				"delete": {
+					"operationId": "DeleteRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "routing_policy_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Routing Policies"]
+				},
+				"get": {
+					"operationId": "GetRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "routing_policy_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.RoutingPolicy"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Routing Policies"]
+				},
+				"patch": {
+					"operationId": "UpdateRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "routing_policy_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"prefix_filter_in": {
+											"type": ["array", "null"]
+										},
+										"prefix_filter_out": {
+											"type": ["array", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.RoutingPolicy"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Routing Policies"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/vpn-gateway-types": {
+				"get": {
+					"operationId": "ListVpnGatewayTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ListVpnGatewayTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["VPN Gateway Types"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/vpn-gateways": {
+				"get": {
+					"operationId": "ListVpnGateways",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ListVpnGatewaysRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "statuses",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.VpnGateway.Status"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "gateway_types",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "private_network_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.ListVpnGatewaysResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["VPN Gateways"]
+				},
+				"post": {
+					"operationId": "CreateVpnGateway",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"gateway_type": {
+											"type": "string"
+										},
+										"ipam_private_ipv4_id": {
+											"type": ["string", "null"]
+										},
+										"ipam_private_ipv6_id": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"private_network_id": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"public_config": {
+											"deprecated": true,
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateVpnGatewayRequest.PublicConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"public_tunnel_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.CreateVpnGatewayRequest.PublicTunnelConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"zone": {
+											"type": ["string", "null"]
+										}
+									},
+									"required": ["project_id", "name", "gateway_type", "private_network_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.VpnGateway"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["VPN Gateways"]
+				}
+			},
+			"/s2s-vpn/v1alpha1/regions/{region}/vpn-gateways/{gateway_id}": {
+				"delete": {
+					"operationId": "DeleteVpnGateway",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "gateway_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.VpnGateway"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["VPN Gateways"]
+				},
+				"get": {
+					"operationId": "GetVpnGateway",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "gateway_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.VpnGateway"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["VPN Gateways"]
+				},
+				"patch": {
+					"operationId": "UpdateVpnGateway",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "gateway_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.s2s_vpn.v1alpha1.VpnGateway"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["VPN Gateways"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

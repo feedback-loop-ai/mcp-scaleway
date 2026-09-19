@@ -1,0 +1,1311 @@
+{
+	"sha256": "0faaac28b190784940809a0d6e7ffedbdfc7484613d795726b9cfb447d9c44bc",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.inference.v1.Deployment": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"endpoints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.inference.v1.Endpoint"
+							},
+							"type": "array"
+						},
+						"error_message": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"max_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"min_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"model_id": {
+							"type": "string"
+						},
+						"model_name": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"node_type_name": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"quantization": {
+							"$ref": "#/components/schemas/scaleway.inference.v1.DeploymentQuantization"
+						},
+						"region": {
+							"type": "string"
+						},
+						"size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.inference.v1.Deployment.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.Deployment.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"creating",
+						"deploying",
+						"ready",
+						"error",
+						"deleting",
+						"locked",
+						"scaling",
+						"deleted"
+					],
+					"type": "string"
+				},
+				"scaleway.inference.v1.DeploymentQuantization": {
+					"properties": {
+						"bits": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"required": ["bits"],
+					"type": "object"
+				},
+				"scaleway.inference.v1.Endpoint": {
+					"properties": {
+						"disable_auth": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.inference.v1.EndpointPrivateNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.inference.v1.EndpointPublicNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"url": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.EndpointPrivateNetworkDetails": {
+					"properties": {
+						"private_network_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.EndpointPublicNetworkDetails": {
+					"type": "object"
+				},
+				"scaleway.inference.v1.EndpointSpec": {
+					"properties": {
+						"disable_auth": {
+							"type": "boolean"
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.inference.v1.EndpointPrivateNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.inference.v1.EndpointPublicNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.Eula": {
+					"properties": {
+						"content": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.ListDeploymentsRequest.OrderBy": {
+					"default": "created_at_desc",
+					"enum": ["created_at_desc", "created_at_asc", "name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.inference.v1.ListDeploymentsResponse": {
+					"properties": {
+						"deployments": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.inference.v1.Deployment"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.ListModelsRequest.OrderBy": {
+					"default": "display_rank_asc",
+					"enum": [
+						"display_rank_asc",
+						"created_at_asc",
+						"created_at_desc",
+						"name_asc",
+						"name_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.inference.v1.ListModelsResponse": {
+					"properties": {
+						"models": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.inference.v1.Model"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.ListNodeTypesResponse": {
+					"properties": {
+						"node_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.inference.v1.NodeType"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.Model": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"error_message": {
+							"type": ["string", "null"]
+						},
+						"has_eula": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"nodes_support": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.inference.v1.ModelSupportInfo"
+							},
+							"type": "array"
+						},
+						"parameter_size_bits": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.inference.v1.Model.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.Model.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "preparing", "downloading", "ready", "error"],
+					"type": "string"
+				},
+				"scaleway.inference.v1.ModelSource": {
+					"properties": {
+						"secret": {
+							"type": ["string", "null"]
+						},
+						"url": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.ModelSupportedNode": {
+					"properties": {
+						"node_type_name": {
+							"type": "string"
+						},
+						"quantizations": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.inference.v1.ModelSupportedQuantization"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.ModelSupportedQuantization": {
+					"properties": {
+						"allowed": {
+							"type": "boolean"
+						},
+						"max_context_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"quantization_bits": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.ModelSupportInfo": {
+					"properties": {
+						"nodes": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.inference.v1.ModelSupportedNode"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.NodeType": {
+					"properties": {
+						"beta": {
+							"type": "boolean"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"disabled": {
+							"type": "boolean"
+						},
+						"gpus": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"memory": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"stock_status": {
+							"$ref": "#/components/schemas/scaleway.inference.v1.NodeType.Stock"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"vcpus": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"vram": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.inference.v1.NodeType.Stock": {
+					"default": "unknown_stock",
+					"enum": ["unknown_stock", "low_stock", "out_of_stock", "available"],
+					"type": "string"
+				},
+				"scaleway.inference.v1.VerifyModelResponse": {
+					"properties": {
+						"nodes": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.inference.v1.ModelSupportedNode"
+							},
+							"type": "array"
+						},
+						"size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/inference/v1/regions/{region}/deployments": {
+				"get": {
+					"operationId": "ListDeployments",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.inference.v1.ListDeploymentsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.ListDeploymentsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Deployments"]
+				},
+				"post": {
+					"operationId": "CreateDeployment",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"accept_eula": {
+											"type": ["boolean", "null"]
+										},
+										"endpoints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.inference.v1.EndpointSpec"
+											},
+											"type": "array"
+										},
+										"max_size": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"min_size": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"model_id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"node_type_name": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"quantization": {
+											"$ref": "#/components/schemas/scaleway.inference.v1.DeploymentQuantization"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["name", "project_id", "model_id", "node_type_name", "endpoints"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.Deployment"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Deployments"]
+				}
+			},
+			"/inference/v1/regions/{region}/deployments/{deployment_id}": {
+				"delete": {
+					"operationId": "DeleteDeployment",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "deployment_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.Deployment"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Deployments"]
+				},
+				"get": {
+					"operationId": "GetDeployment",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "deployment_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.Deployment"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Deployments"]
+				},
+				"patch": {
+					"operationId": "UpdateDeployment",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "deployment_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"max_size": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"min_size": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"model_id": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"quantization": {
+											"$ref": "#/components/schemas/scaleway.inference.v1.DeploymentQuantization"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.Deployment"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Deployments"]
+				}
+			},
+			"/inference/v1/regions/{region}/deployments/{deployment_id}/certificate": {
+				"get": {
+					"operationId": "GetDeploymentCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "deployment_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Deployments"]
+				}
+			},
+			"/inference/v1/regions/{region}/endpoints": {
+				"post": {
+					"operationId": "CreateEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"deployment_id": {
+											"type": "string"
+										},
+										"endpoint": {
+											"$ref": "#/components/schemas/scaleway.inference.v1.EndpointSpec"
+										}
+									},
+									"required": ["deployment_id", "endpoint"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.Endpoint"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				}
+			},
+			"/inference/v1/regions/{region}/endpoints/{endpoint_id}": {
+				"delete": {
+					"operationId": "DeleteEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "endpoint_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				},
+				"patch": {
+					"operationId": "UpdateEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "endpoint_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"disable_auth": {
+											"type": ["boolean", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.Endpoint"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				}
+			},
+			"/inference/v1/regions/{region}/models": {
+				"get": {
+					"operationId": "ListModels",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.inference.v1.ListModelsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.ListModelsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Models"]
+				},
+				"post": {
+					"operationId": "CreateModel",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"source": {
+											"$ref": "#/components/schemas/scaleway.inference.v1.ModelSource"
+										}
+									},
+									"required": ["name", "project_id", "source"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.Model"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Models"]
+				}
+			},
+			"/inference/v1/regions/{region}/models/{model_id}": {
+				"delete": {
+					"operationId": "DeleteModel",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "model_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Models"]
+				},
+				"get": {
+					"operationId": "GetModel",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "model_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.Model"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Models"]
+				}
+			},
+			"/inference/v1/regions/{region}/models/{model_id}/eula": {
+				"get": {
+					"operationId": "GetModelEula",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "model_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.Eula"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Models"]
+				}
+			},
+			"/inference/v1/regions/{region}/node-types": {
+				"get": {
+					"operationId": "ListNodeTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "include_disabled_types",
+							"required": true,
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.ListNodeTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Node types"]
+				}
+			},
+			"/inference/v1/regions/{region}/verify-model": {
+				"post": {
+					"operationId": "VerifyModel",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"source": {
+											"$ref": "#/components/schemas/scaleway.inference.v1.ModelSource"
+										}
+									},
+									"required": ["source"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.inference.v1.VerifyModelResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Models"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

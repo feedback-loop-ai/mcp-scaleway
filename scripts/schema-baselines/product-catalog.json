@@ -1,0 +1,1561 @@
+{
+	"sha256": "e2f76ed760618557e457799d7bf9cebf7afb5526d134d7a1f779e6ebdd3d4dfb",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.type.Money": {
+					"properties": {
+						"currency_code": {
+							"type": "string"
+						},
+						"nanos": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"units": {
+							"format": "int64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.ListPublicCatalogProductsRequest.ProductType": {
+					"default": "unknown_product_type",
+					"enum": [
+						"unknown_product_type",
+						"instance",
+						"apple_silicon",
+						"elastic_metal",
+						"dedibox",
+						"block_storage",
+						"object_storage",
+						"managed_inference",
+						"generative_apis",
+						"load_balancer",
+						"secret_manager",
+						"key_manager",
+						"managed_redis_database",
+						"kubernetes",
+						"managed_relational_database",
+						"managed_mongodb",
+						"serverless_functions",
+						"serverless_containers",
+						"serverless_jobs",
+						"apache_kafka",
+						"open_search",
+						"instance_local_ssd_snapshot",
+						"instance_local_ssd_storage",
+						"file_storage",
+						"serverless_sql_database"
+					],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.ListPublicCatalogProductsRequest.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"public_beta",
+						"preview",
+						"general_availability",
+						"end_of_new_features",
+						"end_of_growth",
+						"end_of_deployment",
+						"end_of_support",
+						"end_of_sale",
+						"end_of_life",
+						"retired"
+					],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.ListPublicCatalogProductsResponse": {
+					"properties": {
+						"products": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct": {
+					"properties": {
+						"badges": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.ProductBadge"
+							},
+							"type": "array"
+						},
+						"description": {
+							"type": "string"
+						},
+						"end_of_growth_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"end_of_life_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"end_of_sale_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"environmental_impact_estimation": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.EnvironmentalImpactEstimation"
+						},
+						"locality": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Locality"
+						},
+						"price": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Price"
+						},
+						"product": {
+							"type": "string"
+						},
+						"product_category": {
+							"type": "string"
+						},
+						"properties": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties"
+						},
+						"service_category": {
+							"type": "string"
+						},
+						"sku": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Status"
+						},
+						"unit_of_measure": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.UnitOfMeasure"
+						},
+						"variant": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.EnvironmentalImpactEstimation": {
+					"properties": {
+						"kg_co2_equivalent": {
+							"format": "float",
+							"type": ["number", "null"]
+						},
+						"m3_water_usage": {
+							"format": "float",
+							"type": ["number", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Locality": {
+					"properties": {
+						"datacenter": {
+							"type": ["string", "null"]
+						},
+						"global": {
+							"type": ["boolean", "null"]
+						},
+						"region": {
+							"type": ["string", "null"]
+						},
+						"zone": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Price": {
+					"properties": {
+						"retail_price": {
+							"$ref": "#/components/schemas/google.type.Money"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.ProductBadge": {
+					"default": "unknown_product_badge",
+					"enum": [
+						"unknown_product_badge",
+						"new_product",
+						"best_seller",
+						"best_value",
+						"popular",
+						"no_kvm"
+					],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties": {
+					"properties": {
+						"apache_kafka": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ApacheKafka"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"apple_silicon": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.AppleSilicon"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"block_storage": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.BlockStorage"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"dedibox": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Dedibox"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"elastic_metal": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ElasticMetal"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"file_storage": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.FileStorage"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"generative_apis": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.GenerativeApis"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"hardware": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware"
+						},
+						"instance": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Instance"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"instance_local_ssd_snapshot": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.InstanceLocalSSDSnapshot"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"instance_local_ssd_storage": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.InstanceLocalSSDStorage"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"key_manager": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.KeyManager"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"kubernetes": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Kubernetes"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"load_balancer": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.LoadBalancer"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"managed_inference": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedInference"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"managed_mongodb": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedMongoDB"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"managed_redis_database": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRedisDatabase"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"managed_relational_database": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"object_storage": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"open_search": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.OpenSearch"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"secret_manager": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.SecretManager"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_containers": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessContainers"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_functions": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_jobs": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessJobs"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_sql_database": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessSqlDatabase"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ApacheKafka": {
+					"properties": {
+						"node": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ApacheKafka.NodeType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"storage": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ApacheKafka.StorageType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ApacheKafka.AvailableVolumeType": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "sbs_5k", "sbs_15k"],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ApacheKafka.NodeType": {
+					"properties": {
+						"is_multi_az": {
+							"type": "boolean"
+						},
+						"memory_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"vcpu_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"versions": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ApacheKafka.StorageType": {
+					"properties": {
+						"is_multi_az": {
+							"type": "boolean"
+						},
+						"max_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"min_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ApacheKafka.AvailableVolumeType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.AppleSilicon": {
+					"properties": {
+						"range": {
+							"type": "string"
+						},
+						"server_type": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.BlockStorage": {
+					"properties": {
+						"max_volume_size": {
+							"deprecated": true,
+							"format": "uint64",
+							"type": "integer"
+						},
+						"min_volume_size": {
+							"deprecated": true,
+							"format": "uint64",
+							"type": "integer"
+						},
+						"snapshot": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.BlockStorage.SnapshotType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"volume": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.BlockStorage.VolumeType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.BlockStorage.SnapshotType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.BlockStorage.VolumeType": {
+					"properties": {
+						"max_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"min_size": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Dedibox": {
+					"properties": {
+						"offer_id": {
+							"format": "int64",
+							"type": "integer"
+						},
+						"range": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ElasticMetal": {
+					"properties": {
+						"offer_id": {
+							"type": "string"
+						},
+						"range": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.FileStorage": {
+					"properties": {
+						"max_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"min_size": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.GenerativeApis": {
+					"properties": {
+						"consumption_mode": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.GenerativeApis.ConsumptionMode"
+						},
+						"default_reasoning_value": {
+							"type": ["string", "null"]
+						},
+						"provider_name": {
+							"type": "string"
+						},
+						"reasoning": {
+							"type": "boolean"
+						},
+						"supported_apis": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"supported_reasoning_values": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"tasks": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.GenerativeApis.Task"
+							},
+							"type": "array"
+						},
+						"token_type": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.GenerativeApis.TokenType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.GenerativeApis.ConsumptionMode": {
+					"default": "unknown_consumption_mode",
+					"enum": ["unknown_consumption_mode", "realtime", "batch"],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.GenerativeApis.Task": {
+					"default": "unknown_task",
+					"enum": ["unknown_task", "chat", "embeddings", "vision", "audio_transcription", "code"],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.GenerativeApis.TokenType": {
+					"default": "unknown_token_type",
+					"enum": [
+						"unknown_token_type",
+						"input_token",
+						"output_token",
+						"input_duration",
+						"input_cached_token",
+						"input_audio"
+					],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware": {
+					"properties": {
+						"cpu": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.CPU"
+						},
+						"gpu": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.GPU"
+						},
+						"network": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.Network"
+						},
+						"ram": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.RAM"
+						},
+						"storage": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.Storage"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.CPU": {
+					"properties": {
+						"arch": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.CPU.Arch"
+						},
+						"description": {
+							"type": "string"
+						},
+						"physical": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.CPU.Physical"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"shared": {
+							"type": "boolean"
+						},
+						"threads": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"type": {
+							"type": "string"
+						},
+						"virtual": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.CPU.Virtual"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.CPU.Arch": {
+					"default": "unknown_arch",
+					"enum": ["unknown_arch", "x64", "arm64", "riscv", "apple_silicon"],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.CPU.Physical": {
+					"properties": {
+						"benchmark": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"cores_per_socket": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"frequency": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"sockets": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"threads_per_core": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.CPU.Virtual": {
+					"properties": {
+						"count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.GPU": {
+					"properties": {
+						"count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"description": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.Network": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"internal_bandwidth": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"max_public_bandwidth": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"public_bandwidth": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.RAM": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"ecc_type": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.RAM.ECCType"
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.RAM.ECCType": {
+					"default": "unknown_ecc_type",
+					"enum": ["unknown_ecc_type", "standard", "on_die"],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Hardware.Storage": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"total": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Instance": {
+					"properties": {
+						"offer_id": {
+							"type": "string"
+						},
+						"range": {
+							"type": "string"
+						},
+						"recommended_replacement_offer_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.InstanceLocalSSDSnapshot": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.InstanceLocalSSDStorage": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.KeyManager": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Kubernetes": {
+					"properties": {
+						"kapsule_control_plane": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Kubernetes.KapsuleControlPlaneType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"kosmos_control_plane": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Kubernetes.KosmosControlPlaneType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"kosmos_node": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Kubernetes.KosmosNodeType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Kubernetes.KapsuleControlPlaneType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Kubernetes.KosmosControlPlaneType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.Kubernetes.KosmosNodeType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.LoadBalancer": {
+					"properties": {
+						"ipv4": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.LoadBalancer.IPV4Type"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"node": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.LoadBalancer.NodeType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.LoadBalancer.IPV4Type": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.LoadBalancer.NodeType": {
+					"properties": {
+						"bandwidth": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"multi_cloud_provider": {
+							"type": "boolean"
+						},
+						"offer_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedInference": {
+					"properties": {
+						"custom_model_storage": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedInference.ManagedInferenceCustomModelStorage"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"deployment": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedInference.ManagedInferenceDeployment"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"instance_gpu_name": {
+							"deprecated": true,
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedInference.ManagedInferenceCustomModelStorage": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedInference.ManagedInferenceDeployment": {
+					"properties": {
+						"instance_gpu_name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedMongoDB": {
+					"properties": {
+						"management": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedMongoDB.ManagementType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"node": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedMongoDB.NodeType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"storage": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedMongoDB.StorageType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedMongoDB.ManagementType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedMongoDB.NodeType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedMongoDB.StorageType": {
+					"properties": {
+						"storage_class": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedMongoDB.StorageType.StorageClass"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedMongoDB.StorageType.StorageClass": {
+					"default": "unknown_storage_class",
+					"enum": [
+						"unknown_storage_class",
+						"sbs_5k",
+						"sbs_5k_snapshot",
+						"sbs_15k",
+						"sbs_15k_snapshot"
+					],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRedisDatabase": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase": {
+					"properties": {
+						"management": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase.ManagementType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"multi_az": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase.MultiAzType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"node": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase.NodeType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"storage": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase.StorageType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase.ManagementType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase.MultiAzType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase.NodeType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase.StorageType": {
+					"properties": {
+						"storage_class": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase.StorageType.StorageClass"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ManagedRelationalDatabase.StorageType.StorageClass": {
+					"default": "unknown_storage_class",
+					"enum": [
+						"unknown_storage_class",
+						"block_ssd",
+						"block_ssd_snapshot",
+						"local_ssd",
+						"sbs_5k",
+						"sbs_5k_snapshot",
+						"sbs_15k",
+						"sbs_15k_snapshot",
+						"backup"
+					],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage": {
+					"properties": {
+						"class": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.ClassType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"internet_traffic": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.InternetTrafficType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"region_traffic": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.RegionTrafficType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"restore": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.RestoreType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.ClassType": {
+					"properties": {
+						"storage_class": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.ClassType.StorageClass"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.ClassType.StorageClass": {
+					"default": "unknown_storage_class",
+					"enum": ["unknown_storage_class", "standard", "glacier", "onezone_ia"],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.InternetTrafficType": {
+					"properties": {
+						"traffic_type": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.InternetTrafficType.TrafficType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.InternetTrafficType.TrafficType": {
+					"default": "unknown_traffic_type",
+					"enum": ["unknown_traffic_type", "ingress", "egress"],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.RegionTrafficType": {
+					"properties": {
+						"region_destination": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.RestoreType": {
+					"properties": {
+						"restore_type": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.RestoreType.RestoreType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ObjectStorage.RestoreType.RestoreType": {
+					"default": "unknown_restore_type",
+					"enum": ["unknown_restore_type", "standard"],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.OpenSearch": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.SecretManager": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessContainers": {
+					"properties": {
+						"cpu": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessContainers.CPUType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"memory": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessContainers.MemoryType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessContainers.CPUType": {
+					"properties": {
+						"mvcpu_counts": {
+							"items": {
+								"format": "uint64",
+								"type": "integer"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessContainers.MemoryType": {
+					"properties": {
+						"sizes": {
+							"items": {
+								"format": "uint64",
+								"type": "integer"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions": {
+					"properties": {
+						"consumption": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions.ConsumptionType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"free_tier": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions.FreeTierType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"provision": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions.ProvisionType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"request": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions.RequestType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"resources": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions.RuntimeResource"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions.ConsumptionType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions.FreeTierType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions.ProvisionType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions.RequestType": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessFunctions.RuntimeResource": {
+					"properties": {
+						"memory_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"mvcpu_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessJobs": {
+					"properties": {
+						"cpu": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessJobs.CPUType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"memory": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessJobs.MemoryType"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessJobs.CPUType": {
+					"properties": {
+						"mvcpu_counts": {
+							"items": {
+								"format": "uint64",
+								"type": "integer"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessJobs.MemoryType": {
+					"properties": {
+						"sizes": {
+							"items": {
+								"format": "uint64",
+								"type": "integer"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Properties.ServerlessSqlDatabase": {
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"public_beta",
+						"preview",
+						"general_availability",
+						"end_of_new_features",
+						"end_of_growth",
+						"end_of_deployment",
+						"end_of_support",
+						"end_of_sale",
+						"end_of_life",
+						"retired"
+					],
+					"type": "string"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.UnitOfMeasure": {
+					"properties": {
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"unit": {
+							"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.PublicCatalogProduct.UnitOfMeasure.CountableUnit"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.product_catalog.v2alpha1.PublicCatalogProduct.UnitOfMeasure.CountableUnit": {
+					"default": "unknown_countable_unit",
+					"enum": [
+						"unknown_countable_unit",
+						"chunk",
+						"core",
+						"currency",
+						"device",
+						"domain",
+						"email",
+						"gb_s",
+						"gigabyte",
+						"hour",
+						"iops_gigabyte",
+						"ip",
+						"month",
+						"node",
+						"plan",
+						"query",
+						"request",
+						"session",
+						"vcpu_s",
+						"version",
+						"year",
+						"key",
+						"token",
+						"minute",
+						"setup",
+						"day",
+						"second",
+						"sample_day",
+						"gigabyte_day",
+						"mvcpu"
+					],
+					"type": "string"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/product-catalog/v2alpha1/public-catalog/products": {
+				"get": {
+					"operationId": "ListPublicCatalogProducts",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "product_types",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.ListPublicCatalogProductsRequest.ProductType"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.ListPublicCatalogProductsRequest.Status"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "api_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.product_catalog.v2alpha1.ListPublicCatalogProductsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Product catalog"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

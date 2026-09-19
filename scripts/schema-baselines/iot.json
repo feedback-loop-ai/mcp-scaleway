@@ -1,0 +1,2789 @@
+{
+	"sha256": "a626925d21721fc0dc7b08bb53766b0f82ad4acb96097caa1fa6a4691061eacb",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.StringValue": {
+					"type": ["string", "null"]
+				},
+				"google.protobuf.UInt32Value": {
+					"format": "uint32",
+					"type": ["integer", "null"]
+				},
+				"scaleway.iot.v1.Certificate": {
+					"properties": {
+						"crt": {
+							"type": "string"
+						},
+						"key": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.CreateDeviceResponse": {
+					"properties": {
+						"certificate": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Certificate"
+						},
+						"device": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Device"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.CreateNetworkResponse": {
+					"properties": {
+						"network": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Network"
+						},
+						"secret": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.CreateRouteRequest.DatabaseConfig": {
+					"properties": {
+						"dbname": {
+							"type": "string"
+						},
+						"engine": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.DatabaseConfig.Engine"
+						},
+						"host": {
+							"type": "string"
+						},
+						"password": {
+							"type": "string"
+						},
+						"port": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"query": {
+							"type": "string"
+						},
+						"username": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.CreateRouteRequest.RestConfig": {
+					"properties": {
+						"headers": {
+							"additionalProperties": true,
+							"properties": {
+								"<headerKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"uri": {
+							"type": "string"
+						},
+						"verb": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.RestConfig.HttpVerb"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.CreateRouteRequest.S3Config": {
+					"properties": {
+						"bucket_name": {
+							"type": "string"
+						},
+						"bucket_region": {
+							"type": "string"
+						},
+						"object_prefix": {
+							"type": "string"
+						},
+						"strategy": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.S3Config.S3Strategy"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Device": {
+					"properties": {
+						"allow_insecure": {
+							"type": "boolean"
+						},
+						"allow_multiple_connections": {
+							"type": "boolean"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"has_custom_certificate": {
+							"type": "boolean"
+						},
+						"hub_id": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"is_connected": {
+							"type": "boolean"
+						},
+						"last_activity_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"message_filters": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Device.MessageFilters"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Device.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Device.MessageFilters": {
+					"properties": {
+						"publish": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Device.MessageFilters.Rule"
+						},
+						"subscribe": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Device.MessageFilters.Rule"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Device.MessageFilters.Rule": {
+					"properties": {
+						"policy": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Device.MessageFilters.Rule.Policy"
+						},
+						"topics": {
+							"type": ["array", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Device.MessageFilters.Rule.Policy": {
+					"default": "unknown",
+					"enum": ["unknown", "accept", "reject"],
+					"type": "string"
+				},
+				"scaleway.iot.v1.Device.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "error", "enabled", "disabled"],
+					"type": "string"
+				},
+				"scaleway.iot.v1.GetDeviceCertificateResponse": {
+					"properties": {
+						"certificate_pem": {
+							"type": "string"
+						},
+						"device": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Device"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.GetDeviceMetricsResponse": {
+					"properties": {
+						"metrics": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.std.TimeSeries"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.GetHubCAResponse": {
+					"properties": {
+						"ca_cert_pem": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.GetHubMetricsResponse": {
+					"properties": {
+						"metrics": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.std.TimeSeries"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Hub": {
+					"properties": {
+						"connected_device_count": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"device_count": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"disable_events": {
+							"type": "boolean"
+						},
+						"enable_device_auto_provisioning": {
+							"type": "boolean"
+						},
+						"enabled": {
+							"type": "boolean"
+						},
+						"endpoint": {
+							"type": "string"
+						},
+						"events_topic_prefix": {
+							"type": "string"
+						},
+						"has_custom_ca": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"product_plan": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Hub.ProductPlan"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Hub.Status"
+						},
+						"twins_graphite_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.iot.v1.Hub.TwinsGraphiteConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Hub.ProductPlan": {
+					"default": "plan_unknown",
+					"enum": ["plan_unknown", "plan_shared", "plan_dedicated", "plan_ha"],
+					"type": "string"
+				},
+				"scaleway.iot.v1.Hub.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "error", "enabling", "ready", "disabling", "disabled"],
+					"type": "string"
+				},
+				"scaleway.iot.v1.Hub.TwinsGraphiteConfig": {
+					"properties": {
+						"push_uri": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.ListDevicesRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": [
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc",
+						"hub_id_asc",
+						"hub_id_desc",
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"allow_insecure_asc",
+						"allow_insecure_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.iot.v1.ListDevicesResponse": {
+					"properties": {
+						"devices": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iot.v1.Device"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.ListHubsRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": [
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc",
+						"product_plan_asc",
+						"product_plan_desc",
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.iot.v1.ListHubsResponse": {
+					"properties": {
+						"hubs": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iot.v1.Hub"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.ListNetworksRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": [
+						"name_asc",
+						"name_desc",
+						"type_asc",
+						"type_desc",
+						"created_at_asc",
+						"created_at_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.iot.v1.ListNetworksResponse": {
+					"properties": {
+						"networks": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iot.v1.Network"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.ListRoutesRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": [
+						"name_asc",
+						"name_desc",
+						"hub_id_asc",
+						"hub_id_desc",
+						"type_asc",
+						"type_desc",
+						"created_at_asc",
+						"created_at_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.iot.v1.ListRoutesResponse": {
+					"properties": {
+						"routes": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iot.v1.RouteSummary"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.ListTwinDocumentsResponse": {
+					"properties": {
+						"documents": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iot.v1.ListTwinDocumentsResponse.DocumentSummary"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.ListTwinDocumentsResponse.DocumentSummary": {
+					"properties": {
+						"document_name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Network": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"endpoint": {
+							"type": "string"
+						},
+						"hub_id": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"topic_prefix": {
+							"type": "string"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Network.NetworkType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Network.NetworkType": {
+					"default": "unknown",
+					"enum": ["unknown", "sigfox", "rest"],
+					"type": "string"
+				},
+				"scaleway.iot.v1.RenewDeviceCertificateResponse": {
+					"properties": {
+						"certificate": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Certificate"
+						},
+						"device": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Device"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Route": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"db_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.iot.v1.Route.DatabaseConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"hub_id": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"rest_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.iot.v1.Route.RestConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"s3_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.iot.v1.Route.S3Config"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"topic": {
+							"type": "string"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.RouteType"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Route.DatabaseConfig": {
+					"properties": {
+						"dbname": {
+							"type": "string"
+						},
+						"engine": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.DatabaseConfig.Engine"
+						},
+						"host": {
+							"type": "string"
+						},
+						"password": {
+							"type": "string"
+						},
+						"port": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"query": {
+							"type": "string"
+						},
+						"username": {
+							"type": "string"
+						}
+					},
+					"required": ["host", "port", "dbname", "username", "password"],
+					"type": "object"
+				},
+				"scaleway.iot.v1.Route.DatabaseConfig.Engine": {
+					"default": "unknown",
+					"enum": ["unknown", "postgresql", "mysql"],
+					"type": "string"
+				},
+				"scaleway.iot.v1.Route.RestConfig": {
+					"properties": {
+						"headers": {
+							"additionalProperties": true,
+							"properties": {
+								"<headerKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"uri": {
+							"type": "string"
+						},
+						"verb": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.RestConfig.HttpVerb"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Route.RestConfig.HttpVerb": {
+					"default": "unknown",
+					"enum": ["unknown", "get", "post", "put", "patch", "delete"],
+					"type": "string"
+				},
+				"scaleway.iot.v1.Route.RouteType": {
+					"default": "unknown",
+					"enum": ["unknown", "s3", "database", "rest"],
+					"type": "string"
+				},
+				"scaleway.iot.v1.Route.S3Config": {
+					"properties": {
+						"bucket_name": {
+							"type": "string"
+						},
+						"bucket_region": {
+							"type": "string"
+						},
+						"object_prefix": {
+							"type": "string"
+						},
+						"strategy": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.S3Config.S3Strategy"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.Route.S3Config.S3Strategy": {
+					"default": "unknown",
+					"enum": ["unknown", "per_topic", "per_message"],
+					"type": "string"
+				},
+				"scaleway.iot.v1.RouteSummary": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"hub_id": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"topic": {
+							"type": "string"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.RouteType"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.SetDeviceCertificateResponse": {
+					"properties": {
+						"certificate_pem": {
+							"type": "string"
+						},
+						"device": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Device"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.TwinDocument": {
+					"properties": {
+						"data": {
+							"properties": {
+								"<fieldKey>": {
+									"type": "object"
+								}
+							},
+							"type": "object"
+						},
+						"document_name": {
+							"type": "string"
+						},
+						"twin_id": {
+							"type": "string"
+						},
+						"version": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.UpdateRouteRequest.DatabaseConfig": {
+					"properties": {
+						"dbname": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"engine": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.DatabaseConfig.Engine"
+						},
+						"host": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"password": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"port": {
+							"$ref": "#/components/schemas/google.protobuf.UInt32Value"
+						},
+						"query": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"username": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.UpdateRouteRequest.RestConfig": {
+					"properties": {
+						"headers": {
+							"$ref": "#/components/schemas/scaleway.std.MapStringStringValue"
+						},
+						"uri": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"verb": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.RestConfig.HttpVerb"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iot.v1.UpdateRouteRequest.S3Config": {
+					"properties": {
+						"bucket_name": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"bucket_region": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"object_prefix": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"strategy": {
+							"$ref": "#/components/schemas/scaleway.iot.v1.Route.S3Config.S3Strategy"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.MapStringStringValue": {
+					"properties": {
+						"<key>": {
+							"type": "string"
+						}
+					},
+					"type": ["object", "null"]
+				},
+				"scaleway.std.TimeSeries": {
+					"properties": {
+						"metadata": {
+							"additionalProperties": true,
+							"properties": {
+								"<metadataKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"name": {
+							"type": "string"
+						},
+						"points": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.std.TimeSeries.Point"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.TimeSeries.Point": {
+					"items": {
+						"oneOf": [
+							{
+								"format": "date-time",
+								"type": "string"
+							},
+							{
+								"type": "number"
+							}
+						]
+					},
+					"type": "array"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/iot/v1/regions/{region}/devices": {
+				"get": {
+					"operationId": "ListDevices",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iot.v1.ListDevicesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "hub_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "allow_insecure",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iot.v1.Device.Status"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.ListDevicesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				},
+				"post": {
+					"operationId": "CreateDevice",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"allow_insecure": {
+											"type": "boolean"
+										},
+										"allow_multiple_connections": {
+											"type": "boolean"
+										},
+										"description": {
+											"type": ["string", "null"]
+										},
+										"hub_id": {
+											"type": "string"
+										},
+										"message_filters": {
+											"$ref": "#/components/schemas/scaleway.iot.v1.Device.MessageFilters"
+										},
+										"name": {
+											"type": "string"
+										}
+									},
+									"required": ["name", "hub_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.CreateDeviceResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				}
+			},
+			"/iot/v1/regions/{region}/devices/{device_id}": {
+				"delete": {
+					"operationId": "DeleteDevice",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "device_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				},
+				"get": {
+					"operationId": "GetDevice",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "device_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Device"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				},
+				"patch": {
+					"operationId": "UpdateDevice",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "device_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"allow_insecure": {
+											"type": ["boolean", "null"]
+										},
+										"allow_multiple_connections": {
+											"type": ["boolean", "null"]
+										},
+										"description": {
+											"type": ["string", "null"]
+										},
+										"hub_id": {
+											"type": ["string", "null"]
+										},
+										"message_filters": {
+											"$ref": "#/components/schemas/scaleway.iot.v1.Device.MessageFilters"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Device"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				}
+			},
+			"/iot/v1/regions/{region}/devices/{device_id}/certificate": {
+				"get": {
+					"operationId": "GetDeviceCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "device_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.GetDeviceCertificateResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				},
+				"put": {
+					"operationId": "SetDeviceCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "device_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"certificate_pem": {
+											"type": "string"
+										}
+									},
+									"required": ["certificate_pem"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.SetDeviceCertificateResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				}
+			},
+			"/iot/v1/regions/{region}/devices/{device_id}/disable": {
+				"post": {
+					"operationId": "DisableDevice",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "device_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Device"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				}
+			},
+			"/iot/v1/regions/{region}/devices/{device_id}/enable": {
+				"post": {
+					"operationId": "EnableDevice",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "device_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Device"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				}
+			},
+			"/iot/v1/regions/{region}/devices/{device_id}/metrics": {
+				"get": {
+					"deprecated": true,
+					"operationId": "GetDeviceMetrics",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "device_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "start_date",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.GetDeviceMetricsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				}
+			},
+			"/iot/v1/regions/{region}/devices/{device_id}/renew-certificate": {
+				"post": {
+					"operationId": "RenewDeviceCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "device_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.RenewDeviceCertificateResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Devices"]
+				}
+			},
+			"/iot/v1/regions/{region}/hubs": {
+				"get": {
+					"operationId": "ListHubs",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iot.v1.ListHubsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.ListHubsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Hubs"]
+				},
+				"post": {
+					"operationId": "CreateHub",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"disable_events": {
+											"type": ["boolean", "null"]
+										},
+										"events_topic_prefix": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"product_plan": {
+											"$ref": "#/components/schemas/scaleway.iot.v1.Hub.ProductPlan"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"twins_graphite_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.iot.v1.Hub.TwinsGraphiteConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"required": ["name", "project_id", "product_plan"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Hub"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Hubs"]
+				}
+			},
+			"/iot/v1/regions/{region}/hubs/{hub_id}": {
+				"delete": {
+					"operationId": "DeleteHub",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hub_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "delete_devices",
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Hubs"]
+				},
+				"get": {
+					"operationId": "GetHub",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hub_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Hub"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Hubs"]
+				},
+				"patch": {
+					"operationId": "UpdateHub",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hub_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"disable_events": {
+											"type": ["boolean", "null"]
+										},
+										"enable_device_auto_provisioning": {
+											"type": ["boolean", "null"]
+										},
+										"events_topic_prefix": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"product_plan": {
+											"$ref": "#/components/schemas/scaleway.iot.v1.Hub.ProductPlan"
+										},
+										"twins_graphite_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.iot.v1.Hub.TwinsGraphiteConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Hub"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Hubs"]
+				}
+			},
+			"/iot/v1/regions/{region}/hubs/{hub_id}/ca": {
+				"get": {
+					"operationId": "GetHubCA",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hub_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.GetHubCAResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Hubs"]
+				},
+				"post": {
+					"operationId": "SetHubCA",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hub_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"ca_cert_pem": {
+											"type": "string"
+										},
+										"challenge_cert_pem": {
+											"type": "string"
+										}
+									},
+									"required": ["ca_cert_pem", "challenge_cert_pem"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Hub"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Hubs"]
+				}
+			},
+			"/iot/v1/regions/{region}/hubs/{hub_id}/disable": {
+				"post": {
+					"operationId": "DisableHub",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hub_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Hub"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Hubs"]
+				}
+			},
+			"/iot/v1/regions/{region}/hubs/{hub_id}/enable": {
+				"post": {
+					"operationId": "EnableHub",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hub_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Hub"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Hubs"]
+				}
+			},
+			"/iot/v1/regions/{region}/hubs/{hub_id}/metrics": {
+				"get": {
+					"deprecated": true,
+					"operationId": "GetHubMetrics",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hub_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "start_date",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.GetHubMetricsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Hubs"]
+				}
+			},
+			"/iot/v1/regions/{region}/networks": {
+				"get": {
+					"operationId": "ListNetworks",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iot.v1.ListNetworksRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "hub_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "topic_prefix",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.ListNetworksResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Networks"]
+				},
+				"post": {
+					"operationId": "CreateNetwork",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"hub_id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"topic_prefix": {
+											"type": "string"
+										},
+										"type": {
+											"$ref": "#/components/schemas/scaleway.iot.v1.Network.NetworkType"
+										}
+									},
+									"required": ["name", "type", "hub_id", "topic_prefix"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.CreateNetworkResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Networks"]
+				}
+			},
+			"/iot/v1/regions/{region}/networks/{network_id}": {
+				"delete": {
+					"operationId": "DeleteNetwork",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "network_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Networks"]
+				},
+				"get": {
+					"operationId": "GetNetwork",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "network_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Network"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Networks"]
+				}
+			},
+			"/iot/v1/regions/{region}/routes": {
+				"get": {
+					"operationId": "ListRoutes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iot.v1.ListRoutesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "hub_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.ListRoutesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Routes"]
+				},
+				"post": {
+					"operationId": "CreateRoute",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"db_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.iot.v1.CreateRouteRequest.DatabaseConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"hub_id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"rest_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.iot.v1.CreateRouteRequest.RestConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"s3_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.iot.v1.CreateRouteRequest.S3Config"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"topic": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Route"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Routes"]
+				}
+			},
+			"/iot/v1/regions/{region}/routes/{route_id}": {
+				"delete": {
+					"operationId": "DeleteRoute",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "route_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Routes"]
+				},
+				"get": {
+					"operationId": "GetRoute",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "route_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Route"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Routes"]
+				},
+				"patch": {
+					"operationId": "UpdateRoute",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "route_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"db_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.iot.v1.UpdateRouteRequest.DatabaseConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"rest_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.iot.v1.UpdateRouteRequest.RestConfig"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"s3_config": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.iot.v1.UpdateRouteRequest.S3Config"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"topic": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.Route"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Routes"]
+				}
+			},
+			"/iot/v1/regions/{region}/twins/{twin_id}": {
+				"delete": {
+					"operationId": "DeleteTwinDocuments",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "twin_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Cloud Twins"]
+				},
+				"get": {
+					"operationId": "ListTwinDocuments",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "twin_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.ListTwinDocumentsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Cloud Twins"]
+				}
+			},
+			"/iot/v1/regions/{region}/twins/{twin_id}/documents/{document_name}": {
+				"delete": {
+					"operationId": "DeleteTwinDocument",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "twin_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "document_name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Cloud Twins"]
+				},
+				"get": {
+					"operationId": "GetTwinDocument",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "twin_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "document_name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.TwinDocument"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Cloud Twins"]
+				},
+				"patch": {
+					"operationId": "PatchTwinDocument",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "twin_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "document_name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {
+											"properties": {
+												"<fieldKey>": {
+													"type": "object"
+												}
+											},
+											"type": "object"
+										},
+										"version": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.TwinDocument"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Cloud Twins"]
+				},
+				"put": {
+					"operationId": "PutTwinDocument",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "twin_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "document_name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {
+											"properties": {
+												"<fieldKey>": {
+													"type": "object"
+												}
+											},
+											"type": "object"
+										},
+										"version": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iot.v1.TwinDocument"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IoT Cloud Twins"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

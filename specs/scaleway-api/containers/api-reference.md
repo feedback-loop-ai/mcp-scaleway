@@ -1,5 +1,11 @@
 # Scaleway Serverless Containers v1 API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/serverless-containers/v1/schema.yml
+> - version: v1
+> - fetched: 2026-09-19
+> - sha256: 90cbdb0b234460332aa1e5d2dad7cae58d9198214d704ef2d36e33695e601efd
+
 > **Envelope boundary (Decision 1).** Upstream Scaleway JSON is snake_case and is
 > passed through by this server without renaming — `total_count` and any other
 > `*count*` field in a response body is the upstream field, verbatim. The MCP
@@ -113,3 +119,9 @@ The obsolete v1beta1 deploy and token operations are removed end-to-end, includi
 - The supported `scaleway_containers_update_cron` operation still rejects a supplied `containerId` locally as `unsupported_operation`/501 without authentication or HTTP. That parameter-level guard is retained; it does not remove the real trigger PATCH endpoint.
 
 Contract tests: `tests/contract/containers/containers.contract.test.ts` use the actual installed SDK client with a fake HTTP transport to validate final URL, auth headers, body bytes, response decoding, pagination, and HTTP errors. No live cloud writes or credentials are used.
+
+## Default public endpoint (2026-09-19)
+
+Create and update container inputs expose optional `enableDefaultPublicEndpoint`, serialized as `enable_default_public_endpoint` for both operations. Explicit `false` is preserved: the default endpoint then returns 404 while custom domains can remain enabled. Omitting the value preserves Scaleway defaults.
+
+Contract proof: `tests/contract/transport/current-capabilities.transport.test.ts` verifies both boolean values on POST and PATCH.

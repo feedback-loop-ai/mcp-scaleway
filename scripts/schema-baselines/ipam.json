@@ -1,0 +1,782 @@
+{
+	"sha256": "af4ceaa20c3b5df210454aab9e17207145f9d5de6f4df146399c99af35cd1575",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.ipam.v1.CustomResource": {
+					"properties": {
+						"mac_address": {
+							"type": "string"
+						},
+						"name": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.ipam.v1.IP": {
+					"properties": {
+						"address": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"is_ipv6": {
+							"type": "boolean"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"resource": {
+							"$ref": "#/components/schemas/scaleway.ipam.v1.Resource"
+						},
+						"reverses": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.ipam.v1.Reverse"
+							},
+							"type": "array"
+						},
+						"source": {
+							"$ref": "#/components/schemas/scaleway.ipam.v1.Source"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.ipam.v1.ListIPsRequest.OrderBy": {
+					"default": "created_at_desc",
+					"enum": [
+						"created_at_desc",
+						"created_at_asc",
+						"updated_at_desc",
+						"updated_at_asc",
+						"attached_at_desc",
+						"attached_at_asc",
+						"ip_address_desc",
+						"ip_address_asc",
+						"mac_address_desc",
+						"mac_address_asc"
+					],
+					"type": "string"
+				},
+				"scaleway.ipam.v1.ListIPsResponse": {
+					"properties": {
+						"ips": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.ipam.v1.IP"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.ipam.v1.Resource": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"mac_address": {
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": ["string", "null"]
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.ipam.v1.Resource.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.ipam.v1.Resource.Type": {
+					"default": "unknown_type",
+					"enum": [
+						"unknown_type",
+						"custom",
+						"instance_server",
+						"instance_ip",
+						"instance_private_nic",
+						"lb_server",
+						"fip_ip",
+						"vpc_gateway",
+						"vpc_gateway_network",
+						"k8s_node",
+						"k8s_cluster",
+						"rdb_instance",
+						"redis_cluster",
+						"baremetal_server",
+						"baremetal_private_nic",
+						"llm_deployment",
+						"mgdb_instance",
+						"apple_silicon_server",
+						"apple_silicon_private_nic",
+						"serverless_container",
+						"serverless_function",
+						"vpn_gateway",
+						"ddl_datalab",
+						"kafka_cluster",
+						"bgp_endpoint",
+						"scbl_sedb_cluster",
+						"dtwh_deployment",
+						"sedb_cluster",
+						"msgq_cluster",
+						"edge_vpc_endpoint",
+						"dviz_cluster",
+						"nats_cluster"
+					],
+					"type": "string"
+				},
+				"scaleway.ipam.v1.Reverse": {
+					"properties": {
+						"address": {
+							"type": ["string", "null"]
+						},
+						"hostname": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.ipam.v1.Source": {
+					"properties": {
+						"private_network_id": {
+							"type": ["string", "null"]
+						},
+						"regional": {
+							"type": ["boolean", "null"]
+						},
+						"subnet_id": {
+							"type": ["string", "null"]
+						},
+						"vpc_id": {
+							"type": ["string", "null"]
+						},
+						"zonal": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/ipam/v1/regions/{region}/ip-sets/release": {
+				"post": {
+					"operationId": "ReleaseIPSet",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"ip_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/ipam/v1/regions/{region}/ips": {
+				"get": {
+					"operationId": "ListIPs",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.ipam.v1.ListIPsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "vpc_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "attached",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "resource_name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "resource_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "resource_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "resource_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.ipam.v1.Resource.Type"
+							}
+						},
+						{
+							"in": "query",
+							"name": "resource_types",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.ipam.v1.Resource.Type"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "mac_address",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "is_ipv6",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "ip_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.ipam.v1.ListIPsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				},
+				"post": {
+					"operationId": "BookIP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"address": {
+											"type": ["string", "null"]
+										},
+										"is_ipv6": {
+											"type": "boolean"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"resource": {
+											"$ref": "#/components/schemas/scaleway.ipam.v1.CustomResource"
+										},
+										"source": {
+											"$ref": "#/components/schemas/scaleway.ipam.v1.Source"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["project_id", "source"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.ipam.v1.IP"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				}
+			},
+			"/ipam/v1/regions/{region}/ips/{ip_id}": {
+				"delete": {
+					"operationId": "ReleaseIP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				},
+				"get": {
+					"operationId": "GetIP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.ipam.v1.IP"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				},
+				"patch": {
+					"operationId": "UpdateIP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"reverses": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.ipam.v1.Reverse"
+											},
+											"type": "array"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.ipam.v1.IP"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				}
+			},
+			"/ipam/v1/regions/{region}/ips/{ip_id}/attach": {
+				"post": {
+					"operationId": "AttachIP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"resource": {
+											"$ref": "#/components/schemas/scaleway.ipam.v1.CustomResource"
+										}
+									},
+									"required": ["resource"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.ipam.v1.IP"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				}
+			},
+			"/ipam/v1/regions/{region}/ips/{ip_id}/detach": {
+				"post": {
+					"operationId": "DetachIP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"resource": {
+											"$ref": "#/components/schemas/scaleway.ipam.v1.CustomResource"
+										}
+									},
+									"required": ["resource"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.ipam.v1.IP"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				}
+			},
+			"/ipam/v1/regions/{region}/ips/{ip_id}/move": {
+				"post": {
+					"operationId": "MoveIP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"from_resource": {
+											"$ref": "#/components/schemas/scaleway.ipam.v1.CustomResource"
+										},
+										"to_resource": {
+											"$ref": "#/components/schemas/scaleway.ipam.v1.CustomResource"
+										}
+									},
+									"required": ["from_resource"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.ipam.v1.IP"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

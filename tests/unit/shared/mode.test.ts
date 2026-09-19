@@ -24,6 +24,46 @@ describe("startup mode configuration", () => {
 			filters: { toolsets: ["rdb", "instances"], readOnly: true },
 		});
 	});
+	it("does not enable routing just because a TypeSafe key or router tuning is present", () => {
+		expect(
+			resolveServerOptions({ TYPESAFE_API_KEY: "private", SCW_ROUTER_TIMEOUT_MS: "invalid" }),
+		).not.toHaveProperty("router");
+		expect(resolveServerOptions({ SCW_ROUTER: "off" })).not.toHaveProperty("router");
+	});
+	it("allows explicit opt-in without credentials for local fallback and applies bounded defaults", () => {
+		for (const TYPESAFE_API_KEY of [undefined, "", "   "])
+			expect(resolveServerOptions({ SCW_ROUTER: "jev", TYPESAFE_API_KEY }).router).toEqual({
+				timeoutMs: 5000,
+				minConfidence: 0.8,
+				minProbability: 0.8,
+			});
+		expect(() => resolveServerOptions({ SCW_ROUTER: "invalid" })).toThrow();
+		expect(
+			resolveServerOptions({ SCW_ROUTER: "jev", TYPESAFE_API_KEY: "private" }).router,
+		).toMatchObject({ timeoutMs: 5000, minConfidence: 0.8, minProbability: 0.8 });
+		expect(
+			resolveServerOptions({
+				SCW_ROUTER: "jev",
+				TYPESAFE_API_KEY: "private",
+				SCW_ROUTER_MODEL: "jev-1.13.0",
+				SCW_ROUTER_TIMEOUT_MS: "2500",
+				SCW_ROUTER_MIN_CONFIDENCE: "0.9",
+				SCW_ROUTER_MIN_PROBABILITY: "0.95",
+			}).router,
+		).toMatchObject({ timeoutMs: 2500, minConfidence: 0.9, minProbability: 0.95 });
+		for (const options of [
+			{ SCW_ROUTER_MIN_CONFIDENCE: " " },
+			{ SCW_ROUTER_MIN_PROBABILITY: "" },
+			{ SCW_ROUTER_TIMEOUT_MS: "bad" },
+			{ SCW_ROUTER_TIMEOUT_MS: "30001" },
+			{ SCW_ROUTER_MIN_CONFIDENCE: "1.1" },
+			{ SCW_ROUTER_MIN_PROBABILITY: "-1" },
+		]) {
+			expect(() =>
+				resolveServerOptions({ SCW_ROUTER: "jev", TYPESAFE_API_KEY: "private", ...options }),
+			).toThrow();
+		}
+	});
 });
 
 describe("flat-mode support window (FR-026)", () => {

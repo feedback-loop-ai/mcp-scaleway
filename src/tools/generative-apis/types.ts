@@ -20,20 +20,80 @@ export const ListModelsResponseSchema = z.object({
 export type ListModelsResponse = z.infer<typeof ListModelsResponseSchema>;
 
 // --- Chat Completion ---
-export const ChatMessageRoleSchema = z.enum(["system", "user", "assistant"]);
+export const ChatMessageRoleSchema = z.enum(["system", "user", "assistant", "tool"]);
 export type ChatMessageRole = z.infer<typeof ChatMessageRoleSchema>;
 
-export const ChatMessageSchema = z.object({
-	role: ChatMessageRoleSchema.describe("The role of the message author"),
-	content: z.string().describe("The content of the message"),
+export const FunctionToolCallSchema = z.object({
+	id: z.string().min(1),
+	type: z.literal("function"),
+	function: z.object({ name: z.string().min(1), arguments: z.string() }),
 });
+
+export const ChatMessageSchema = z.union([
+	z.object({ role: z.enum(["system", "user"]), content: z.string() }),
+	z.object({
+		role: z.literal("assistant"),
+		content: z.string(),
+		tool_calls: z.array(FunctionToolCallSchema).optional(),
+	}),
+	z.object({
+		role: z.literal("assistant"),
+		content: z.null().optional(),
+		tool_calls: z.array(FunctionToolCallSchema).min(1),
+	}),
+	z.object({
+		role: z.literal("tool"),
+		content: z.string(),
+		tool_call_id: z.string().min(1),
+	}),
+]);
 export type ChatMessage = z.infer<typeof ChatMessageSchema>;
+
+const FunctionNameSchema = z
+	.string()
+	.min(1)
+	.max(64)
+	.regex(/^[a-zA-Z0-9_-]+$/)
+	.describe("Function name: 1-64 ASCII letters, digits, underscores, or dashes");
+
+export const FunctionToolSchema = z.object({
+	type: z.literal("function"),
+	function: z.object({
+		name: FunctionNameSchema,
+		description: z.string().optional(),
+		parameters: z.record(z.unknown()).optional().describe("Function input JSON Schema"),
+		strict: z
+			.boolean()
+			.nullable()
+			.optional()
+			.describe("Forwarded to Scaleway; currently ignored, so validate generated arguments"),
+	}),
+});
+
+export const ToolChoiceSchema = z.union([
+	z.enum(["none", "auto", "required"]),
+	z.object({ type: z.literal("function"), function: z.object({ name: FunctionNameSchema }) }),
+]);
+
+export const ResponseFormatSchema = z.union([
+	z.object({ type: z.literal("text") }),
+	z.object({ type: z.literal("json_object") }),
+	z.object({
+		type: z.literal("json_schema"),
+		json_schema: z.object({
+			name: z.string().min(1),
+			description: z.string().optional(),
+			schema: z.record(z.unknown()),
+			strict: z.boolean().optional(),
+		}),
+	}),
+]);
 
 export const ChatCompletionChoiceSchema = z.object({
 	index: z.number().int(),
 	message: ChatMessageSchema,
 	finish_reason: z
-		.enum(["stop", "length", "content_filter"])
+		.enum(["stop", "length", "content_filter", "tool_calls"])
 		.nullable()
 		.describe("Reason the generation stopped"),
 });
@@ -104,8 +164,37 @@ export const ChatCompletionInputSchema = z.object({
 		.positive()
 		.optional()
 		.default(512)
-		.describe("Maximum tokens to generate"),
+		.describe("Legacy output-token limit; ignored when max_completion_tokens is supplied"),
+	max_completion_tokens: z
+		.number()
+		.int()
+		.positive()
+		.optional()
+		.describe(
+			"Maximum completion tokens, including reasoning tokens; takes precedence over max_tokens",
+		),
 	top_p: z.number().min(0).max(1).optional().default(1).describe("Nucleus sampling parameter"),
+	tools: z
+		.array(FunctionToolSchema)
+		.max(128)
+		.optional()
+		.describe("Functions the model may request (maximum 128)"),
+	tool_choice: ToolChoiceSchema.optional().describe(
+		"Automatic, required, disabled, or named function",
+	),
+	parallel_tool_calls: z
+		.boolean()
+		.optional()
+		.describe(
+			"Forwarded to Scaleway; currently false is ignored, so multiple calls may be returned",
+		),
+	response_format: ResponseFormatSchema.optional().describe(
+		"Text, JSON object, or JSON Schema output",
+	),
+	reasoning_effort: z
+		.enum(["none", "low", "medium", "high"])
+		.optional()
+		.describe("Reasoning effort, subject to the selected model's capabilities"),
 });
 export type ChatCompletionInput = z.infer<typeof ChatCompletionInputSchema>;
 

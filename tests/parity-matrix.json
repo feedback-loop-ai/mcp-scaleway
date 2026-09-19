@@ -118,6 +118,11 @@
 			"api": "GET /audit-trail/v1alpha1/regions/{region}/products",
 			"contract_test": "tests/contract/audit-trail/audit-trail.contract.test.ts",
 			"tool": "scaleway_audit_trail_list_products"
+		},
+		"test_custom_alert_rule": {
+			"api": "POST /audit-trail/v1alpha1/regions/{region}/test-custom-alert-rule",
+			"contract_test": "tests/contract/transport/current-capabilities.transport.test.ts",
+			"tool": "scaleway_audit_trail_test_custom_alert_rule"
 		}
 	},
 	"autoscaling": {
@@ -2117,6 +2122,11 @@
 			"contract_test": "tests/contract/key-manager.test.ts",
 			"tool": "scaleway_key_manager_delete_key"
 		},
+		"DeleteKeyMaterial": {
+			"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/delete-key-material",
+			"contract_test": "tests/contract/transport/current-capabilities.transport.test.ts",
+			"tool": "scaleway_key_manager_delete_key_material"
+		},
 		"DisableKey": {
 			"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/disable",
 			"contract_test": "tests/contract/key-manager.test.ts",
@@ -2141,6 +2151,11 @@
 			"api": "GET /key-manager/v1alpha1/regions/{region}/keys/{key_id}",
 			"contract_test": "tests/contract/key-manager.test.ts",
 			"tool": "scaleway_key_manager_get_key"
+		},
+		"ListKeyRotations": {
+			"api": "GET /key-manager/v1alpha1/regions/{region}/keys/{key_id}/rotations",
+			"contract_test": "tests/contract/transport/current-capabilities.transport.test.ts",
+			"tool": "scaleway_key_manager_list_key_rotations"
 		},
 		"ListKeys": {
 			"api": "GET /key-manager/v1alpha1/regions/{region}/keys",
@@ -2945,7 +2960,7 @@
 			"tool": "scaleway_rdb_create_instance"
 		},
 		"create_snapshot": {
-			"api": "POST /rdb/v1/regions/{region}/snapshots",
+			"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/snapshots",
 			"contract_test": "tests/contract/rdb.test.ts",
 			"tool": "scaleway_rdb_create_snapshot"
 		},
@@ -3035,7 +3050,7 @@
 			"tool": "scaleway_rdb_restore_backup"
 		},
 		"restore_snapshot": {
-			"api": "POST /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance-from-snapshot",
+			"api": "POST /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance",
 			"contract_test": "tests/contract/rdb.test.ts",
 			"tool": "scaleway_rdb_restore_snapshot"
 		},
@@ -3757,8 +3772,8 @@
 			},
 			"audit-trail": {
 				"url": "https://www.scaleway.com/en/developers/api/audit-trail/v1alpha1/schema.yml",
-				"sha256": "4bf6d0a55d856ec7432db29e72a08144dd169841d3421c45c051215dc29c7ded",
-				"fetched": "2026-09-11"
+				"sha256": "63d5703441b95b29bf9e9cd2087ad609e77357a37fe4a18eac3d962ed3efc5bf",
+				"fetched": "2026-09-19"
 			},
 			"autoscaling": {
 				"url": "https://www.scaleway.com/en/developers/api/autoscaling/v1alpha2/schema.yml",
@@ -3782,8 +3797,8 @@
 			},
 			"containers": {
 				"url": "https://www.scaleway.com/en/developers/api/serverless-containers/v1/schema.yml",
-				"sha256": "91966d4c1f291c6fa3ac4652ffc84f9f65b095ada11a7d2c8539c082e309ad2a",
-				"fetched": "2026-09-11"
+				"sha256": "90cbdb0b234460332aa1e5d2dad7cae58d9198214d704ef2d36e33695e601efd",
+				"fetched": "2026-09-19"
 			},
 			"data-lab": {
 				"url": "https://www.scaleway.com/en/developers/api/data-lab/v1beta1/schema.yml",
@@ -3877,8 +3892,8 @@
 			},
 			"k8s": {
 				"url": "https://www.scaleway.com/en/developers/api/kubernetes/v1/schema.yml",
-				"sha256": "57fe1f868632c716bfee1e235e0fdb67222129aea7be70f1b162a2e536f28451",
-				"fetched": "2026-09-11"
+				"sha256": "dc396cf42aee6a0ad78755f8e8e1d6c1fed33c4d1f709fb06996338ddf60c7d9",
+				"fetched": "2026-09-19"
 			},
 			"kafka": {
 				"url": "https://www.scaleway.com/en/developers/api/clusters-for-kafka/v1alpha1/schema.yml",
@@ -3887,8 +3902,8 @@
 			},
 			"key-manager": {
 				"url": "https://www.scaleway.com/en/developers/api/key-manager/v1alpha1/schema.yml",
-				"sha256": "9d0ba64e59efc8653d6cce82db248ceb7d3edfa4b40501287e9c32534415ba78",
-				"fetched": "2026-09-11"
+				"sha256": "9d7759d25ad3a46a9b2792faf3fb9d728cfcdb6768b977db54352c64739337e0",
+				"fetched": "2026-09-19"
 			},
 			"lb": {
 				"url": "https://www.scaleway.com/en/developers/api/load-balancer/zoned/v1/schema.yml",
@@ -3938,7 +3953,7 @@
 			"rdb": {
 				"url": "https://www.scaleway.com/en/developers/api/managed-database-postgre-mysql/v1/schema.yml",
 				"sha256": "efd9b27cb7702a8afb548d02315c97a22d950152267ab7591945619c3f571a87",
-				"fetched": "2026-09-11"
+				"fetched": "2026-09-19"
 			},
 			"redis": {
 				"url": "https://www.scaleway.com/en/developers/api/managed-database-redis/v1/schema.yml",
@@ -3985,6 +4000,12 @@
 				"sha256": "3d7ded4dff75421de4b62c4c95c86d8ce75b1f885ec4cc841ddb215bac14e95d",
 				"fetched": "2026-09-11"
 			}
-		}
+		},
+		"optional_gateway_tools": [
+			{
+				"tool": "scaleway_route",
+				"contract_test": "tests/contract/routing.test.ts"
+			}
+		]
 	}
 }

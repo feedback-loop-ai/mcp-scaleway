@@ -1,0 +1,4665 @@
+{
+	"sha256": "efd9b27cb7702a8afb548d02315c97a22d950152267ab7591945619c3f571a87",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.FloatValue": {
+					"properties": {
+						"value": {
+							"format": "float",
+							"type": "number"
+						}
+					},
+					"type": "object"
+				},
+				"google.protobuf.Int32Value": {
+					"format": "int32",
+					"type": ["integer", "null"]
+				},
+				"scaleway.rdb.v1.ACLRule": {
+					"properties": {
+						"action": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.ACLRule.Action"
+						},
+						"description": {
+							"type": "string"
+						},
+						"direction": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.ACLRule.Direction"
+						},
+						"ip": {
+							"type": "string"
+						},
+						"port": {
+							"deprecated": true,
+							"format": "uint32",
+							"type": "integer"
+						},
+						"protocol": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.ACLRule.Protocol"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ACLRule.Action": {
+					"default": "allow",
+					"enum": ["allow", "deny"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ACLRule.Direction": {
+					"default": "inbound",
+					"enum": ["inbound", "outbound"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ACLRule.Protocol": {
+					"default": "tcp",
+					"enum": ["tcp", "udp", "icmp"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ACLRuleRequest": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"ip": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.AddInstanceACLRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ACLRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.AddInstanceSettingsResponse": {
+					"properties": {
+						"settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceSetting"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.BackupSchedule": {
+					"properties": {
+						"disabled": {
+							"type": "boolean"
+						},
+						"frequency": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"next_run_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"retention": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Database": {
+					"properties": {
+						"managed": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"owner": {
+							"type": "string"
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.DatabaseBackup": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"database_name": {
+							"type": "string"
+						},
+						"download_url": {
+							"type": ["string", "null"]
+						},
+						"download_url_expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"instance_id": {
+							"type": "string"
+						},
+						"instance_name": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"same_region": {
+							"type": "boolean"
+						},
+						"size": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.DatabaseBackup.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.DatabaseBackup.Status": {
+					"default": "unknown",
+					"enum": [
+						"unknown",
+						"creating",
+						"ready",
+						"restoring",
+						"deleting",
+						"error",
+						"exporting",
+						"locked"
+					],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.DatabaseEngine": {
+					"properties": {
+						"logo_url": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"versions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.EngineVersion"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.DeleteInstanceACLRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ACLRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.DeleteInstanceSettingsResponse": {
+					"properties": {
+						"settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceSetting"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.EncryptionAtRest": {
+					"properties": {
+						"enabled": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Endpoint": {
+					"properties": {
+						"direct_access": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.rdb.v1.Endpoint.DirectAccessDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"hostname": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"ip": {
+							"type": ["string", "null"]
+						},
+						"load_balancer": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.rdb.v1.Endpoint.LoadBalancerDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"name": {
+							"type": ["string", "null"]
+						},
+						"port": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.rdb.v1.Endpoint.PrivateNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Endpoint.DirectAccessDetails": {
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Endpoint.LoadBalancerDetails": {
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Endpoint.PrivateNetworkDetails": {
+					"properties": {
+						"private_network_id": {
+							"type": "string"
+						},
+						"provisioning_mode": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Endpoint.PrivateNetworkDetails.ProvisioningMode"
+						},
+						"service_ip": {
+							"type": "string"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Endpoint.PrivateNetworkDetails.ProvisioningMode": {
+					"default": "static",
+					"enum": ["static", "ipam"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.EndpointSpec": {
+					"properties": {
+						"load_balancer": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.rdb.v1.EndpointSpec.LoadBalancer"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.rdb.v1.EndpointSpec.PrivateNetwork"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.EndpointSpec.LoadBalancer": {
+					"type": "object"
+				},
+				"scaleway.rdb.v1.EndpointSpec.PrivateNetwork": {
+					"properties": {
+						"ipam_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.rdb.v1.EndpointSpec.PrivateNetwork.IpamConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"private_network_id": {
+							"type": "string"
+						},
+						"service_ip": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.EndpointSpec.PrivateNetwork.IpamConfig": {
+					"type": "object"
+				},
+				"scaleway.rdb.v1.EngineSetting": {
+					"properties": {
+						"default_value": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"float_max": {
+							"$ref": "#/components/schemas/google.protobuf.FloatValue"
+						},
+						"float_min": {
+							"$ref": "#/components/schemas/google.protobuf.FloatValue"
+						},
+						"hot_configurable": {
+							"type": "boolean"
+						},
+						"int_max": {
+							"format": "int32",
+							"type": ["integer", "null"]
+						},
+						"int_min": {
+							"format": "int32",
+							"type": ["integer", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"property_type": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.EngineSetting.PropertyType"
+						},
+						"string_constraint": {
+							"type": ["string", "null"]
+						},
+						"unit": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.EngineSetting.PropertyType": {
+					"default": "BOOLEAN",
+					"enum": ["BOOLEAN", "INT", "STRING", "FLOAT"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.EngineVersion": {
+					"properties": {
+						"available_init_settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.EngineSetting"
+							},
+							"type": "array"
+						},
+						"available_settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.EngineSetting"
+							},
+							"type": "array"
+						},
+						"beta": {
+							"type": "boolean"
+						},
+						"disabled": {
+							"type": "boolean"
+						},
+						"end_of_life": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"release_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"version": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.HighAvailabilityMode": {
+					"default": "unknown_high_availability_mode",
+					"enum": ["unknown_high_availability_mode", "disabled", "single_zone", "multiple_zone"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.Instance": {
+					"properties": {
+						"backup_same_region": {
+							"type": "boolean"
+						},
+						"backup_schedule": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.BackupSchedule"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"encryption": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.EncryptionAtRest"
+						},
+						"endpoint": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Endpoint",
+							"deprecated": true
+						},
+						"endpoints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.Endpoint"
+							},
+							"type": "array"
+						},
+						"engine": {
+							"type": "string"
+						},
+						"high_availability_mode": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.HighAvailabilityMode"
+						},
+						"id": {
+							"type": "string"
+						},
+						"init_settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceSetting"
+							},
+							"type": "array"
+						},
+						"is_ha_cluster": {
+							"type": "boolean"
+						},
+						"logs_policy": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.LogsPolicy"
+						},
+						"maintenances": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.Maintenance"
+							},
+							"type": "array"
+						},
+						"name": {
+							"type": "string"
+						},
+						"node_type": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"read_replicas": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplica"
+							},
+							"type": "array"
+						},
+						"region": {
+							"type": "string"
+						},
+						"settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceSetting"
+							},
+							"type": "array"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Instance.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"upgradable_version": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.UpgradableVersion"
+							},
+							"type": "array"
+						},
+						"volume": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Volume"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Instance.Status": {
+					"default": "unknown",
+					"enum": [
+						"unknown",
+						"ready",
+						"provisioning",
+						"configuring",
+						"deleting",
+						"error",
+						"autohealing",
+						"locked",
+						"initializing",
+						"disk_full",
+						"backuping",
+						"snapshotting",
+						"restarting"
+					],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.InstanceLog": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"download_url": {
+							"type": ["string", "null"]
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"node_name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceLog.Status"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.InstanceLog.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "ready", "creating", "error"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.InstanceMetrics": {
+					"properties": {
+						"timeseries": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.std.TimeSeries"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.InstanceSetting": {
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"value": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListDatabaseBackupsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ListDatabaseBackupsResponse": {
+					"properties": {
+						"database_backups": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.DatabaseBackup"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListDatabaseEnginesResponse": {
+					"properties": {
+						"engines": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.DatabaseEngine"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListDatabasesRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc", "size_asc", "size_desc"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ListDatabasesResponse": {
+					"properties": {
+						"databases": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.Database"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListInstanceACLRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ACLRule"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListInstanceLogsDetailsResponse": {
+					"properties": {
+						"details": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ListInstanceLogsDetailsResponse.InstanceLogDetail"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListInstanceLogsDetailsResponse.InstanceLogDetail": {
+					"properties": {
+						"log_name": {
+							"type": "string"
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListInstanceLogsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ListInstanceLogsResponse": {
+					"properties": {
+						"instance_logs": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceLog"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListInstancesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"name_asc",
+						"name_desc",
+						"region",
+						"status_asc",
+						"status_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ListInstancesResponse": {
+					"properties": {
+						"instances": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.Instance"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListNodeTypesResponse": {
+					"properties": {
+						"node_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.NodeType"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListPrivilegesRequest.OrderBy": {
+					"default": "user_name_asc",
+					"enum": ["user_name_asc", "user_name_desc", "database_name_asc", "database_name_desc"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ListPrivilegesResponse": {
+					"properties": {
+						"privileges": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.Privilege"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListSnapshotsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"name_asc",
+						"name_desc",
+						"expires_at_asc",
+						"expires_at_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ListSnapshotsResponse": {
+					"properties": {
+						"snapshots": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.Snapshot"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ListUsersRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc", "is_admin_asc", "is_admin_desc"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ListUsersResponse": {
+					"properties": {
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"users": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.User"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.LogsPolicy": {
+					"properties": {
+						"max_age_retention": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"total_disk_retention": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Maintenance": {
+					"properties": {
+						"closed_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"forced_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"is_applicable": {
+							"type": "boolean"
+						},
+						"reason": {
+							"type": "string"
+						},
+						"starts_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Maintenance.Status"
+						},
+						"stops_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Maintenance.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "pending", "done", "canceled", "ongoing"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.NodeType": {
+					"properties": {
+						"available_volume_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.NodeType.VolumeType"
+							},
+							"type": "array"
+						},
+						"beta": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"disabled": {
+							"type": "boolean"
+						},
+						"generation": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.NodeType.Generation"
+						},
+						"instance_range": {
+							"type": "string"
+						},
+						"is_bssd_compatible": {
+							"deprecated": true,
+							"type": "boolean"
+						},
+						"is_ha_required": {
+							"type": "boolean"
+						},
+						"memory": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"stock_status": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.NodeType.Stock"
+						},
+						"vcpus": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"volume_constraint": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.NodeType.VolumeConstraintSizes",
+							"deprecated": true
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.NodeType.Generation": {
+					"default": "unknown_generation",
+					"enum": ["unknown_generation", "generation_v1", "generation_v2", "generation_v3"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.NodeType.Stock": {
+					"default": "unknown",
+					"enum": ["unknown", "low_stock", "out_of_stock", "available"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.NodeType.VolumeConstraintSizes": {
+					"properties": {
+						"max_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"min_size": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.NodeType.VolumeType": {
+					"properties": {
+						"chunk_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"class": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.StorageClass"
+						},
+						"description": {
+							"type": "string"
+						},
+						"max_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"min_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Volume.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Permission": {
+					"default": "readonly",
+					"enum": ["readonly", "readwrite", "all", "custom", "none"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.PrepareInstanceLogsResponse": {
+					"properties": {
+						"instance_logs": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceLog"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Privilege": {
+					"properties": {
+						"database_name": {
+							"type": "string"
+						},
+						"permission": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Permission"
+						},
+						"user_name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ReadReplica": {
+					"properties": {
+						"endpoints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.Endpoint"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"instance_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"same_zone": {
+							"type": "boolean"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplica.Status"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ReadReplica.Status": {
+					"default": "unknown",
+					"enum": [
+						"unknown",
+						"provisioning",
+						"initializing",
+						"ready",
+						"deleting",
+						"error",
+						"locked",
+						"configuring",
+						"promoting"
+					],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.ReadReplicaEndpointSpec": {
+					"properties": {
+						"direct_access": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplicaEndpointSpec.DirectAccess"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplicaEndpointSpec.PrivateNetwork"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ReadReplicaEndpointSpec.DirectAccess": {
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ReadReplicaEndpointSpec.PrivateNetwork": {
+					"properties": {
+						"ipam_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplicaEndpointSpec.PrivateNetwork.IpamConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"private_network_id": {
+							"type": "string"
+						},
+						"service_ip": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.ReadReplicaEndpointSpec.PrivateNetwork.IpamConfig": {
+					"type": "object"
+				},
+				"scaleway.rdb.v1.SetInstanceACLRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ACLRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.SetInstanceSettingsResponse": {
+					"properties": {
+						"settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceSetting"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Snapshot": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"instance_id": {
+							"type": "string"
+						},
+						"instance_name": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"node_type": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"size": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Snapshot.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"volume_type": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Snapshot.VolumeType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Snapshot.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "creating", "ready", "restoring", "deleting", "error", "locked"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.Snapshot.VolumeType": {
+					"properties": {
+						"class": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.StorageClass"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Volume.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.StorageClass": {
+					"default": "unknown_storage_class",
+					"enum": ["unknown_storage_class", "lssd", "bssd", "sbs"],
+					"type": "string"
+				},
+				"scaleway.rdb.v1.UpgradableVersion": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"minor_version": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"version": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.UpgradeInstanceRequest.MajorUpgradeWorkflow": {
+					"properties": {
+						"upgradable_version_id": {
+							"type": "string"
+						},
+						"with_endpoints": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.User": {
+					"properties": {
+						"is_admin": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Volume": {
+					"properties": {
+						"class": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.StorageClass"
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.rdb.v1.Volume.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.rdb.v1.Volume.Type": {
+					"default": "lssd",
+					"enum": ["lssd", "bssd", "sbs_5k", "sbs_15k"],
+					"type": "string"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.TimeSeries": {
+					"properties": {
+						"metadata": {
+							"additionalProperties": true,
+							"properties": {
+								"<metadataKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"name": {
+							"type": "string"
+						},
+						"points": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.std.TimeSeries.Point"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.TimeSeries.Point": {
+					"items": {
+						"oneOf": [
+							{
+								"format": "date-time",
+								"type": "string"
+							},
+							{
+								"type": "number"
+							}
+						]
+					},
+					"type": "array"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/rdb/v1/regions/{region}/backups": {
+				"get": {
+					"operationId": "ListDatabaseBackups",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ListDatabaseBackupsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "instance_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListDatabaseBackupsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backups"]
+				},
+				"post": {
+					"operationId": "CreateDatabaseBackup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"database_name": {
+											"type": "string"
+										},
+										"expires_at": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"instance_id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										}
+									},
+									"required": ["instance_id", "database_name"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.DatabaseBackup"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backups"]
+				}
+			},
+			"/rdb/v1/regions/{region}/backups/{database_backup_id}": {
+				"delete": {
+					"operationId": "DeleteDatabaseBackup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "database_backup_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.DatabaseBackup"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backups"]
+				},
+				"get": {
+					"operationId": "GetDatabaseBackup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "database_backup_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.DatabaseBackup"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backups"]
+				},
+				"patch": {
+					"operationId": "UpdateDatabaseBackup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "database_backup_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"expires_at": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.DatabaseBackup"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backups"]
+				}
+			},
+			"/rdb/v1/regions/{region}/backups/{database_backup_id}/export": {
+				"post": {
+					"operationId": "ExportDatabaseBackup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "database_backup_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.DatabaseBackup"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backups"]
+				}
+			},
+			"/rdb/v1/regions/{region}/backups/{database_backup_id}/restore": {
+				"post": {
+					"operationId": "RestoreDatabaseBackup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "database_backup_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"database_name": {
+											"type": ["string", "null"]
+										},
+										"instance_id": {
+											"type": "string"
+										}
+									},
+									"required": ["instance_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.DatabaseBackup"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Backups"]
+				}
+			},
+			"/rdb/v1/regions/{region}/database-engines": {
+				"get": {
+					"operationId": "ListDatabaseEngines",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "version",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListDatabaseEnginesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Engines"]
+				}
+			},
+			"/rdb/v1/regions/{region}/endpoints/{endpoint_id}": {
+				"delete": {
+					"operationId": "DeleteEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "endpoint_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				},
+				"get": {
+					"operationId": "GetEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "endpoint_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Endpoint"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				}
+			},
+			"/rdb/v1/regions/{region}/endpoints/{endpoint_id}/migrate": {
+				"post": {
+					"operationId": "MigrateEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "endpoint_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"instance_id": {
+											"type": "string"
+										}
+									},
+									"required": ["instance_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Endpoint"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances": {
+				"get": {
+					"operationId": "ListInstances",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ListInstancesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "has_maintenances",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListInstancesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				},
+				"post": {
+					"operationId": "CreateInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backup_same_region": {
+											"type": "boolean"
+										},
+										"disable_backup": {
+											"type": "boolean"
+										},
+										"encryption": {
+											"$ref": "#/components/schemas/scaleway.rdb.v1.EncryptionAtRest"
+										},
+										"engine": {
+											"type": "string"
+										},
+										"high_availability_mode": {
+											"$ref": "#/components/schemas/scaleway.rdb.v1.HighAvailabilityMode"
+										},
+										"init_endpoints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.rdb.v1.EndpointSpec"
+											},
+											"type": "array"
+										},
+										"init_settings": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceSetting"
+											},
+											"type": "array"
+										},
+										"is_ha_cluster": {
+											"deprecated": true,
+											"type": "boolean"
+										},
+										"name": {
+											"type": "string"
+										},
+										"node_type": {
+											"type": "string"
+										},
+										"organization_id": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"password": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"user_name": {
+											"type": "string"
+										},
+										"volume_size": {
+											"format": "uint64",
+											"type": "integer"
+										},
+										"volume_type": {
+											"$ref": "#/components/schemas/scaleway.rdb.v1.Volume.Type"
+										}
+									},
+									"required": ["engine", "user_name", "password", "node_type"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}": {
+				"delete": {
+					"operationId": "DeleteInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				},
+				"get": {
+					"operationId": "GetInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				},
+				"patch": {
+					"operationId": "UpdateInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"backup_same_region": {
+											"type": ["boolean", "null"]
+										},
+										"backup_schedule_frequency": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"backup_schedule_retention": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"backup_schedule_start_hour": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"is_backup_schedule_disabled": {
+											"type": ["boolean", "null"]
+										},
+										"logs_policy": {
+											"$ref": "#/components/schemas/scaleway.rdb.v1.LogsPolicy"
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/acls": {
+				"delete": {
+					"operationId": "DeleteInstanceACLRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"acl_rule_ips": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["acl_rule_ips"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.DeleteInstanceACLRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["ACLs"]
+				},
+				"get": {
+					"operationId": "ListInstanceACLRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListInstanceACLRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["ACLs"]
+				},
+				"post": {
+					"operationId": "AddInstanceACLRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"rules": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.rdb.v1.ACLRuleRequest"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["rules"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.AddInstanceACLRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["ACLs"]
+				},
+				"put": {
+					"operationId": "SetInstanceACLRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"rules": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.rdb.v1.ACLRuleRequest"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["rules"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.SetInstanceACLRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["ACLs"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/apply-maintenance": {
+				"post": {
+					"operationId": "ApplyInstanceMaintenance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Maintenance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/certificate": {
+				"get": {
+					"operationId": "GetInstanceCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/clone": {
+				"post": {
+					"operationId": "CloneInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"node_type": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/databases": {
+				"get": {
+					"operationId": "ListDatabases",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "managed",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "owner",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ListDatabasesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "skip_size_retrieval",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListDatabasesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Databases"]
+				},
+				"post": {
+					"operationId": "CreateDatabase",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Database"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Databases"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/databases/{name}": {
+				"delete": {
+					"operationId": "DeleteDatabase",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Databases"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/endpoints": {
+				"post": {
+					"operationId": "CreateEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"endpoint_spec": {
+											"$ref": "#/components/schemas/scaleway.rdb.v1.EndpointSpec"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Endpoint"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/logs": {
+				"get": {
+					"operationId": "ListInstanceLogs",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ListInstanceLogsRequest.OrderBy"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListInstanceLogsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/logs-details": {
+				"get": {
+					"operationId": "ListInstanceLogsDetails",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListInstanceLogsDetailsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/metrics": {
+				"get": {
+					"deprecated": true,
+					"operationId": "GetInstanceMetrics",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "start_date",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "end_date",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "metric_name",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceMetrics"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/prepare-logs": {
+				"post": {
+					"operationId": "PrepareInstanceLogs",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"end_date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"start_date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.PrepareInstanceLogsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/privileges": {
+				"get": {
+					"operationId": "ListPrivileges",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ListPrivilegesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "database_name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "user_name",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListPrivilegesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Privileges"]
+				},
+				"put": {
+					"operationId": "SetPrivilege",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"database_name": {
+											"type": "string"
+										},
+										"permission": {
+											"$ref": "#/components/schemas/scaleway.rdb.v1.Permission"
+										},
+										"user_name": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Privilege"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Privileges"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/purge-logs": {
+				"post": {
+					"operationId": "PurgeInstanceLogs",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"log_name": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/renew-certificate": {
+				"post": {
+					"operationId": "RenewInstanceCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/restart": {
+				"post": {
+					"operationId": "RestartInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/settings": {
+				"delete": {
+					"operationId": "DeleteInstanceSettings",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"setting_names": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["setting_names"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.DeleteInstanceSettingsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instance Settings"]
+				},
+				"post": {
+					"operationId": "AddInstanceSettings",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"settings": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceSetting"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["settings"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.AddInstanceSettingsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instance Settings"]
+				},
+				"put": {
+					"operationId": "SetInstanceSettings",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"settings": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceSetting"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["settings"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.SetInstanceSettingsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instance Settings"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/snapshots": {
+				"post": {
+					"operationId": "CreateSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"expires_at": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										}
+									},
+									"required": ["name"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Snapshot"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/upgrade": {
+				"post": {
+					"operationId": "UpgradeInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"enable_encryption": {
+											"type": ["boolean", "null"]
+										},
+										"enable_ha": {
+											"deprecated": true,
+											"type": ["boolean", "null"]
+										},
+										"high_availability_mode": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.rdb.v1.HighAvailabilityMode"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"major_upgrade_workflow": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.rdb.v1.UpgradeInstanceRequest.MajorUpgradeWorkflow"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"node_type": {
+											"type": ["string", "null"]
+										},
+										"upgradable_version_id": {
+											"type": ["string", "null"]
+										},
+										"volume_size": {
+											"format": "uint64",
+											"type": ["integer", "null"]
+										},
+										"volume_type": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.rdb.v1.Volume.Type"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/users": {
+				"get": {
+					"operationId": "ListUsers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ListUsersRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListUsersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				},
+				"post": {
+					"operationId": "CreateUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"is_admin": {
+											"type": "boolean"
+										},
+										"name": {
+											"type": "string"
+										},
+										"password": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/rdb/v1/regions/{region}/instances/{instance_id}/users/{name}": {
+				"delete": {
+					"operationId": "DeleteUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				},
+				"patch": {
+					"operationId": "UpdateUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"is_admin": {
+											"type": ["boolean", "null"]
+										},
+										"password": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/rdb/v1/regions/{region}/logs/{instance_log_id}": {
+				"get": {
+					"operationId": "GetInstanceLog",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_log_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.InstanceLog"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/rdb/v1/regions/{region}/node-types": {
+				"get": {
+					"operationId": "ListNodeTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "include_disabled_types",
+							"required": true,
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListNodeTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["NodeTypes"]
+				}
+			},
+			"/rdb/v1/regions/{region}/read-replicas": {
+				"post": {
+					"operationId": "CreateReadReplica",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"endpoint_spec": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplicaEndpointSpec"
+											},
+											"type": "array"
+										},
+										"instance_id": {
+											"type": "string"
+										},
+										"same_zone": {
+											"type": ["boolean", "null"]
+										}
+									},
+									"required": ["instance_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplica"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Read Replicas"]
+				}
+			},
+			"/rdb/v1/regions/{region}/read-replicas/{read_replica_id}": {
+				"delete": {
+					"operationId": "DeleteReadReplica",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "read_replica_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplica"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Read Replicas"]
+				},
+				"get": {
+					"operationId": "GetReadReplica",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "read_replica_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplica"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Read Replicas"]
+				}
+			},
+			"/rdb/v1/regions/{region}/read-replicas/{read_replica_id}/endpoints": {
+				"post": {
+					"operationId": "CreateReadReplicaEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "read_replica_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"endpoint_spec": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplicaEndpointSpec"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["endpoint_spec"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplica"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Read Replicas"]
+				}
+			},
+			"/rdb/v1/regions/{region}/read-replicas/{read_replica_id}/promote": {
+				"post": {
+					"operationId": "PromoteReadReplica",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "read_replica_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Read Replicas"]
+				}
+			},
+			"/rdb/v1/regions/{region}/read-replicas/{read_replica_id}/reset": {
+				"post": {
+					"operationId": "ResetReadReplica",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "read_replica_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ReadReplica"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Read Replicas"]
+				}
+			},
+			"/rdb/v1/regions/{region}/snapshots": {
+				"get": {
+					"operationId": "ListSnapshots",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.rdb.v1.ListSnapshotsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "instance_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.ListSnapshotsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				}
+			},
+			"/rdb/v1/regions/{region}/snapshots/{snapshot_id}": {
+				"delete": {
+					"operationId": "DeleteSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Snapshot"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				},
+				"get": {
+					"operationId": "GetSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Snapshot"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				},
+				"patch": {
+					"operationId": "UpdateSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"expires_at": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Snapshot"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				}
+			},
+			"/rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance": {
+				"post": {
+					"operationId": "CreateInstanceFromSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"high_availability_mode": {
+											"$ref": "#/components/schemas/scaleway.rdb.v1.HighAvailabilityMode"
+										},
+										"instance_name": {
+											"type": "string"
+										},
+										"is_ha_cluster": {
+											"deprecated": true,
+											"type": ["boolean", "null"]
+										},
+										"node_type": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.rdb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

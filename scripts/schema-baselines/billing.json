@@ -1,0 +1,872 @@
+{
+	"sha256": "ada4004c54d882eae93025ae05cd4c4f6e81e4395fdc8b90ace9f4f4693a171a",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.DoubleValue": {
+					"properties": {
+						"value": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					"type": "object"
+				},
+				"google.type.Money": {
+					"properties": {
+						"currency_code": {
+							"type": "string"
+						},
+						"nanos": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"units": {
+							"format": "int64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.Discount": {
+					"properties": {
+						"coupon": {
+							"$ref": "#/components/schemas/scaleway.billing.v2beta1.Discount.Coupon"
+						},
+						"creation_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"filters": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.Discount.Filter"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"mode": {
+							"$ref": "#/components/schemas/scaleway.billing.v2beta1.Discount.DiscountMode"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"start_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"stop_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"value": {
+							"format": "double",
+							"type": "number"
+						},
+						"value_remaining": {
+							"format": "double",
+							"type": "number"
+						},
+						"value_used": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.Discount.Coupon": {
+					"properties": {
+						"description": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.Discount.DiscountMode": {
+					"default": "unknown_discount_mode",
+					"enum": [
+						"unknown_discount_mode",
+						"discount_mode_rate",
+						"discount_mode_value",
+						"discount_mode_splittable"
+					],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.Discount.Filter": {
+					"properties": {
+						"exclude": {
+							"type": "boolean"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.billing.v2beta1.Discount.Filter.Type"
+						},
+						"value": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.Discount.Filter.Type": {
+					"default": "unknown_type",
+					"enum": [
+						"unknown_type",
+						"category_name",
+						"product_name",
+						"product_range",
+						"resource_name",
+						"region",
+						"zone"
+					],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.DownloadInvoiceRequest.FileType": {
+					"default": "pdf",
+					"enum": ["pdf"],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.ExportInvoicesRequest.FileType": {
+					"default": "csv",
+					"enum": ["csv"],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.ExportInvoicesRequest.OrderBy": {
+					"default": "invoice_number_desc",
+					"enum": [
+						"invoice_number_desc",
+						"invoice_number_asc",
+						"start_date_desc",
+						"start_date_asc",
+						"issued_date_desc",
+						"issued_date_asc",
+						"due_date_desc",
+						"due_date_asc",
+						"total_untaxed_desc",
+						"total_untaxed_asc",
+						"total_taxed_desc",
+						"total_taxed_asc",
+						"invoice_type_desc",
+						"invoice_type_asc"
+					],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.Invoice": {
+					"properties": {
+						"billing_period": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"due_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"issued_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"number": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"organization_name": {
+							"type": "string"
+						},
+						"seller_name": {
+							"type": "string"
+						},
+						"start_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"state": {
+							"type": "string"
+						},
+						"stop_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"total_discount": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"total_tax": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"total_taxed": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"total_undiscount": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"total_untaxed": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.billing.v2beta1.Invoice.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.Invoice.Type": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "periodic", "purchase", "credit_note"],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.ListConsumptionsRequest.OrderBy": {
+					"default": "updated_at_desc",
+					"enum": ["updated_at_desc", "updated_at_asc", "category_name_desc", "category_name_asc"],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.ListConsumptionsResponse": {
+					"properties": {
+						"consumptions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListConsumptionsResponse.Consumption"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"total_discount_untaxed_value": {
+							"format": "double",
+							"type": "number"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.ListConsumptionsResponse.Consumption": {
+					"properties": {
+						"billed_quantity": {
+							"type": "string"
+						},
+						"category_name": {
+							"type": "string"
+						},
+						"consumer_id": {
+							"type": "string"
+						},
+						"organization_name": {
+							"type": "string"
+						},
+						"product_name": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"project_name": {
+							"type": "string"
+						},
+						"resource_name": {
+							"type": "string"
+						},
+						"sku": {
+							"type": "string"
+						},
+						"unit": {
+							"type": "string"
+						},
+						"value": {
+							"$ref": "#/components/schemas/google.type.Money"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.ListDiscountsRequest.OrderBy": {
+					"default": "creation_date_desc",
+					"enum": [
+						"creation_date_desc",
+						"creation_date_asc",
+						"start_date_desc",
+						"start_date_asc",
+						"stop_date_desc",
+						"stop_date_asc"
+					],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.ListDiscountsResponse": {
+					"properties": {
+						"discounts": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.Discount"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.ListInvoicesRequest.OrderBy": {
+					"default": "invoice_number_desc",
+					"enum": [
+						"invoice_number_desc",
+						"invoice_number_asc",
+						"start_date_desc",
+						"start_date_asc",
+						"issued_date_desc",
+						"issued_date_asc",
+						"due_date_desc",
+						"due_date_asc",
+						"total_untaxed_desc",
+						"total_untaxed_asc",
+						"total_taxed_desc",
+						"total_taxed_asc",
+						"invoice_type_desc",
+						"invoice_type_asc"
+					],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.ListInvoicesResponse": {
+					"properties": {
+						"invoices": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.Invoice"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.ListTaxesRequest.OrderBy": {
+					"default": "updated_at_desc",
+					"enum": ["updated_at_desc", "updated_at_asc", "category_name_desc", "category_name_asc"],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.ListTaxesResponse": {
+					"properties": {
+						"taxes": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListTaxesResponse.Tax"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.ListTaxesResponse.Tax": {
+					"properties": {
+						"currency": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"rate": {
+							"$ref": "#/components/schemas/google.protobuf.DoubleValue"
+						},
+						"total_tax_value": {
+							"$ref": "#/components/schemas/google.protobuf.DoubleValue"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/billing/v2beta1/consumptions": {
+				"get": {
+					"operationId": "ListConsumptions",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListConsumptionsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "category_name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "billing_period",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListConsumptionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Consumption"]
+				}
+			},
+			"/billing/v2beta1/discounts": {
+				"get": {
+					"operationId": "ListDiscounts",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListDiscountsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListDiscountsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Discounts"]
+				}
+			},
+			"/billing/v2beta1/export-invoices": {
+				"get": {
+					"operationId": "ExportInvoices",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "billing_period_start_after",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "billing_period_start_before",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "invoice_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.Invoice.Type"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.ExportInvoicesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "file_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.ExportInvoicesRequest.FileType"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Invoices"]
+				}
+			},
+			"/billing/v2beta1/invoices": {
+				"get": {
+					"operationId": "ListInvoices",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "billing_period_start_after",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "billing_period_start_before",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "invoice_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.Invoice.Type"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListInvoicesRequest.OrderBy"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListInvoicesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Invoices"]
+				}
+			},
+			"/billing/v2beta1/invoices/{invoice_id}": {
+				"get": {
+					"operationId": "GetInvoice",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "invoice_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.billing.v2beta1.Invoice"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Invoices"]
+				}
+			},
+			"/billing/v2beta1/invoices/{invoice_id}/download": {
+				"get": {
+					"operationId": "DownloadInvoice",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "invoice_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "file_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.DownloadInvoiceRequest.FileType"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Invoices"]
+				}
+			},
+			"/billing/v2beta1/redeem-coupon": {
+				"post": {
+					"operationId": "RedeemCoupon",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "code",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.billing.v2beta1.Discount"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Coupons"]
+				}
+			},
+			"/billing/v2beta1/taxes": {
+				"get": {
+					"operationId": "ListTaxes",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListTaxesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "billing_period",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListTaxesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Consumption"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

@@ -3,7 +3,7 @@
 > **Provenance (D3).**
 > - schema-url: https://www.scaleway.com/en/developers/api/managed-database-postgre-mysql/v1/schema.yml
 > - version: v1
-> - fetched: 2026-09-11
+> - fetched: 2026-09-19
 > - sha256: efd9b27cb7702a8afb548d02315c97a22d950152267ab7591945619c3f571a87
 
 Base URL: `https://api.scaleway.com/rdb/v1/regions/{region}`
@@ -163,13 +163,13 @@ the `endpoints` field of the Instance object (`GET /instances/{instance_id}`).
   node_type?, region?, expires_at? }`
 
 ### Create Snapshot
-`POST /snapshots`
-- Body: `{ instance_id, name, expires_at? }`
+`POST /instances/{instance_id}/snapshots`
+- Body: `{ name, expires_at? }`
 - Response: Snapshot object
 
 ### Create Instance from Snapshot
-`POST /snapshots/{snapshot_id}/create-instance-from-snapshot`
-- Body: `{ instance_name, node_type?, is_ha_cluster? }`
+`POST /snapshots/{snapshot_id}/create-instance`
+- Body: `{ instance_name, node_type?, high_availability_mode?, is_ha_cluster? }` (last field deprecated)
 - Response: Instance object
 
 ## Reference Data
@@ -204,3 +204,11 @@ the `endpoints` field of the Instance object (`GET /instances/{instance_id}`).
 - 409: Conflict (e.g. name already in use)
 - 429: Too many requests
 - 500: Internal server error
+
+## Snapshot request corrections (2026-09-19)
+
+`scaleway_rdb_create_snapshot` sends `instance_id` in the path, not in the JSON body. Its body contains `name` and optional `expires_at`.
+`scaleway_rdb_restore_snapshot` targets `/snapshots/{snapshot_id}/create-instance`, with `instance_name`, optional `node_type` and `high_availability_mode` (`unknown_high_availability_mode`, `disabled`, `single_zone`, `multiple_zone`). The deprecated `is_ha_cluster` boolean remains available for existing callers.
+The snapshot restore creates and bills a new database instance.
+
+Contract proof: `tests/contract/transport/current-capabilities.transport.test.ts` exercises the registered tools through the real SDK with injected HTTP.

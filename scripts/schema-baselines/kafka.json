@@ -1,0 +1,1306 @@
+{
+	"sha256": "652d7d4567427e4a3b98697bfbfa4be7d528868400b0067704ed77fae7dbff08",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.kafka.v1alpha1.Cluster": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"endpoints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Endpoint"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"mono_az": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster.MonoAZDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"multi_az": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster.MultiAZDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"name": {
+							"type": "string"
+						},
+						"node_amount": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"node_type": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster.Setting"
+							},
+							"type": "array"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"version": {
+							"type": "string"
+						},
+						"volume": {
+							"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Volume"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Cluster.MonoAZDetails": {
+					"properties": {
+						"zone": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Cluster.MultiAZDetails": {
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Cluster.Setting": {
+					"properties": {
+						"bool_value": {
+							"type": ["boolean", "null"]
+						},
+						"float_value": {
+							"format": "float",
+							"type": ["number", "null"]
+						},
+						"int_value": {
+							"format": "int32",
+							"type": ["integer", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"string_value": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Cluster.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"ready",
+						"creating",
+						"configuring",
+						"deleting",
+						"error",
+						"locked",
+						"stopped",
+						"upgrading"
+					],
+					"type": "string"
+				},
+				"scaleway.kafka.v1alpha1.CreateClusterRequest.VolumeSpec": {
+					"properties": {
+						"size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Volume.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Endpoint": {
+					"properties": {
+						"dns_records": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"port": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Endpoint.PrivateNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Endpoint.PublicDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Endpoint.PrivateNetworkDetails": {
+					"properties": {
+						"private_network_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Endpoint.PublicDetails": {
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.EndpointSpec": {
+					"properties": {
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.EndpointSpec.PrivateNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.EndpointSpec.PublicDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.EndpointSpec.PrivateNetworkDetails": {
+					"properties": {
+						"private_network_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.EndpointSpec.PublicDetails": {
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.ListClustersRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.kafka.v1alpha1.ListClustersResponse": {
+					"properties": {
+						"clusters": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.ListNodeTypesResponse": {
+					"properties": {
+						"node_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.NodeType"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.ListUsersRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.kafka.v1alpha1.ListUsersResponse": {
+					"properties": {
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"users": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.User"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.ListVersionsResponse": {
+					"properties": {
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"versions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Version"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.NodeType": {
+					"properties": {
+						"available_volume_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.NodeType.VolumeType"
+							},
+							"type": "array"
+						},
+						"beta": {
+							"type": "boolean"
+						},
+						"cluster_range": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"disabled": {
+							"type": "boolean"
+						},
+						"memory_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"stock_status": {
+							"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.NodeType.Stock"
+						},
+						"vcpus": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.NodeType.Stock": {
+					"default": "unknown_stock",
+					"enum": ["unknown_stock", "low_stock", "out_of_stock", "available"],
+					"type": "string"
+				},
+				"scaleway.kafka.v1alpha1.NodeType.VolumeType": {
+					"properties": {
+						"chunk_size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"description": {
+							"type": "string"
+						},
+						"max_size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"min_size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Volume.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.User": {
+					"properties": {
+						"username": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Version": {
+					"properties": {
+						"available_settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Version.AvailableSetting"
+							},
+							"type": "array"
+						},
+						"end_of_life_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"version": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Version.AvailableSetting": {
+					"properties": {
+						"bool_property": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Version.AvailableSetting.BooleanProperty"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"description": {
+							"type": "string"
+						},
+						"float_property": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Version.AvailableSetting.FloatProperty"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"hot_configurable": {
+							"type": "boolean"
+						},
+						"int_property": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Version.AvailableSetting.IntegerProperty"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"name": {
+							"type": "string"
+						},
+						"string_property": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Version.AvailableSetting.StringProperty"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Version.AvailableSetting.BooleanProperty": {
+					"properties": {
+						"default_value": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Version.AvailableSetting.FloatProperty": {
+					"properties": {
+						"default_value": {
+							"format": "float",
+							"type": "number"
+						},
+						"max": {
+							"format": "float",
+							"type": "number"
+						},
+						"min": {
+							"format": "float",
+							"type": "number"
+						},
+						"unit": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Version.AvailableSetting.IntegerProperty": {
+					"properties": {
+						"default_value": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"max": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"min": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"unit": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Version.AvailableSetting.StringProperty": {
+					"properties": {
+						"default_value": {
+							"type": "string"
+						},
+						"string_constraint": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Volume": {
+					"properties": {
+						"size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Volume.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.kafka.v1alpha1.Volume.Type": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "sbs_5k", "sbs_15k"],
+					"type": "string"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/kafka/v1alpha1/regions/{region}/clusters": {
+				"get": {
+					"operationId": "ListClusters",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.ListClustersRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.ListClustersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Clusters"]
+				},
+				"post": {
+					"operationId": "CreateCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"endpoints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.EndpointSpec"
+											},
+											"type": "array"
+										},
+										"mono_az": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster.MonoAZDetails"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"multi_az": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster.MultiAZDetails"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"name": {
+											"type": "string"
+										},
+										"node_amount": {
+											"format": "uint32",
+											"type": "integer"
+										},
+										"node_type": {
+											"type": "string"
+										},
+										"password": {
+											"type": ["string", "null"]
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"user_name": {
+											"type": ["string", "null"]
+										},
+										"version": {
+											"type": "string"
+										},
+										"volume": {
+											"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.CreateClusterRequest.VolumeSpec"
+										}
+									},
+									"required": ["version", "node_amount", "node_type"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Clusters"]
+				}
+			},
+			"/kafka/v1alpha1/regions/{region}/clusters/{cluster_id}": {
+				"delete": {
+					"operationId": "DeleteCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Clusters"]
+				},
+				"get": {
+					"operationId": "GetCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Clusters"]
+				},
+				"patch": {
+					"operationId": "UpdateCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										},
+										"version": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Clusters"]
+				}
+			},
+			"/kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/certificate-authority": {
+				"get": {
+					"operationId": "GetClusterCertificateAuthority",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Clusters"]
+				}
+			},
+			"/kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/renew-certificate-authority": {
+				"post": {
+					"operationId": "RenewClusterCertificateAuthority",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Clusters"]
+				}
+			},
+			"/kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/users": {
+				"get": {
+					"operationId": "ListUsers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.ListUsersRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.ListUsersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Users"]
+				}
+			},
+			"/kafka/v1alpha1/regions/{region}/clusters/{cluster_id}/users/{username}": {
+				"patch": {
+					"operationId": "UpdateUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "username",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"password": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Users"]
+				}
+			},
+			"/kafka/v1alpha1/regions/{region}/endpoints": {
+				"post": {
+					"operationId": "CreateEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"cluster_id": {
+											"type": "string"
+										},
+										"endpoint": {
+											"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.EndpointSpec"
+										}
+									},
+									"required": ["cluster_id", "endpoint"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.Endpoint"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Cluster Endpoints"]
+				}
+			},
+			"/kafka/v1alpha1/regions/{region}/endpoints/{endpoint_id}": {
+				"delete": {
+					"operationId": "DeleteEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "endpoint_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Cluster Endpoints"]
+				}
+			},
+			"/kafka/v1alpha1/regions/{region}/node-types": {
+				"get": {
+					"operationId": "ListNodeTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "include_disabled_types",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.ListNodeTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Node Types"]
+				}
+			},
+			"/kafka/v1alpha1/regions/{region}/versions": {
+				"get": {
+					"operationId": "ListVersions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "version",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.kafka.v1alpha1.ListVersionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Kafka Versions"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

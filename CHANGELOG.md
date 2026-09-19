@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+- Added optional `scaleway_route` using an external TypeSafe Jev decision provider.
+  Set `SCW_ROUTER=jev` to enable it and `TYPESAFE_API_KEY` for inference; default discovery stays
+  local and exposes four tools. Routing suggests filtered operation IDs without
+  executing them. Missing credentials, provider failures and choice-capacity limits
+  fall back to local suggestions requiring review, without model probabilities or
+  confidence; caller cancellation stops without fallback. Includes bounded requests,
+  explicit uncertainty and source diagnostics, and an offline/live evaluation runner
+  that fails live runs on local fallback. Initial confidence thresholds are uncalibrated.
+- Corrected RDB snapshot creation/restoration paths and request bodies against the
+  published API. Added Containers default-public-endpoint control and Kubernetes
+  kubeconfig public/VPC selection.
+- Added Key Manager rotation listing and imported-material deletion, plus Audit Trail
+  custom-alert testing. The underlying catalog now contains 727 operations.
+- Added Generative APIs function definitions, tool choice/results, parallel tool
+  calling, structured output and reasoning-effort settings to chat completions.
+- Repaired public schema refresh and added scheduled schema change reports. Updated
+  Scaleway/MCP SDKs, pinned TypeScript, and included maintenance scripts in type checking.
+  CI now builds and smoke-tests the packaged Node entrypoints before release.
+
+Non-Jev implementation and verification are recorded in
+[`specs/062-scaleway-refresh`](specs/062-scaleway-refresh/spec.md).
+
 Specification retrofit (features 059 and 060) records the shipped 0.4.x behavior and adds
 targeted conformance fixes. Full constitutional compliance remains blocked by the explicit
 findings in specs/retrofit-compliance.md. Runtime changes in this pass:

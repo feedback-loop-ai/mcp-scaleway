@@ -89,6 +89,7 @@ export type ListClusterAvailableVersionsInput = z.infer<typeof ListClusterAvaila
 export const GetClusterKubeconfigInput = z.object({
 	region: ScalewayRegion.describe("Scaleway region"),
 	cluster_id: z.string().uuid().describe("Cluster unique identifier"),
+	endpoint: z.enum(["public", "vpc"]).optional().describe("API server endpoint (default: public)"),
 });
 export type GetClusterKubeconfigInput = z.infer<typeof GetClusterKubeconfigInput>;
 

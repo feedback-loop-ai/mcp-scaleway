@@ -45,7 +45,7 @@ const up = (s: string): string =>
 const low = (s: string): string =>
 	s
 		.split("")
-		.map((c) => (c >= "A" && c <= "Z" ? String.fromCodePoint(c.codePointAt(0) + 32) : c))
+		.map((c) => (c >= "A" && c <= "Z" ? String.fromCharCode(c.charCodeAt(0) + 32) : c))
 		.join("");
 const SCW_YML = /^scw-(.+)\.yml$/;
 

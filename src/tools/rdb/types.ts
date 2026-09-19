@@ -446,7 +446,11 @@ export const RestoreSnapshotInput = z.object({
 	snapshot_id: z.string().describe("Snapshot UUID"),
 	instance_name: z.string().describe("Name for the new restored instance"),
 	node_type: z.string().optional().describe("Node type for restored instance"),
-	is_ha_cluster: z.boolean().optional().describe("Enable HA on restored instance"),
+	is_ha_cluster: z.boolean().optional().describe("Deprecated upstream: use high_availability_mode"),
+	high_availability_mode: z
+		.enum(["unknown_high_availability_mode", "disabled", "single_zone", "multiple_zone"])
+		.optional()
+		.describe("High availability mode for the restored instance"),
 });
 export type RestoreSnapshotInput = z.infer<typeof RestoreSnapshotInput>;
 

@@ -1,0 +1,513 @@
+{
+	"sha256": "ddb8728937c60eeb5637667135f8b41ac26e8a73f3e939f689f2ffb59261164b",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.mnq.v1beta1.ListSqsCredentialsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"name_asc",
+						"name_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.mnq.v1beta1.ListSqsCredentialsResponse": {
+					"properties": {
+						"sqs_credentials": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsCredentials"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mnq.v1beta1.SqsCredentials": {
+					"properties": {
+						"access_key": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"permissions": {
+							"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsPermissions"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"secret_checksum": {
+							"type": "string"
+						},
+						"secret_key": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mnq.v1beta1.SqsInfo": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"sqs_endpoint_url": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsInfo.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mnq.v1beta1.SqsInfo.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "enabled", "disabled"],
+					"type": "string"
+				},
+				"scaleway.mnq.v1beta1.SqsPermissions": {
+					"properties": {
+						"can_manage": {
+							"type": ["boolean", "null"]
+						},
+						"can_publish": {
+							"type": ["boolean", "null"]
+						},
+						"can_receive": {
+							"type": ["boolean", "null"]
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/mnq/v1beta1/regions/{region}/activate-sqs": {
+				"post": {
+					"operationId": "ActivateSqs",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"project_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsInfo"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Queues"]
+				}
+			},
+			"/mnq/v1beta1/regions/{region}/deactivate-sqs": {
+				"post": {
+					"operationId": "DeactivateSqs",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"project_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsInfo"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Queues"]
+				}
+			},
+			"/mnq/v1beta1/regions/{region}/sqs-credentials": {
+				"get": {
+					"operationId": "ListSqsCredentials",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.mnq.v1beta1.ListSqsCredentialsRequest.OrderBy"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.ListSqsCredentialsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Queues credentials"]
+				},
+				"post": {
+					"operationId": "CreateSqsCredentials",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"permissions": {
+											"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsPermissions"
+										},
+										"project_id": {
+											"type": "string"
+										}
+									},
+									"required": ["project_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsCredentials"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Queues credentials"]
+				}
+			},
+			"/mnq/v1beta1/regions/{region}/sqs-credentials/{sqs_credentials_id}": {
+				"delete": {
+					"operationId": "DeleteSqsCredentials",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "sqs_credentials_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Queues credentials"]
+				},
+				"get": {
+					"operationId": "GetSqsCredentials",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "sqs_credentials_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsCredentials"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Queues credentials"]
+				},
+				"patch": {
+					"operationId": "UpdateSqsCredentials",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "sqs_credentials_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"permissions": {
+											"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsPermissions"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsCredentials"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Queues credentials"]
+				}
+			},
+			"/mnq/v1beta1/regions/{region}/sqs-info": {
+				"get": {
+					"operationId": "GetSqsInfo",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SqsInfo"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Queues"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

@@ -84,6 +84,28 @@ export const RotationPolicySchema = z.object({
 
 // ── Tool input schemas ─────────────────────────────────────────────────────
 
+export const ListKeyRotationsInput = PaginationParams.extend({
+	region: ScalewayRegion.optional().describe("Region containing the key"),
+	keyId: z.string().uuid().describe("ID of the key whose rotations to list"),
+	orderBy: z.enum(["created_at_asc", "created_at_desc"]).optional(),
+	status: z
+		.array(z.enum(["unknown_status", "enabled", "deleted"]))
+		.optional()
+		.describe("Filter by rotation status"),
+});
+
+export const DeleteKeyMaterialInput = z.object({
+	region: ScalewayRegion.optional().describe("Region containing the key"),
+	keyId: z.string().uuid().describe("ID of an external-origin key"),
+	keyRotationIndex: z
+		.number()
+		.int()
+		.min(0)
+		.max(4_294_967_295)
+		.optional()
+		.describe("Rotation whose imported key material to delete; defaults to the latest rotation"),
+});
+
 export const ListKeysInput = z.object({
 	region: ScalewayRegion.optional().describe("Region to target (e.g. fr-par)"),
 	organizationId: z.string().uuid().optional().describe("Filter by Organization ID"),

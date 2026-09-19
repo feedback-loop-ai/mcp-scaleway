@@ -34,7 +34,7 @@ jobs:
           restore-keys: bun-${{ runner.os }}-
       - run: bun install --frozen-lockfile
       - run: bun run lint
-      - run: bun x tsc --noEmit
+      - run: bun run typecheck
       - name: Run tests with coverage
         run: bun run test -- --coverage.enabled
 

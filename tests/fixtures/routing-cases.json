@@ -1,0 +1,235 @@
+[
+	{
+		"id": "k8s-keywords",
+		"intent": "list kubernetes clusters",
+		"expectedStatus": "matched",
+		"expectedOps": ["k8s_list_clusters"]
+	},
+	{
+		"id": "k8s-paraphrase",
+		"intent": "Show my Kubernetes clusters",
+		"expectedStatus": "matched",
+		"expectedOps": ["k8s_list_clusters"]
+	},
+	{
+		"id": "vms",
+		"intent": "List my virtual machines",
+		"expectedStatus": "matched",
+		"expectedOps": ["instances_list_servers"]
+	},
+	{
+		"id": "vm-restart",
+		"intent": "Restart my VM",
+		"expectedStatus": "matched",
+		"expectedOps": ["instances_server_action"]
+	},
+	{
+		"id": "vm-create",
+		"intent": "Provision a new cloud virtual machine",
+		"expectedStatus": "matched",
+		"expectedOps": ["instances_create_server"]
+	},
+	{
+		"id": "postgres-create",
+		"intent": "Create a managed PostgreSQL instance",
+		"expectedStatus": "matched",
+		"expectedOps": ["rdb_create_instance"]
+	},
+	{
+		"id": "postgres-list",
+		"intent": "Show my managed PostgreSQL instances",
+		"expectedStatus": "matched",
+		"expectedOps": ["rdb_list_instances"]
+	},
+	{
+		"id": "database-context",
+		"intent": "List databases",
+		"context": "Inside an existing managed PostgreSQL instance",
+		"expectedStatus": "matched",
+		"expectedOps": ["rdb_list_databases"]
+	},
+	{
+		"id": "snapshot-create",
+		"intent": "Take a snapshot of my managed PostgreSQL instance",
+		"expectedStatus": "matched",
+		"expectedOps": ["rdb_create_snapshot"]
+	},
+	{
+		"id": "snapshot-restore",
+		"intent": "Create a new managed PostgreSQL instance from this snapshot",
+		"expectedStatus": "matched",
+		"expectedOps": ["rdb_restore_snapshot"]
+	},
+	{
+		"id": "s3-buckets",
+		"intent": "Show my S3 buckets",
+		"expectedStatus": "matched",
+		"expectedOps": ["object_storage_list_buckets"]
+	},
+	{
+		"id": "s3-objects",
+		"intent": "List the objects inside my bucket",
+		"expectedStatus": "matched",
+		"expectedOps": ["object_storage_list_objects"]
+	},
+	{
+		"id": "load-balancers",
+		"intent": "Find my load balancers",
+		"expectedStatus": "matched",
+		"expectedOps": ["lb_list_lbs"]
+	},
+	{
+		"id": "invoices",
+		"intent": "Show my billing invoices",
+		"expectedStatus": "matched",
+		"expectedOps": ["billing_list_invoices"]
+	},
+	{
+		"id": "secret-list",
+		"intent": "List secret metadata without reading secret values",
+		"expectedStatus": "matched",
+		"expectedOps": ["secret_manager_list_secrets"]
+	},
+	{
+		"id": "secret-access",
+		"intent": "Read the value of this secret version",
+		"expectedStatus": "matched",
+		"expectedOps": ["secret_manager_access_secret_version"]
+	},
+	{
+		"id": "kubeconfig",
+		"intent": "Retrieve my Kubernetes cluster kubeconfig for its VPC endpoint",
+		"expectedStatus": "matched",
+		"expectedOps": ["k8s_get_cluster_kubeconfig"]
+	},
+	{
+		"id": "container-endpoint",
+		"intent": "Disable the default public endpoint on my existing serverless container",
+		"expectedStatus": "matched",
+		"expectedOps": ["containers_update_container"]
+	},
+	{
+		"id": "rotations",
+		"intent": "List the rotation history of my Key Manager key",
+		"expectedStatus": "matched",
+		"expectedOps": ["key_manager_list_key_rotations"]
+	},
+	{
+		"id": "alert-rule",
+		"intent": "Test an Audit Trail custom alert rule against an event",
+		"expectedStatus": "matched",
+		"expectedOps": ["audit_trail_test_custom_alert_rule"]
+	},
+	{
+		"id": "models",
+		"intent": "Which generative AI models are available?",
+		"expectedStatus": "matched",
+		"expectedOps": ["generative_apis_list_models"]
+	},
+	{
+		"id": "embeddings",
+		"intent": "Create text embeddings with a hosted model",
+		"expectedStatus": "matched",
+		"expectedOps": ["generative_apis_create_embedding"]
+	},
+	{
+		"id": "private-networks",
+		"intent": "List private networks in my VPC",
+		"expectedStatus": "matched",
+		"expectedOps": ["vpc_list_private_networks"]
+	},
+	{
+		"id": "dns-records",
+		"intent": "Show DNS records in my zone",
+		"expectedStatus": "matched",
+		"expectedOps": ["dns_list_records"]
+	},
+	{
+		"id": "redis",
+		"intent": "List Redis clusters",
+		"expectedStatus": "matched",
+		"expectedOps": ["redis_list_clusters"]
+	},
+	{
+		"id": "registry-images",
+		"intent": "List images in my container registry namespace",
+		"expectedStatus": "matched",
+		"expectedOps": ["registry_list_images"]
+	},
+	{
+		"id": "job-start",
+		"intent": "Run my existing serverless job definition",
+		"expectedStatus": "matched",
+		"expectedOps": ["jobs_start"]
+	},
+	{
+		"id": "filtered-read",
+		"intent": "List my cloud servers",
+		"filters": { "toolsets": ["instances"], "readOnly": true },
+		"expectedStatus": "matched",
+		"expectedOps": ["instances_list_servers"]
+	},
+	{
+		"id": "filtered-write",
+		"intent": "Delete my virtual machine",
+		"filters": { "toolsets": ["instances"], "readOnly": true },
+		"expectedStatus": "unsupported",
+		"expectedOps": []
+	},
+	{
+		"id": "excluded-secret",
+		"intent": "Read a secret version's value",
+		"filters": { "excludeTools": ["scaleway_secret_manager_access_secret_version"] },
+		"expectedStatus": "unsupported",
+		"expectedOps": []
+	},
+	{
+		"id": "filtered-service",
+		"intent": "List Kubernetes clusters",
+		"filters": { "toolsets": ["billing"] },
+		"expectedStatus": "unsupported",
+		"expectedOps": []
+	},
+	{
+		"id": "unrelated",
+		"intent": "Send a message to the engineering channel in Slack",
+		"expectedStatus": "unsupported",
+		"expectedOps": []
+	},
+	{
+		"id": "unsupported-provider",
+		"intent": "List my AWS EC2 instances in us-east-1",
+		"expectedStatus": "unsupported",
+		"expectedOps": []
+	},
+	{
+		"id": "ambiguous-clusters",
+		"intent": "Show my clusters",
+		"expectedStatus": "ambiguous",
+		"expectedOps": ["k8s_list_clusters", "redis_list_clusters"]
+	},
+	{
+		"id": "workflow-app",
+		"intent": "Create a Kubernetes cluster, a PostgreSQL instance, and deploy my application",
+		"expectedStatus": "needs_plan",
+		"expectedOps": []
+	},
+	{
+		"id": "workflow-cleanup",
+		"intent": "Find all unused cloud servers and delete them",
+		"expectedStatus": "needs_plan",
+		"expectedOps": []
+	},
+	{
+		"id": "french-clusters",
+		"intent": "Affiche mes clusters Kubernetes",
+		"expectedStatus": "matched",
+		"expectedOps": ["k8s_list_clusters"]
+	},
+	{
+		"id": "bulgarian-vms",
+		"intent": "Покажи виртуалните ми машини",
+		"expectedStatus": "matched",
+		"expectedOps": ["instances_list_servers"]
+	}
+]

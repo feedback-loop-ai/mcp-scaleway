@@ -138,6 +138,12 @@ export const CreateContainerParams = ContainerRegionParam.merge(
 			.describe("CPU limit in millicores (1000 = 1 vCPU)"),
 		timeout: z.string().optional().describe("Request timeout duration (e.g. '300s')"),
 		privacy: ContainerPrivacy.optional().describe("Privacy setting (default: public)"),
+		enableDefaultPublicEndpoint: z
+			.boolean()
+			.optional()
+			.describe(
+				"Enable the default public endpoint; false returns 404 on that endpoint while custom domains remain available",
+			),
 		protocol: ContainerProtocol.optional().describe("Protocol (default: http1)"),
 		httpOption: ContainerHttpOption.optional(),
 		httpsConnectionsOnly: z
@@ -180,6 +186,12 @@ export const UpdateContainerParams = ContainerRegionParam.merge(
 			.describe("Updated CPU limit in millicores"),
 		timeout: z.string().optional().describe("Updated request timeout"),
 		privacy: ContainerPrivacy.optional().describe("Updated privacy setting"),
+		enableDefaultPublicEndpoint: z
+			.boolean()
+			.optional()
+			.describe(
+				"Enable the default public endpoint; false returns 404 on that endpoint while custom domains remain available",
+			),
 		protocol: ContainerProtocol.optional().describe("Updated protocol"),
 		httpOption: ContainerHttpOption.optional(),
 		httpsConnectionsOnly: z

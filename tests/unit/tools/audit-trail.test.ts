@@ -33,11 +33,11 @@ describe("audit-trail module", () => {
 		expect(() => registerAuditTrailTools(server)).not.toThrow();
 	});
 
-	it("registers all 5 audit trail tools", () => {
+	it("registers all 6 audit trail tools", () => {
 		const server = new McpServer({ name: "test", version: "0.0.1" });
 		const toolSpy = vi.spyOn(server, "tool");
 		registerAuditTrailTools(server);
-		expect(toolSpy).toHaveBeenCalledTimes(5);
+		expect(toolSpy).toHaveBeenCalledTimes(6);
 
 		const toolNames = toolSpy.mock.calls.map((call) => call[0]);
 		expect(toolNames).toContain("scaleway_audit_trail_list_events");

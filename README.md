@@ -38,12 +38,12 @@ An MCP (Model Context Protocol) server that gives AI assistants like Claude full
 
 ## Overview
 
-**mcp-scaleway** is a stateless MCP server that acts as a bridge between AI assistants and the [Scaleway](https://www.scaleway.com) cloud platform. It exposes four discovery/execution tools with access to 724 operations across 50 Scaleway services, enabling AI agents to provision infrastructure, manage databases, deploy applications, and operate cloud resources on your behalf.
+**mcp-scaleway** is a stateless MCP server that acts as a bridge between AI assistants and the [Scaleway](https://www.scaleway.com) cloud platform. It exposes four discovery/execution tools with access to 727 operations across 50 Scaleway services, enabling AI agents to provision infrastructure, manage databases, deploy applications, and operate cloud resources on your behalf.
 
 **Why use this?**
 
 - **Natural language cloud management** - Ask your AI assistant to "create a Kubernetes cluster with 3 nodes" instead of writing API calls
-- **Compact default discovery** - four tools exposing 724 supported operations across 50 services; legacy flat mode remains available
+- **Compact default discovery** - four tools exposing 727 supported operations across 50 services; legacy flat mode remains available
 - **Zero state** - Pure proxy to Scaleway APIs; no data stored, no side effects beyond what you request
 - **Type-safe** - Every input validated with Zod schemas before reaching Scaleway
 
@@ -960,6 +960,14 @@ The tables below show legacy flat-mode names. In gateway mode use the same name 
 | `scaleway_generative_apis_chat_completion` | Create a chat completion (OpenAI-compatible) |
 | `scaleway_generative_apis_create_embedding` | Create text embeddings |
 
+Chat completions support function definitions, named/automatic tool selection,
+assistant tool calls and tool-result messages, JSON Schema output and reasoning
+effort. Use `max_completion_tokens` for the current token limit; it takes precedence
+over legacy `max_tokens`. Returned function calls are executed by the caller.
+Scaleway currently ignores function `strict` and `parallel_tool_calls: false`;
+those compatibility fields do not enforce strict arguments or sequential calls.
+Availability of other settings depends on the model.
+
 </details>
 
 <details>
@@ -1075,7 +1083,7 @@ The tables below show legacy flat-mode names. In gateway mode use the same name 
 </details>
 
 <details>
-<summary><strong>Key Manager</strong> (13 tools) - Cryptographic key management</summary>
+<summary><strong>Key Manager</strong> (15 tools) - Cryptographic key management</summary>
 
 | Tool | Description |
 |------|-------------|
@@ -1085,6 +1093,8 @@ The tables below show legacy flat-mode names. In gateway mode use the same name 
 | `scaleway_key_manager_update_key` | Update key metadata and rotation policy |
 | `scaleway_key_manager_delete_key` | Permanently delete a key (irreversible) |
 | `scaleway_key_manager_rotate_key` | Rotate key material |
+| `scaleway_key_manager_list_key_rotations` | List a key's rotation history |
+| `scaleway_key_manager_delete_key_material` | Delete imported key material, optionally for a specific rotation index |
 | `scaleway_key_manager_protect_key` | Protect a key from deletion |
 | `scaleway_key_manager_unprotect_key` | Remove deletion protection |
 | `scaleway_key_manager_enable_key` | Enable a key |
@@ -1096,7 +1106,7 @@ The tables below show legacy flat-mode names. In gateway mode use the same name 
 </details>
 
 <details>
-<summary><strong>Audit Trail</strong> (5 tools) - Activity audit logging</summary>
+<summary><strong>Audit Trail</strong> (6 tools) - Activity audit logging</summary>
 
 | Tool | Description |
 |------|-------------|
@@ -1105,6 +1115,7 @@ The tables below show legacy flat-mode names. In gateway mode use the same name 
 | `scaleway_audit_trail_list_export_jobs` | List export jobs (scheduled event exports to Object Storage) |
 | `scaleway_audit_trail_create_export_job` | Create an export job to a Scaleway Object Storage bucket |
 | `scaleway_audit_trail_delete_export_job` | Delete an export job |
+| `scaleway_audit_trail_test_custom_alert_rule` | Test a custom alert rule against supplied event data |
 
 </details>
 
@@ -1421,6 +1432,93 @@ Finally, call `scaleway_read` with the required instance ID:
 
 These are tool inputs, not shell commands. Descriptions preserve required fields, enum values, bounds, defaults, record value types and substantive warnings. The original Zod validators and callbacks still run. Search is bounded; follow `nextOffset` until absent rather than assuming the first page is exhaustive.
 
+### Optional Jev intent routing
+
+Enable `scaleway_route` to ask [TypeSafe's Jev](https://docs.typesafe.ai/introduction)
+which underlying operation matches a natural-language request. Jev uses its own
+API and credentials. It is independent of Scaleway Generative APIs.
+
+```bash
+export SCW_ROUTER=jev
+export TYPESAFE_API_KEY="your-typesafe-api-key"
+bun run start
+```
+
+This adds a fifth tool in `gateway` mode, or one additional tool in `both` mode.
+Routing with `flat` mode is rejected. With routing disabled, the default four tools
+and offline search/describe behavior remain unchanged. Merely configuring a
+TypeSafe key does not enable routing. If `SCW_ROUTER=jev` is set without a key,
+the server starts with local routing suggestions and makes no TypeSafe requests.
+
+Example MCP flow:
+
+```text
+scaleway_route({"intent":"Show my Kubernetes clusters","context":"Paris"})
+scaleway_describe({"ops":["k8s_list_clusters"]})
+scaleway_read({"op":"k8s_list_clusters","params":{"region":"fr-par"}})
+```
+
+The router returns candidates, their required fields, a catalog fingerprint and
+`source: "provider"` or `"local"`. Jev first selects service areas, then operations
+from the strongest areas. Its probabilities and confidence are included only for
+provider decisions, with `probabilityScope: "selected_areas"` because the distribution
+is conditional on those selected areas. Results are recommendations: routing never executes an operation, generates
+parameters or grants permission. The client gathers parameters and handles multi-step
+plans; the existing validators, configured filters and Scaleway IAM govern execution.
+
+Missing credentials, provider errors, malformed responses, timeouts and choice-capacity
+limits fall back to deterministic local matching within the same filtered catalog.
+Local results include `source: "local"`, a diagnostic `reason`, and
+`probabilityScope: "not_applicable"`; they omit model probabilities and confidence.
+They are always `ambiguous` when candidates exist, or `unavailable` when none exist.
+Local matching is English-oriented word/alias matching and requires review; it does
+not establish semantic equivalence or calibrated scores. Explicit caller cancellation
+returns `unavailable` with `reason: "cancelled"` and does not run local fallback.
+
+| Status | Next step |
+| --- | --- |
+| `matched` | Describe the candidate and supply its validated parameters. |
+| `ambiguous` | Inspect candidates or provide more specific context. |
+| `unsupported` | Use local discovery or another capability. |
+| `needs_plan` | Split the request into individual operations. |
+| `unavailable` | Inspect the reason; use search/describe or retry if appropriate. |
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `SCW_ROUTER` | `off` | Set `jev` to enable routing with optional Jev inference and local fallback. |
+| `TYPESAFE_API_KEY` | unset | Enables Jev requests; if absent, enabled routing uses local suggestions. |
+| `SCW_ROUTER_MODEL` | `jev-1.13.0` | Explicit Jev version; moving aliases are rejected. |
+| `SCW_ROUTER_TIMEOUT_MS` | `5000` | Provider-routing deadline before local fallback, 100–30000 ms. |
+| `SCW_ROUTER_MIN_CONFIDENCE` | `0.8` | Minimum confidence for a match, 0–1. |
+| `SCW_ROUTER_MIN_PROBABILITY` | `0.8` | Minimum selected probability and area-beam mass, 0–1. |
+
+The initial thresholds are **uncalibrated**; confidence does not prove correctness.
+With a key configured, provider routing sends the supplied intent/context and enabled public operation
+descriptions to TypeSafe. Omit secrets from those inputs. The router does not collect
+cloud credentials or resource contents for model input. Local fallback makes no
+additional model request and never executes its suggestions.
+
+Evaluate the checked-in synthetic cases without executing cloud operations:
+
+```bash
+# Offline keyword and alias baselines; no model calls
+bun run eval:routing --output=/tmp/routing-baselines.json
+
+# Explicit live Jev evaluation; requires TYPESAFE_API_KEY and incurs inference usage
+bun run eval:routing --jev --output=/tmp/routing-jev.json
+```
+
+The report includes top-1 accuracy, recall@3, outcome accuracy, accepted precision
+and coverage, disallowed candidates, local fallback count, latency and available token receipts.
+Saved reports also retain per-case source, confidence, candidate details, reasons,
+catalog fingerprints, calibration/scope, case inputs, fixture hash and effective policy/model settings.
+Live evaluation exits nonzero if any call falls back locally, is unavailable or
+returns a disallowed candidate, so provider failures cannot count as successful Jev runs. These
+development cases do not establish production accuracy or full client task success.
+Evaluate held-out requests before tuning thresholds. Libraries can inject a different
+`DecisionProvider` through `createServer({ router: { provider } })`, or enable local
+suggestions with `createServer({ router: {} })`.
+
 ### Server-side filters
 
 Set these variables in the MCP server process environment:
@@ -1491,7 +1589,7 @@ bun run lint
 bun run lint:fix
 
 # Type check
-bun x tsc --noEmit
+bun run typecheck
 
 # Run unit + contract tests
 bun run test
@@ -1507,6 +1605,12 @@ bun x vitest run --config tests/vitest.config.ts --dir tests/contract
 
 # Run tests with coverage (100% enforced)
 bun run test -- --coverage.enabled
+
+# Compare current public schemas against reviewed provenance and contract baselines
+bun run fetch:schemas
+
+# Evaluate operation discovery locally
+bun run eval:routing
 
 # Validate API parity matrix
 bun run test:parity

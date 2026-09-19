@@ -3,14 +3,14 @@
 > **Provenance (D3).**
 > - schema-url: https://www.scaleway.com/en/developers/api/audit-trail/v1alpha1/schema.yml
 > - version: v1alpha1
-> - fetched: 2026-09-11
-> - sha256: 4bf6d0a55d856ec7432db29e72a08144dd169841d3421c45c051215dc29c7ded
+> - fetched: 2026-09-19
+> - sha256: 63d5703441b95b29bf9e9cd2087ad609e77357a37fe4a18eac3d962ed3efc5bf
 
 Base URL: `https://api.scaleway.com/audit-trail/v1alpha1/regions/{region}`
 
 - **API slug**: `audit-trail`
 - **Version**: `v1alpha1` (Beta)
-- **Locality**: Regional. Regions: `fr-par`, `nl-ams`, `pl-waw`
+- **Locality**: Regional. Regions: `fr-par`, `nl-ams`
 - **Source**: <https://www.scaleway.com/en/developers/api/audit-trail/> and the Scaleway Go SDK
   (`api/audit_trail/v1alpha1`), used to confirm exact request/response shapes.
 
@@ -188,3 +188,13 @@ Response: empty (204).
 The API also exposes `authentication-events`, `system-events`, `combined-events`, and alert-rule
 management (`alert-rules` GET/PATCH + enable/disable). These are omitted from the initial vertical;
 see `specs/052-audit-trail/spec.md`.
+
+## Test custom alert rule — `scaleway_audit_trail_test_custom_alert_rule` (2026-09-19)
+
+`POST /audit-trail/v1alpha1/regions/{region}/test-custom-alert-rule`
+- Input: `region`, UUID `organizationId`, nonempty CEL `query`, unsigned 32-bit `occurrences`; optional `evaluationWindow` duration in seconds (`300s`, `2.5s`).
+- Body: `{ organization_id, query, occurrences, evaluation_window? }`.
+- Response: `{ firing: boolean }`. False means the condition currently is not satisfied; it does not mean the rule is invalid. Errors retain the shared error envelope.
+- Evaluation creates or enables no rule. The conservative gateway classifies POST operations through `scaleway_call`.
+
+Contract proof: `tests/contract/transport/current-capabilities.transport.test.ts`.

@@ -1,0 +1,3582 @@
+{
+	"sha256": "63d5703441b95b29bf9e9cd2087ad609e77357a37fe4a18eac3d962ed3efc5bf",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.audit_trail.v1alpha1.AccountContractSignatureInfo": {
+					"properties": {
+						"contract": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AccountContractSignatureInfo.AccountContractInfo"
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"signed_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"signed_by_account_root_user_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AccountContractSignatureInfo.AccountContractInfo": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"version": {
+							"format": "int32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AccountOrganizationInfo": {
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AccountProjectInfo": {
+					"properties": {
+						"description": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AccountUserInfo": {
+					"properties": {
+						"email": {
+							"type": "string"
+						},
+						"phone_number": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.Action": {
+					"default": "unknown_action",
+					"enum": ["unknown_action", "create", "update", "delete"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.AlertRule": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AlertRule.Status"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AlertRule.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "enabled", "disabled", "enabling", "disabling"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.AppleSiliconRunnerInfo": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AppleSiliconServerInfo": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AuditTrailAlertRuleInfo": {
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AuditTrailCustomAlertRuleInfo": {
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AuditTrailExportJobInfo": {
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AuthenticationEvent": {
+					"properties": {
+						"country_code": {
+							"$ref": "#/components/schemas/scaleway.std.CountryCode"
+						},
+						"failure_reason": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AuthenticationEvent.FailureReason"
+						},
+						"id": {
+							"type": "string"
+						},
+						"method": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AuthenticationEvent.Method"
+						},
+						"mfa_type": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AuthenticationEvent.MFAType"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"origin": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AuthenticationEvent.Origin"
+						},
+						"recorded_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"resources": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.Resource"
+							},
+							"type": "array"
+						},
+						"result": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AuthenticationEvent.Result"
+						},
+						"source_ip": {
+							"type": "string"
+						},
+						"user_agent": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.AuthenticationEvent.FailureReason": {
+					"default": "unknown_failure_reason",
+					"enum": [
+						"unknown_failure_reason",
+						"invalid_mfa",
+						"invalid_password",
+						"invalid_captcha",
+						"invalid_authentication_code",
+						"invalid_passkey",
+						"passkey_uv_not_met",
+						"passkey_uv_not_verified",
+						"expired_session",
+						"authentication_code_required",
+						"mfa_required"
+					],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.AuthenticationEvent.Method": {
+					"default": "unknown_method",
+					"enum": [
+						"unknown_method",
+						"password",
+						"authentication_code",
+						"oauth2",
+						"saml",
+						"passkey"
+					],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.AuthenticationEvent.MFAType": {
+					"default": "unknown_mfa_type",
+					"enum": ["unknown_mfa_type", "totp", "webauthn"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.AuthenticationEvent.Origin": {
+					"default": "unknown_origin",
+					"enum": ["unknown_origin", "public_api", "admin_api"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.AuthenticationEvent.Result": {
+					"default": "unknown_result",
+					"enum": ["unknown_result", "success", "failure"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.BaremetalServerInfo": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.BaremetalSettingInfo": {
+					"properties": {
+						"type": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.CustomAlertRule": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": ["string", "null"]
+						},
+						"evaluation_window": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"occurrences": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"query": {
+							"type": "string"
+						},
+						"severity": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.CustomAlertRule.Severity"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.CustomAlertRule.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.CustomAlertRule.Severity": {
+					"default": "unknown_severity",
+					"enum": ["unknown_severity", "info", "error", "warning", "critical"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.CustomAlertRule.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "enabled", "disabled", "enabling", "disabling"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.DisableAlertRulesResponse": {
+					"properties": {
+						"alert_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AlertRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.DisableCustomAlertRulesResponse": {
+					"properties": {
+						"custom_alert_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.CustomAlertRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EdgeServicesBackendStageInfo": {
+					"properties": {
+						"pipeline_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EdgeServicesCacheStageInfo": {
+					"properties": {
+						"pipeline_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EdgeServicesDNSStageInfo": {
+					"properties": {
+						"pipeline_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EdgeServicesPipelineInfo": {
+					"properties": {
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EdgeServicesPlanInfo": {
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EdgeServicesRouteRulesInfo": {
+					"properties": {
+						"route_stage_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EdgeServicesRouteStageInfo": {
+					"properties": {
+						"pipeline_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EdgeServicesTLSStageInfo": {
+					"properties": {
+						"pipeline_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EdgeServicesVPCEndpointInfo": {
+					"properties": {
+						"private_network_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EdgeServicesWAFStageInfo": {
+					"properties": {
+						"pipeline_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EnableAlertRulesResponse": {
+					"properties": {
+						"alert_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AlertRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EnableCustomAlertRulesResponse": {
+					"properties": {
+						"custom_alert_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.CustomAlertRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.Event": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"locality": {
+							"type": "string"
+						},
+						"method_name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"principal": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.Event.Principal"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"product_name": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": ["string", "null"]
+						},
+						"recorded_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"request_body": {
+							"properties": {
+								"<fieldKey>": {
+									"type": "object"
+								}
+							},
+							"type": "object"
+						},
+						"request_id": {
+							"type": "string"
+						},
+						"resources": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.Resource"
+							},
+							"type": "array"
+						},
+						"service_name": {
+							"type": "string"
+						},
+						"source_ip": {
+							"type": "string"
+						},
+						"status_code": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"user_agent": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.Event.Principal": {
+					"properties": {
+						"id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.EventsOverview": {
+					"properties": {
+						"last_events": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.Event"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ExportJob": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"last_run_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"last_status": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ExportJob.Status"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"s3": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ExportJob.S3"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ExportJob.S3": {
+					"properties": {
+						"bucket": {
+							"type": "string"
+						},
+						"prefix": {
+							"type": ["string", "null"]
+						},
+						"project_id": {
+							"type": ["string", "null"]
+						},
+						"region": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ExportJob.Status": {
+					"properties": {
+						"code": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ExportJob.Status.Code"
+						},
+						"message": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ExportJob.Status.Code": {
+					"default": "unknown_code",
+					"enum": ["unknown_code", "success", "failure"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.InstancePrivateNetworkInterfaceInfo": {
+					"properties": {
+						"private_network_id": {
+							"type": "string"
+						},
+						"security_group_id": {
+							"type": ["string", "null"]
+						},
+						"server_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.InstanceServerInfo": {
+					"properties": {
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.IpamIpInfo": {
+					"properties": {
+						"address": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.KeyManagerKeyInfo": {
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.KubernetesACLInfo": {
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.KubernetesClusterInfo": {
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.KubernetesNodeInfo": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.KubernetesPoolInfo": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ListAlertRulesResponse": {
+					"properties": {
+						"alert_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AlertRule"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ListAuthenticationEventsRequest.OrderBy": {
+					"default": "recorded_at_desc",
+					"enum": ["recorded_at_desc", "recorded_at_asc"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.ListAuthenticationEventsResponse": {
+					"properties": {
+						"events": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AuthenticationEvent"
+							},
+							"type": "array"
+						},
+						"next_page_token": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ListCombinedEventsRequest.OrderBy": {
+					"default": "recorded_at_desc",
+					"enum": ["recorded_at_desc", "recorded_at_asc"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.ListCombinedEventsResponse": {
+					"properties": {
+						"events": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListCombinedEventsResponse.CombinedEvent"
+							},
+							"type": "array"
+						},
+						"next_page_token": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ListCombinedEventsResponse.CombinedEvent": {
+					"properties": {
+						"api": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.Event"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"auth": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AuthenticationEvent"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"system": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.SystemEvent"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ListCustomAlertRulesResponse": {
+					"properties": {
+						"custom_alert_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.CustomAlertRule"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ListEventsRequest.OrderBy": {
+					"default": "recorded_at_desc",
+					"enum": ["recorded_at_desc", "recorded_at_asc"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.ListEventsResponse": {
+					"properties": {
+						"events": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.Event"
+							},
+							"type": "array"
+						},
+						"next_page_token": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ListExportJobsRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc", "created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.ListExportJobsResponse": {
+					"properties": {
+						"export_jobs": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ExportJob"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ListProductsResponse": {
+					"properties": {
+						"products": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.Product"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ListSystemEventsRequest.OrderBy": {
+					"default": "recorded_at_desc",
+					"enum": ["recorded_at_desc", "recorded_at_asc"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.ListSystemEventsResponse": {
+					"properties": {
+						"events": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.SystemEvent"
+							},
+							"type": "array"
+						},
+						"next_page_token": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.LoadBalancerAclInfo": {
+					"properties": {
+						"frontend_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.LoadBalancerBackendInfo": {
+					"properties": {
+						"lb_id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.LoadBalancerCertificateInfo": {
+					"properties": {
+						"lb_id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.LoadBalancerFrontendInfo": {
+					"properties": {
+						"lb_id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.LoadBalancerIpInfo": {
+					"properties": {
+						"ip_address": {
+							"type": "string"
+						},
+						"lb_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.LoadBalancerLbInfo": {
+					"properties": {
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.LoadBalancerRouteInfo": {
+					"properties": {
+						"backend_id": {
+							"type": "string"
+						},
+						"frontend_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ObservabilityAlertRuleInfo": {
+					"properties": {
+						"rule_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ObservabilityContactPointInfo": {
+					"properties": {
+						"email": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.Product": {
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"services": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.Product.Service"
+							},
+							"type": "array"
+						},
+						"title": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.Product.Service": {
+					"properties": {
+						"methods": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.Resource": {
+					"properties": {
+						"account_contract_signature_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AccountContractSignatureInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"account_organization_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AccountOrganizationInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"account_project_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AccountProjectInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"account_user_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AccountUserInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"action": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.Action"
+						},
+						"apple_silicon_runner_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AppleSiliconRunnerInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"apple_silicon_server_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AppleSiliconServerInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"audit_trail_alert_rule_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AuditTrailAlertRuleInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"audit_trail_custom_alert_rule_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AuditTrailCustomAlertRuleInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"audit_trail_export_job_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AuditTrailExportJobInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"baremetal_server_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.BaremetalServerInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"baremetal_setting_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.BaremetalSettingInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"deleted_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"edge_services_backend_stage_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EdgeServicesBackendStageInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"edge_services_cache_stage_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EdgeServicesCacheStageInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"edge_services_dns_stage_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EdgeServicesDNSStageInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"edge_services_pipeline_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EdgeServicesPipelineInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"edge_services_plan_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EdgeServicesPlanInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"edge_services_route_rules_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EdgeServicesRouteRulesInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"edge_services_route_stage_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EdgeServicesRouteStageInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"edge_services_tls_stage_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EdgeServicesTLSStageInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"edge_services_vpc_endpoint_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EdgeServicesVPCEndpointInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"edge_services_waf_stage_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EdgeServicesWAFStageInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"id": {
+							"type": "string"
+						},
+						"instance_private_network_interface_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.InstancePrivateNetworkInterfaceInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"instance_server_info": {
+							"deprecated": true,
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.InstanceServerInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"ipam_ip_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.IpamIpInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"key_manager_key_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.KeyManagerKeyInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"keym_key_info": {
+							"deprecated": true,
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.KeyManagerKeyInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"kube_acl_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.KubernetesACLInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"kube_cluster_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.KubernetesClusterInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"kube_node_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.KubernetesNodeInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"kube_pool_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.KubernetesPoolInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"load_balancer_acl_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.LoadBalancerAclInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"load_balancer_backend_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.LoadBalancerBackendInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"load_balancer_certificate_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.LoadBalancerCertificateInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"load_balancer_frontend_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.LoadBalancerFrontendInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"load_balancer_ip_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.LoadBalancerIpInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"load_balancer_lb_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.LoadBalancerLbInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"load_balancer_route_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.LoadBalancerRouteInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"name": {
+							"type": ["string", "null"]
+						},
+						"observability_alert_rule_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ObservabilityAlertRuleInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"observability_contact_point_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ObservabilityContactPointInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"secm_secret_info": {
+							"deprecated": true,
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.SecretManagerSecretInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"secm_secret_version_info": {
+							"deprecated": true,
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.SecretManagerSecretVersionInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"secret_manager_secret_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.SecretManagerSecretInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"secret_manager_version_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.SecretManagerSecretVersionInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_containers_container_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessContainersContainerInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_containers_domain_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessContainersDomainInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_containers_namespace_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessContainersNamespaceInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_containers_trigger_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessContainersTriggerInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_functions_cron_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessFunctionsCronInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_functions_domain_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessFunctionsDomainInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_functions_function_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessFunctionsFunctionInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_functions_namespace_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessFunctionsNamespaceInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"serverless_functions_trigger_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessFunctionsTriggerInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ResourceType"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"vpc_connector_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.VpcConnectorInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"vpc_gw_gateway_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.VpcGwGatewayInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"vpc_gw_gateway_network_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.VpcGwGatewayNetworkInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"vpc_ingress_rule_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.VpcIngressRuleInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"vpc_private_network_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.VpcPrivateNetworkInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"vpc_route_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.VpcRouteInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"vpc_subnet_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.VpcSubnetInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"wofl_workflow_definition_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.WoflWorkflowDefinitionInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"wofl_workflow_run_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.WoflWorkflowRunInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ResourceType": {
+					"default": "unknown_type",
+					"enum": [
+						"unknown_type",
+						"secm_secret",
+						"secm_secret_version",
+						"kube_cluster",
+						"kube_pool",
+						"kube_node",
+						"kube_acl",
+						"keym_key",
+						"iam_user",
+						"iam_application",
+						"iam_group",
+						"iam_policy",
+						"iam_api_key",
+						"iam_ssh_key",
+						"iam_rule",
+						"iam_saml",
+						"iam_saml_certificate",
+						"iam_scim",
+						"iam_scim_token",
+						"secret_manager_secret",
+						"secret_manager_version",
+						"key_manager_key",
+						"account_user",
+						"account_organization",
+						"account_project",
+						"account_contract_signature",
+						"instance_server",
+						"instance_placement_group",
+						"instance_security_group",
+						"instance_volume",
+						"instance_snapshot",
+						"instance_image",
+						"instance_template",
+						"instance_private_network_interface",
+						"apple_silicon_server",
+						"baremetal_server",
+						"baremetal_setting",
+						"ipam_ip",
+						"sbs_volume",
+						"sbs_snapshot",
+						"load_balancer_lb",
+						"load_balancer_ip",
+						"load_balancer_frontend",
+						"load_balancer_backend",
+						"load_balancer_route",
+						"load_balancer_acl",
+						"load_balancer_certificate",
+						"sfs_filesystem",
+						"vpc_private_network",
+						"vpc_vpc",
+						"vpc_subnet",
+						"vpc_route",
+						"vpc_acl",
+						"vpc_connector",
+						"vpc_ingress_rule",
+						"edge_services_plan",
+						"edge_services_pipeline",
+						"edge_services_vpc_endpoint",
+						"edge_services_dns_stage",
+						"edge_services_tls_stage",
+						"edge_services_cache_stage",
+						"edge_services_route_stage",
+						"edge_services_route_rules",
+						"edge_services_waf_stage",
+						"edge_services_backend_stage",
+						"s2s_vpn_gateway",
+						"s2s_customer_gateway",
+						"s2s_routing_policy",
+						"s2s_connection",
+						"vpc_gw_gateway",
+						"vpc_gw_gateway_network",
+						"vpc_gw_dhcp",
+						"vpc_gw_dhcp_entry",
+						"vpc_gw_pat_rule",
+						"vpc_gw_ip",
+						"audit_trail_export_job",
+						"rdb_instance",
+						"rdb_instance_backup",
+						"rdb_instance_endpoint",
+						"rdb_instance_logs",
+						"rdb_instance_read_replica",
+						"rdb_instance_snapshot",
+						"mongodb_instance",
+						"mongodb_instance_snapshot",
+						"mongodb_instance_endpoint",
+						"mongodb_instance_maintenance",
+						"apple_silicon_runner",
+						"audit_trail_alert_rule",
+						"audit_trail_custom_alert_rule",
+						"dtwh_deployment",
+						"dtwh_deployment_endpoint",
+						"dtwh_deployment_database",
+						"dtwh_deployment_user",
+						"ssdb_database",
+						"ssdb_database_backup",
+						"observability_datasource",
+						"observability_token",
+						"observability_exporter",
+						"ili_partner",
+						"ili_connection",
+						"ili_link",
+						"ili_routing_policy",
+						"autoscaling_group",
+						"gapi_dedicated_deployment",
+						"gapi_dedicated_model",
+						"serverless_containers_namespace",
+						"serverless_containers_container",
+						"serverless_containers_domain",
+						"serverless_containers_trigger",
+						"serverless_functions_namespace",
+						"serverless_functions_function",
+						"serverless_functions_domain",
+						"serverless_functions_cron",
+						"serverless_functions_trigger",
+						"wofl_workflow_definition",
+						"wofl_workflow_run"
+					],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.RunStatus": {
+					"default": "unknown_run_status",
+					"enum": [
+						"unknown_run_status",
+						"initialized",
+						"validated",
+						"queued",
+						"running",
+						"succeeded",
+						"failed",
+						"interrupting",
+						"interrupted",
+						"pausing",
+						"paused"
+					],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.SecretManagerSecretInfo": {
+					"properties": {
+						"key_id": {
+							"type": ["string", "null"]
+						},
+						"path": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.SecretManagerSecretVersionInfo": {
+					"properties": {
+						"revision": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessContainersContainerInfo": {
+					"properties": {
+						"namespace_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessContainersDomainInfo": {
+					"properties": {
+						"container_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessContainersNamespaceInfo": {
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessContainersTriggerInfo": {
+					"properties": {
+						"container_id": {
+							"type": "string"
+						},
+						"source_type": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessContainersTriggerInfo.SourceType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessContainersTriggerInfo.SourceType": {
+					"default": "unknown_source_type",
+					"enum": ["unknown_source_type", "cron", "sqs", "nats"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessFunctionsCronInfo": {
+					"properties": {
+						"function_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessFunctionsDomainInfo": {
+					"properties": {
+						"function_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessFunctionsFunctionInfo": {
+					"properties": {
+						"namespace_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessFunctionsNamespaceInfo": {
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessFunctionsTriggerInfo": {
+					"properties": {
+						"function_id": {
+							"type": "string"
+						},
+						"input_type": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ServerlessFunctionsTriggerInfo.InputType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.ServerlessFunctionsTriggerInfo.InputType": {
+					"default": "unknown_input_type",
+					"enum": ["unknown_input_type", "scw_sqs", "scw_nats"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.SetEnabledAlertRulesResponse": {
+					"properties": {
+						"alert_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AlertRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.SetEnabledCustomAlertRulesResponse": {
+					"properties": {
+						"custom_alert_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.CustomAlertRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.SystemEvent": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"kind": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.SystemEvent.Kind"
+						},
+						"locality": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"product_name": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": ["string", "null"]
+						},
+						"recorded_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"resources": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.Resource"
+							},
+							"type": "array"
+						},
+						"source": {
+							"type": "string"
+						},
+						"system_name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.SystemEvent.Kind": {
+					"default": "unknown_kind",
+					"enum": ["unknown_kind", "cron", "notification"],
+					"type": "string"
+				},
+				"scaleway.audit_trail.v1alpha1.TestCustomAlertRuleResponse": {
+					"properties": {
+						"firing": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.VpcConnectorInfo": {
+					"properties": {
+						"target_vpc_id": {
+							"type": "string"
+						},
+						"vpc_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.VpcGwGatewayInfo": {
+					"properties": {
+						"gateway_type_id": {
+							"type": "string"
+						},
+						"public_ip_id": {
+							"type": ["string", "null"]
+						},
+						"vpc_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.VpcGwGatewayNetworkInfo": {
+					"properties": {
+						"address": {
+							"type": ["string", "null"]
+						},
+						"gateway_id": {
+							"type": "string"
+						},
+						"pn_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.VpcIngressRuleInfo": {
+					"properties": {
+						"nexthop_private_network_id": {
+							"type": "string"
+						},
+						"nexthop_resource_ip": {
+							"type": "string"
+						},
+						"source": {
+							"type": "string"
+						},
+						"vpc_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.VpcPrivateNetworkInfo": {
+					"properties": {
+						"push_default_route": {
+							"type": "boolean"
+						},
+						"vpc_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.VpcRouteInfo": {
+					"properties": {
+						"destination": {
+							"type": "string"
+						},
+						"nexthop_private_network_key": {
+							"type": ["string", "null"]
+						},
+						"nexthop_resource_key": {
+							"type": ["string", "null"]
+						},
+						"vpc_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.VpcSubnetInfo": {
+					"properties": {
+						"subnet_cidr": {
+							"type": "string"
+						},
+						"vpc_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.WoflWorkflowDefinitionInfo": {
+					"properties": {
+						"description": {
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.audit_trail.v1alpha1.WoflWorkflowRunInfo": {
+					"properties": {
+						"status": {
+							"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.RunStatus"
+						},
+						"workflow_definition_id": {
+							"type": "string"
+						},
+						"workflow_definition_name": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.CountryCode": {
+					"default": "unknown_country_code",
+					"enum": [
+						"unknown_country_code",
+						"AF",
+						"AX",
+						"AL",
+						"DZ",
+						"AS",
+						"AD",
+						"AO",
+						"AI",
+						"AQ",
+						"AG",
+						"AR",
+						"AM",
+						"AW",
+						"AU",
+						"AT",
+						"AZ",
+						"BS",
+						"BH",
+						"BD",
+						"BB",
+						"BY",
+						"BE",
+						"BZ",
+						"BJ",
+						"BM",
+						"BT",
+						"BO",
+						"BQ",
+						"BA",
+						"BW",
+						"BV",
+						"BR",
+						"IO",
+						"BN",
+						"BG",
+						"BF",
+						"BI",
+						"KH",
+						"CM",
+						"CA",
+						"CV",
+						"KY",
+						"CF",
+						"TD",
+						"CL",
+						"CN",
+						"CX",
+						"CC",
+						"CO",
+						"KM",
+						"CG",
+						"CD",
+						"CK",
+						"CR",
+						"CI",
+						"HR",
+						"CU",
+						"CW",
+						"CY",
+						"CZ",
+						"DK",
+						"DJ",
+						"DM",
+						"DO",
+						"EC",
+						"EG",
+						"SV",
+						"GQ",
+						"ER",
+						"EE",
+						"ET",
+						"FK",
+						"FO",
+						"FJ",
+						"FI",
+						"FR",
+						"GF",
+						"PF",
+						"TF",
+						"GA",
+						"GM",
+						"GE",
+						"DE",
+						"GH",
+						"GI",
+						"GR",
+						"GL",
+						"GD",
+						"GP",
+						"GU",
+						"GT",
+						"GG",
+						"GN",
+						"GW",
+						"GY",
+						"HT",
+						"HM",
+						"VA",
+						"HN",
+						"HK",
+						"HU",
+						"IS",
+						"IN",
+						"ID",
+						"IR",
+						"IQ",
+						"IE",
+						"IM",
+						"IL",
+						"IT",
+						"JM",
+						"JP",
+						"JE",
+						"JO",
+						"KZ",
+						"KE",
+						"KI",
+						"KP",
+						"KR",
+						"KW",
+						"KG",
+						"LA",
+						"LV",
+						"LB",
+						"LS",
+						"LR",
+						"LY",
+						"LI",
+						"LT",
+						"LU",
+						"MO",
+						"MK",
+						"MG",
+						"MW",
+						"MY",
+						"MV",
+						"ML",
+						"MT",
+						"MH",
+						"MQ",
+						"MR",
+						"MU",
+						"YT",
+						"MX",
+						"FM",
+						"MD",
+						"MC",
+						"MN",
+						"ME",
+						"MS",
+						"MA",
+						"MZ",
+						"MM",
+						"NA",
+						"NR",
+						"NP",
+						"NL",
+						"NC",
+						"NZ",
+						"NI",
+						"NE",
+						"NG",
+						"NU",
+						"NF",
+						"MP",
+						"NO",
+						"OM",
+						"PK",
+						"PW",
+						"PS",
+						"PA",
+						"PG",
+						"PY",
+						"PE",
+						"PH",
+						"PN",
+						"PL",
+						"PT",
+						"PR",
+						"QA",
+						"RE",
+						"RO",
+						"RU",
+						"RW",
+						"BL",
+						"SH",
+						"KN",
+						"LC",
+						"MF",
+						"PM",
+						"VC",
+						"WS",
+						"SM",
+						"ST",
+						"SA",
+						"SN",
+						"RS",
+						"SC",
+						"SL",
+						"SG",
+						"SX",
+						"SK",
+						"SI",
+						"SB",
+						"SO",
+						"ZA",
+						"GS",
+						"SS",
+						"ES",
+						"LK",
+						"SD",
+						"SR",
+						"SJ",
+						"SZ",
+						"SE",
+						"CH",
+						"SY",
+						"TW",
+						"TJ",
+						"TZ",
+						"TH",
+						"TL",
+						"TG",
+						"TK",
+						"TO",
+						"TT",
+						"TN",
+						"TR",
+						"TM",
+						"TC",
+						"TV",
+						"UG",
+						"UA",
+						"AE",
+						"GB",
+						"US",
+						"UM",
+						"UY",
+						"UZ",
+						"VU",
+						"VE",
+						"VN",
+						"VG",
+						"VI",
+						"WF",
+						"EH",
+						"YE",
+						"ZM",
+						"ZW"
+					],
+					"type": "string"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/audit-trail/v1alpha1/regions/{region}/alert-rules": {
+				"get": {
+					"operationId": "ListAlertRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.AlertRule.Status"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListAlertRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				},
+				"patch": {
+					"operationId": "SetEnabledAlertRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"enabled_alert_rule_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"organization_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.SetEnabledAlertRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/authentication-events": {
+				"get": {
+					"operationId": "ListAuthenticationEvents",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "recorded_after",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "recorded_before",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListAuthenticationEventsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_token",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListAuthenticationEventsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Authentication events"]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/combined-events": {
+				"get": {
+					"operationId": "ListCombinedEvents",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "resource_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ResourceType"
+							}
+						},
+						{
+							"in": "query",
+							"name": "recorded_after",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "recorded_before",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListCombinedEventsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_token",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListCombinedEventsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/custom-alert-rules": {
+				"get": {
+					"operationId": "ListCustomAlertRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.CustomAlertRule.Status"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListCustomAlertRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				},
+				"post": {
+					"operationId": "CreateCustomAlertRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"evaluation_window": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"occurrences": {
+											"format": "uint32",
+											"type": "integer"
+										},
+										"organization_id": {
+											"type": "string"
+										},
+										"query": {
+											"type": "string"
+										},
+										"severity": {
+											"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.CustomAlertRule.Severity"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.CustomAlertRule"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				},
+				"put": {
+					"operationId": "SetEnabledCustomAlertRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"enabled_custom_alert_rule_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"organization_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.SetEnabledCustomAlertRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/custom-alert-rules/{custom_alert_rule_id}": {
+				"delete": {
+					"operationId": "DeleteCustomAlertRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "custom_alert_rule_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				},
+				"patch": {
+					"operationId": "UpdateCustomAlertRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "custom_alert_rule_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.CustomAlertRule"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/disable-alert-rules": {
+				"post": {
+					"operationId": "DisableAlertRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"alert_rule_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"organization_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.DisableAlertRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/disable-custom-alert-rules": {
+				"post": {
+					"operationId": "DisableCustomAlertRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"custom_alert_rule_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"organization_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.DisableCustomAlertRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/enable-alert-rules": {
+				"post": {
+					"operationId": "EnableAlertRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"alert_rule_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"organization_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EnableAlertRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/enable-custom-alert-rules": {
+				"post": {
+					"operationId": "EnableCustomAlertRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"custom_alert_rule_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"organization_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EnableCustomAlertRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/events": {
+				"get": {
+					"operationId": "ListEvents",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "resource_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ResourceType"
+							}
+						},
+						{
+							"in": "query",
+							"name": "method_name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "recorded_after",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "recorded_before",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListEventsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_token",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "product_name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "service_name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "resource_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "principal_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "source_ip",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListEventsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Events"]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/export-jobs": {
+				"get": {
+					"operationId": "ListExportJobs",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListExportJobsRequest.OrderBy"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListExportJobsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				},
+				"post": {
+					"operationId": "CreateExportJob",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"organization_id": {
+											"type": "string"
+										},
+										"s3": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ExportJob.S3"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ExportJob"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Events"]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/export-jobs/{export_job_id}": {
+				"delete": {
+					"operationId": "DeleteExportJob",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "export_job_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Events"]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/last-events-overview": {
+				"get": {
+					"operationId": "GetLastEventsOverview",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.EventsOverview"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/products": {
+				"get": {
+					"operationId": "ListProducts",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListProductsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Events"]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/system-events": {
+				"get": {
+					"operationId": "ListSystemEvents",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "recorded_after",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "recorded_before",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListSystemEventsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_token",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.ListSystemEventsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["System events"]
+				}
+			},
+			"/audit-trail/v1alpha1/regions/{region}/test-custom-alert-rule": {
+				"post": {
+					"operationId": "TestCustomAlertRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"evaluation_window": {
+											"type": ["string", "null"]
+										},
+										"occurrences": {
+											"format": "uint32",
+											"type": "integer"
+										},
+										"organization_id": {
+											"type": "string"
+										},
+										"query": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.audit_trail.v1alpha1.TestCustomAlertRuleResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

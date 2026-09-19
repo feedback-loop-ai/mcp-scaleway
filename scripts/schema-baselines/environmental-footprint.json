@@ -1,0 +1,402 @@
+{
+	"sha256": "27d3325ee6432973e475bb54b927a223a95d54b89ef2cba2691e157a38888f6c",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.Timestamp": {
+					"format": "date-time",
+					"type": ["string", "null"]
+				},
+				"scaleway.environmental_footprint.v1alpha1.Impact": {
+					"properties": {
+						"kg_co2_equivalent": {
+							"format": "float",
+							"type": "number"
+						},
+						"m3_water_usage": {
+							"format": "float",
+							"type": "number"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.environmental_footprint.v1alpha1.ImpactDataResponse": {
+					"properties": {
+						"end_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"projects": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.ProjectImpact"
+							},
+							"type": "array"
+						},
+						"start_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"total_impact": {
+							"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.Impact"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.environmental_footprint.v1alpha1.ImpactReportAvailability": {
+					"properties": {
+						"month_summary_reports": {
+							"items": {
+								"$ref": "#/components/schemas/google.protobuf.Timestamp"
+							},
+							"type": "array"
+						},
+						"yearly_summary_reports": {
+							"items": {
+								"$ref": "#/components/schemas/google.protobuf.Timestamp"
+							},
+							"type": "array"
+						}
+					},
+					"required": ["month_summary_reports", "yearly_summary_reports"],
+					"type": "object"
+				},
+				"scaleway.environmental_footprint.v1alpha1.ProductCategory": {
+					"default": "unknown_product_category",
+					"enum": [
+						"unknown_product_category",
+						"apple_silicon",
+						"block_storage",
+						"dedibox",
+						"elastic_metal",
+						"instances",
+						"object_storage",
+						"load_balancer",
+						"kubernetes",
+						"managed_relational_databases",
+						"managed_mongodb",
+						"managed_redis",
+						"managed_inference",
+						"generative_apis",
+						"serverless_functions",
+						"serverless_containers",
+						"serverless_jobs"
+					],
+					"type": "string"
+				},
+				"scaleway.environmental_footprint.v1alpha1.ProjectImpact": {
+					"properties": {
+						"project_id": {
+							"type": "string"
+						},
+						"regions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.RegionImpact"
+							},
+							"type": "array"
+						},
+						"total_project_impact": {
+							"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.Impact"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.environmental_footprint.v1alpha1.RegionImpact": {
+					"properties": {
+						"region": {
+							"type": "string"
+						},
+						"skus": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.SkuImpact"
+							},
+							"type": "array"
+						},
+						"total_region_impact": {
+							"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.Impact"
+						},
+						"zones": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.ZoneImpact"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.environmental_footprint.v1alpha1.ReportType": {
+					"default": "unknown_report_type",
+					"enum": ["unknown_report_type", "monthly", "yearly"],
+					"type": "string"
+				},
+				"scaleway.environmental_footprint.v1alpha1.ServiceCategory": {
+					"default": "unknown_service_category",
+					"enum": [
+						"unknown_service_category",
+						"baremetal",
+						"compute",
+						"storage",
+						"network",
+						"containers",
+						"databases",
+						"ai",
+						"serverless"
+					],
+					"type": "string"
+				},
+				"scaleway.environmental_footprint.v1alpha1.SkuImpact": {
+					"properties": {
+						"product_category": {
+							"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.ProductCategory"
+						},
+						"service_category": {
+							"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.ServiceCategory"
+						},
+						"sku": {
+							"type": "string"
+						},
+						"total_sku_impact": {
+							"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.Impact"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.environmental_footprint.v1alpha1.ZoneImpact": {
+					"properties": {
+						"skus": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.SkuImpact"
+							},
+							"type": "array"
+						},
+						"total_zone_impact": {
+							"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.Impact"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/environmental-footprint/v1alpha1/data/query": {
+				"get": {
+					"operationId": "GetImpactData",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "start_date",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "end_date",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "regions",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "zones",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "service_categories",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.ServiceCategory"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "product_categories",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.ProductCategory"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.ImpactDataResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Metrics"]
+				}
+			},
+			"/environmental-footprint/v1alpha1/reports/availability": {
+				"get": {
+					"operationId": "GetImpactReportAvailability",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "start_date",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "end_date",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.ImpactReportAvailability"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Reports"]
+				}
+			},
+			"/environmental-footprint/v1alpha1/reports/download": {
+				"post": {
+					"operationId": "DownloadImpactReport",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"organization_id": {
+											"type": "string"
+										},
+										"type": {
+											"$ref": "#/components/schemas/scaleway.environmental_footprint.v1alpha1.ReportType"
+										}
+									},
+									"required": ["organization_id", "date"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Reports"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

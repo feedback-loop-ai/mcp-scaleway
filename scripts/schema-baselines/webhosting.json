@@ -1,0 +1,1411 @@
+{
+	"sha256": "3d7ded4dff75421de4b62c4c95c86d8ce75b1f885ec4cc841ddb215bac14e95d",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.type.Money": {
+					"properties": {
+						"currency_code": {
+							"type": "string"
+						},
+						"nanos": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"units": {
+							"format": "int64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.LanguageCode": {
+					"default": "unknown_language_code",
+					"enum": ["unknown_language_code", "en_US", "fr_FR", "de_DE"],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.AutoConfigDomainDns": {
+					"properties": {
+						"all_records": {
+							"type": "boolean"
+						},
+						"mail_records": {
+							"type": "boolean"
+						},
+						"nameservers": {
+							"type": "boolean"
+						},
+						"none": {
+							"type": "boolean"
+						},
+						"web_records": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.BillingMode": {
+					"default": "unknown_billing_mode",
+					"enum": ["unknown_billing_mode", "sample", "purchase_order"],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.CommitmentType": {
+					"default": "unknown_commitment_type",
+					"enum": ["unknown_commitment_type", "first_commitment", "next_commitment"],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.ControlPanel": {
+					"properties": {
+						"available": {
+							"type": "boolean"
+						},
+						"available_languages": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.std.LanguageCode"
+							},
+							"type": "array"
+						},
+						"logo_url": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.CreateHostingRequest.DomainConfiguration": {
+					"properties": {
+						"update_all_records": {
+							"type": "boolean"
+						},
+						"update_mail_record": {
+							"type": "boolean"
+						},
+						"update_nameservers": {
+							"type": "boolean"
+						},
+						"update_web_record": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.DnsRecords.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "valid", "invalid"],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.Domain.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "valid", "invalid", "validating", "error"],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.Hosting": {
+					"properties": {
+						"commitment": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.HostingCommitment"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"dns_status": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.DnsRecords.Status",
+							"deprecated": true
+						},
+						"domain": {
+							"deprecated": true,
+							"type": "string"
+						},
+						"domain_info": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.HostingDomain"
+						},
+						"domain_status": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Domain.Status",
+							"deprecated": true
+						},
+						"id": {
+							"type": "string"
+						},
+						"ipv4": {
+							"type": "string"
+						},
+						"offer": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Offer"
+						},
+						"platform": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Platform"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"protected": {
+							"type": "boolean"
+						},
+						"provider": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting.Provider"
+						},
+						"region": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"user": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting.User"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.Hosting.Provider": {
+					"default": "unknown_provider",
+					"enum": ["unknown_provider", "elements", "dedibox"],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.Hosting.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"delivering",
+						"ready",
+						"deleting",
+						"error",
+						"locked",
+						"migrating",
+						"updating",
+						"payment_pending",
+						"payment_failed"
+					],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.Hosting.User": {
+					"properties": {
+						"contact_email": {
+							"type": "string"
+						},
+						"one_time_password": {
+							"deprecated": true,
+							"type": ["string", "null"]
+						},
+						"one_time_password_b64": {
+							"type": ["string", "null"]
+						},
+						"username": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.HostingCommitment": {
+					"properties": {
+						"delete_hosting_at_end": {
+							"type": "boolean"
+						},
+						"end_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"offer_commitment": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.OfferCommitment"
+						},
+						"start_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.HostingDomain": {
+					"properties": {
+						"custom_domain": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.HostingDomain.CustomDomain"
+						},
+						"subdomain": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.HostingDomain.CustomDomain": {
+					"properties": {
+						"auto_config_domain_dns": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.AutoConfigDomainDns"
+						},
+						"dns_status": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.DnsRecords.Status"
+						},
+						"domain": {
+							"type": "string"
+						},
+						"domain_status": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Domain.Status"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.HostingSummary": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"dns_status": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.DnsRecords.Status",
+							"deprecated": true
+						},
+						"domain": {
+							"deprecated": true,
+							"type": "string"
+						},
+						"domain_info": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.HostingDomain"
+						},
+						"domain_status": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Domain.Status",
+							"deprecated": true
+						},
+						"id": {
+							"type": "string"
+						},
+						"offer_name": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"protected": {
+							"type": "boolean"
+						},
+						"region": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.ListHostingsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.ListHostingsResponse": {
+					"properties": {
+						"hostings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.webhosting.v1.HostingSummary"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.Offer": {
+					"properties": {
+						"available": {
+							"type": "boolean"
+						},
+						"billing_operation_path": {
+							"type": "string"
+						},
+						"commitments": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.webhosting.v1.OfferCommitment"
+							},
+							"type": "array"
+						},
+						"control_panel_name": {
+							"type": "string"
+						},
+						"control_panels": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.webhosting.v1.ControlPanel"
+							},
+							"type": "array"
+						},
+						"end_of_life": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"options": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.webhosting.v1.Offer.Option"
+							},
+							"type": "array"
+						},
+						"price": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"quota_warning": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Offer.Option.Warning"
+						},
+						"region": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.Offer.Option": {
+					"properties": {
+						"billing_operation_path": {
+							"type": "string"
+						},
+						"current_value": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"id": {
+							"type": "string"
+						},
+						"max_value": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"min_value": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"name": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Offer.Option.Name"
+						},
+						"price": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"quota_warning": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Offer.Option.Warning"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.Offer.Option.Name": {
+					"default": "unknown_name",
+					"enum": [
+						"unknown_name",
+						"domain_count",
+						"email_count",
+						"storage_gb",
+						"vcpu_count",
+						"ram_gb",
+						"backup",
+						"dedicated_ip",
+						"email_storage_gb",
+						"database_count",
+						"support",
+						"additional_email"
+					],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.Offer.Option.Warning": {
+					"default": "unknown_warning",
+					"enum": ["unknown_warning", "quota_exceeded_warning", "usage_low_warning"],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.OfferCommitment": {
+					"properties": {
+						"billing_mode": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.BillingMode"
+						},
+						"billing_operation_path": {
+							"type": "string"
+						},
+						"duration_in_month": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"id": {
+							"type": "string"
+						},
+						"is_default": {
+							"type": "boolean"
+						},
+						"next": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.OfferCommitment"
+						},
+						"price": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.CommitmentType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.OfferOptionRequest": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"quantity": {
+							"format": "int64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.Platform": {
+					"properties": {
+						"control_panel": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Platform.ControlPanel"
+						},
+						"group_name": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Platform.PlatformGroup"
+						},
+						"hostname": {
+							"type": "string"
+						},
+						"ipv4": {
+							"type": "string"
+						},
+						"ipv6": {
+							"type": "string"
+						},
+						"number": {
+							"format": "int32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.Platform.ControlPanel": {
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"urls": {
+							"$ref": "#/components/schemas/scaleway.webhosting.v1.Platform.ControlPanel.Urls"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.Platform.ControlPanel.Urls": {
+					"properties": {
+						"dashboard": {
+							"type": "string"
+						},
+						"webmail": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.Platform.PlatformGroup": {
+					"default": "unknown_group",
+					"enum": ["unknown_group", "default", "premium"],
+					"type": "string"
+				},
+				"scaleway.webhosting.v1.ResetHostingPasswordResponse": {
+					"properties": {
+						"one_time_password": {
+							"deprecated": true,
+							"type": "string"
+						},
+						"one_time_password_b64": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.ResourceSummary": {
+					"properties": {
+						"databases_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"ftp_accounts_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"mail_accounts_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"websites_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.webhosting.v1.Session": {
+					"properties": {
+						"url": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/webhosting/v1/regions/{region}/hostings": {
+				"get": {
+					"operationId": "ListHostings",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.webhosting.v1.ListHostingsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "statuses",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting.Status"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "domain",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "control_panels",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "subdomain",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.ListHostingsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				},
+				"post": {
+					"operationId": "CreateHosting",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"auto_config_domain_dns": {
+											"$ref": "#/components/schemas/scaleway.webhosting.v1.AutoConfigDomainDns"
+										},
+										"domain": {
+											"type": "string"
+										},
+										"domain_configuration": {
+											"$ref": "#/components/schemas/scaleway.webhosting.v1.CreateHostingRequest.DomainConfiguration",
+											"deprecated": true
+										},
+										"email": {
+											"type": "string"
+										},
+										"language": {
+											"$ref": "#/components/schemas/scaleway.std.LanguageCode"
+										},
+										"offer_commitment_id": {
+											"type": ["string", "null"]
+										},
+										"offer_id": {
+											"type": "string"
+										},
+										"offer_options": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.webhosting.v1.OfferOptionRequest"
+											},
+											"type": "array"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"skip_welcome_email": {
+											"type": ["boolean", "null"]
+										},
+										"subdomain": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			},
+			"/webhosting/v1/regions/{region}/hostings/{hosting_id}": {
+				"delete": {
+					"operationId": "DeleteHosting",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				},
+				"get": {
+					"operationId": "GetHosting",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				},
+				"patch": {
+					"operationId": "UpdateHosting",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"delete_hosting_after_commitment": {
+											"type": ["boolean", "null"]
+										},
+										"email": {
+											"type": ["string", "null"]
+										},
+										"offer_id": {
+											"type": ["string", "null"]
+										},
+										"offer_options": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.webhosting.v1.OfferOptionRequest"
+											},
+											"type": "array"
+										},
+										"protected": {
+											"type": ["boolean", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			},
+			"/webhosting/v1/regions/{region}/hostings/{hosting_id}/add-custom-domain": {
+				"post": {
+					"operationId": "AddCustomDomain",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"domain_name": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.HostingSummary"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			},
+			"/webhosting/v1/regions/{region}/hostings/{hosting_id}/delete-domains": {
+				"post": {
+					"operationId": "DeleteHostingDomains",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"domains": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			},
+			"/webhosting/v1/regions/{region}/hostings/{hosting_id}/migrate-control-panel": {
+				"post": {
+					"operationId": "MigrateControlPanel",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"control_panel_name": {
+											"type": "string"
+										},
+										"offer_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.HostingSummary"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			},
+			"/webhosting/v1/regions/{region}/hostings/{hosting_id}/remove-custom-domain": {
+				"post": {
+					"operationId": "RemoveCustomDomain",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"domain_name": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.HostingSummary"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			},
+			"/webhosting/v1/regions/{region}/hostings/{hosting_id}/reset": {
+				"post": {
+					"operationId": "ResetHosting",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			},
+			"/webhosting/v1/regions/{region}/hostings/{hosting_id}/reset-password": {
+				"post": {
+					"operationId": "ResetHostingPassword",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.ResetHostingPasswordResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			},
+			"/webhosting/v1/regions/{region}/hostings/{hosting_id}/resource-summary": {
+				"get": {
+					"operationId": "GetResourceSummary",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.ResourceSummary"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			},
+			"/webhosting/v1/regions/{region}/hostings/{hosting_id}/sessions": {
+				"post": {
+					"operationId": "CreateSession",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.Session"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			},
+			"/webhosting/v1/regions/{region}/hostings/{hosting_id}/update-free-domain": {
+				"patch": {
+					"operationId": "UpdateHostingFreeDomain",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "hosting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"free_domain": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.webhosting.v1.Hosting"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Web Hosting"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}
