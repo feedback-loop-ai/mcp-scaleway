@@ -1,0 +1,1859 @@
+{
+	"sha256": "2f70c3af917fe4193a59bbe146eb57a49b7f31ba1d6c7a6bb07b4d78a5594790",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.Int32Value": {
+					"format": "int32",
+					"type": ["integer", "null"]
+				},
+				"scaleway.redis.v1.ACLRule": {
+					"properties": {
+						"description": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"ip_cidr": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.ACLRuleSpec": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"ip_cidr": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.AddAclRulesResponse": {
+					"properties": {
+						"acl_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.ACLRule"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.AddEndpointsResponse": {
+					"properties": {
+						"endpoints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.Endpoint"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.AvailableClusterSetting": {
+					"properties": {
+						"default_value": {
+							"type": ["string", "null"]
+						},
+						"deprecated": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"max_value": {
+							"format": "int64",
+							"type": ["integer", "null"]
+						},
+						"min_value": {
+							"format": "int64",
+							"type": ["integer", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"regex": {
+							"type": ["string", "null"]
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.redis.v1.AvailableClusterSetting.PropertyType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.AvailableClusterSetting.PropertyType": {
+					"default": "UNKNOWN",
+					"enum": ["UNKNOWN", "BOOLEAN", "INT", "STRING"],
+					"type": "string"
+				},
+				"scaleway.redis.v1.Cluster": {
+					"properties": {
+						"acl_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.ACLRule"
+							},
+							"type": "array"
+						},
+						"cluster_settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.ClusterSetting"
+							},
+							"type": "array"
+						},
+						"cluster_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"endpoints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.Endpoint"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"node_type": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.redis.v1.Cluster.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"tls_enabled": {
+							"type": "boolean"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"upgradable_versions": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"user_name": {
+							"type": "string"
+						},
+						"version": {
+							"type": "string"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.Cluster.Status": {
+					"default": "unknown",
+					"enum": [
+						"unknown",
+						"ready",
+						"provisioning",
+						"configuring",
+						"deleting",
+						"error",
+						"autohealing",
+						"locked",
+						"suspended",
+						"initializing"
+					],
+					"type": "string"
+				},
+				"scaleway.redis.v1.ClusterMetricsResponse": {
+					"properties": {
+						"timeseries": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.std.TimeSeries"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.ClusterSetting": {
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"value": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.ClusterSettingsResponse": {
+					"properties": {
+						"settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.ClusterSetting"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.ClusterVersion": {
+					"properties": {
+						"available_settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.AvailableClusterSetting"
+							},
+							"type": "array"
+						},
+						"end_of_life_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"logo_url": {
+							"type": "string"
+						},
+						"released_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"version": {
+							"type": "string"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.Endpoint": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"ips": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"port": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.redis.v1.PrivateNetwork"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.redis.v1.PublicNetwork"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.EndpointSpec": {
+					"properties": {
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.redis.v1.EndpointSpec.PrivateNetworkSpec"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.redis.v1.EndpointSpec.PublicNetworkSpec"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.EndpointSpec.PrivateNetworkSpec": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"ipam_config": {
+							"$ref": "#/components/schemas/scaleway.redis.v1.EndpointSpec.PrivateNetworkSpec.IpamConfig"
+						},
+						"service_ips": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.EndpointSpec.PrivateNetworkSpec.IpamConfig": {
+					"type": "object"
+				},
+				"scaleway.redis.v1.EndpointSpec.PublicNetworkSpec": {
+					"type": "object"
+				},
+				"scaleway.redis.v1.ListClustersRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.redis.v1.ListClustersResponse": {
+					"properties": {
+						"clusters": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.Cluster"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.ListClusterVersionsResponse": {
+					"properties": {
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"versions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.ClusterVersion"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.ListNodeTypesResponse": {
+					"properties": {
+						"node_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.NodeType"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.NodeType": {
+					"properties": {
+						"beta": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"disabled": {
+							"type": "boolean"
+						},
+						"memory": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"stock_status": {
+							"$ref": "#/components/schemas/scaleway.redis.v1.NodeType.Stock"
+						},
+						"vcpus": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.NodeType.Stock": {
+					"default": "unknown",
+					"enum": ["unknown", "low_stock", "out_of_stock", "available"],
+					"type": "string"
+				},
+				"scaleway.redis.v1.PrivateNetwork": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"provisioning_mode": {
+							"$ref": "#/components/schemas/scaleway.redis.v1.PrivateNetwork.ProvisioningMode"
+						},
+						"service_ips": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.PrivateNetwork.ProvisioningMode": {
+					"default": "static",
+					"enum": ["static", "ipam"],
+					"type": "string"
+				},
+				"scaleway.redis.v1.PublicNetwork": {
+					"type": "object"
+				},
+				"scaleway.redis.v1.SetAclRulesResponse": {
+					"properties": {
+						"acl_rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.ACLRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.redis.v1.SetEndpointsResponse": {
+					"properties": {
+						"endpoints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.Endpoint"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.TimeSeries": {
+					"properties": {
+						"metadata": {
+							"additionalProperties": true,
+							"properties": {
+								"<metadataKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"name": {
+							"type": "string"
+						},
+						"points": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.std.TimeSeries.Point"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.TimeSeries.Point": {
+					"items": {
+						"oneOf": [
+							{
+								"format": "date-time",
+								"type": "string"
+							},
+							{
+								"type": "number"
+							}
+						]
+					},
+					"type": "array"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/redis/v1/zones/{zone}/acls/{acl_id}": {
+				"delete": {
+					"operationId": "DeleteAclRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "acl_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["ACL Rules"]
+				},
+				"get": {
+					"operationId": "GetAclRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "acl_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.ACLRule"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["ACL Rules"]
+				}
+			},
+			"/redis/v1/zones/{zone}/cluster-versions": {
+				"get": {
+					"operationId": "ListClusterVersions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "include_disabled",
+							"required": true,
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "include_beta",
+							"required": true,
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "include_deprecated",
+							"required": true,
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "version",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.ListClusterVersionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Redis™ engine versions"]
+				}
+			},
+			"/redis/v1/zones/{zone}/clusters": {
+				"get": {
+					"operationId": "ListClusters",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.redis.v1.ListClustersRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "version",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.ListClustersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Redis™ Database Instance"]
+				},
+				"post": {
+					"operationId": "CreateCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"acl_rules": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.redis.v1.ACLRuleSpec"
+											},
+											"type": "array"
+										},
+										"cluster_settings": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.redis.v1.ClusterSetting"
+											},
+											"type": "array"
+										},
+										"cluster_size": {
+											"format": "int32",
+											"type": ["integer", "null"]
+										},
+										"endpoints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.redis.v1.EndpointSpec"
+											},
+											"type": "array"
+										},
+										"name": {
+											"type": "string"
+										},
+										"node_type": {
+											"type": "string"
+										},
+										"password": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"tls_enabled": {
+											"type": "boolean"
+										},
+										"user_name": {
+											"type": "string"
+										},
+										"version": {
+											"type": "string"
+										}
+									},
+									"required": ["project_id", "version", "node_type", "user_name", "password"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Redis™ Database Instance"]
+				}
+			},
+			"/redis/v1/zones/{zone}/clusters/{cluster_id}": {
+				"delete": {
+					"operationId": "DeleteCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Redis™ Database Instance"]
+				},
+				"get": {
+					"operationId": "GetCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Redis™ Database Instance"]
+				},
+				"patch": {
+					"operationId": "UpdateCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"password": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										},
+										"user_name": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Redis™ Database Instance"]
+				}
+			},
+			"/redis/v1/zones/{zone}/clusters/{cluster_id}/acls": {
+				"post": {
+					"operationId": "AddAclRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"acl_rules": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.redis.v1.ACLRuleSpec"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["acl_rules"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.AddAclRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["ACL Rules"]
+				},
+				"put": {
+					"operationId": "SetAclRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"acl_rules": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.redis.v1.ACLRuleSpec"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["acl_rules"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.SetAclRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["ACL Rules"]
+				}
+			},
+			"/redis/v1/zones/{zone}/clusters/{cluster_id}/certificate": {
+				"get": {
+					"operationId": "GetClusterCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["TLS Certificates"]
+				}
+			},
+			"/redis/v1/zones/{zone}/clusters/{cluster_id}/endpoints": {
+				"post": {
+					"operationId": "AddEndpoints",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"endpoints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.redis.v1.EndpointSpec"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["endpoints"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.AddEndpointsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				},
+				"put": {
+					"operationId": "SetEndpoints",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"endpoints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.redis.v1.EndpointSpec"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["endpoints"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.SetEndpointsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				}
+			},
+			"/redis/v1/zones/{zone}/clusters/{cluster_id}/metrics": {
+				"get": {
+					"operationId": "GetClusterMetrics",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "start_at",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "end_at",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "metric_name",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.ClusterMetricsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Redis™ Database Instance"]
+				}
+			},
+			"/redis/v1/zones/{zone}/clusters/{cluster_id}/migrate": {
+				"post": {
+					"operationId": "MigrateCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"cluster_size": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"node_type": {
+											"type": ["string", "null"]
+										},
+										"version": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Redis™ Database Instance"]
+				}
+			},
+			"/redis/v1/zones/{zone}/clusters/{cluster_id}/renew-certificate": {
+				"post": {
+					"operationId": "RenewClusterCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["TLS Certificates"]
+				}
+			},
+			"/redis/v1/zones/{zone}/clusters/{cluster_id}/settings": {
+				"post": {
+					"operationId": "AddClusterSettings",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"settings": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.redis.v1.ClusterSetting"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["settings"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.ClusterSettingsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Advanced Settings"]
+				},
+				"put": {
+					"operationId": "SetClusterSettings",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"settings": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.redis.v1.ClusterSetting"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["settings"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.ClusterSettingsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Advanced Settings"]
+				}
+			},
+			"/redis/v1/zones/{zone}/clusters/{cluster_id}/settings/{setting_name}": {
+				"delete": {
+					"operationId": "DeleteClusterSetting",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "setting_name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Advanced Settings"]
+				}
+			},
+			"/redis/v1/zones/{zone}/endpoints/{endpoint_id}": {
+				"delete": {
+					"operationId": "DeleteEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "endpoint_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				},
+				"get": {
+					"operationId": "GetEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "endpoint_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Endpoint"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				},
+				"patch": {
+					"operationId": "UpdateEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "endpoint_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"private_network": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.redis.v1.EndpointSpec.PrivateNetworkSpec"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"public_network": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.redis.v1.EndpointSpec.PublicNetworkSpec"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.Endpoint"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Endpoints"]
+				}
+			},
+			"/redis/v1/zones/{zone}/node-types": {
+				"get": {
+					"operationId": "ListNodeTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-1", "pl-waw-2"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "include_disabled_types",
+							"required": true,
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.redis.v1.ListNodeTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Nodes Types"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

@@ -1,0 +1,911 @@
+{
+	"sha256": "c3216cfd5cd75d724c5e67a74a566383ef0d59a3858a77f0b40242c80b80408a",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.datalab.v1beta1.Cluster": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"versions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.ClusterVersion"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.ClusterVersion": {
+					"properties": {
+						"beta": {
+							"type": "boolean"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"disabled": {
+							"type": "boolean"
+						},
+						"end_of_life": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"version": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.CreateDatalabRequest.SparkMain": {
+					"properties": {
+						"node_type": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.CreateDatalabRequest.SparkWorker": {
+					"properties": {
+						"node_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"node_type": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.Datalab": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"has_notebook": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"main": {
+							"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Datalab.SparkMain"
+						},
+						"name": {
+							"type": "string"
+						},
+						"notebook_master_url": {
+							"type": ["string", "null"]
+						},
+						"notebook_url": {
+							"type": ["string", "null"]
+						},
+						"private_network_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"spark_version": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Datalab.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"total_storage": {
+							"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Volume"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"worker": {
+							"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Datalab.SparkWorker"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.Datalab.SparkMain": {
+					"properties": {
+						"node_type": {
+							"type": "string"
+						},
+						"root_volume": {
+							"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Volume"
+						},
+						"spark_master_url": {
+							"type": "string"
+						},
+						"spark_ui_url": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.Datalab.SparkWorker": {
+					"properties": {
+						"node_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"node_type": {
+							"type": "string"
+						},
+						"root_volume": {
+							"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Volume"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.Datalab.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"creating",
+						"updating",
+						"ready",
+						"error",
+						"deleting",
+						"locked",
+						"deleted"
+					],
+					"type": "string"
+				},
+				"scaleway.datalab.v1beta1.ListClusterVersionsRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.datalab.v1beta1.ListClusterVersionsResponse": {
+					"properties": {
+						"clusters": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Cluster"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.ListDatalabsRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": [
+						"name_asc",
+						"name_desc",
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.datalab.v1beta1.ListDatalabsResponse": {
+					"properties": {
+						"datalabs": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Datalab"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.ListNodeTypesRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": [
+						"name_asc",
+						"name_desc",
+						"vcpus_asc",
+						"vcpus_desc",
+						"memory_gigabytes_asc",
+						"memory_gigabytes_desc",
+						"vram_bytes_asc",
+						"vram_bytes_desc",
+						"gpus_asc",
+						"gpus_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.datalab.v1beta1.ListNodeTypesRequest.ResourceType": {
+					"default": "all",
+					"enum": ["all", "gpu", "cpu"],
+					"type": "string"
+				},
+				"scaleway.datalab.v1beta1.ListNodeTypesResponse": {
+					"properties": {
+						"node_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.NodeType"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.ListNotebookVersionsRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.datalab.v1beta1.ListNotebookVersionsResponse": {
+					"properties": {
+						"notebooks": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Notebook"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.NodeType": {
+					"properties": {
+						"beta": {
+							"type": "boolean"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"disabled": {
+							"type": "boolean"
+						},
+						"gpus": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"memory_gigabytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"stock_status": {
+							"$ref": "#/components/schemas/scaleway.datalab.v1beta1.NodeType.Stock"
+						},
+						"targets": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.NodeType.Target"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"vcpus": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"vram_gigabytes": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.NodeType.Stock": {
+					"default": "unknown_stock",
+					"enum": ["unknown_stock", "low_stock", "out_of_stock", "available"],
+					"type": "string"
+				},
+				"scaleway.datalab.v1beta1.NodeType.Target": {
+					"default": "unknown_target",
+					"enum": ["unknown_target", "notebook", "worker"],
+					"type": "string"
+				},
+				"scaleway.datalab.v1beta1.Notebook": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"versions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.NotebookVersion"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.NotebookVersion": {
+					"properties": {
+						"beta": {
+							"type": "boolean"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"disabled": {
+							"type": "boolean"
+						},
+						"end_of_life": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"version": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.Volume": {
+					"properties": {
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Volume.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.datalab.v1beta1.Volume.Type": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "sbs_5k"],
+					"type": "string"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/datalab/v1beta1/regions/{region}/cluster-versions": {
+				"get": {
+					"operationId": "ListClusterVersions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.ListClusterVersionsRequest.OrderBy"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.datalab.v1beta1.ListClusterVersionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters for Apache Spark™"]
+				}
+			},
+			"/datalab/v1beta1/regions/{region}/datalabs": {
+				"get": {
+					"operationId": "ListDatalabs",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.ListDatalabsRequest.OrderBy"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.datalab.v1beta1.ListDatalabsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters for Apache Spark™"]
+				},
+				"post": {
+					"operationId": "CreateDatalab",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": "string"
+										},
+										"has_notebook": {
+											"type": "boolean"
+										},
+										"main": {
+											"$ref": "#/components/schemas/scaleway.datalab.v1beta1.CreateDatalabRequest.SparkMain"
+										},
+										"name": {
+											"type": "string"
+										},
+										"private_network_id": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"spark_version": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"total_storage": {
+											"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Volume"
+										},
+										"worker": {
+											"$ref": "#/components/schemas/scaleway.datalab.v1beta1.CreateDatalabRequest.SparkWorker"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Datalab"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters for Apache Spark™"]
+				}
+			},
+			"/datalab/v1beta1/regions/{region}/datalabs/{datalab_id}": {
+				"delete": {
+					"operationId": "DeleteDatalab",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "datalab_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Datalab"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters for Apache Spark™"]
+				},
+				"get": {
+					"operationId": "GetDatalab",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "datalab_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Datalab"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters for Apache Spark™"]
+				},
+				"patch": {
+					"operationId": "UpdateDatalab",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "datalab_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"node_count": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.datalab.v1beta1.Datalab"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters for Apache Spark™"]
+				}
+			},
+			"/datalab/v1beta1/regions/{region}/node-types": {
+				"get": {
+					"operationId": "ListNodeTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.ListNodeTypesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "targets",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.datalab.v1beta1.NodeType.Target"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "resource_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.ListNodeTypesRequest.ResourceType"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.datalab.v1beta1.ListNodeTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters for Apache Spark™"]
+				}
+			},
+			"/datalab/v1beta1/regions/{region}/notebook-versions": {
+				"get": {
+					"operationId": "ListNotebookVersions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.datalab.v1beta1.ListNotebookVersionsRequest.OrderBy"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.datalab.v1beta1.ListNotebookVersionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters for Apache Spark™"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

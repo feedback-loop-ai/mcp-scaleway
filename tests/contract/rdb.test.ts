@@ -797,7 +797,7 @@ describe("RDB input schemas", () => {
 		});
 	});
 
-	// Spec: POST /rdb/v1/regions/{region}/snapshots
+	// Spec: POST /rdb/v1/regions/{region}/instances/{instance_id}/snapshots
 	describe("CreateSnapshotInput", () => {
 		it("requires instance_id and name", () => {
 			expect(CreateSnapshotInput.parse({ instance_id: "inst-1", name: "snap-1" })).toMatchObject({
@@ -816,7 +816,7 @@ describe("RDB input schemas", () => {
 		});
 	});
 
-	// Spec: POST /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance-from-snapshot
+	// Spec: POST /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance
 	describe("RestoreSnapshotInput", () => {
 		it("requires snapshot_id and instance_name", () => {
 			expect(

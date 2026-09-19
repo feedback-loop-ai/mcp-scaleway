@@ -1,0 +1,1982 @@
+{
+	"sha256": "dbcd47d3b410efc22644e661fbeb3d7f267b34c0cd15adf30fa92ba6e2cc9ab5",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.interlink.v1beta1.BgpConfig": {
+					"properties": {
+						"asn": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"ipv4": {
+							"type": "string"
+						},
+						"ipv6": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.BgpStatus": {
+					"default": "unknown_bgp_status",
+					"enum": ["unknown_bgp_status", "up", "down", "disabled"],
+					"type": "string"
+				},
+				"scaleway.interlink.v1beta1.DedicatedConnection": {
+					"properties": {
+						"available_link_bandwidths": {
+							"items": {
+								"format": "uint64",
+								"type": "integer"
+							},
+							"type": "array"
+						},
+						"bandwidth_mbps": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"demarcation_info": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"pop_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.interlink.v1beta1.DedicatedConnection.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"vlan_range": {
+							"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Range"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.DedicatedConnection.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"created",
+						"configuring",
+						"failed",
+						"active",
+						"disabled",
+						"deleted",
+						"locked"
+					],
+					"type": "string"
+				},
+				"scaleway.interlink.v1beta1.Link": {
+					"properties": {
+						"bandwidth_mbps": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"bgp_v4_status": {
+							"$ref": "#/components/schemas/scaleway.interlink.v1beta1.BgpStatus"
+						},
+						"bgp_v6_status": {
+							"$ref": "#/components/schemas/scaleway.interlink.v1beta1.BgpStatus"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"enable_route_propagation": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"partner": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.interlink.v1beta1.PartnerHost"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"peer_bgp_config": {
+							"$ref": "#/components/schemas/scaleway.interlink.v1beta1.BgpConfig"
+						},
+						"pop_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"routing_policy_id": {
+							"deprecated": true,
+							"type": ["string", "null"]
+						},
+						"routing_policy_v4_id": {
+							"type": ["string", "null"]
+						},
+						"routing_policy_v6_id": {
+							"type": ["string", "null"]
+						},
+						"scw_bgp_config": {
+							"$ref": "#/components/schemas/scaleway.interlink.v1beta1.BgpConfig"
+						},
+						"self": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.interlink.v1beta1.SelfHost"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.interlink.v1beta1.LinkStatus"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"vlan": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"vpc_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.LinkKind": {
+					"default": "hosted",
+					"enum": ["hosted", "self_hosted", "l2_hosted", "l3_hosted"],
+					"type": "string"
+				},
+				"scaleway.interlink.v1beta1.LinkStatus": {
+					"default": "unknown_link_status",
+					"enum": [
+						"unknown_link_status",
+						"configuring",
+						"failed",
+						"requested",
+						"refused",
+						"expired",
+						"provisioning",
+						"active",
+						"limited_connectivity",
+						"all_down",
+						"deprovisioning",
+						"deleted",
+						"locked",
+						"ready"
+					],
+					"type": "string"
+				},
+				"scaleway.interlink.v1beta1.ListDedicatedConnectionsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.interlink.v1beta1.ListDedicatedConnectionsResponse": {
+					"properties": {
+						"connections": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.DedicatedConnection"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.ListLinksRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.interlink.v1beta1.ListLinksResponse": {
+					"properties": {
+						"links": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.ListPartnersRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.interlink.v1beta1.ListPartnersResponse": {
+					"properties": {
+						"partners": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Partner"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.ListPopsRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.interlink.v1beta1.ListPopsResponse": {
+					"properties": {
+						"pops": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Pop"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.ListRoutingPoliciesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.interlink.v1beta1.ListRoutingPoliciesResponse": {
+					"properties": {
+						"routing_policies": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.RoutingPolicy"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.Partner": {
+					"properties": {
+						"contact_email": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"l3_connectivity": {
+							"type": "boolean"
+						},
+						"logo_url": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"portal_url": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.PartnerHost": {
+					"properties": {
+						"disapproved_reason": {
+							"type": ["string", "null"]
+						},
+						"l3_connectivity": {
+							"type": "boolean"
+						},
+						"pairing_key": {
+							"type": "string"
+						},
+						"partner_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.Pop": {
+					"properties": {
+						"address": {
+							"type": "string"
+						},
+						"available_link_bandwidths_mbps": {
+							"items": {
+								"format": "uint64",
+								"type": "integer"
+							},
+							"type": "array"
+						},
+						"city": {
+							"type": "string"
+						},
+						"display_name": {
+							"type": "string"
+						},
+						"hosting_provider_name": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"logo_url": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.Range": {
+					"properties": {
+						"end": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"start": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.RoutingPolicy": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"is_ipv6": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"prefix_filter_in": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"prefix_filter_out": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.interlink.v1beta1.SelfHost": {
+					"properties": {
+						"connection_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/interlink/v1beta1/regions/{region}/dedicated-connections": {
+				"get": {
+					"operationId": "ListDedicatedConnections",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.ListDedicatedConnectionsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.DedicatedConnection.Status"
+							}
+						},
+						{
+							"in": "query",
+							"name": "bandwidth_mbps",
+							"schema": {
+								"format": "uint64",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "pop_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.ListDedicatedConnectionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/dedicated-connections/{connection_id}": {
+				"get": {
+					"operationId": "GetDedicatedConnection",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "connection_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.DedicatedConnection"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Connections"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/links": {
+				"get": {
+					"operationId": "ListLinks",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.ListLinksRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.LinkStatus"
+							}
+						},
+						{
+							"in": "query",
+							"name": "bgp_v4_status",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.BgpStatus"
+							}
+						},
+						{
+							"in": "query",
+							"name": "bgp_v6_status",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.BgpStatus"
+							}
+						},
+						{
+							"in": "query",
+							"name": "pop_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "bandwidth_mbps",
+							"schema": {
+								"format": "uint64",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "partner_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "vpc_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "routing_policy_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "pairing_key",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "kind",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.LinkKind"
+							}
+						},
+						{
+							"in": "query",
+							"name": "connection_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.ListLinksResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				},
+				"post": {
+					"operationId": "CreateLink",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"bandwidth_mbps": {
+											"format": "uint64",
+											"type": "integer"
+										},
+										"connection_id": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"partner_id": {
+											"type": ["string", "null"]
+										},
+										"peer_asn": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"pop_id": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"routing_policy_v4_id": {
+											"type": ["string", "null"]
+										},
+										"routing_policy_v6_id": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"vlan": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										}
+									},
+									"required": ["name", "pop_id", "bandwidth_mbps"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/links/{link_id}": {
+				"delete": {
+					"operationId": "DeleteLink",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "link_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				},
+				"get": {
+					"operationId": "GetLink",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "link_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				},
+				"patch": {
+					"operationId": "UpdateLink",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "link_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"peer_asn": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/links/{link_id}/attach-routing-policy": {
+				"post": {
+					"operationId": "AttachRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "link_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"routing_policy_id": {
+											"type": "string"
+										}
+									},
+									"required": ["routing_policy_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/links/{link_id}/attach-vpc": {
+				"post": {
+					"operationId": "AttachVpc",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "link_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"vpc_id": {
+											"type": "string"
+										}
+									},
+									"required": ["vpc_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/links/{link_id}/detach-routing-policy": {
+				"post": {
+					"operationId": "DetachRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "link_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"routing_policy_id": {
+											"type": "string"
+										}
+									},
+									"required": ["routing_policy_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/links/{link_id}/detach-vpc": {
+				"post": {
+					"operationId": "DetachVpc",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "link_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/links/{link_id}/disable-route-propagation": {
+				"post": {
+					"operationId": "DisableRoutePropagation",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "link_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/links/{link_id}/enable-route-propagation": {
+				"post": {
+					"operationId": "EnableRoutePropagation",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "link_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/links/{link_id}/set-routing-policy": {
+				"post": {
+					"operationId": "SetRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "link_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"routing_policy_id": {
+											"type": "string"
+										}
+									},
+									"required": ["routing_policy_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Link"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Links"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/partners": {
+				"get": {
+					"operationId": "ListPartners",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.ListPartnersRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "pop_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "l3_connectivity",
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.ListPartnersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Partners"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/partners/{partner_id}": {
+				"get": {
+					"operationId": "GetPartner",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "partner_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Partner"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Partners"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/pops": {
+				"get": {
+					"operationId": "ListPops",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.ListPopsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "hosting_provider_name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "partner_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "link_bandwidth_mbps",
+							"schema": {
+								"format": "uint64",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "dedicated_available",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "l3_connectivity_partners",
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.ListPopsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Points Of Presence"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/pops/{pop_id}": {
+				"get": {
+					"operationId": "GetPop",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "pop_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.Pop"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Points Of Presence"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/routing-policies": {
+				"get": {
+					"operationId": "ListRoutingPolicies",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.interlink.v1beta1.ListRoutingPoliciesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "ipv6",
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.ListRoutingPoliciesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Routing Policies"]
+				},
+				"post": {
+					"operationId": "CreateRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"is_ipv6": {
+											"type": "boolean"
+										},
+										"name": {
+											"type": "string"
+										},
+										"prefix_filter_in": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"prefix_filter_out": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["project_id", "name"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.RoutingPolicy"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Routing Policies"]
+				}
+			},
+			"/interlink/v1beta1/regions/{region}/routing-policies/{routing_policy_id}": {
+				"delete": {
+					"operationId": "DeleteRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "routing_policy_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Routing Policies"]
+				},
+				"get": {
+					"operationId": "GetRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "routing_policy_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.RoutingPolicy"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Routing Policies"]
+				},
+				"patch": {
+					"operationId": "UpdateRoutingPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "it-mil", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "routing_policy_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"prefix_filter_in": {
+											"type": ["array", "null"]
+										},
+										"prefix_filter_out": {
+											"type": ["array", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.interlink.v1beta1.RoutingPolicy"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Routing Policies"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

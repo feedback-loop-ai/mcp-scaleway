@@ -138,6 +138,12 @@
 		"readOnly": true
 	},
 	{
+		"tool": "scaleway_audit_trail_test_custom_alert_rule",
+		"api": "POST /audit-trail/v1alpha1/regions/{region}/test-custom-alert-rule",
+		"area": "audit-trail",
+		"readOnly": false
+	},
+	{
 		"tool": "scaleway_autoscaling_create_instance_group",
 		"api": "POST /autoscaling/v1alpha2/zones/{zone}/groups",
 		"area": "autoscaling",
@@ -2466,6 +2472,12 @@
 		"readOnly": false
 	},
 	{
+		"tool": "scaleway_key_manager_delete_key_material",
+		"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/delete-key-material",
+		"area": "key-manager",
+		"readOnly": false
+	},
+	{
 		"tool": "scaleway_key_manager_disable_key",
 		"api": "POST /key-manager/v1alpha1/regions/{region}/keys/{key_id}/disable",
 		"area": "key-manager",
@@ -2492,6 +2504,12 @@
 	{
 		"tool": "scaleway_key_manager_get_key",
 		"api": "GET /key-manager/v1alpha1/regions/{region}/keys/{key_id}",
+		"area": "key-manager",
+		"readOnly": true
+	},
+	{
+		"tool": "scaleway_key_manager_list_key_rotations",
+		"api": "GET /key-manager/v1alpha1/regions/{region}/keys/{key_id}/rotations",
 		"area": "key-manager",
 		"readOnly": true
 	},
@@ -3433,7 +3451,7 @@
 	},
 	{
 		"tool": "scaleway_rdb_create_snapshot",
-		"api": "POST /rdb/v1/regions/{region}/snapshots",
+		"api": "POST /rdb/v1/regions/{region}/instances/{instance_id}/snapshots",
 		"area": "rdb",
 		"readOnly": false
 	},
@@ -3541,7 +3559,7 @@
 	},
 	{
 		"tool": "scaleway_rdb_restore_snapshot",
-		"api": "POST /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance-from-snapshot",
+		"api": "POST /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance",
 		"area": "rdb",
 		"readOnly": false
 	},

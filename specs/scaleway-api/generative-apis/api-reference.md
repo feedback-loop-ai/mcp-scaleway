@@ -33,12 +33,44 @@ form is accepted.
 
 ### Chat Completion — `scaleway_generative_apis_chat_completion`
 `POST /{region}/v1/chat/completions`
-- Body: `{ model, messages: { role, content }[], temperature?, max_tokens?, top_p?, stream: false }`
-  - `role`: `system | user | assistant`
+- Body: `{ model, messages, temperature?, max_tokens?, max_completion_tokens?, top_p?, tools?, tool_choice?, parallel_tool_calls?, response_format?, reasoning_effort?, stream: false }`
+  - System/user messages have string `content`.
+  - Assistant messages have string content (optionally with an empty or nonempty
+    `tool_calls` array), or nonempty `tool_calls` with omitted/`null` content.
+  - Each tool call has `{ id, type: "function", function: { name, arguments: string } }`.
+    Arguments are a JSON-encoded string, as returned by the upstream model.
+  - Tool-result messages have `{ role: "tool", tool_call_id, content: string }`.
+  - `tools` supplies up to 128 function definitions: `{ type: "function", function: { name,
+    description?, parameters?: JSONSchema, strict?: boolean | null } }`.
+    Definition and named-choice function names use 1-64 ASCII letters, digits,
+    underscores, or dashes. Omitting `parameters` defines a parameterless function.
+    Upstream currently ignores function `strict`, including `true`; callers must
+    validate generated function arguments before execution.
+  - `tool_choice`: `none`, `auto`, `required`, or `{ type: "function", function: { name } }`.
+  - `parallel_tool_calls`: optional boolean, forwarded to Scaleway. Upstream currently
+    ignores `false` and may return multiple function calls for supported models.
+  - `response_format`: `{ type: "text" }`, `{ type: "json_object" }`, or
+    `{ type: "json_schema", json_schema: { name, description?, schema, strict? } }`.
+  - `reasoning_effort`: `none | low | medium | high`, subject to model support.
+  - `max_completion_tokens` is the current positive-integer output limit, including
+    reasoning tokens. When supplied, it takes precedence over legacy `max_tokens`
+    (which otherwise retains its default of 512); only one limit is sent upstream.
 - Response: `ChatCompletion`
   `{ id, object: "chat.completion", created, model, choices: { index, message, finish_reason }[], usage }`
-  - `finish_reason`: `stop | length | content_filter | null`
+  - `finish_reason`: `stop | length | content_filter | tool_calls | null`
   - `usage`: `{ prompt_tokens, completion_tokens, total_tokens }`
+  - The handler preserves the full upstream response, including `reasoning_content`
+    and optional `completion_tokens_details` / `prompt_tokens_details` breakdowns.
+
+Function requests are returned to the caller; this operation does not execute them.
+The caller executes authorized functions and sends their results in a subsequent
+chat request. Use text response format for native tool calling: forcing a JSON
+output schema can prevent native tool-call output for some models. Contracts:
+`tests/contract/tools/generative-apis/tool-calling.contract.test.ts`.
+Verified against https://www.scaleway.com/en/docs/generative-apis/api-cli/using-chat-api/
+and https://www.scaleway.com/en/developers/api/generative-apis/v1/schema.yml on
+2026-09-19. The schema's `FunctionObject` and `ParallelToolCalls` descriptions
+specify the current `strict` and parallel-call limitations.
 
 ### Create Embedding — `scaleway_generative_apis_create_embedding`
 `POST /{region}/v1/embeddings`

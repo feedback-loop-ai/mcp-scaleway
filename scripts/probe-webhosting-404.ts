@@ -82,6 +82,8 @@ const run = async (p: Probe): Promise<number> => {
 	return res.status;
 };
 
+export {};
+
 const lines: string[] = [];
 const verdicts: string[] = [];
 for (const p of probes) {

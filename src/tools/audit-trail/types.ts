@@ -194,6 +194,26 @@ export type ListExportJobsResponse = z.infer<typeof ListExportJobsResponse>;
 
 // --- Tool input schemas ---
 
+export const TestAuditTrailCustomAlertRuleParams = z.object({
+	region: ScalewayRegion.describe("Region in which to evaluate the alert rule"),
+	organizationId: z.string().uuid().describe("Organization to evaluate events for"),
+	query: z.string().min(1).describe("Common Expression Language (CEL) condition for the alert"),
+	evaluationWindow: z
+		.string()
+		.regex(/^\d+(?:\.\d{1,9})?s$/)
+		.optional()
+		.describe("How far back to evaluate events, as a duration in seconds (e.g. 300s)"),
+	occurrences: z
+		.number()
+		.int()
+		.min(0)
+		.max(4_294_967_295)
+		.describe("Minimum matched occurrences required to trigger the alert"),
+});
+export type TestAuditTrailCustomAlertRuleParams = z.infer<
+	typeof TestAuditTrailCustomAlertRuleParams
+>;
+
 export const ListAuditTrailEventsParams = z.object({
 	region: ScalewayRegion.describe("Region to query events in (fr-par, nl-ams, pl-waw)"),
 	organizationId: z.string().uuid().describe("Organization ID to list events for"),

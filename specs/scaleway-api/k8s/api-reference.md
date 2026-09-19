@@ -1,5 +1,11 @@
 # Scaleway Kubernetes (Kapsule / Kosmos) API Reference
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/kubernetes/v1/schema.yml
+> - version: v1
+> - fetched: 2026-09-19
+> - sha256: dc396cf42aee6a0ad78755f8e8e1d6c1fed33c4d1f709fb06996338ddf60c7d9
+
 > **Envelope boundary (Decision 1).** Upstream Scaleway JSON is snake_case and is
 > passed through by this server without renaming — `total_count` and any other
 > `*count*` field in a response body is the upstream field, verbatim. The MCP
@@ -134,3 +140,9 @@ the Scaleway SDK, while the public docs render the nested form:
 The flat `/pools/{pool_id}` paths are the canonical Scaleway API routes (a pool ID
 is globally unique within a region); both forms resolve to the same resource.
 List and Create pools are nested under the cluster in both.
+
+## Kubeconfig endpoint selection (2026-09-19)
+
+`scaleway_k8s_get_cluster_kubeconfig` accepts optional `endpoint: "public" | "vpc"`, sent as the query parameter on `GET /clusters/{cluster_id}/kubeconfig`. Omitting it retains the upstream public endpoint default. Unsupported values fail validation before transport.
+
+Contract proof: `tests/contract/transport/current-capabilities.transport.test.ts`.

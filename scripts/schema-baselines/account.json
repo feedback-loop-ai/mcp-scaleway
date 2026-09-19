@@ -1,0 +1,627 @@
+{
+	"sha256": "af3ce4c35fd9825aa0228051c19be91427462d5c250a6d30490cad5028f7bad1",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.account.v3.ListProjectsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.account.v3.ListProjectsResponse": {
+					"properties": {
+						"projects": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.account.v3.Project"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Project": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"qualification": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Project.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Project.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "active", "deleting"],
+					"type": "string"
+				},
+				"scaleway.account.v3.ProjectQualification": {
+					"properties": {
+						"project_id": {
+							"type": "string"
+						},
+						"qualification": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification": {
+					"properties": {
+						"ai_machine": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.account.v3.Qualification.AiMachine"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"architecture_type": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification.ArchitectureType"
+						},
+						"archive_data": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.account.v3.Qualification.ArchiveData"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"container": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.account.v3.Qualification.Container"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"deploy_software": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.account.v3.Qualification.DeploySoftware"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"host_application": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.account.v3.Qualification.HostApplication"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"host_website": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.account.v3.Qualification.HostWebsite"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"other_use_case": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.account.v3.Qualification.OtherUseCase"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"set_scaleway_environment": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.account.v3.Qualification.SetScalewayEnvironment"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"share_data": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.account.v3.Qualification.ShareData"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification.AiMachine": {
+					"properties": {
+						"sub_use_case": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification.AiMachine.SubUseCase"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification.AiMachine.SubUseCase": {
+					"default": "unknown_sub_use_case",
+					"enum": ["unknown_sub_use_case"],
+					"type": "string"
+				},
+				"scaleway.account.v3.Qualification.ArchitectureType": {
+					"default": "unknown_architecture_type",
+					"enum": [
+						"unknown_architecture_type",
+						"object_storage",
+						"web_hosting",
+						"instance",
+						"elastic",
+						"kubernetes",
+						"serverless",
+						"dedicated_server",
+						"other_architecture_type"
+					],
+					"type": "string"
+				},
+				"scaleway.account.v3.Qualification.ArchiveData": {
+					"properties": {
+						"sub_use_case": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification.ArchiveData.SubUseCase"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification.ArchiveData.SubUseCase": {
+					"default": "unknown_sub_use_case",
+					"enum": ["unknown_sub_use_case"],
+					"type": "string"
+				},
+				"scaleway.account.v3.Qualification.Container": {
+					"properties": {
+						"sub_use_case": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification.Container.SubUseCase"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification.Container.SubUseCase": {
+					"default": "unknown_sub_use_case",
+					"enum": ["unknown_sub_use_case"],
+					"type": "string"
+				},
+				"scaleway.account.v3.Qualification.DeploySoftware": {
+					"properties": {
+						"sub_use_case": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification.DeploySoftware.SubUseCase"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification.DeploySoftware.SubUseCase": {
+					"default": "unknown_sub_use_case",
+					"enum": ["unknown_sub_use_case"],
+					"type": "string"
+				},
+				"scaleway.account.v3.Qualification.HostApplication": {
+					"properties": {
+						"sub_use_case": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification.HostApplication.SubUseCase"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification.HostApplication.SubUseCase": {
+					"default": "unknown_sub_use_case",
+					"enum": ["unknown_sub_use_case", "saas_app", "government_app"],
+					"type": "string"
+				},
+				"scaleway.account.v3.Qualification.HostWebsite": {
+					"properties": {
+						"sub_use_case": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification.HostWebsite.SubUseCase"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification.HostWebsite.SubUseCase": {
+					"default": "unknown_sub_use_case",
+					"enum": [
+						"unknown_sub_use_case",
+						"information_website",
+						"ecommerce_website",
+						"high_website",
+						"other_sub_use_case"
+					],
+					"type": "string"
+				},
+				"scaleway.account.v3.Qualification.OtherUseCase": {
+					"properties": {
+						"sub_use_case": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification.OtherUseCase.SubUseCase"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification.OtherUseCase.SubUseCase": {
+					"default": "unknown_sub_use_case",
+					"enum": ["unknown_sub_use_case"],
+					"type": "string"
+				},
+				"scaleway.account.v3.Qualification.SetScalewayEnvironment": {
+					"properties": {
+						"sub_use_case": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification.SetScalewayEnvironment.SubUseCase"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification.SetScalewayEnvironment.SubUseCase": {
+					"default": "unknown_sub_use_case",
+					"enum": ["unknown_sub_use_case"],
+					"type": "string"
+				},
+				"scaleway.account.v3.Qualification.ShareData": {
+					"properties": {
+						"sub_use_case": {
+							"$ref": "#/components/schemas/scaleway.account.v3.Qualification.ShareData.SubUseCase"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.account.v3.Qualification.ShareData.SubUseCase": {
+					"default": "unknown_sub_use_case",
+					"enum": ["unknown_sub_use_case"],
+					"type": "string"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/account/v3/projects": {
+				"get": {
+					"operationId": "ListProjects",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.account.v3.ListProjectsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.account.v3.ListProjectsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Projects"]
+				},
+				"post": {
+					"operationId": "CreateProject",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.account.v3.Project"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Projects"]
+				}
+			},
+			"/account/v3/projects/{project_id}": {
+				"delete": {
+					"operationId": "DeleteProject",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Projects"]
+				},
+				"get": {
+					"operationId": "GetProject",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.account.v3.Project"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Projects"]
+				},
+				"patch": {
+					"operationId": "UpdateProject",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.account.v3.Project"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Projects"]
+				}
+			},
+			"/account/v3/projects/{project_id}/delete-with-resources": {
+				"post": {
+					"operationId": "DeleteProjectWithResources",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.account.v3.Project"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Projects"]
+				}
+			},
+			"/account/v3/projects/{project_id}/project-qualification": {
+				"post": {
+					"operationId": "SetProjectQualification",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"qualification": {
+											"$ref": "#/components/schemas/scaleway.account.v3.Qualification"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.account.v3.ProjectQualification"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

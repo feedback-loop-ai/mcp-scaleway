@@ -38,12 +38,12 @@ An MCP (Model Context Protocol) server that gives AI assistants like Claude full
 
 ## Overview
 
-**mcp-scaleway** is a stateless MCP server that acts as a bridge between AI assistants and the [Scaleway](https://www.scaleway.com) cloud platform. It exposes four discovery/execution tools with access to 724 operations across 50 Scaleway services, enabling AI agents to provision infrastructure, manage databases, deploy applications, and operate cloud resources on your behalf.
+**mcp-scaleway** is a stateless MCP server that acts as a bridge between AI assistants and the [Scaleway](https://www.scaleway.com) cloud platform. It exposes four discovery/execution tools with access to 727 operations across 50 Scaleway services, enabling AI agents to provision infrastructure, manage databases, deploy applications, and operate cloud resources on your behalf.
 
 **Why use this?**
 
 - **Natural language cloud management** - Ask your AI assistant to "create a Kubernetes cluster with 3 nodes" instead of writing API calls
-- **Compact default discovery** - four tools exposing 724 supported operations across 50 services; legacy flat mode remains available
+- **Compact default discovery** - four tools exposing 727 supported operations across 50 services; legacy flat mode remains available
 - **Zero state** - Pure proxy to Scaleway APIs; no data stored, no side effects beyond what you request
 - **Type-safe** - Every input validated with Zod schemas before reaching Scaleway
 
@@ -960,6 +960,14 @@ The tables below show legacy flat-mode names. In gateway mode use the same name 
 | `scaleway_generative_apis_chat_completion` | Create a chat completion (OpenAI-compatible) |
 | `scaleway_generative_apis_create_embedding` | Create text embeddings |
 
+Chat completions support function definitions, named/automatic tool selection,
+assistant tool calls and tool-result messages, JSON Schema output and reasoning
+effort. Use `max_completion_tokens` for the current token limit; it takes precedence
+over legacy `max_tokens`. Returned function calls are executed by the caller.
+Scaleway currently ignores function `strict` and `parallel_tool_calls: false`;
+those compatibility fields do not enforce strict arguments or sequential calls.
+Availability of other settings depends on the model.
+
 </details>
 
 <details>
@@ -1075,7 +1083,7 @@ The tables below show legacy flat-mode names. In gateway mode use the same name 
 </details>
 
 <details>
-<summary><strong>Key Manager</strong> (13 tools) - Cryptographic key management</summary>
+<summary><strong>Key Manager</strong> (15 tools) - Cryptographic key management</summary>
 
 | Tool | Description |
 |------|-------------|
@@ -1085,6 +1093,8 @@ The tables below show legacy flat-mode names. In gateway mode use the same name 
 | `scaleway_key_manager_update_key` | Update key metadata and rotation policy |
 | `scaleway_key_manager_delete_key` | Permanently delete a key (irreversible) |
 | `scaleway_key_manager_rotate_key` | Rotate key material |
+| `scaleway_key_manager_list_key_rotations` | List a key's rotation history |
+| `scaleway_key_manager_delete_key_material` | Delete imported key material, optionally for a specific rotation index |
 | `scaleway_key_manager_protect_key` | Protect a key from deletion |
 | `scaleway_key_manager_unprotect_key` | Remove deletion protection |
 | `scaleway_key_manager_enable_key` | Enable a key |
@@ -1096,7 +1106,7 @@ The tables below show legacy flat-mode names. In gateway mode use the same name 
 </details>
 
 <details>
-<summary><strong>Audit Trail</strong> (5 tools) - Activity audit logging</summary>
+<summary><strong>Audit Trail</strong> (6 tools) - Activity audit logging</summary>
 
 | Tool | Description |
 |------|-------------|
@@ -1105,6 +1115,7 @@ The tables below show legacy flat-mode names. In gateway mode use the same name 
 | `scaleway_audit_trail_list_export_jobs` | List export jobs (scheduled event exports to Object Storage) |
 | `scaleway_audit_trail_create_export_job` | Create an export job to a Scaleway Object Storage bucket |
 | `scaleway_audit_trail_delete_export_job` | Delete an export job |
+| `scaleway_audit_trail_test_custom_alert_rule` | Test a custom alert rule against supplied event data |
 
 </details>
 
@@ -1491,7 +1502,7 @@ bun run lint
 bun run lint:fix
 
 # Type check
-bun x tsc --noEmit
+bun run typecheck
 
 # Run unit + contract tests
 bun run test
@@ -1507,6 +1518,9 @@ bun x vitest run --config tests/vitest.config.ts --dir tests/contract
 
 # Run tests with coverage (100% enforced)
 bun run test -- --coverage.enabled
+
+# Compare current public schemas against reviewed provenance and contract baselines
+bun run fetch:schemas
 
 # Validate API parity matrix
 bun run test:parity

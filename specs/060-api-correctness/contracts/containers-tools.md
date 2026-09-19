@@ -143,3 +143,7 @@ Reference: `specs/scaleway-api/containers/api-reference.md`. Errors return `{ er
 ## Superseded contracts
 
 - `specs/008-containers/contracts/tool-contract.md` (v1beta1, deploy/token tools)
+
+## September 2026 extension
+
+Both create/update container contracts additionally accept optional boolean `enableDefaultPublicEndpoint`. It maps directly to `enable_default_public_endpoint`; `false` disables the default endpoint without disabling custom domains. Omission leaves the upstream default unchanged.

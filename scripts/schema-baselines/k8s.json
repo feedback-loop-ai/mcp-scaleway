@@ -1,0 +1,3225 @@
+{
+	"sha256": "dc396cf42aee6a0ad78755f8e8e1d6c1fed33c4d1f709fb06996338ddf60c7d9",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.FloatValue": {
+					"properties": {
+						"value": {
+							"format": "float",
+							"type": "number"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ACLRule": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"ip": {
+							"type": ["string", "null"]
+						},
+						"region": {
+							"type": "string"
+						},
+						"scaleway_ranges": {
+							"type": ["boolean", "null"]
+						},
+						"srn": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ACLRuleRequest": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"ip": {
+							"type": ["string", "null"]
+						},
+						"scaleway_ranges": {
+							"type": ["boolean", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.AddClusterACLRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.ACLRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.AutoscalerEstimator": {
+					"default": "unknown_estimator",
+					"enum": ["unknown_estimator", "binpacking"],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.AutoscalerExpander": {
+					"default": "unknown_expander",
+					"enum": ["unknown_expander", "random", "most_pods", "least_waste", "priority", "price"],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.Cluster": {
+					"properties": {
+						"acl_available": {
+							"deprecated": true,
+							"type": "boolean"
+						},
+						"admission_plugins": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"apiserver_cert_sans": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"auto_upgrade": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster.AutoUpgrade"
+						},
+						"autoscaler_config": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster.AutoscalerConfig"
+						},
+						"cluster_url": {
+							"type": "string"
+						},
+						"cni": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.CNI"
+						},
+						"commitment_ends_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"dns_wildcard": {
+							"type": "string"
+						},
+						"feature_gates": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"iam_nodes_group_id": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"open_id_connect_config": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster.OpenIDConnectConfig"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"pod_cidr": {
+							"type": "string"
+						},
+						"private_network_id": {
+							"type": ["string", "null"]
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"service_cidr": {
+							"type": "string"
+						},
+						"service_dns_ip": {
+							"type": "string"
+						},
+						"srn": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"type": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"upgrade_available": {
+							"type": "boolean"
+						},
+						"version": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.Cluster.AutoscalerConfig": {
+					"properties": {
+						"balance_similar_node_groups": {
+							"type": "boolean"
+						},
+						"estimator": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.AutoscalerEstimator"
+						},
+						"expander": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.AutoscalerExpander"
+						},
+						"expendable_pods_priority_cutoff": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"ignore_daemonsets_utilization": {
+							"type": "boolean"
+						},
+						"log_level": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"max_graceful_termination_sec": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"scale_down_delay_after_add": {
+							"type": "string"
+						},
+						"scale_down_disabled": {
+							"type": "boolean"
+						},
+						"scale_down_unneeded_time": {
+							"type": "string"
+						},
+						"scale_down_utilization_threshold": {
+							"format": "float",
+							"type": "number"
+						},
+						"skip_nodes_with_local_storage": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.Cluster.AutoUpgrade": {
+					"properties": {
+						"enabled": {
+							"type": "boolean"
+						},
+						"maintenance_window": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.MaintenanceWindow"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.Cluster.OpenIDConnectConfig": {
+					"properties": {
+						"client_id": {
+							"type": "string"
+						},
+						"groups_claim": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"groups_prefix": {
+							"type": "string"
+						},
+						"issuer_url": {
+							"type": "string"
+						},
+						"required_claim": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"username_claim": {
+							"type": "string"
+						},
+						"username_prefix": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.Cluster.Status": {
+					"default": "unknown",
+					"enum": [
+						"unknown",
+						"creating",
+						"ready",
+						"deleting",
+						"deleted",
+						"updating",
+						"locked",
+						"pool_required"
+					],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.ClusterType": {
+					"properties": {
+						"audit_logs_supported": {
+							"type": "boolean"
+						},
+						"availability": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.ClusterType.Availability"
+						},
+						"commitment_delay": {
+							"type": ["string", "null"]
+						},
+						"dedicated": {
+							"type": "boolean"
+						},
+						"max_nodes": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"memory": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"resiliency": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.ClusterType.Resiliency"
+						},
+						"sla": {
+							"format": "float",
+							"type": "number"
+						},
+						"srn": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ClusterType.Availability": {
+					"default": "available",
+					"enum": ["available", "scarce", "shortage"],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.ClusterType.Resiliency": {
+					"default": "unknown_resiliency",
+					"enum": ["unknown_resiliency", "standard", "high_availability"],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.CNI": {
+					"default": "unknown_cni",
+					"enum": ["unknown_cni", "cilium", "calico", "kilo", "none", "cilium_native"],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.ComponentInfo": {
+					"properties": {
+						"version": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.CoreV1Taint": {
+					"properties": {
+						"effect": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.CoreV1Taint.Effect"
+						},
+						"key": {
+							"type": "string"
+						},
+						"value": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.CoreV1Taint.Effect": {
+					"default": "NoSchedule",
+					"enum": ["NoSchedule", "PreferNoSchedule", "NoExecute"],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.CreateClusterRequest.AutoscalerConfig": {
+					"properties": {
+						"balance_similar_node_groups": {
+							"type": ["boolean", "null"]
+						},
+						"estimator": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.AutoscalerEstimator"
+						},
+						"expander": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.AutoscalerExpander"
+						},
+						"expendable_pods_priority_cutoff": {
+							"format": "int32",
+							"type": ["integer", "null"]
+						},
+						"ignore_daemonsets_utilization": {
+							"type": ["boolean", "null"]
+						},
+						"log_level": {
+							"format": "int32",
+							"type": ["integer", "null"]
+						},
+						"max_graceful_termination_sec": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"scale_down_delay_after_add": {
+							"type": ["string", "null"]
+						},
+						"scale_down_disabled": {
+							"type": ["boolean", "null"]
+						},
+						"scale_down_unneeded_time": {
+							"type": ["string", "null"]
+						},
+						"scale_down_utilization_threshold": {
+							"$ref": "#/components/schemas/google.protobuf.FloatValue"
+						},
+						"skip_nodes_with_local_storage": {
+							"type": ["boolean", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.CreateClusterRequest.AutoUpgrade": {
+					"properties": {
+						"enable": {
+							"type": "boolean"
+						},
+						"maintenance_window": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.MaintenanceWindow"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.CreateClusterRequest.OpenIDConnectConfig": {
+					"properties": {
+						"client_id": {
+							"type": "string"
+						},
+						"groups_claim": {
+							"type": ["array", "null"]
+						},
+						"groups_prefix": {
+							"type": ["string", "null"]
+						},
+						"issuer_url": {
+							"type": "string"
+						},
+						"required_claim": {
+							"type": ["array", "null"]
+						},
+						"username_claim": {
+							"type": ["string", "null"]
+						},
+						"username_prefix": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.CreateClusterRequest.PoolConfig": {
+					"properties": {
+						"autohealing": {
+							"type": "boolean"
+						},
+						"autoscaling": {
+							"type": "boolean"
+						},
+						"container_runtime": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Runtime"
+						},
+						"kubelet_args": {
+							"additionalProperties": true,
+							"properties": {
+								"<kubelet_argKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"labels": {
+							"additionalProperties": true,
+							"properties": {
+								"<labelKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"max_size": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"max_termination_grace_period": {
+							"type": ["string", "null"]
+						},
+						"min_size": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"node_type": {
+							"type": "string"
+						},
+						"placement_group_id": {
+							"type": ["string", "null"]
+						},
+						"public_ip_disabled": {
+							"type": "boolean"
+						},
+						"root_volume_size": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"root_volume_type": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Pool.VolumeType"
+						},
+						"security_group_id": {
+							"type": ["string", "null"]
+						},
+						"size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"startup_taints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.CoreV1Taint"
+							},
+							"type": "array"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"taints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.CoreV1Taint"
+							},
+							"type": "array"
+						},
+						"upgrade_policy": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.CreateClusterRequest.PoolConfig.UpgradePolicy"
+						},
+						"user_data": {
+							"additionalProperties": true,
+							"properties": {
+								"<user_dataKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"required": ["name", "node_type", "size"],
+					"type": "object"
+				},
+				"scaleway.k8s.v1.CreateClusterRequest.PoolConfig.UpgradePolicy": {
+					"properties": {
+						"max_surge": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"max_unavailable": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.CreatePoolRequest.UpgradePolicy": {
+					"properties": {
+						"max_surge": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"max_unavailable": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.GetClusterKubeConfigRequest.Endpoint": {
+					"default": "unknown_endpoint",
+					"enum": ["unknown_endpoint", "public", "vpc"],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.ListClusterACLRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.ACLRule"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ListClusterAvailableTypesResponse": {
+					"properties": {
+						"cluster_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.ClusterType"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ListClusterAvailableVersionsResponse": {
+					"properties": {
+						"versions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.Version"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ListClustersRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc",
+						"version_asc",
+						"version_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.ListClustersResponse": {
+					"properties": {
+						"clusters": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ListClusterTypesResponse": {
+					"properties": {
+						"cluster_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.ClusterType"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ListNodesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc",
+						"version_asc",
+						"version_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.ListNodesResponse": {
+					"properties": {
+						"nodes": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.Node"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ListPoolsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc",
+						"version_asc",
+						"version_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.ListPoolsResponse": {
+					"properties": {
+						"pools": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.Pool"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ListUserDataResponse": {
+					"properties": {
+						"user_data": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.UserDataSummary"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.ListVersionsResponse": {
+					"properties": {
+						"versions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.Version"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.MaintenanceWindow": {
+					"properties": {
+						"day": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.MaintenanceWindow.DayOfTheWeek"
+						},
+						"start_hour": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.MaintenanceWindow.DayOfTheWeek": {
+					"default": "any",
+					"enum": [
+						"any",
+						"monday",
+						"tuesday",
+						"wednesday",
+						"thursday",
+						"friday",
+						"saturday",
+						"sunday"
+					],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.Node": {
+					"properties": {
+						"cluster_id": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"error_message": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"pool_id": {
+							"type": "string"
+						},
+						"provider_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"srn": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Node.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.Node.Status": {
+					"default": "unknown",
+					"enum": [
+						"unknown",
+						"creating",
+						"not_ready",
+						"ready",
+						"deleting",
+						"deleted",
+						"locked",
+						"rebooting",
+						"creation_error",
+						"upgrading",
+						"starting",
+						"registering"
+					],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.Pool": {
+					"properties": {
+						"autohealing": {
+							"type": "boolean"
+						},
+						"autoscaling": {
+							"type": "boolean"
+						},
+						"cluster_id": {
+							"type": "string"
+						},
+						"container_runtime": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Runtime"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"error_message": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"kubelet_args": {
+							"additionalProperties": true,
+							"properties": {
+								"<kubelet_argKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"labels": {
+							"additionalProperties": true,
+							"properties": {
+								"<labelKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"max_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"max_termination_grace_period": {
+							"type": ["string", "null"]
+						},
+						"min_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"node_type": {
+							"type": "string"
+						},
+						"placement_group_id": {
+							"type": ["string", "null"]
+						},
+						"public_ip_disabled": {
+							"type": "boolean"
+						},
+						"region": {
+							"type": "string"
+						},
+						"root_volume_size": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"root_volume_type": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Pool.VolumeType"
+						},
+						"security_group_id": {
+							"type": "string"
+						},
+						"size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"srn": {
+							"type": "string"
+						},
+						"startup_taints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.CoreV1Taint"
+							},
+							"type": "array"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Pool.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"taints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.CoreV1Taint"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"upgrade_policy": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.Pool.UpgradePolicy"
+						},
+						"version": {
+							"type": "string"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"required": ["node_type", "size"],
+					"type": "object"
+				},
+				"scaleway.k8s.v1.Pool.Status": {
+					"default": "unknown",
+					"enum": [
+						"unknown",
+						"ready",
+						"deleting",
+						"deleted",
+						"scaling",
+						"warning",
+						"locked",
+						"upgrading"
+					],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.Pool.UpgradePolicy": {
+					"properties": {
+						"max_surge": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"max_unavailable": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.Pool.VolumeType": {
+					"default": "default_volume_type",
+					"enum": ["default_volume_type", "l_ssd", "b_ssd", "sbs_5k", "sbs_15k"],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.Runtime": {
+					"default": "unknown_runtime",
+					"enum": ["unknown_runtime", "containerd"],
+					"type": "string"
+				},
+				"scaleway.k8s.v1.SetClusterACLRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.ACLRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.UpdateClusterRequest.AutoscalerConfig": {
+					"properties": {
+						"balance_similar_node_groups": {
+							"type": ["boolean", "null"]
+						},
+						"estimator": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.AutoscalerEstimator"
+						},
+						"expander": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.AutoscalerExpander"
+						},
+						"expendable_pods_priority_cutoff": {
+							"format": "int32",
+							"type": ["integer", "null"]
+						},
+						"ignore_daemonsets_utilization": {
+							"type": ["boolean", "null"]
+						},
+						"log_level": {
+							"format": "int32",
+							"type": ["integer", "null"]
+						},
+						"max_graceful_termination_sec": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"scale_down_delay_after_add": {
+							"type": ["string", "null"]
+						},
+						"scale_down_disabled": {
+							"type": ["boolean", "null"]
+						},
+						"scale_down_unneeded_time": {
+							"type": ["string", "null"]
+						},
+						"scale_down_utilization_threshold": {
+							"$ref": "#/components/schemas/google.protobuf.FloatValue"
+						},
+						"skip_nodes_with_local_storage": {
+							"type": ["boolean", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.UpdateClusterRequest.AutoUpgrade": {
+					"properties": {
+						"enable": {
+							"type": ["boolean", "null"]
+						},
+						"maintenance_window": {
+							"$ref": "#/components/schemas/scaleway.k8s.v1.MaintenanceWindow"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.UpdateClusterRequest.OpenIDConnectConfig": {
+					"properties": {
+						"client_id": {
+							"type": ["string", "null"]
+						},
+						"groups_claim": {
+							"type": ["array", "null"]
+						},
+						"groups_prefix": {
+							"type": ["string", "null"]
+						},
+						"issuer_url": {
+							"type": ["string", "null"]
+						},
+						"required_claim": {
+							"type": ["array", "null"]
+						},
+						"username_claim": {
+							"type": ["string", "null"]
+						},
+						"username_prefix": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.UpdatePoolRequest.UpgradePolicy": {
+					"properties": {
+						"max_surge": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"max_unavailable": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.UserDataSummary": {
+					"properties": {
+						"key": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.k8s.v1.Version": {
+					"properties": {
+						"additional_components": {
+							"additionalProperties": true,
+							"properties": {
+								"<additional_componentKey>": {
+									"$ref": "#/components/schemas/scaleway.k8s.v1.ComponentInfo"
+								}
+							},
+							"type": "object"
+						},
+						"available_admission_plugins": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"available_cnis": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.CNI"
+							},
+							"type": "array"
+						},
+						"available_container_runtimes": {
+							"deprecated": true,
+							"items": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.Runtime"
+							},
+							"type": "array"
+						},
+						"available_feature_gates": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"available_kubelet_args": {
+							"additionalProperties": true,
+							"properties": {
+								"<available_kubelet_argKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"deprecated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"end_of_life_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"label": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"released_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"srn": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/k8s/v1/regions/{region}/acls/{acl_id}": {
+				"delete": {
+					"operationId": "DeleteACLRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "acl_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Access Control List"]
+				}
+			},
+			"/k8s/v1/regions/{region}/cluster-types": {
+				"get": {
+					"operationId": "ListClusterTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.ListClusterTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Cluster types"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters": {
+				"get": {
+					"operationId": "ListClusters",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.ListClustersRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster.Status"
+							}
+						},
+						{
+							"in": "query",
+							"name": "type",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "private_network_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "version",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.ListClustersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				},
+				"post": {
+					"operationId": "CreateCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"admission_plugins": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"apiserver_cert_sans": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"auto_upgrade": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.CreateClusterRequest.AutoUpgrade"
+										},
+										"autoscaler_config": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.CreateClusterRequest.AutoscalerConfig"
+										},
+										"cni": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.CNI"
+										},
+										"description": {
+											"type": "string"
+										},
+										"feature_gates": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"name": {
+											"type": "string"
+										},
+										"open_id_connect_config": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.CreateClusterRequest.OpenIDConnectConfig"
+										},
+										"organization_id": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"pod_cidr": {
+											"type": ["string", "null"]
+										},
+										"pools": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.k8s.v1.CreateClusterRequest.PoolConfig"
+											},
+											"type": "array"
+										},
+										"private_network_id": {
+											"type": ["string", "null"]
+										},
+										"project_id": {
+											"type": ["string", "null"]
+										},
+										"service_cidr": {
+											"type": ["string", "null"]
+										},
+										"service_dns_ip": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"type": {
+											"type": "string"
+										},
+										"version": {
+											"type": "string"
+										}
+									},
+									"required": ["name", "version", "cni"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters/{cluster_id}": {
+				"delete": {
+					"operationId": "DeleteCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "with_additional_resources",
+							"required": true,
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				},
+				"get": {
+					"operationId": "GetCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				},
+				"patch": {
+					"operationId": "UpdateCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"admission_plugins": {
+											"type": ["array", "null"]
+										},
+										"apiserver_cert_sans": {
+											"type": ["array", "null"]
+										},
+										"auto_upgrade": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.UpdateClusterRequest.AutoUpgrade"
+										},
+										"autoscaler_config": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.UpdateClusterRequest.AutoscalerConfig"
+										},
+										"description": {
+											"type": ["string", "null"]
+										},
+										"feature_gates": {
+											"type": ["array", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"open_id_connect_config": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.UpdateClusterRequest.OpenIDConnectConfig"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters/{cluster_id}/acls": {
+				"get": {
+					"operationId": "ListClusterACLRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.ListClusterACLRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Access Control List"]
+				},
+				"post": {
+					"operationId": "AddClusterACLRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"acls": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.k8s.v1.ACLRuleRequest"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.AddClusterACLRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Access Control List"]
+				},
+				"put": {
+					"operationId": "SetClusterACLRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"acls": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.k8s.v1.ACLRuleRequest"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.SetClusterACLRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Access Control List"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters/{cluster_id}/available-types": {
+				"get": {
+					"operationId": "ListClusterAvailableTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.ListClusterAvailableTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters/{cluster_id}/available-versions": {
+				"get": {
+					"operationId": "ListClusterAvailableVersions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.ListClusterAvailableVersionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters/{cluster_id}/kubeconfig": {
+				"get": {
+					"operationId": "GetClusterKubeConfig",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "redacted",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "endpoint",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.GetClusterKubeConfigRequest.Endpoint"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters/{cluster_id}/nodes": {
+				"get": {
+					"operationId": "ListNodes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "pool_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.ListNodesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.Node.Status"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.ListNodesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Nodes"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters/{cluster_id}/pools": {
+				"get": {
+					"operationId": "ListPools",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.ListPoolsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.k8s.v1.Pool.Status"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.ListPoolsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pools"]
+				},
+				"post": {
+					"operationId": "CreatePool",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"autohealing": {
+											"type": "boolean"
+										},
+										"autoscaling": {
+											"type": "boolean"
+										},
+										"container_runtime": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.Runtime"
+										},
+										"kubelet_args": {
+											"additionalProperties": true,
+											"properties": {
+												"<kubelet_argKey>": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"labels": {
+											"additionalProperties": true,
+											"properties": {
+												"<labelKey>": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"max_size": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"max_termination_grace_period": {
+											"type": ["string", "null"]
+										},
+										"min_size": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"node_type": {
+											"type": "string"
+										},
+										"placement_group_id": {
+											"type": ["string", "null"]
+										},
+										"public_ip_disabled": {
+											"type": "boolean"
+										},
+										"root_volume_size": {
+											"format": "uint64",
+											"type": ["integer", "null"]
+										},
+										"root_volume_type": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.Pool.VolumeType"
+										},
+										"security_group_id": {
+											"type": ["string", "null"]
+										},
+										"size": {
+											"format": "uint32",
+											"type": "integer"
+										},
+										"startup_taints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.k8s.v1.CoreV1Taint"
+											},
+											"type": "array"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"taints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.k8s.v1.CoreV1Taint"
+											},
+											"type": "array"
+										},
+										"upgrade_policy": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.CreatePoolRequest.UpgradePolicy"
+										},
+										"user_data": {
+											"additionalProperties": true,
+											"properties": {
+												"<user_dataKey>": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										},
+										"zone": {
+											"type": "string"
+										}
+									},
+									"required": ["name", "node_type", "size"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Pool"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pools"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters/{cluster_id}/reset-admin-token": {
+				"post": {
+					"operationId": "ResetClusterAdminToken",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters/{cluster_id}/set-type": {
+				"post": {
+					"operationId": "SetClusterType",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"type": {
+											"type": "string"
+										}
+									},
+									"required": ["type"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				}
+			},
+			"/k8s/v1/regions/{region}/clusters/{cluster_id}/upgrade": {
+				"post": {
+					"operationId": "UpgradeCluster",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "cluster_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"upgrade_pools": {
+											"type": "boolean"
+										},
+										"version": {
+											"type": "string"
+										}
+									},
+									"required": ["version"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Cluster"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Clusters"]
+				}
+			},
+			"/k8s/v1/regions/{region}/nodes/{node_id}": {
+				"delete": {
+					"operationId": "DeleteNode",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "node_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "skip_drain",
+							"required": true,
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Node"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Nodes"]
+				},
+				"get": {
+					"operationId": "GetNode",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "node_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Node"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Nodes"]
+				}
+			},
+			"/k8s/v1/regions/{region}/nodes/{node_id}/reboot": {
+				"post": {
+					"operationId": "RebootNode",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "node_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Node"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Nodes"]
+				}
+			},
+			"/k8s/v1/regions/{region}/nodes/{node_id}/replace": {
+				"post": {
+					"operationId": "ReplaceNode",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "node_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Node"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Nodes"]
+				}
+			},
+			"/k8s/v1/regions/{region}/pools/{pool_id}": {
+				"delete": {
+					"operationId": "DeletePool",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "pool_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Pool"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pools"]
+				},
+				"get": {
+					"operationId": "GetPool",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "pool_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Pool"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pools"]
+				},
+				"patch": {
+					"operationId": "UpdatePool",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "pool_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"autohealing": {
+											"type": ["boolean", "null"]
+										},
+										"autoscaling": {
+											"type": ["boolean", "null"]
+										},
+										"kubelet_args": {
+											"properties": {
+												"<key>": {
+													"type": "string"
+												}
+											},
+											"type": ["object", "null"]
+										},
+										"max_size": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"max_termination_grace_period": {
+											"type": ["string", "null"]
+										},
+										"min_size": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"security_group_id": {
+											"type": ["string", "null"]
+										},
+										"size": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										},
+										"upgrade_policy": {
+											"$ref": "#/components/schemas/scaleway.k8s.v1.UpdatePoolRequest.UpgradePolicy"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Pool"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pools"]
+				}
+			},
+			"/k8s/v1/regions/{region}/pools/{pool_id}/set-labels": {
+				"put": {
+					"operationId": "SetPoolLabels",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "pool_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"labels": {
+											"additionalProperties": true,
+											"properties": {
+												"<labelKey>": {
+													"type": "string"
+												}
+											},
+											"type": "object"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Pool"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pools"]
+				}
+			},
+			"/k8s/v1/regions/{region}/pools/{pool_id}/set-startup-taints": {
+				"put": {
+					"operationId": "SetPoolStartupTaints",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "pool_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"startup_taints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.k8s.v1.CoreV1Taint"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Pool"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pools"]
+				}
+			},
+			"/k8s/v1/regions/{region}/pools/{pool_id}/set-taints": {
+				"put": {
+					"operationId": "SetPoolTaints",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "pool_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"taints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.k8s.v1.CoreV1Taint"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Pool"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pools"]
+				}
+			},
+			"/k8s/v1/regions/{region}/pools/{pool_id}/upgrade": {
+				"post": {
+					"operationId": "UpgradePool",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "pool_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"version": {
+											"type": "string"
+										}
+									},
+									"required": ["version"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Pool"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Pools"]
+				}
+			},
+			"/k8s/v1/regions/{region}/pools/{pool_id}/user-data": {
+				"get": {
+					"operationId": "ListUserData",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "pool_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.ListUserDataResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["User data"]
+				}
+			},
+			"/k8s/v1/regions/{region}/pools/{pool_id}/user-data/{key}": {
+				"get": {
+					"operationId": "GetUserData",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "pool_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["User data"]
+				}
+			},
+			"/k8s/v1/regions/{region}/versions": {
+				"get": {
+					"operationId": "ListVersions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.ListVersionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Versions"]
+				}
+			},
+			"/k8s/v1/regions/{region}/versions/{version_name}": {
+				"get": {
+					"operationId": "GetVersion",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw", "it-mil"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "version_name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.k8s.v1.Version"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Versions"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

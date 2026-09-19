@@ -60,8 +60,8 @@ Key endpoints:
 
 **Snapshot management:**
 - `GET /snapshots` - List snapshots (paginated)
-- `POST /snapshots` - Create snapshot
-- `POST /snapshots/{snapshot_id}/create-instance-from-snapshot` - Restore snapshot
+- `POST /instances/{instance_id}/snapshots` - Create snapshot
+- `POST /snapshots/{snapshot_id}/create-instance` - Restore snapshot
 
 **Reference data:**
 - `GET /node-types` - List node types

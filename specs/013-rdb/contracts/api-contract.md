@@ -47,8 +47,8 @@
 | Method | Path | Tool |
 |--------|------|------|
 | GET | /snapshots | scaleway_rdb_list_snapshots |
-| POST | /snapshots | scaleway_rdb_create_snapshot |
-| POST | /snapshots/{snapshot_id}/create-instance-from-snapshot | scaleway_rdb_restore_snapshot |
+| POST | /instances/{instance_id}/snapshots | scaleway_rdb_create_snapshot |
+| POST | /snapshots/{snapshot_id}/create-instance | scaleway_rdb_restore_snapshot |
 
 ### Reference
 | Method | Path | Tool |

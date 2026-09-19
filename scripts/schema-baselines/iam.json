@@ -1,0 +1,4699 @@
+{
+	"sha256": "2418e401cf9b170aa8834f4355bb597eff1d3e3aee2ed94b6f4ca459248ed534",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.iam.v1alpha1.APIKey": {
+					"properties": {
+						"access_key": {
+							"type": "string"
+						},
+						"application_id": {
+							"type": ["string", "null"]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"creation_ip": {
+							"type": "string"
+						},
+						"default_project_id": {
+							"type": "string"
+						},
+						"deletable": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"editable": {
+							"type": "boolean"
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"managed": {
+							"type": "boolean"
+						},
+						"secret_key": {
+							"type": ["string", "null"]
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"user_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Application": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"deletable": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"editable": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"managed": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"nb_api_keys": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.BearerType": {
+					"default": "unknown_bearer_type",
+					"enum": ["unknown_bearer_type", "user", "application"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.CheckPermissionsRequest.Permission": {
+					"properties": {
+						"action": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": ["string", "null"]
+						},
+						"project_id": {
+							"type": ["string", "null"]
+						},
+						"service": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.CheckPermissionsResponse": {
+					"properties": {
+						"responses": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.CheckPermissionsResponse.Response"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.CheckPermissionsResponse.Response": {
+					"properties": {
+						"decision": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.CheckPermissionsResponse.Response.Decision"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.CheckPermissionsResponse.Response.Decision": {
+					"default": "deny",
+					"enum": ["deny", "allow"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.Connection": {
+					"properties": {
+						"organization": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Connection.ConnectedOrganization"
+						},
+						"user": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Connection.ConnectedUser"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Connection.ConnectedOrganization": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"locked": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Connection.ConnectedUser": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User.Type"
+						},
+						"username": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.CreateScimTokenResponse": {
+					"properties": {
+						"bearer_token": {
+							"type": "string"
+						},
+						"token": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ScimToken"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.CreateUserRequest.Member": {
+					"properties": {
+						"email": {
+							"type": "string"
+						},
+						"first_name": {
+							"type": "string"
+						},
+						"last_name": {
+							"type": "string"
+						},
+						"locale": {
+							"type": "string"
+						},
+						"password": {
+							"type": "string"
+						},
+						"phone_number": {
+							"type": "string"
+						},
+						"send_password_email": {
+							"type": "boolean"
+						},
+						"send_welcome_email": {
+							"type": "boolean"
+						},
+						"username": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.GetUserConnectionsResponse": {
+					"properties": {
+						"connections": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Connection"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.GracePeriod": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.GracePeriodType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.GracePeriodType": {
+					"default": "unknown_grace_period_type",
+					"enum": ["unknown_grace_period_type", "update_password", "set_mfa"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.Group": {
+					"properties": {
+						"all_applications": {
+							"type": "boolean"
+						},
+						"all_users": {
+							"type": "boolean"
+						},
+						"application_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"deletable": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"editable": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"managed": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"user_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.InitiateUserConnectionResponse": {
+					"properties": {
+						"token": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.JWT": {
+					"properties": {
+						"audience_id": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"ip": {
+							"type": "string"
+						},
+						"issuer_id": {
+							"type": "string"
+						},
+						"jti": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"user_agent": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListAPIKeysRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"expires_at_asc",
+						"expires_at_desc",
+						"access_key_asc",
+						"access_key_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListAPIKeysResponse": {
+					"properties": {
+						"api_keys": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.APIKey"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListApplicationsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"name_asc",
+						"name_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListApplicationsResponse": {
+					"properties": {
+						"applications": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Application"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListGracePeriodsResponse": {
+					"properties": {
+						"grace_periods": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.GracePeriod"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListGroupsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"name_asc",
+						"name_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListGroupsResponse": {
+					"properties": {
+						"groups": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Group"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListJWTsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "updated_at_asc", "updated_at_desc"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListJWTsResponse": {
+					"properties": {
+						"jwts": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.JWT"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListLogsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListLogsResponse": {
+					"properties": {
+						"logs": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Log"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListPermissionSetsRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc", "created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListPermissionSetsResponse": {
+					"properties": {
+						"permission_sets": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.PermissionSet"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListPoliciesRequest.OrderBy": {
+					"default": "policy_name_asc",
+					"enum": ["policy_name_asc", "policy_name_desc", "created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListPoliciesResponse": {
+					"properties": {
+						"policies": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Policy"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListQuotaRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListQuotaResponse": {
+					"properties": {
+						"quota": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Quotum"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Rule"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListSamlCertificatesResponse": {
+					"properties": {
+						"certificates": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SamlCertificate"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListScimTokensRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListScimTokensResponse": {
+					"properties": {
+						"scim_tokens": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ScimToken"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListSSHKeysRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"name_asc",
+						"name_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListSSHKeysResponse": {
+					"properties": {
+						"ssh_keys": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SSHKey"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ListUsersRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"email_asc",
+						"email_desc",
+						"last_login_asc",
+						"last_login_desc",
+						"username_asc",
+						"username_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListUsersResponse": {
+					"properties": {
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"users": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.LocalityType": {
+					"default": "global",
+					"enum": ["global", "region", "zone"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.Log": {
+					"properties": {
+						"action": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Log.Action"
+						},
+						"bearer_id": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"ip": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"resource_id": {
+							"type": "string"
+						},
+						"resource_type": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Log.ResourceType"
+						},
+						"user_agent": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Log.Action": {
+					"default": "unknown_action",
+					"enum": ["unknown_action", "created", "updated", "deleted"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.Log.ResourceType": {
+					"default": "unknown_resource_type",
+					"enum": ["unknown_resource_type", "api_key", "user", "application", "group", "policy"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.MFAOTP": {
+					"properties": {
+						"secret": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Organization": {
+					"properties": {
+						"alias": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"login_magic_code_enabled": {
+							"type": "boolean"
+						},
+						"login_oauth2_enabled": {
+							"type": "boolean"
+						},
+						"login_password_enabled": {
+							"type": "boolean"
+						},
+						"login_saml_enabled": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.OrganizationSecuritySettings": {
+					"properties": {
+						"enforce_password_renewal": {
+							"type": "boolean"
+						},
+						"grace_period_duration": {
+							"type": ["string", "null"]
+						},
+						"login_attempts_before_locked": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"max_api_key_expiration_duration": {
+							"type": ["string", "null"]
+						},
+						"max_login_session_duration": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.PermissionSet": {
+					"properties": {
+						"categories": {
+							"type": ["array", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"scope_type": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.PermissionSet.ScopeType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.PermissionSet.ScopeType": {
+					"default": "unknown_scope_type",
+					"enum": ["unknown_scope_type", "projects", "organization", "account_root_user"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.Policy": {
+					"properties": {
+						"application_id": {
+							"type": ["string", "null"]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"deletable": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"editable": {
+							"type": "boolean"
+						},
+						"group_id": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"managed": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"nb_permission_sets": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"nb_rules": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"nb_scopes": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"no_principal": {
+							"type": ["boolean", "null"]
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"user_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Quotum": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"limit": {
+							"deprecated": true,
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"limits": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Quotum.Limit"
+							},
+							"type": "array"
+						},
+						"locality_type": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.LocalityType"
+						},
+						"name": {
+							"type": "string"
+						},
+						"pretty_name": {
+							"type": "string"
+						},
+						"unit": {
+							"type": "string"
+						},
+						"unlimited": {
+							"deprecated": true,
+							"type": ["boolean", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Quotum.Limit": {
+					"properties": {
+						"global": {
+							"type": ["boolean", "null"]
+						},
+						"limit": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"region": {
+							"type": ["string", "null"]
+						},
+						"unlimited": {
+							"type": ["boolean", "null"]
+						},
+						"zone": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Rule": {
+					"properties": {
+						"account_root_user_id": {
+							"type": ["string", "null"]
+						},
+						"condition": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": ["string", "null"]
+						},
+						"permission_set_names": {
+							"type": ["array", "null"]
+						},
+						"permission_sets_scope_type": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.PermissionSet.ScopeType"
+						},
+						"project_ids": {
+							"type": ["array", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.RuleSpecs": {
+					"properties": {
+						"condition": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": ["string", "null"]
+						},
+						"permission_set_names": {
+							"type": ["array", "null"]
+						},
+						"project_ids": {
+							"type": ["array", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Saml": {
+					"properties": {
+						"entity_id": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"service_provider": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Saml.ServiceProvider"
+						},
+						"single_sign_on_url": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Saml.Status"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Saml.ServiceProvider": {
+					"properties": {
+						"assertion_consumer_service_url": {
+							"type": "string"
+						},
+						"entity_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.Saml.Status": {
+					"default": "unknown_saml_status",
+					"enum": [
+						"unknown_saml_status",
+						"valid",
+						"missing_certificate",
+						"missing_entity_id",
+						"missing_single_sign_on_url"
+					],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.SamlCertificate": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"origin": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SamlCertificate.Origin"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SamlCertificate.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.SamlCertificate.Origin": {
+					"default": "unknown_certificate_origin",
+					"enum": ["unknown_certificate_origin", "scaleway", "identity_provider"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.SamlCertificate.Type": {
+					"default": "unknown_certificate_type",
+					"enum": ["unknown_certificate_type", "signing", "encryption"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.Scim": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.ScimToken": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"scim_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.SetRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Rule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.SSHKey": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"disabled": {
+							"type": "boolean"
+						},
+						"fingerprint": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"public_key": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.User": {
+					"properties": {
+						"account_root_user_id": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"deletable": {
+							"type": "boolean"
+						},
+						"email": {
+							"type": "string"
+						},
+						"first_name": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"last_login_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"last_name": {
+							"type": "string"
+						},
+						"locale": {
+							"type": "string"
+						},
+						"locked": {
+							"type": "boolean"
+						},
+						"mfa": {
+							"type": "boolean"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"phone_number": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User.Status",
+							"deprecated": true
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"two_factor_enabled": {
+							"deprecated": true,
+							"type": "boolean"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User.Type"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"username": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.User.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "invitation_pending", "activated"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.User.Type": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "owner", "member"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ValidateUserMFAOTPResponse": {
+					"properties": {
+						"recovery_codes": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/iam/v1alpha1/api-keys": {
+				"get": {
+					"operationId": "ListAPIKeys",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListAPIKeysRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "editable",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "expired",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "access_key",
+							"schema": {
+								"deprecated": true,
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "description",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "bearer_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "bearer_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.BearerType"
+							}
+						},
+						{
+							"in": "query",
+							"name": "access_keys",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListAPIKeysResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["API Keys"]
+				},
+				"post": {
+					"operationId": "CreateAPIKey",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"application_id": {
+											"type": ["string", "null"]
+										},
+										"default_project_id": {
+											"type": ["string", "null"]
+										},
+										"description": {
+											"type": "string"
+										},
+										"expires_at": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"user_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.APIKey"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["API Keys"]
+				}
+			},
+			"/iam/v1alpha1/api-keys/{access_key}": {
+				"delete": {
+					"operationId": "DeleteAPIKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "access_key",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["API Keys"]
+				},
+				"get": {
+					"operationId": "GetAPIKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "access_key",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.APIKey"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["API Keys"]
+				},
+				"patch": {
+					"operationId": "UpdateAPIKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "access_key",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"default_project_id": {
+											"type": ["string", "null"]
+										},
+										"description": {
+											"type": ["string", "null"]
+										},
+										"expires_at": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.APIKey"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["API Keys"]
+				}
+			},
+			"/iam/v1alpha1/applications": {
+				"get": {
+					"operationId": "ListApplications",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListApplicationsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "editable",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "application_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tag",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListApplicationsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Applications"]
+				},
+				"post": {
+					"operationId": "CreateApplication",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization_id": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["name"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Application"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Applications"]
+				}
+			},
+			"/iam/v1alpha1/applications/{application_id}": {
+				"delete": {
+					"operationId": "DeleteApplication",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "application_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Applications"]
+				},
+				"get": {
+					"operationId": "GetApplication",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "application_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Application"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Applications"]
+				},
+				"patch": {
+					"operationId": "UpdateApplication",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "application_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Application"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Applications"]
+				}
+			},
+			"/iam/v1alpha1/check-permissions": {
+				"post": {
+					"operationId": "CheckPermissions",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"permissions": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.iam.v1alpha1.CheckPermissionsRequest.Permission"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.CheckPermissionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/iam/v1alpha1/grace-periods": {
+				"get": {
+					"operationId": "ListGracePeriods",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "user_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListGracePeriodsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/iam/v1alpha1/groups": {
+				"get": {
+					"operationId": "ListGroups",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListGroupsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "application_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "user_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "group_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tag",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListGroupsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Groups"]
+				},
+				"post": {
+					"operationId": "CreateGroup",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization_id": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["organization_id", "name"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Group"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Groups"]
+				}
+			},
+			"/iam/v1alpha1/groups/{group_id}": {
+				"delete": {
+					"operationId": "DeleteGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Groups"]
+				},
+				"get": {
+					"operationId": "GetGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Group"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Groups"]
+				},
+				"patch": {
+					"operationId": "UpdateGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Group"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Groups"]
+				}
+			},
+			"/iam/v1alpha1/groups/{group_id}/add-member": {
+				"post": {
+					"operationId": "AddGroupMember",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"application_id": {
+											"type": ["string", "null"]
+										},
+										"user_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Group"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Groups"]
+				}
+			},
+			"/iam/v1alpha1/groups/{group_id}/add-members": {
+				"post": {
+					"operationId": "AddGroupMembers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"application_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"user_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Group"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Groups"]
+				}
+			},
+			"/iam/v1alpha1/groups/{group_id}/members": {
+				"put": {
+					"operationId": "SetGroupMembers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"application_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"user_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["user_ids", "application_ids"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Group"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Groups"]
+				}
+			},
+			"/iam/v1alpha1/groups/{group_id}/remove-member": {
+				"post": {
+					"operationId": "RemoveGroupMember",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"application_id": {
+											"type": ["string", "null"]
+										},
+										"user_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Group"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Groups"]
+				}
+			},
+			"/iam/v1alpha1/jwts": {
+				"get": {
+					"operationId": "ListJWTs",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListJWTsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "audience_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "expired",
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListJWTsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["JWTs"]
+				}
+			},
+			"/iam/v1alpha1/jwts/{jti}": {
+				"delete": {
+					"operationId": "DeleteJWT",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "jti",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["JWTs"]
+				},
+				"get": {
+					"operationId": "GetJWT",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "jti",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.JWT"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["JWTs"]
+				}
+			},
+			"/iam/v1alpha1/logs": {
+				"get": {
+					"operationId": "ListLogs",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListLogsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "created_after",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "created_before",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "action",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Log.Action"
+							}
+						},
+						{
+							"in": "query",
+							"name": "resource_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Log.ResourceType"
+							}
+						},
+						{
+							"in": "query",
+							"name": "search",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListLogsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Logs"]
+				}
+			},
+			"/iam/v1alpha1/logs/{log_id}": {
+				"get": {
+					"operationId": "GetLog",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "log_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Log"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Logs"]
+				}
+			},
+			"/iam/v1alpha1/organizations/{organization_id}": {
+				"get": {
+					"operationId": "GetOrganization",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Organization"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/iam/v1alpha1/organizations/{organization_id}/alias": {
+				"put": {
+					"operationId": "SetOrganizationAlias",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"alias": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Organization"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/iam/v1alpha1/organizations/{organization_id}/login-methods": {
+				"patch": {
+					"operationId": "UpdateOrganizationLoginMethods",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"login_magic_code_enabled": {
+											"type": ["boolean", "null"]
+										},
+										"login_oauth2_enabled": {
+											"type": ["boolean", "null"]
+										},
+										"login_password_enabled": {
+											"type": ["boolean", "null"]
+										},
+										"login_saml_enabled": {
+											"type": ["boolean", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Organization"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/iam/v1alpha1/organizations/{organization_id}/saml": {
+				"get": {
+					"operationId": "GetOrganizationSaml",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Saml"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SAML"]
+				},
+				"post": {
+					"operationId": "EnableOrganizationSaml",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Saml"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SAML"]
+				}
+			},
+			"/iam/v1alpha1/organizations/{organization_id}/scim": {
+				"get": {
+					"operationId": "GetOrganizationScim",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Scim"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SCIM"]
+				},
+				"post": {
+					"operationId": "EnableOrganizationScim",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Scim"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SCIM"]
+				}
+			},
+			"/iam/v1alpha1/organizations/{organization_id}/security-settings": {
+				"get": {
+					"operationId": "GetOrganizationSecuritySettings",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.OrganizationSecuritySettings"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Settings"]
+				},
+				"patch": {
+					"operationId": "UpdateOrganizationSecuritySettings",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"enforce_password_renewal": {
+											"type": ["boolean", "null"]
+										},
+										"grace_period_duration": {
+											"type": ["string", "null"]
+										},
+										"login_attempts_before_locked": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"max_api_key_expiration_duration": {
+											"type": ["string", "null"]
+										},
+										"max_login_session_duration": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.OrganizationSecuritySettings"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Settings"]
+				}
+			},
+			"/iam/v1alpha1/permission-sets": {
+				"get": {
+					"operationId": "ListPermissionSets",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListPermissionSetsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListPermissionSetsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Permission sets"]
+				}
+			},
+			"/iam/v1alpha1/policies": {
+				"get": {
+					"operationId": "ListPolicies",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListPoliciesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "editable",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "user_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "group_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "application_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "no_principal",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "policy_name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tag",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "policy_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListPoliciesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Policies"]
+				},
+				"post": {
+					"operationId": "CreatePolicy",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"application_id": {
+											"type": ["string", "null"]
+										},
+										"description": {
+											"type": "string"
+										},
+										"group_id": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"no_principal": {
+											"type": ["boolean", "null"]
+										},
+										"organization_id": {
+											"type": "string"
+										},
+										"rules": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.iam.v1alpha1.RuleSpecs"
+											},
+											"type": "array"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"user_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"required": ["name"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Policy"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Policies"]
+				}
+			},
+			"/iam/v1alpha1/policies/{policy_id}": {
+				"delete": {
+					"operationId": "DeletePolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "policy_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Policies"]
+				},
+				"get": {
+					"operationId": "GetPolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "policy_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Policy"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Policies"]
+				},
+				"patch": {
+					"operationId": "UpdatePolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "policy_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"application_id": {
+											"type": ["string", "null"]
+										},
+										"description": {
+											"type": ["string", "null"]
+										},
+										"group_id": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"no_principal": {
+											"type": ["boolean", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										},
+										"user_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Policy"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Policies"]
+				}
+			},
+			"/iam/v1alpha1/policies/{policy_id}/clone": {
+				"post": {
+					"operationId": "ClonePolicy",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "policy_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Policy"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Policies"]
+				}
+			},
+			"/iam/v1alpha1/quota": {
+				"get": {
+					"operationId": "ListQuota",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListQuotaRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "quotum_names",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListQuotaResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Quotas"]
+				}
+			},
+			"/iam/v1alpha1/quota/{quotum_name}": {
+				"get": {
+					"operationId": "GetQuotum",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "quotum_name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Quotum"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Quotas"]
+				}
+			},
+			"/iam/v1alpha1/rules": {
+				"get": {
+					"operationId": "ListRules",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "policy_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Rules"]
+				},
+				"put": {
+					"operationId": "SetRules",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"policy_id": {
+											"type": "string"
+										},
+										"rules": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.iam.v1alpha1.RuleSpecs"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["policy_id", "rules"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SetRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Rules"]
+				}
+			},
+			"/iam/v1alpha1/saml-certificates/{certificate_id}": {
+				"delete": {
+					"operationId": "DeleteSamlCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "certificate_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SAML"]
+				},
+				"get": {
+					"operationId": "GetSamlCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "certificate_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SamlCertificate"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SAML"]
+				}
+			},
+			"/iam/v1alpha1/saml/{saml_id}": {
+				"delete": {
+					"operationId": "DeleteSaml",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "saml_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SAML"]
+				},
+				"patch": {
+					"operationId": "UpdateSaml",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "saml_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"entity_id": {
+											"type": ["string", "null"]
+										},
+										"single_sign_on_url": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.Saml"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SAML"]
+				}
+			},
+			"/iam/v1alpha1/saml/{saml_id}/certificates": {
+				"get": {
+					"operationId": "ListSamlCertificates",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "saml_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListSamlCertificatesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SAML"]
+				},
+				"post": {
+					"operationId": "AddSamlCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "saml_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"content": {
+											"type": "string"
+										},
+										"type": {
+											"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SamlCertificate.Type"
+										}
+									},
+									"required": ["type", "content"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SamlCertificate"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SAML"]
+				}
+			},
+			"/iam/v1alpha1/scim-tokens/{token_id}": {
+				"delete": {
+					"operationId": "DeleteScimToken",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "token_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SCIM"]
+				}
+			},
+			"/iam/v1alpha1/scim/{scim_id}": {
+				"delete": {
+					"operationId": "DeleteScim",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "scim_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SCIM"]
+				}
+			},
+			"/iam/v1alpha1/scim/{scim_id}/tokens": {
+				"get": {
+					"operationId": "ListScimTokens",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "scim_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListScimTokensRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListScimTokensResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SCIM"]
+				},
+				"post": {
+					"operationId": "CreateScimToken",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "scim_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.CreateScimTokenResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SCIM"]
+				}
+			},
+			"/iam/v1alpha1/ssh-keys": {
+				"get": {
+					"operationId": "ListSSHKeys",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListSSHKeysRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "disabled",
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListSSHKeysResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SSH Keys"]
+				},
+				"post": {
+					"operationId": "CreateSSHKey",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"public_key": {
+											"type": "string"
+										}
+									},
+									"required": ["name", "public_key", "project_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SSHKey"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SSH Keys"]
+				}
+			},
+			"/iam/v1alpha1/ssh-keys/{ssh_key_id}": {
+				"delete": {
+					"operationId": "DeleteSSHKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "ssh_key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SSH Keys"]
+				},
+				"get": {
+					"operationId": "GetSSHKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "ssh_key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SSHKey"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SSH Keys"]
+				},
+				"patch": {
+					"operationId": "UpdateSSHKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "ssh_key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"disabled": {
+											"type": ["boolean", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.SSHKey"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["SSH Keys"]
+				}
+			},
+			"/iam/v1alpha1/users": {
+				"get": {
+					"operationId": "ListUsers",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListUsersRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "user_ids",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "mfa",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tag",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User.Type"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListUsersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				},
+				"post": {
+					"operationId": "CreateUser",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"email": {
+											"type": ["string", "null"]
+										},
+										"member": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.iam.v1alpha1.CreateUserRequest.Member"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"organization_id": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["organization_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}": {
+				"delete": {
+					"operationId": "DeleteUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				},
+				"get": {
+					"operationId": "GetUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				},
+				"patch": {
+					"operationId": "UpdateUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"email": {
+											"type": ["string", "null"]
+										},
+										"first_name": {
+											"type": ["string", "null"]
+										},
+										"last_name": {
+											"type": ["string", "null"]
+										},
+										"locale": {
+											"type": ["string", "null"]
+										},
+										"phone_number": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}/connections": {
+				"get": {
+					"operationId": "GetUserConnections",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.GetUserConnectionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}/initiate-connection": {
+				"post": {
+					"operationId": "InitiateUserConnection",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.InitiateUserConnectionResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}/join-connection": {
+				"post": {
+					"operationId": "JoinUserConnection",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"token": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}/lock": {
+				"post": {
+					"operationId": "LockUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}/mfa-otp": {
+				"delete": {
+					"operationId": "DeleteUserMFAOTP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				},
+				"post": {
+					"operationId": "CreateUserMFAOTP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.MFAOTP"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}/remove-connection": {
+				"post": {
+					"operationId": "RemoveUserConnection",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"target_user_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}/unlock": {
+				"post": {
+					"operationId": "UnlockUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}/update-password": {
+				"post": {
+					"operationId": "UpdateUserPassword",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"password": {
+											"type": "string"
+										}
+									},
+									"required": ["password"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}/update-username": {
+				"post": {
+					"operationId": "UpdateUserUsername",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"username": {
+											"type": "string"
+										}
+									},
+									"required": ["username"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/iam/v1alpha1/users/{user_id}/validate-mfa-otp": {
+				"post": {
+					"operationId": "ValidateUserMFAOTP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "user_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"one_time_password": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ValidateUserMFAOTPResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

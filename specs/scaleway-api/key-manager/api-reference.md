@@ -1,5 +1,11 @@
 # Scaleway Key Manager API Reference (v1alpha1)
 
+> **Provenance (D3).**
+> - schema-url: https://www.scaleway.com/en/developers/api/key-manager/v1alpha1/schema.yml
+> - version: v1alpha1
+> - fetched: 2026-09-19
+> - sha256: 9d7759d25ad3a46a9b2792faf3fb9d728cfcdb6768b977db54352c64739337e0
+
 Base URL: `https://api.scaleway.com/key-manager/v1alpha1/regions/{region}`
 
 Key Manager (KMS) manages cryptographic keys and performs encrypt/decrypt/data-key operations. Paths below are
@@ -89,7 +95,7 @@ authoritative from `@scaleway/sdk-key-manager` v1alpha1 (`KeyManagerv1alpha1.API
 - Response 200: `DataKey` — `{ key_id, algorithm, ciphertext, plaintext?, created_at }`
 - Tool: `scaleway_key_manager_generate_data_key`
 
-> Note: the SDK/API also exposes `sign`, `verify`, `import-key-material`, `delete-key-material`, `restore`,
+> Note: the SDK/API also exposes `sign`, `verify`, `import-key-material`, `restore`,
 > `public-key`, and `/algorithms`. These are NOT surfaced as MCP tools and are out of scope for this server.
 
 ## Models
@@ -128,7 +134,7 @@ Exactly one of:
   `rsa_pkcs1_4096_sha256`
 
 ## Pagination
-`List Keys` uses `page`/`page_size` and returns `total_count`. Normalized via `buildPaginatedResponse()`.
+`List Keys` and `List Key Rotations` use `page`/`page_size` and return `total_count`. Normalized via `buildPaginatedResponse()`.
 
 ## Error Codes
 - 400 Bad Request (invalid input / plaintext too large)
@@ -141,3 +147,20 @@ Exactly one of:
 ## References
 - Key Manager API: https://www.scaleway.com/en/developers/api/key-manager/
 - SDK: `@scaleway/sdk-key-manager` v1alpha1 (`KeyManagerv1alpha1.API`)
+
+## Key rotation history and imported material (2026-09-19)
+
+### List key rotations — `scaleway_key_manager_list_key_rotations`
+`GET /keys/{key_id}/rotations`
+- Input: required UUID `keyId`; optional `region`, `orderBy` (`created_at_asc` or `created_at_desc`), `status` array (`unknown_status`, `enabled`, `deleted`), page and pageSize.
+- Wire query: `order_by`, repeated `status`, `page`, `page_size`.
+- Upstream response: `{ rotations: KeyRotation[], total_count: number }`; SDK maps fields to camelCase and the tool returns `{ items, totalCount, page, pageSize }`.
+
+### Delete imported key material — `scaleway_key_manager_delete_key_material`
+`POST /keys/{key_id}/delete-key-material`
+- Input: required UUID `keyId`, optional `region` and unsigned 32-bit `keyRotationIndex`.
+- Body: `{ key_rotation_index?: number }`. Omission targets the latest rotation; zero is explicitly preserved. The key must have external origin.
+- This destroys imported material for the selected rotation, making it unusable for cryptographic operations.
+- Upstream 204 is normalized to `{ message: "Imported key material deleted", keyId }`.
+
+Contract proof: `tests/contract/transport/current-capabilities.transport.test.ts` verifies SDK serialization, pagination, errors and 204 behavior.

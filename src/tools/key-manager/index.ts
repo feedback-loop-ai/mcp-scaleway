@@ -5,11 +5,13 @@ import {
 	handleCreateKey,
 	handleDecrypt,
 	handleDeleteKey,
+	handleDeleteKeyMaterial,
 	handleDisableKey,
 	handleEnableKey,
 	handleEncrypt,
 	handleGenerateDataKey,
 	handleGetKey,
+	handleListKeyRotations,
 	handleListKeys,
 	handleProtectKey,
 	handleRotateKey,
@@ -20,11 +22,13 @@ import {
 	CreateKeyInput,
 	DecryptInput,
 	DeleteKeyInput,
+	DeleteKeyMaterialInput,
 	DisableKeyInput,
 	EnableKeyInput,
 	EncryptInput,
 	GenerateDataKeyInput,
 	GetKeyInput,
+	ListKeyRotationsInput,
 	ListKeysInput,
 	ProtectKeyInput,
 	RotateKeyInput,
@@ -34,6 +38,19 @@ import {
 
 export function registerKeyManagerTools(server: McpServer): void {
 	const getClient = () => createScalewayClient(loadAuthConfig());
+
+	server.tool(
+		"scaleway_key_manager_list_key_rotations",
+		"List a key's material rotations with status filtering and pagination",
+		ListKeyRotationsInput.shape,
+		async (params) => handleListKeyRotations(getClient(), ListKeyRotationsInput.parse(params)),
+	);
+	server.tool(
+		"scaleway_key_manager_delete_key_material",
+		"Delete imported key material for an external-origin key rotation, making that material unusable for cryptographic operations",
+		DeleteKeyMaterialInput.shape,
+		async (params) => handleDeleteKeyMaterial(getClient(), DeleteKeyMaterialInput.parse(params)),
+	);
 
 	server.tool(
 		"scaleway_key_manager_list_keys",

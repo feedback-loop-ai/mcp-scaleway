@@ -1,0 +1,1899 @@
+{
+	"sha256": "d21384c8651d4457d8b051e7b5883b5a39f0198ed5fb9a2f53e0c286e7c01ac8",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.Int32Value": {
+					"format": "int32",
+					"type": ["integer", "null"]
+				},
+				"google.protobuf.StringValue": {
+					"type": ["string", "null"]
+				},
+				"google.protobuf.UInt32Value": {
+					"format": "uint32",
+					"type": ["integer", "null"]
+				},
+				"scaleway.domain.v2beta1.ClearDNSZoneRecordsResponse": {
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.DeleteDNSZoneResponse": {
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.DeleteSSLCertificateResponse": {
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.DNSZone": {
+					"properties": {
+						"domain": {
+							"type": "string"
+						},
+						"linked_products": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.LinkedProduct"
+							},
+							"type": "array"
+						},
+						"message": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"ns": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"ns_default": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"ns_master": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.domain.v2beta1.DNSZone.Status"
+						},
+						"subdomain": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.DNSZone.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "active", "pending", "error", "locked"],
+					"type": "string"
+				},
+				"scaleway.domain.v2beta1.DNSZoneVersion": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.GetDNSZoneTsigKeyResponse": {
+					"properties": {
+						"algorithm": {
+							"type": "string"
+						},
+						"key": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.GetDNSZoneVersionDiffResponse": {
+					"properties": {
+						"changes": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.RecordChange"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ImportProviderDNSZoneRequest.OnlineV1": {
+					"properties": {
+						"token": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ImportProviderDNSZoneResponse": {
+					"properties": {
+						"records": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ImportRawDNSZoneRequest.AXFRSource": {
+					"properties": {
+						"name_server": {
+							"type": "string"
+						},
+						"tsig_key": {
+							"$ref": "#/components/schemas/scaleway.domain.v2beta1.ImportRawDNSZoneRequest.TsigKey"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ImportRawDNSZoneRequest.BindSource": {
+					"properties": {
+						"content": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ImportRawDNSZoneRequest.TsigKey": {
+					"properties": {
+						"algorithm": {
+							"type": "string"
+						},
+						"key": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ImportRawDNSZoneResponse": {
+					"properties": {
+						"records": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.LinkedProduct": {
+					"default": "unknown_product",
+					"enum": ["unknown_product", "vpc"],
+					"type": "string"
+				},
+				"scaleway.domain.v2beta1.ListDNSZoneNameserversResponse": {
+					"properties": {
+						"ns": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Nameserver"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ListDNSZoneRecordsRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.domain.v2beta1.ListDNSZoneRecordsResponse": {
+					"properties": {
+						"records": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ListDNSZonesRequest.OrderBy": {
+					"default": "domain_asc",
+					"enum": [
+						"domain_asc",
+						"domain_desc",
+						"subdomain_asc",
+						"subdomain_desc",
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.domain.v2beta1.ListDNSZonesResponse": {
+					"properties": {
+						"dns_zones": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.DNSZone"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ListDNSZoneVersionRecordsResponse": {
+					"properties": {
+						"records": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ListDNSZoneVersionsResponse": {
+					"properties": {
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"versions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.DNSZoneVersion"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.ListSSLCertificatesResponse": {
+					"properties": {
+						"certificates": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.SSLCertificate"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.Nameserver": {
+					"properties": {
+						"ip": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.RawFormat": {
+					"default": "unknown_raw_format",
+					"enum": ["unknown_raw_format", "bind"],
+					"type": "string"
+				},
+				"scaleway.domain.v2beta1.Record": {
+					"properties": {
+						"comment": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"data": {
+							"type": "string"
+						},
+						"geo_ip_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.GeoIPConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"http_service_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.HTTPServiceConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"priority": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"ttl": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.Type"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"view_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.ViewConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"weighted_config": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.WeightedConfig"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.Record.GeoIPConfig": {
+					"properties": {
+						"default": {
+							"type": "string"
+						},
+						"matches": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.GeoIPConfig.Match"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.Record.GeoIPConfig.Match": {
+					"properties": {
+						"continents": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"countries": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"data": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.Record.HTTPServiceConfig": {
+					"properties": {
+						"ips": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"must_contain": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"strategy": {
+							"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.HTTPServiceConfig.Strategy"
+						},
+						"url": {
+							"type": "string"
+						},
+						"user_agent": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.Record.HTTPServiceConfig.Strategy": {
+					"default": "random",
+					"enum": ["random", "hashed", "all"],
+					"type": "string"
+				},
+				"scaleway.domain.v2beta1.Record.Type": {
+					"default": "unknown",
+					"enum": [
+						"unknown",
+						"A",
+						"AAAA",
+						"CNAME",
+						"TXT",
+						"SRV",
+						"TLSA",
+						"MX",
+						"NS",
+						"PTR",
+						"CAA",
+						"ALIAS",
+						"LOC",
+						"SSHFP",
+						"HINFO",
+						"RP",
+						"URI",
+						"DS",
+						"NAPTR",
+						"DNAME",
+						"SVCB",
+						"HTTPS"
+					],
+					"type": "string"
+				},
+				"scaleway.domain.v2beta1.Record.ViewConfig": {
+					"properties": {
+						"views": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.ViewConfig.View"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.Record.ViewConfig.View": {
+					"properties": {
+						"data": {
+							"type": "string"
+						},
+						"subnet": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.Record.WeightedConfig": {
+					"properties": {
+						"weighted_ips": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.WeightedConfig.WeightedIP"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.Record.WeightedConfig.WeightedIP": {
+					"properties": {
+						"ip": {
+							"type": "string"
+						},
+						"weight": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.RecordChange": {
+					"properties": {
+						"add": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.domain.v2beta1.RecordChange.Add"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"clear": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.domain.v2beta1.RecordChange.Clear"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"delete": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.domain.v2beta1.RecordChange.Delete"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"set": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.domain.v2beta1.RecordChange.Set"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.RecordChange.Add": {
+					"properties": {
+						"records": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.RecordChange.Clear": {
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.RecordChange.Delete": {
+					"properties": {
+						"id": {
+							"type": ["string", "null"]
+						},
+						"id_fields": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.domain.v2beta1.RecordIdentifier"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.RecordChange.Set": {
+					"properties": {
+						"id": {
+							"type": ["string", "null"]
+						},
+						"id_fields": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.domain.v2beta1.RecordIdentifier"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"records": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.RecordIdentifier": {
+					"properties": {
+						"data": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"name": {
+							"type": "string"
+						},
+						"ttl": {
+							"$ref": "#/components/schemas/google.protobuf.UInt32Value"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.RefreshDNSZoneResponse": {
+					"properties": {
+						"dns_zones": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.DNSZone"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.RestoreDNSZoneVersionResponse": {
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.SSLCertificate": {
+					"properties": {
+						"alternative_dns_zones": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"certificate_chain": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"dns_zone": {
+							"type": "string"
+						},
+						"expired_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"private_key": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.domain.v2beta1.SSLCertificate.Status"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.SSLCertificate.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "new", "pending", "success", "error"],
+					"type": "string"
+				},
+				"scaleway.domain.v2beta1.UpdateDNSZoneNameserversResponse": {
+					"properties": {
+						"ns": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Nameserver"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.domain.v2beta1.UpdateDNSZoneRecordsResponse": {
+					"properties": {
+						"records": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/domain/v2beta1/dns-zones": {
+				"get": {
+					"operationId": "ListDNSZones",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.ListDNSZonesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "domain",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"deprecated": true,
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "dns_zones",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "created_after",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "created_before",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "updated_after",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "updated_before",
+							"schema": {
+								"format": "date-time",
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.ListDNSZonesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				},
+				"post": {
+					"operationId": "CreateDNSZone",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"domain": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"subdomain": {
+											"type": "string"
+										}
+									},
+									"required": ["domain", "subdomain", "project_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.DNSZone"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/{dns_zone}": {
+				"delete": {
+					"operationId": "DeleteDNSZone",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.DeleteDNSZoneResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				},
+				"patch": {
+					"operationId": "UpdateDNSZone",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"new_dns_zone": {
+											"type": ["string", "null"]
+										},
+										"project_id": {
+											"type": "string"
+										}
+									},
+									"required": ["new_dns_zone", "project_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.DNSZone"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/{dns_zone}/clone": {
+				"post": {
+					"operationId": "CloneDNSZone",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"dest_dns_zone": {
+											"type": "string"
+										},
+										"overwrite": {
+											"type": "boolean"
+										},
+										"project_id": {
+											"type": ["string", "null"]
+										}
+									},
+									"required": ["dest_dns_zone"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.DNSZone"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/{dns_zone}/import-provider": {
+				"post": {
+					"operationId": "ImportProviderDNSZone",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"online_v1": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.domain.v2beta1.ImportProviderDNSZoneRequest.OnlineV1"
+												},
+												{
+													"type": "null"
+												}
+											]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.ImportProviderDNSZoneResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Imports / Exports"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/{dns_zone}/nameservers": {
+				"get": {
+					"operationId": "ListDNSZoneNameservers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.ListDNSZoneNameserversResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Records"]
+				},
+				"put": {
+					"operationId": "UpdateDNSZoneNameservers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"ns": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.domain.v2beta1.Nameserver"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["ns"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.UpdateDNSZoneNameserversResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Records"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/{dns_zone}/raw": {
+				"get": {
+					"operationId": "ExportRawDNSZone",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "format",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.RawFormat"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Imports / Exports"]
+				},
+				"post": {
+					"operationId": "ImportRawDNSZone",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"axfr_source": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.domain.v2beta1.ImportRawDNSZoneRequest.AXFRSource"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"bind_source": {
+											"oneOf": [
+												{
+													"$ref": "#/components/schemas/scaleway.domain.v2beta1.ImportRawDNSZoneRequest.BindSource"
+												},
+												{
+													"type": "null"
+												}
+											]
+										},
+										"content": {
+											"deprecated": true,
+											"type": "string"
+										},
+										"format": {
+											"$ref": "#/components/schemas/scaleway.domain.v2beta1.RawFormat",
+											"deprecated": true
+										},
+										"project_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.ImportRawDNSZoneResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Imports / Exports"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/{dns_zone}/records": {
+				"delete": {
+					"operationId": "ClearDNSZoneRecords",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.ClearDNSZoneRecordsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Records"]
+				},
+				"get": {
+					"operationId": "ListDNSZoneRecords",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.ListDNSZoneRecordsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.domain.v2beta1.Record.Type"
+							}
+						},
+						{
+							"in": "query",
+							"name": "id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.ListDNSZoneRecordsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Records"]
+				},
+				"patch": {
+					"operationId": "UpdateDNSZoneRecords",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"changes": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.domain.v2beta1.RecordChange"
+											},
+											"type": "array"
+										},
+										"disallow_new_zone_creation": {
+											"type": "boolean"
+										},
+										"return_all_records": {
+											"type": ["boolean", "null"]
+										},
+										"serial": {
+											"format": "uint64",
+											"type": ["integer", "null"]
+										}
+									},
+									"required": ["changes"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.UpdateDNSZoneRecordsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Records"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/{dns_zone}/refresh": {
+				"post": {
+					"operationId": "RefreshDNSZone",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"recreate_dns_zone": {
+											"type": "boolean"
+										},
+										"recreate_sub_dns_zone": {
+											"type": "boolean"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.RefreshDNSZoneResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/{dns_zone}/tsig-key": {
+				"delete": {
+					"operationId": "DeleteDNSZoneTsigKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				},
+				"get": {
+					"operationId": "GetDNSZoneTsigKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.GetDNSZoneTsigKeyResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/{dns_zone}/versions": {
+				"get": {
+					"operationId": "ListDNSZoneVersions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.ListDNSZoneVersionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Versions"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/version/{dns_zone_version_id}": {
+				"get": {
+					"operationId": "ListDNSZoneVersionRecords",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone_version_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.ListDNSZoneVersionRecordsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Versions"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/version/{dns_zone_version_id}/diff": {
+				"get": {
+					"operationId": "GetDNSZoneVersionDiff",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone_version_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.GetDNSZoneVersionDiffResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Versions"]
+				}
+			},
+			"/domain/v2beta1/dns-zones/version/{dns_zone_version_id}/restore": {
+				"post": {
+					"operationId": "RestoreDNSZoneVersion",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone_version_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.RestoreDNSZoneVersionResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Versions"]
+				}
+			},
+			"/domain/v2beta1/ssl-certificates": {
+				"get": {
+					"operationId": "ListSSLCertificates",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.StringValue"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.ListSSLCertificatesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				},
+				"post": {
+					"operationId": "CreateSSLCertificate",
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"alternative_dns_zones": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"dns_zone": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.SSLCertificate"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				}
+			},
+			"/domain/v2beta1/ssl-certificates/{dns_zone}": {
+				"delete": {
+					"operationId": "DeleteSSLCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.DeleteSSLCertificateResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				},
+				"get": {
+					"operationId": "GetSSLCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "dns_zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.domain.v2beta1.SSLCertificate"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["DNS Zones"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

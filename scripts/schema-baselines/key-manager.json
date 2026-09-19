@@ -1,0 +1,1733 @@
+{
+	"sha256": "9d7759d25ad3a46a9b2792faf3fb9d728cfcdb6768b977db54352c64739337e0",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.BytesValue": {
+					"properties": {
+						"value": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"google.protobuf.Int32Value": {
+					"format": "int32",
+					"type": ["integer", "null"]
+				},
+				"scaleway.key_manager.v1alpha1.DataKey": {
+					"properties": {
+						"algorithm": {
+							"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.DataKey.Algorithm.SymmetricEncryption"
+						},
+						"ciphertext": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"key_id": {
+							"type": "string"
+						},
+						"plaintext": {
+							"$ref": "#/components/schemas/google.protobuf.BytesValue"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.DataKey.Algorithm.SymmetricEncryption": {
+					"default": "unknown_symmetric_encryption",
+					"enum": ["unknown_symmetric_encryption", "aes_256_gcm"],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.DecryptResponse": {
+					"properties": {
+						"ciphertext": {
+							"$ref": "#/components/schemas/google.protobuf.BytesValue"
+						},
+						"key_id": {
+							"type": "string"
+						},
+						"plaintext": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.EncryptResponse": {
+					"properties": {
+						"ciphertext": {
+							"type": "string"
+						},
+						"key_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.Key": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"deletion_requested_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"locked": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"origin": {
+							"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.Origin"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"protected": {
+							"type": "boolean"
+						},
+						"region": {
+							"type": "string"
+						},
+						"rotated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"rotation_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"rotation_policy": {
+							"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.RotationPolicy"
+						},
+						"srn": {
+							"type": "string"
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.State"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"usage": {
+							"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.Usage"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.Key.Algorithm.AsymmetricEncryption": {
+					"default": "unknown_asymmetric_encryption",
+					"enum": [
+						"unknown_asymmetric_encryption",
+						"rsa_oaep_2048_sha256",
+						"rsa_oaep_3072_sha256",
+						"rsa_oaep_4096_sha256"
+					],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.Key.Algorithm.AsymmetricSigning": {
+					"default": "unknown_asymmetric_signing",
+					"enum": [
+						"unknown_asymmetric_signing",
+						"ec_p256_sha256",
+						"ec_p384_sha384",
+						"rsa_pss_2048_sha256",
+						"rsa_pss_3072_sha256",
+						"rsa_pss_4096_sha256",
+						"rsa_pkcs1_2048_sha256",
+						"rsa_pkcs1_3072_sha256",
+						"rsa_pkcs1_4096_sha256",
+						"ml_dsa_44",
+						"ml_dsa_65",
+						"ml_dsa_87",
+						"ec_secp256k1_sha256"
+					],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.Key.Algorithm.KeyEncapsulation": {
+					"default": "unknown_key_encapsulation",
+					"enum": ["unknown_key_encapsulation", "ml_kem_768", "ml_kem_1024"],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.Key.Algorithm.SymmetricEncryption": {
+					"default": "unknown_symmetric_encryption",
+					"enum": ["unknown_symmetric_encryption", "aes_256_gcm"],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.Key.Origin": {
+					"default": "unknown_origin",
+					"enum": ["unknown_origin", "scaleway_kms", "external"],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.Key.RotationPolicy": {
+					"properties": {
+						"next_rotation_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"rotation_period": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.Key.State": {
+					"default": "unknown_state",
+					"enum": [
+						"unknown_state",
+						"enabled",
+						"disabled",
+						"pending_key_material",
+						"scheduled_for_deletion"
+					],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.Key.Usage": {
+					"properties": {
+						"asymmetric_encryption": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.Algorithm.AsymmetricEncryption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"asymmetric_signing": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.Algorithm.AsymmetricSigning"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"key_encapsulation": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.Algorithm.KeyEncapsulation"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"symmetric_encryption": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.Algorithm.SymmetricEncryption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.KeyRotation": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"deleted_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"index": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"key_id": {
+							"type": "string"
+						},
+						"manually_rotated": {
+							"type": "boolean"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.KeyRotation.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.KeyRotation.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "enabled", "deleted"],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.ListAlgorithmsRequest.Usage": {
+					"default": "unknown_usage",
+					"enum": [
+						"unknown_usage",
+						"symmetric_encryption",
+						"asymmetric_encryption",
+						"asymmetric_signing",
+						"key_encapsulation"
+					],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.ListAlgorithmsResponse": {
+					"properties": {
+						"algorithms": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.ListAlgorithmsResponse.Algorithm"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.ListAlgorithmsResponse.Algorithm": {
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"recommended": {
+							"type": "boolean"
+						},
+						"usage": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.ListKeyRotationsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.ListKeyRotationsResponse": {
+					"properties": {
+						"rotations": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.KeyRotation"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.ListKeysRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": [
+						"name_asc",
+						"name_desc",
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.ListKeysRequest.Usage": {
+					"default": "unknown_usage",
+					"enum": [
+						"unknown_usage",
+						"symmetric_encryption",
+						"asymmetric_encryption",
+						"asymmetric_signing"
+					],
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.ListKeysResponse": {
+					"properties": {
+						"keys": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.PublicKey": {
+					"properties": {
+						"pem": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.SignResponse": {
+					"properties": {
+						"key_id": {
+							"type": "string"
+						},
+						"signature": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.UnwrapKeyResponse": {
+					"properties": {
+						"key_id": {
+							"type": "string"
+						},
+						"plaintext": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.VerifyResponse": {
+					"properties": {
+						"key_id": {
+							"type": "string"
+						},
+						"valid": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.WrapKeyResponse": {
+					"properties": {
+						"ciphertext": {
+							"type": "string"
+						},
+						"key_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/key-manager/v1alpha1/regions/{region}/algorithms": {
+				"get": {
+					"operationId": "ListAlgorithms",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "usages",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.ListAlgorithmsRequest.Usage"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.ListAlgorithmsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys": {
+				"get": {
+					"operationId": "ListKeys",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.ListKeysRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "usage",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.ListKeysRequest.Usage"
+							}
+						},
+						{
+							"in": "query",
+							"name": "scheduled_for_deletion",
+							"required": true,
+							"schema": {
+								"type": "boolean"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.ListKeysResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				},
+				"post": {
+					"operationId": "CreateKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"origin": {
+											"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.Origin"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"rotation_policy": {
+											"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.RotationPolicy"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"unprotected": {
+											"type": "boolean"
+										},
+										"usage": {
+											"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.Usage"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}": {
+				"delete": {
+					"operationId": "DeleteKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				},
+				"get": {
+					"operationId": "GetKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				},
+				"patch": {
+					"operationId": "UpdateKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"rotation_policy": {
+											"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key.RotationPolicy"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/decrypt": {
+				"post": {
+					"operationId": "Decrypt",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"associated_data": {
+											"$ref": "#/components/schemas/google.protobuf.BytesValue"
+										},
+										"ciphertext": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.DecryptResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/delete-key-material": {
+				"post": {
+					"operationId": "DeleteKeyMaterial",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"key_rotation_index": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/disable": {
+				"post": {
+					"operationId": "DisableKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/enable": {
+				"post": {
+					"operationId": "EnableKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/encrypt": {
+				"post": {
+					"operationId": "Encrypt",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"associated_data": {
+											"$ref": "#/components/schemas/google.protobuf.BytesValue"
+										},
+										"plaintext": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.EncryptResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/generate-data-key": {
+				"post": {
+					"operationId": "GenerateDataKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"algorithm": {
+											"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.DataKey.Algorithm.SymmetricEncryption"
+										},
+										"without_plaintext": {
+											"type": "boolean"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.DataKey"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/import-key-material": {
+				"post": {
+					"operationId": "ImportKeyMaterial",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"key_material": {
+											"type": "string"
+										},
+										"salt": {
+											"$ref": "#/components/schemas/google.protobuf.BytesValue"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/protect": {
+				"post": {
+					"operationId": "ProtectKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/public-key": {
+				"get": {
+					"operationId": "GetPublicKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.PublicKey"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/restore": {
+				"post": {
+					"operationId": "RestoreKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/rotate": {
+				"post": {
+					"operationId": "RotateKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/rotations": {
+				"get": {
+					"operationId": "ListKeyRotations",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.ListKeyRotationsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.KeyRotation.Status"
+								},
+								"type": "array"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.ListKeyRotationsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/sign": {
+				"post": {
+					"operationId": "Sign",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"digest": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.SignResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/unprotect": {
+				"post": {
+					"operationId": "UnprotectKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.Key"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/unwrap": {
+				"post": {
+					"operationId": "UnwrapKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"associated_data": {
+											"$ref": "#/components/schemas/google.protobuf.BytesValue"
+										},
+										"ciphertext": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.UnwrapKeyResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/verify": {
+				"post": {
+					"operationId": "Verify",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"digest": {
+											"type": "string"
+										},
+										"signature": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.VerifyResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/wrap": {
+				"post": {
+					"operationId": "WrapKey",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"associated_data": {
+											"$ref": "#/components/schemas/google.protobuf.BytesValue"
+										},
+										"plaintext": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.WrapKeyResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

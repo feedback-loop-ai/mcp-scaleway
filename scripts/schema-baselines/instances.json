@@ -1,0 +1,7245 @@
+{
+	"sha256": "0060261d69766fab9064abd7cc81088b69184b6f69be9801d15c4e3758aef165",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.BoolValue": {
+					"type": ["boolean", "null"]
+				},
+				"google.protobuf.Int32Value": {
+					"format": "int32",
+					"type": ["integer", "null"]
+				},
+				"google.protobuf.StringValue": {
+					"type": ["string", "null"]
+				},
+				"google.protobuf.UInt32Value": {
+					"format": "uint32",
+					"type": ["integer", "null"]
+				},
+				"scaleway.instance.v1.Arch": {
+					"default": "unknown_arch",
+					"enum": ["unknown_arch", "x86_64", "arm", "arm64"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.AttachServerFileSystemResponse": {
+					"properties": {
+						"server": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.AttachServerVolumeRequest.VolumeType": {
+					"default": "unknown_volume_type",
+					"enum": ["unknown_volume_type", "l_ssd", "b_ssd", "sbs_volume"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.AttachServerVolumeResponse": {
+					"properties": {
+						"server": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Bootscript": {
+					"properties": {
+						"architecture": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Arch"
+						},
+						"bootcmdargs": {
+							"type": "string"
+						},
+						"default": {
+							"type": "boolean"
+						},
+						"dtb": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"initrd": {
+							"type": "string"
+						},
+						"kernel": {
+							"type": "string"
+						},
+						"organization": {
+							"type": "string"
+						},
+						"project": {
+							"type": "string"
+						},
+						"public": {
+							"type": "boolean"
+						},
+						"title": {
+							"type": "string"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.BootType": {
+					"default": "local",
+					"enum": ["local", "bootscript", "rescue"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.CreateImageResponse": {
+					"properties": {
+						"image": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Image"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.CreateIpResponse": {
+					"properties": {
+						"ip": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Ip"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.CreatePlacementGroupResponse": {
+					"properties": {
+						"placement_group": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.CreatePrivateNICResponse": {
+					"properties": {
+						"private_nic": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.PrivateNIC"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.CreateSecurityGroupResponse": {
+					"properties": {
+						"security_group": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.CreateSecurityGroupRuleResponse": {
+					"properties": {
+						"rule": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.CreateServerResponse": {
+					"properties": {
+						"server": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.CreateSnapshotResponse": {
+					"properties": {
+						"snapshot": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot"
+						},
+						"task": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Task"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.CreateVolumeResponse": {
+					"properties": {
+						"volume": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Volume"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Dashboard": {
+					"properties": {
+						"images_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"ips_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"ips_unused": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"placement_groups_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"private_nics_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"running_servers_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"security_groups_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"servers_by_types": {
+							"additionalProperties": true,
+							"properties": {
+								"<servers_by_typeKey>": {
+									"format": "uint32",
+									"type": "integer"
+								}
+							},
+							"type": "object"
+						},
+						"servers_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"snapshots_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"volumes_b_ssd_count": {
+							"deprecated": true,
+							"format": "uint32",
+							"type": "integer"
+						},
+						"volumes_b_ssd_total_size": {
+							"deprecated": true,
+							"format": "uint64",
+							"type": "integer"
+						},
+						"volumes_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"volumes_l_ssd_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"volumes_l_ssd_total_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"volumes_scratch_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.DetachServerFileSystemResponse": {
+					"properties": {
+						"server": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.DetachServerVolumeResponse": {
+					"properties": {
+						"server": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ExportSnapshotResponse": {
+					"properties": {
+						"task": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Task"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetDashboardResponse": {
+					"properties": {
+						"dashboard": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Dashboard"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetImageResponse": {
+					"properties": {
+						"image": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Image"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetIpResponse": {
+					"properties": {
+						"ip": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Ip"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetPlacementGroupResponse": {
+					"properties": {
+						"placement_group": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetPlacementGroupServersResponse": {
+					"properties": {
+						"servers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroupServer"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetPrivateNICResponse": {
+					"properties": {
+						"private_nic": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.PrivateNIC"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetSecurityGroupResponse": {
+					"properties": {
+						"security_group": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetSecurityGroupRuleResponse": {
+					"properties": {
+						"rule": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetServerResponse": {
+					"properties": {
+						"server": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetServerTypesAvailabilityResponse": {
+					"properties": {
+						"servers": {
+							"additionalProperties": true,
+							"properties": {
+								"<serverKey>": {
+									"$ref": "#/components/schemas/scaleway.instance.v1.GetServerTypesAvailabilityResponse.Availability"
+								}
+							},
+							"type": "object"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetServerTypesAvailabilityResponse.Availability": {
+					"properties": {
+						"availability": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.ServerTypesAvailability"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetSnapshotResponse": {
+					"properties": {
+						"snapshot": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.GetVolumeResponse": {
+					"properties": {
+						"volume": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Volume"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Image": {
+					"properties": {
+						"arch": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Arch"
+						},
+						"creation_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"default_bootscript": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Bootscript",
+							"deprecated": true
+						},
+						"extra_volumes": {
+							"additionalProperties": true,
+							"properties": {
+								"<extra_volumeKey>": {
+									"$ref": "#/components/schemas/scaleway.instance.v1.Volume"
+								}
+							},
+							"type": "object"
+						},
+						"from_server": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"modification_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization": {
+							"type": "string"
+						},
+						"project": {
+							"type": "string"
+						},
+						"public": {
+							"type": "boolean"
+						},
+						"root_volume": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.VolumeSummary"
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Image.State"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Image.State": {
+					"default": "available",
+					"enum": ["available", "creating", "error"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.Ip": {
+					"properties": {
+						"address": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"ipam_id": {
+							"type": "string"
+						},
+						"organization": {
+							"type": "string"
+						},
+						"prefix": {
+							"type": "string"
+						},
+						"project": {
+							"type": "string"
+						},
+						"reverse": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"server": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.ServerSummary"
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Ip.State"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.IpType"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Ip.State": {
+					"default": "unknown_state",
+					"enum": ["unknown_state", "detached", "attached", "pending", "error"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.IpType": {
+					"default": "unknown_iptype",
+					"enum": ["unknown_iptype", "routed_ipv4", "routed_ipv6"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.ListImagesResponse": {
+					"properties": {
+						"images": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Image"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListIpsResponse": {
+					"properties": {
+						"ips": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Ip"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListPlacementGroupsResponse": {
+					"properties": {
+						"placement_groups": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListPrivateNICsResponse": {
+					"properties": {
+						"private_nics": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.PrivateNIC"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListSecurityGroupRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListSecurityGroupsResponse": {
+					"properties": {
+						"security_groups": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListServerActionsResponse": {
+					"properties": {
+						"actions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Server.Action"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListServersRequest.Order": {
+					"default": "creation_date_desc",
+					"enum": [
+						"creation_date_desc",
+						"creation_date_asc",
+						"modification_date_desc",
+						"modification_date_asc"
+					],
+					"type": "string"
+				},
+				"scaleway.instance.v1.ListServersResponse": {
+					"properties": {
+						"servers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Server"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListServersTypesResponse": {
+					"properties": {
+						"servers": {
+							"additionalProperties": true,
+							"properties": {
+								"<serverKey>": {
+									"$ref": "#/components/schemas/scaleway.instance.v1.ServerType"
+								}
+							},
+							"type": "object"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListServerUserDataResponse": {
+					"properties": {
+						"user_data": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListSnapshotsResponse": {
+					"properties": {
+						"snapshots": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListVolumesResponse": {
+					"properties": {
+						"volumes": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Volume"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ListVolumesTypesResponse": {
+					"properties": {
+						"volumes": {
+							"additionalProperties": true,
+							"properties": {
+								"<volumeKey>": {
+									"$ref": "#/components/schemas/scaleway.instance.v1.VolumeType"
+								}
+							},
+							"type": "object"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.NullableStringValue": {
+					"type": ["string", "null"]
+				},
+				"scaleway.instance.v1.PlacementGroup": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization": {
+							"type": "string"
+						},
+						"policy_mode": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup.PolicyMode"
+						},
+						"policy_respected": {
+							"type": "boolean"
+						},
+						"policy_type": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup.PolicyType"
+						},
+						"project": {
+							"type": "string"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.PlacementGroup.PolicyMode": {
+					"default": "optional",
+					"enum": ["optional", "enforced"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.PlacementGroup.PolicyType": {
+					"default": "max_availability",
+					"enum": ["max_availability", "low_latency"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.PlacementGroupServer": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"policy_respected": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.PrivateNIC": {
+					"properties": {
+						"creation_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"ipam_ip_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"mac_address": {
+							"type": "string"
+						},
+						"private_network_id": {
+							"type": "string"
+						},
+						"server_id": {
+							"type": "string"
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.PrivateNIC.State"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.PrivateNIC.State": {
+					"default": "available",
+					"enum": ["available", "syncing", "syncing_error"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.SecurityGroup": {
+					"properties": {
+						"creation_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"enable_default_security": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"inbound_default_policy": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup.Policy"
+						},
+						"modification_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization": {
+							"type": "string"
+						},
+						"organization_default": {
+							"deprecated": true,
+							"type": "boolean"
+						},
+						"outbound_default_policy": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup.Policy"
+						},
+						"project": {
+							"type": "string"
+						},
+						"project_default": {
+							"type": "boolean"
+						},
+						"servers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.ServerSummary"
+							},
+							"type": "array"
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup.State"
+						},
+						"stateful": {
+							"type": "boolean"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SecurityGroup.Policy": {
+					"default": "unknown_policy",
+					"enum": ["unknown_policy", "accept", "drop"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.SecurityGroup.State": {
+					"default": "available",
+					"enum": ["available", "syncing", "syncing_error"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.SecurityGroupRule": {
+					"properties": {
+						"action": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Action"
+						},
+						"dest_port_from": {
+							"$ref": "#/components/schemas/google.protobuf.UInt32Value"
+						},
+						"dest_port_to": {
+							"$ref": "#/components/schemas/google.protobuf.UInt32Value"
+						},
+						"direction": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Direction"
+						},
+						"editable": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"ip_range": {
+							"type": "string"
+						},
+						"position": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"protocol": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Protocol"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SecurityGroupRule.Action": {
+					"default": "unknown_action",
+					"enum": ["unknown_action", "accept", "drop"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.SecurityGroupRule.Direction": {
+					"default": "unknown_direction",
+					"enum": ["unknown_direction", "inbound", "outbound"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.SecurityGroupRule.Protocol": {
+					"default": "unknown_protocol",
+					"enum": ["unknown_protocol", "TCP", "UDP", "ICMP", "ANY"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.SecurityGroupSummary": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SecurityGroupTemplate": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Server": {
+					"properties": {
+						"admin_password_encrypted_value": {
+							"type": ["string", "null"]
+						},
+						"admin_password_encryption_ssh_key_id": {
+							"type": ["string", "null"]
+						},
+						"allowed_actions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Server.Action"
+							},
+							"type": "array"
+						},
+						"arch": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Arch"
+						},
+						"boot_type": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.BootType"
+						},
+						"commercial_type": {
+							"type": "string"
+						},
+						"creation_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"dns": {
+							"type": ["string", "null"]
+						},
+						"dynamic_ip_required": {
+							"type": "boolean"
+						},
+						"enable_ipv6": {
+							"deprecated": true,
+							"type": "boolean"
+						},
+						"end_of_service": {
+							"type": "boolean"
+						},
+						"filesystems": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Server.Filesystem"
+							},
+							"type": "array"
+						},
+						"hostname": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"image": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Image"
+						},
+						"ipv6": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server.Ipv6",
+							"deprecated": true
+						},
+						"location": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server.Location"
+						},
+						"mac_address": {
+							"type": "string"
+						},
+						"maintenances": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Server.Maintenance"
+							},
+							"type": "array"
+						},
+						"modification_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization": {
+							"type": "string"
+						},
+						"placement_group": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup"
+						},
+						"private_ip": {
+							"type": ["string", "null"]
+						},
+						"private_nics": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.PrivateNIC"
+							},
+							"type": "array"
+						},
+						"project": {
+							"type": "string"
+						},
+						"protected": {
+							"type": "boolean"
+						},
+						"public_ip": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server.Ip",
+							"deprecated": true
+						},
+						"public_ips": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Server.Ip"
+							},
+							"type": "array"
+						},
+						"routed_ip_enabled": {
+							"deprecated": true,
+							"type": "boolean"
+						},
+						"security_group": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupSummary"
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server.State"
+						},
+						"state_detail": {
+							"type": "string"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"volumes": {
+							"additionalProperties": true,
+							"properties": {
+								"<volumeKey>": {
+									"$ref": "#/components/schemas/scaleway.instance.v1.VolumeServer"
+								}
+							},
+							"type": "object"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Server.Action": {
+					"default": "poweron",
+					"enum": [
+						"poweron",
+						"backup",
+						"stop_in_place",
+						"poweroff",
+						"terminate",
+						"reboot",
+						"enable_routed_ip"
+					],
+					"type": "string"
+				},
+				"scaleway.instance.v1.Server.Filesystem": {
+					"properties": {
+						"filesystem_id": {
+							"type": "string"
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server.Filesystem.State"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Server.Filesystem.State": {
+					"default": "unknown_state",
+					"enum": ["unknown_state", "attaching", "available", "detaching"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.Server.Ip": {
+					"properties": {
+						"address": {
+							"type": "string"
+						},
+						"dynamic": {
+							"type": "boolean"
+						},
+						"family": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server.Ip.IpFamily"
+						},
+						"gateway": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"ipam_id": {
+							"type": "string"
+						},
+						"netmask": {
+							"type": "string"
+						},
+						"provisioning_mode": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server.Ip.ProvisioningMode"
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server.Ip.State"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Server.Ip.IpFamily": {
+					"default": "inet",
+					"enum": ["inet", "inet6"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.Server.Ip.ProvisioningMode": {
+					"default": "manual",
+					"enum": ["manual", "dhcp", "slaac"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.Server.Ip.State": {
+					"default": "unknown_state",
+					"enum": ["unknown_state", "detached", "attached", "pending", "error"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.Server.Ipv6": {
+					"properties": {
+						"address": {
+							"type": "string"
+						},
+						"gateway": {
+							"type": "string"
+						},
+						"netmask": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Server.Location": {
+					"properties": {
+						"cluster_id": {
+							"type": "string"
+						},
+						"hypervisor_id": {
+							"type": "string"
+						},
+						"node_id": {
+							"type": "string"
+						},
+						"platform_id": {
+							"type": "string"
+						},
+						"zone_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Server.Maintenance": {
+					"properties": {
+						"reason": {
+							"type": "string"
+						},
+						"start_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Server.State": {
+					"default": "running",
+					"enum": ["running", "stopped", "stopped in place", "starting", "stopping", "locked"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.ServerActionRequest.VolumeBackupTemplate": {
+					"properties": {
+						"volume_type": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot.VolumeType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerActionResponse": {
+					"properties": {
+						"task": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Task"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerCompatibleTypes": {
+					"properties": {
+						"compatible_types": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerSummary": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerType": {
+					"properties": {
+						"alt_names": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"arch": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Arch"
+						},
+						"block_bandwidth": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"capabilities": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.ServerType.Capabilities"
+						},
+						"end_of_service": {
+							"type": "boolean"
+						},
+						"gpu": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"gpu_info": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.ServerType.GPUInfo"
+						},
+						"hourly_price": {
+							"format": "float",
+							"type": "number"
+						},
+						"monthly_price": {
+							"deprecated": true,
+							"format": "float",
+							"type": "number"
+						},
+						"ncpus": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"network": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.ServerType.Network"
+						},
+						"per_volume_constraint": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.ServerType.VolumeConstraintsByType"
+						},
+						"ram": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"scratch_storage_max_size": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"scratch_storage_max_volumes_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"volumes_constraint": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.ServerType.VolumeConstraintSizes"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerType.Capabilities": {
+					"properties": {
+						"block_storage": {
+							"type": ["boolean", "null"]
+						},
+						"boot_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.BootType"
+							},
+							"type": "array"
+						},
+						"max_file_systems": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerType.GPUInfo": {
+					"properties": {
+						"gpu_manufacturer": {
+							"type": "string"
+						},
+						"gpu_memory": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"gpu_name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerType.Network": {
+					"properties": {
+						"interfaces": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.ServerType.Network.Interface"
+							},
+							"type": "array"
+						},
+						"ipv6_support": {
+							"type": "boolean"
+						},
+						"sum_internal_bandwidth": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"sum_internet_bandwidth": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerType.Network.Interface": {
+					"properties": {
+						"internal_bandwidth": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"internet_bandwidth": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerType.VolumeConstraintsByType": {
+					"properties": {
+						"l_ssd": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.ServerType.VolumeConstraintSizes"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerType.VolumeConstraintSizes": {
+					"properties": {
+						"max_size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"min_size": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.ServerTypesAvailability": {
+					"default": "available",
+					"enum": ["available", "scarce", "shortage"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.SetImageResponse": {
+					"properties": {
+						"image": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Image"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SetPlacementGroupResponse": {
+					"properties": {
+						"placement_group": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SetPlacementGroupServersResponse": {
+					"properties": {
+						"servers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroupServer"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SetSecurityGroupResponse": {
+					"properties": {
+						"security_group": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SetSecurityGroupRuleResponse": {
+					"properties": {
+						"rule": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SetSecurityGroupRulesRequest.Rule": {
+					"properties": {
+						"action": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Action"
+						},
+						"dest_port_from": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"dest_port_to": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"direction": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Direction"
+						},
+						"editable": {
+							"type": ["boolean", "null"]
+						},
+						"id": {
+							"type": ["string", "null"]
+						},
+						"ip_range": {
+							"type": "string"
+						},
+						"position": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"protocol": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Protocol"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SetSecurityGroupRulesResponse": {
+					"properties": {
+						"rules": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SetSnapshotResponse": {
+					"properties": {
+						"snapshot": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.SetVolumeResponse": {
+					"properties": {
+						"volume": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Volume"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Snapshot": {
+					"properties": {
+						"base_volume": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot.BaseVolume"
+						},
+						"creation_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"error_reason": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"modification_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization": {
+							"type": "string"
+						},
+						"project": {
+							"type": "string"
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot.State"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"volume_type": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Volume.VolumeType"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Snapshot.BaseVolume": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Snapshot.State": {
+					"default": "available",
+					"enum": ["available", "snapshotting", "error", "invalid_data", "importing", "exporting"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.Snapshot.VolumeType": {
+					"default": "unknown_volume_type",
+					"enum": ["unknown_volume_type", "l_ssd", "b_ssd", "unified"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.Task": {
+					"properties": {
+						"description": {
+							"deprecated": true,
+							"type": "string"
+						},
+						"href_from": {
+							"type": "string"
+						},
+						"href_result": {
+							"type": "string"
+						},
+						"id": {
+							"deprecated": true,
+							"type": "string"
+						},
+						"progress": {
+							"deprecated": true,
+							"format": "int32",
+							"type": "integer"
+						},
+						"started_at": {
+							"deprecated": true,
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Task.Status",
+							"deprecated": true
+						},
+						"terminated_at": {
+							"deprecated": true,
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"zone": {
+							"deprecated": true,
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Task.Status": {
+					"default": "pending",
+					"enum": ["pending", "started", "success", "failure", "retry"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.UpdateImageResponse": {
+					"properties": {
+						"image": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Image"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.UpdateIpResponse": {
+					"properties": {
+						"ip": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Ip"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.UpdatePlacementGroupResponse": {
+					"properties": {
+						"placement_group": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.UpdatePlacementGroupServersResponse": {
+					"properties": {
+						"servers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroupServer"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.UpdateSecurityGroupResponse": {
+					"properties": {
+						"security_group": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.UpdateSecurityGroupRuleResponse": {
+					"properties": {
+						"rule": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.UpdateServerResponse": {
+					"properties": {
+						"server": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Server"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.UpdateSnapshotResponse": {
+					"properties": {
+						"snapshot": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.UpdateVolumeResponse": {
+					"properties": {
+						"volume": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Volume"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Volume": {
+					"properties": {
+						"creation_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"export_uri": {
+							"deprecated": true,
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"modification_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization": {
+							"type": "string"
+						},
+						"project": {
+							"type": "string"
+						},
+						"server": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.ServerSummary"
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Volume.State"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"volume_type": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Volume.VolumeType"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.Volume.State": {
+					"default": "available",
+					"enum": [
+						"available",
+						"snapshotting",
+						"fetching",
+						"saving",
+						"attaching",
+						"resizing",
+						"hotsyncing",
+						"error"
+					],
+					"type": "string"
+				},
+				"scaleway.instance.v1.Volume.VolumeType": {
+					"default": "l_ssd",
+					"enum": ["l_ssd", "b_ssd", "unified", "scratch", "sbs_volume", "sbs_snapshot"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.VolumeImageUpdateTemplate": {
+					"properties": {
+						"id": {
+							"type": "string"
+						}
+					},
+					"required": ["id"],
+					"type": "object"
+				},
+				"scaleway.instance.v1.VolumeServer": {
+					"properties": {
+						"boot": {
+							"type": "boolean"
+						},
+						"creation_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"export_uri": {
+							"deprecated": true,
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"modification_date": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": ["string", "null"]
+						},
+						"organization": {
+							"type": ["string", "null"]
+						},
+						"project": {
+							"type": ["string", "null"]
+						},
+						"server": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.ServerSummary"
+						},
+						"size": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"state": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.VolumeServer.State"
+						},
+						"volume_type": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.VolumeServer.VolumeType"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.VolumeServer.State": {
+					"default": "available",
+					"enum": [
+						"available",
+						"snapshotting",
+						"resizing",
+						"fetching",
+						"saving",
+						"hotsyncing",
+						"attaching",
+						"error"
+					],
+					"type": "string"
+				},
+				"scaleway.instance.v1.VolumeServer.VolumeType": {
+					"default": "l_ssd",
+					"enum": ["l_ssd", "b_ssd", "sbs_volume", "scratch"],
+					"type": "string"
+				},
+				"scaleway.instance.v1.VolumeServerTemplate": {
+					"properties": {
+						"base_snapshot": {
+							"type": ["string", "null"]
+						},
+						"boot": {
+							"default": false,
+							"type": ["boolean", "null"]
+						},
+						"id": {
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": ["string", "null"]
+						},
+						"organization": {
+							"type": ["string", "null"]
+						},
+						"project": {
+							"type": ["string", "null"]
+						},
+						"size": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"volume_type": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Volume.VolumeType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.VolumeSummary": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"volume_type": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Volume.VolumeType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.VolumeTemplate": {
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"organization": {
+							"deprecated": true,
+							"type": ["string", "null"]
+						},
+						"project": {
+							"type": ["string", "null"]
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"volume_type": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.Volume.VolumeType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.VolumeType": {
+					"properties": {
+						"capabilities": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.VolumeType.Capabilities"
+						},
+						"constraints": {
+							"$ref": "#/components/schemas/scaleway.instance.v1.VolumeType.Constraints"
+						},
+						"display_name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.VolumeType.Capabilities": {
+					"properties": {
+						"snapshot": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.instance.v1.VolumeType.Constraints": {
+					"properties": {
+						"max": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"min": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.StringsValue": {
+					"type": ["array", "null"]
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/instance/v1/zones/{zone}/block-migration/check-organization-quotas": {
+				"post": {
+					"operationId": "CheckBlockMigrationOrganizationQuotas",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"organization": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/instance/v1/zones/{zone}/dashboard": {
+				"get": {
+					"operationId": "GetDashboard",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.StringValue"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.StringValue"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetDashboardResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					]
+				}
+			},
+			"/instance/v1/zones/{zone}/images": {
+				"get": {
+					"operationId": "ListImages",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.StringValue"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.StringValue"
+							}
+						},
+						{
+							"in": "query",
+							"name": "public",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.BoolValue"
+							}
+						},
+						{
+							"in": "query",
+							"name": "arch",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.StringValue"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.StringValue"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.StringValue"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListImagesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Images"]
+				},
+				"post": {
+					"operationId": "CreateImage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"arch": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Arch"
+										},
+										"extra_volumes": {
+											"additionalProperties": true,
+											"properties": {
+												"<extra_volumeKey>": {
+													"$ref": "#/components/schemas/scaleway.instance.v1.VolumeTemplate"
+												}
+											},
+											"type": "object"
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"project": {
+											"type": ["string", "null"]
+										},
+										"public": {
+											"type": ["boolean", "null"]
+										},
+										"root_volume": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["root_volume", "arch"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"201": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.CreateImageResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Images"]
+				}
+			},
+			"/instance/v1/zones/{zone}/images/{id}": {
+				"put": {
+					"operationId": "SetImage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"arch": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Arch"
+										},
+										"creation_date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"default_bootscript": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Bootscript",
+											"deprecated": true
+										},
+										"extra_volumes": {
+											"additionalProperties": true,
+											"properties": {
+												"<extra_volumeKey>": {
+													"$ref": "#/components/schemas/scaleway.instance.v1.Volume"
+												}
+											},
+											"type": "object"
+										},
+										"from_server": {
+											"type": "string"
+										},
+										"modification_date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"type": "string"
+										},
+										"project": {
+											"type": "string"
+										},
+										"public": {
+											"type": "boolean"
+										},
+										"root_volume": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.VolumeSummary"
+										},
+										"state": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Image.State"
+										},
+										"tags": {
+											"$ref": "#/components/schemas/scaleway.std.StringsValue"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.SetImageResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Images"]
+				}
+			},
+			"/instance/v1/zones/{zone}/images/{image_id}": {
+				"delete": {
+					"operationId": "DeleteImage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "image_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Images"]
+				},
+				"get": {
+					"operationId": "GetImage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "image_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetImageResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Images"]
+				},
+				"patch": {
+					"operationId": "UpdateImage",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "image_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"arch": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Arch"
+										},
+										"extra_volumes": {
+											"additionalProperties": true,
+											"properties": {
+												"<extra_volumeKey>": {
+													"$ref": "#/components/schemas/scaleway.instance.v1.VolumeImageUpdateTemplate"
+												}
+											},
+											"type": "object"
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"public": {
+											"type": ["boolean", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.UpdateImageResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Images"]
+				}
+			},
+			"/instance/v1/zones/{zone}/ips": {
+				"get": {
+					"operationId": "ListIps",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "type",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListIpsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				},
+				"post": {
+					"operationId": "CreateIp",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"organization": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"project": {
+											"type": ["string", "null"]
+										},
+										"server": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.IpType"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"201": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.CreateIpResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				}
+			},
+			"/instance/v1/zones/{zone}/ips/{ip_id}/release-to-ipam": {
+				"post": {
+					"operationId": "ReleaseIpToIpam",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				}
+			},
+			"/instance/v1/zones/{zone}/ips/{ip}": {
+				"delete": {
+					"operationId": "DeleteIp",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				},
+				"get": {
+					"operationId": "GetIp",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetIpResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				},
+				"patch": {
+					"operationId": "UpdateIp",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"reverse": {
+											"type": ["string", "null"]
+										},
+										"server": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.NullableStringValue"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										},
+										"type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.IpType"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.UpdateIpResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["IPs"]
+				}
+			},
+			"/instance/v1/zones/{zone}/placement_groups": {
+				"get": {
+					"operationId": "ListPlacementGroups",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListPlacementGroupsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Placement Groups"]
+				},
+				"post": {
+					"operationId": "CreatePlacementGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"policy_mode": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup.PolicyMode"
+										},
+										"policy_type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup.PolicyType"
+										},
+										"project": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"201": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.CreatePlacementGroupResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Placement Groups"]
+				}
+			},
+			"/instance/v1/zones/{zone}/placement_groups/{placement_group_id}": {
+				"delete": {
+					"operationId": "DeletePlacementGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "placement_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Placement Groups"]
+				},
+				"get": {
+					"operationId": "GetPlacementGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "placement_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetPlacementGroupResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Placement Groups"]
+				},
+				"patch": {
+					"operationId": "UpdatePlacementGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "placement_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"policy_mode": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup.PolicyMode"
+										},
+										"policy_type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup.PolicyType"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.UpdatePlacementGroupResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Placement Groups"]
+				},
+				"put": {
+					"operationId": "SetPlacementGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "placement_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"type": "string"
+										},
+										"policy_mode": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup.PolicyMode"
+										},
+										"policy_type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.PlacementGroup.PolicyType"
+										},
+										"project": {
+											"type": "string"
+										},
+										"tags": {
+											"$ref": "#/components/schemas/scaleway.std.StringsValue"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.SetPlacementGroupResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Placement Groups"]
+				}
+			},
+			"/instance/v1/zones/{zone}/placement_groups/{placement_group_id}/servers": {
+				"get": {
+					"operationId": "GetPlacementGroupServers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "placement_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetPlacementGroupServersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Placement Groups"]
+				},
+				"patch": {
+					"operationId": "UpdatePlacementGroupServers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "placement_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"servers": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["servers"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.UpdatePlacementGroupServersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Placement Groups"]
+				},
+				"put": {
+					"operationId": "SetPlacementGroupServers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "placement_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"servers": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["servers"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.SetPlacementGroupServersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Placement Groups"]
+				}
+			},
+			"/instance/v1/zones/{zone}/products/servers": {
+				"get": {
+					"operationId": "ListServersTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListServersTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instance Types"]
+				}
+			},
+			"/instance/v1/zones/{zone}/products/servers/availability": {
+				"get": {
+					"operationId": "GetServerTypesAvailability",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetServerTypesAvailabilityResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instance Types"]
+				}
+			},
+			"/instance/v1/zones/{zone}/products/volumes": {
+				"get": {
+					"operationId": "ListVolumesTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"$ref": "#/components/schemas/google.protobuf.Int32Value"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListVolumesTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Volume Types"]
+				}
+			},
+			"/instance/v1/zones/{zone}/security_groups": {
+				"get": {
+					"operationId": "ListSecurityGroups",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_default",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListSecurityGroupsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				},
+				"post": {
+					"operationId": "CreateSecurityGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": "string"
+										},
+										"enable_default_security": {
+											"type": ["boolean", "null"]
+										},
+										"inbound_default_policy": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup.Policy"
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"organization_default": {
+											"deprecated": true,
+											"type": ["boolean", "null"]
+										},
+										"outbound_default_policy": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup.Policy"
+										},
+										"project": {
+											"type": ["string", "null"]
+										},
+										"project_default": {
+											"type": ["boolean", "null"]
+										},
+										"stateful": {
+											"type": "boolean"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["name"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"201": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.CreateSecurityGroupResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				}
+			},
+			"/instance/v1/zones/{zone}/security_groups/{id}": {
+				"put": {
+					"operationId": "SetSecurityGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"creation_date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"description": {
+											"type": "string"
+										},
+										"enable_default_security": {
+											"type": "boolean"
+										},
+										"inbound_default_policy": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup.Policy"
+										},
+										"modification_date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"type": "string"
+										},
+										"organization_default": {
+											"deprecated": true,
+											"type": "boolean"
+										},
+										"outbound_default_policy": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup.Policy"
+										},
+										"project": {
+											"type": "string"
+										},
+										"project_default": {
+											"type": "boolean"
+										},
+										"servers": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.instance.v1.ServerSummary"
+											},
+											"type": "array"
+										},
+										"stateful": {
+											"type": "boolean"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.SetSecurityGroupResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				}
+			},
+			"/instance/v1/zones/{zone}/security_groups/{security_group_id}": {
+				"delete": {
+					"operationId": "DeleteSecurityGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				},
+				"get": {
+					"operationId": "GetSecurityGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetSecurityGroupResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				},
+				"patch": {
+					"operationId": "UpdateSecurityGroup",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"enable_default_security": {
+											"type": ["boolean", "null"]
+										},
+										"inbound_default_policy": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup.Policy"
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"organization_default": {
+											"deprecated": true,
+											"type": ["boolean", "null"]
+										},
+										"outbound_default_policy": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroup.Policy"
+										},
+										"project_default": {
+											"type": ["boolean", "null"]
+										},
+										"stateful": {
+											"type": ["boolean", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.UpdateSecurityGroupResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				}
+			},
+			"/instance/v1/zones/{zone}/security_groups/{security_group_id}/rules": {
+				"get": {
+					"operationId": "ListSecurityGroupRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListSecurityGroupRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				},
+				"post": {
+					"operationId": "CreateSecurityGroupRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"action": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Action"
+										},
+										"dest_port_from": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"dest_port_to": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"direction": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Direction"
+										},
+										"editable": {
+											"type": "boolean"
+										},
+										"ip_range": {
+											"type": "string"
+										},
+										"position": {
+											"format": "uint32",
+											"type": "integer"
+										},
+										"protocol": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Protocol"
+										}
+									},
+									"required": ["protocol", "direction", "action", "ip_range"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"201": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.CreateSecurityGroupRuleResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				},
+				"put": {
+					"operationId": "SetSecurityGroupRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"rules": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.instance.v1.SetSecurityGroupRulesRequest.Rule"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.SetSecurityGroupRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				}
+			},
+			"/instance/v1/zones/{zone}/security_groups/{security_group_id}/rules/{security_group_rule_id}": {
+				"delete": {
+					"operationId": "DeleteSecurityGroupRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_rule_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				},
+				"get": {
+					"operationId": "GetSecurityGroupRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_rule_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetSecurityGroupRuleResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				},
+				"patch": {
+					"operationId": "UpdateSecurityGroupRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_rule_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"action": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Action"
+										},
+										"dest_port_from": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"dest_port_to": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"direction": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Direction"
+										},
+										"ip_range": {
+											"type": ["string", "null"]
+										},
+										"position": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"protocol": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Protocol"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.UpdateSecurityGroupRuleResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				},
+				"put": {
+					"operationId": "SetSecurityGroupRule",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "security_group_rule_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"action": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Action"
+										},
+										"dest_port_from": {
+											"$ref": "#/components/schemas/google.protobuf.UInt32Value"
+										},
+										"dest_port_to": {
+											"$ref": "#/components/schemas/google.protobuf.UInt32Value"
+										},
+										"direction": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Direction"
+										},
+										"editable": {
+											"type": "boolean"
+										},
+										"id": {
+											"type": "string"
+										},
+										"ip_range": {
+											"type": "string"
+										},
+										"position": {
+											"format": "uint32",
+											"type": "integer"
+										},
+										"protocol": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupRule.Protocol"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.SetSecurityGroupRuleResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				}
+			},
+			"/instance/v1/zones/{zone}/security_groups/default/rules": {
+				"get": {
+					"operationId": "ListDefaultSecurityGroupRules",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListSecurityGroupRulesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Security Groups"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers": {
+				"get": {
+					"operationId": "ListServers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "private_ip",
+							"schema": {
+								"deprecated": true,
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "without_ip",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "with_ip",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "commercial_type",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "state",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Server.State"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "private_network",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.ListServersRequest.Order"
+							}
+						},
+						{
+							"in": "query",
+							"name": "private_networks",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "private_nic_mac_address",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "servers",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListServersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				},
+				"post": {
+					"operationId": "CreateServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"admin_password_encryption_ssh_key_id": {
+											"type": ["string", "null"]
+										},
+										"boot_type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.BootType"
+										},
+										"commercial_type": {
+											"type": "string"
+										},
+										"dynamic_ip_required": {
+											"type": ["boolean", "null"]
+										},
+										"enable_ipv6": {
+											"deprecated": true,
+											"type": "boolean"
+										},
+										"image": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"placement_group": {
+											"type": ["string", "null"]
+										},
+										"project": {
+											"type": ["string", "null"]
+										},
+										"protected": {
+											"type": "boolean"
+										},
+										"public_ip": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"public_ips": {
+											"type": ["array", "null"]
+										},
+										"routed_ip_enabled": {
+											"deprecated": true,
+											"type": ["boolean", "null"]
+										},
+										"security_group": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"volumes": {
+											"additionalProperties": true,
+											"properties": {
+												"<volumeKey>": {
+													"$ref": "#/components/schemas/scaleway.instance.v1.VolumeServerTemplate"
+												}
+											},
+											"type": "object"
+										}
+									},
+									"required": ["name", "commercial_type"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"201": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.CreateServerResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}": {
+				"delete": {
+					"operationId": "DeleteServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				},
+				"get": {
+					"operationId": "GetServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetServerResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				},
+				"patch": {
+					"operationId": "UpdateServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"admin_password_encryption_ssh_key_id": {
+											"type": ["string", "null"]
+										},
+										"boot_type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.BootType"
+										},
+										"commercial_type": {
+											"type": ["string", "null"]
+										},
+										"dynamic_ip_required": {
+											"$ref": "#/components/schemas/google.protobuf.BoolValue"
+										},
+										"enable_ipv6": {
+											"$ref": "#/components/schemas/google.protobuf.BoolValue",
+											"deprecated": true
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"placement_group": {
+											"type": ["string", "null"]
+										},
+										"private_nics": {
+											"type": ["array", "null"]
+										},
+										"protected": {
+											"type": ["boolean", "null"]
+										},
+										"public_ips": {
+											"type": ["array", "null"]
+										},
+										"routed_ip_enabled": {
+											"deprecated": true,
+											"type": ["boolean", "null"]
+										},
+										"security_group": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.SecurityGroupTemplate"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										},
+										"volumes": {
+											"additionalProperties": true,
+											"properties": {
+												"<volumeKey>": {
+													"$ref": "#/components/schemas/scaleway.instance.v1.VolumeServerTemplate"
+												}
+											},
+											"type": "object"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.UpdateServerResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}/action": {
+				"get": {
+					"operationId": "ListServerActions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListServerActionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				},
+				"post": {
+					"operationId": "ServerAction",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"action": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Server.Action"
+										},
+										"disable_ipv6": {
+											"type": ["boolean", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"volumes": {
+											"additionalProperties": true,
+											"properties": {
+												"<volumeKey>": {
+													"$ref": "#/components/schemas/scaleway.instance.v1.ServerActionRequest.VolumeBackupTemplate"
+												}
+											},
+											"type": "object"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ServerActionResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}/attach-filesystem": {
+				"post": {
+					"operationId": "AttachServerFileSystem",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"filesystem_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.AttachServerFileSystemResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}/attach-volume": {
+				"post": {
+					"operationId": "AttachServerVolume",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"boot": {
+											"$ref": "#/components/schemas/google.protobuf.BoolValue"
+										},
+										"volume_id": {
+											"type": "string"
+										},
+										"volume_type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.AttachServerVolumeRequest.VolumeType"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.AttachServerVolumeResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}/compatible-types": {
+				"get": {
+					"operationId": "GetServerCompatibleTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ServerCompatibleTypes"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}/detach-filesystem": {
+				"post": {
+					"operationId": "DetachServerFileSystem",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"filesystem_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.DetachServerFileSystemResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}/detach-volume": {
+				"post": {
+					"operationId": "DetachServerVolume",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"volume_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.DetachServerVolumeResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instances"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}/private_nics": {
+				"get": {
+					"operationId": "ListPrivateNICs",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListPrivateNICsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Private NICs"]
+				},
+				"post": {
+					"operationId": "CreatePrivateNIC",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"ipam_ip_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"private_network_id": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"required": ["private_network_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"201": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.CreatePrivateNICResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Private NICs"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}/private_nics/{private_nic_id}": {
+				"delete": {
+					"operationId": "DeletePrivateNIC",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "private_nic_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Private NICs"]
+				},
+				"get": {
+					"operationId": "GetPrivateNIC",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "private_nic_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetPrivateNICResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Private NICs"]
+				},
+				"patch": {
+					"operationId": "UpdatePrivateNIC",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "private_nic_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.PrivateNIC"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Private NICs"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}/user_data": {
+				"get": {
+					"operationId": "ListServerUserData",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListServerUserDataResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["User Data"]
+				}
+			},
+			"/instance/v1/zones/{zone}/servers/{server_id}/user_data/{key}": {
+				"delete": {
+					"operationId": "DeleteServerUserData",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["User Data"]
+				},
+				"get": {
+					"operationId": "GetServerUserData",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["User Data"]
+				},
+				"patch": {
+					"operationId": "SetServerUserData",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"*/*": {
+								"schema": {
+									"format": "binary",
+									"type": "string"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["User Data"]
+				}
+			},
+			"/instance/v1/zones/{zone}/snapshots": {
+				"get": {
+					"operationId": "ListSnapshots",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "base_volume_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListSnapshotsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				},
+				"post": {
+					"operationId": "CreateSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"bucket": {
+											"type": ["string", "null"]
+										},
+										"key": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"project": {
+											"type": ["string", "null"]
+										},
+										"size": {
+											"format": "uint64",
+											"type": ["integer", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										},
+										"volume_id": {
+											"type": ["string", "null"]
+										},
+										"volume_type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot.VolumeType"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"201": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.CreateSnapshotResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				}
+			},
+			"/instance/v1/zones/{zone}/snapshots/{snapshot_id}": {
+				"delete": {
+					"operationId": "DeleteSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				},
+				"get": {
+					"operationId": "GetSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetSnapshotResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				},
+				"patch": {
+					"operationId": "UpdateSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.UpdateSnapshotResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				},
+				"put": {
+					"operationId": "SetSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"base_volume": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot.BaseVolume"
+										},
+										"creation_date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"id": {
+											"type": "string"
+										},
+										"modification_date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"type": "string"
+										},
+										"project": {
+											"type": "string"
+										},
+										"size": {
+											"format": "uint64",
+											"type": "integer"
+										},
+										"state": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Snapshot.State"
+										},
+										"tags": {
+											"$ref": "#/components/schemas/scaleway.std.StringsValue"
+										},
+										"volume_type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Volume.VolumeType"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.SetSnapshotResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				}
+			},
+			"/instance/v1/zones/{zone}/snapshots/{snapshot_id}/export": {
+				"post": {
+					"operationId": "ExportSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"bucket": {
+											"type": "string"
+										},
+										"key": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ExportSnapshotResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				}
+			},
+			"/instance/v1/zones/{zone}/volumes": {
+				"get": {
+					"operationId": "ListVolumes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "volume_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.instance.v1.Volume.VolumeType"
+							}
+						},
+						{
+							"in": "query",
+							"name": "per_page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.ListVolumesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Volumes"]
+				},
+				"post": {
+					"operationId": "CreateVolume",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"base_snapshot": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"project": {
+											"type": ["string", "null"]
+										},
+										"size": {
+											"format": "uint64",
+											"type": ["integer", "null"]
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"volume_type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Volume.VolumeType"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"201": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.CreateVolumeResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Volumes"]
+				}
+			},
+			"/instance/v1/zones/{zone}/volumes/{id}": {
+				"put": {
+					"operationId": "SetVolume",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"creation_date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"export_uri": {
+											"deprecated": true,
+											"type": "string"
+										},
+										"modification_date": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": "string"
+										},
+										"organization": {
+											"type": "string"
+										},
+										"project": {
+											"type": "string"
+										},
+										"server": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.ServerSummary"
+										},
+										"size": {
+											"format": "uint64",
+											"type": "integer"
+										},
+										"state": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Volume.State"
+										},
+										"tags": {
+											"type": ["array", "null"]
+										},
+										"volume_type": {
+											"$ref": "#/components/schemas/scaleway.instance.v1.Volume.VolumeType"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.SetVolumeResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Volumes"]
+				}
+			},
+			"/instance/v1/zones/{zone}/volumes/{volume_id}": {
+				"delete": {
+					"operationId": "DeleteVolume",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "volume_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Volumes"]
+				},
+				"get": {
+					"operationId": "GetVolume",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "volume_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.GetVolumeResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Volumes"]
+				},
+				"patch": {
+					"operationId": "UpdateVolume",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": [
+									"fr-par-1",
+									"fr-par-2",
+									"fr-par-3",
+									"nl-ams-1",
+									"nl-ams-2",
+									"nl-ams-3",
+									"pl-waw-1",
+									"pl-waw-2",
+									"pl-waw-3",
+									"it-mil-1"
+								],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "volume_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"size": {
+											"format": "uint64",
+											"type": ["integer", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.instance.v1.UpdateVolumeResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Volumes"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

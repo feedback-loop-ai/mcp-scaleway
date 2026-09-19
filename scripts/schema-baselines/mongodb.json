@@ -1,0 +1,2161 @@
+{
+	"sha256": "410038b539a20ca2e93ea3ffd2a3bf42c81850c5e7829beda87d7e61202ea698",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.mongodb.v1.Database": {
+					"properties": {
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Endpoint": {
+					"properties": {
+						"dns_record": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"port": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.mongodb.v1.Endpoint.PrivateNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.mongodb.v1.Endpoint.PublicNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Endpoint.PrivateNetworkDetails": {
+					"properties": {
+						"private_network_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Endpoint.PublicNetworkDetails": {
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.EndpointSpec": {
+					"properties": {
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.mongodb.v1.EndpointSpec.PrivateNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.mongodb.v1.EndpointSpec.PublicNetworkDetails"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.EndpointSpec.PrivateNetworkDetails": {
+					"properties": {
+						"private_network_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.EndpointSpec.PublicNetworkDetails": {
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.EngineUpgrade": {
+					"properties": {
+						"new_version_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Instance": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"endpoints": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.Endpoint"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"maintenances": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.Maintenance"
+							},
+							"type": "array"
+						},
+						"name": {
+							"type": "string"
+						},
+						"node_amount": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"node_type": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.InstanceSetting"
+							},
+							"type": "array"
+						},
+						"snapshot_schedule": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.Instance.SnapshotSchedule"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.Instance.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"upgradable_versions": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"version": {
+							"type": "string"
+						},
+						"volume": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.Volume"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Instance.SnapshotSchedule": {
+					"properties": {
+						"enabled": {
+							"type": "boolean"
+						},
+						"frequency_hours": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"last_run": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"next_update": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"retention_days": {
+							"format": "int32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Instance.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"ready",
+						"provisioning",
+						"configuring",
+						"deleting",
+						"error",
+						"initializing",
+						"locked",
+						"snapshotting"
+					],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.InstanceSetting": {
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"value": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.ListDatabasesRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.ListDatabasesResponse": {
+					"properties": {
+						"databases": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.Database"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.ListInstancesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"name_asc",
+						"name_desc",
+						"status_asc",
+						"status_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.ListInstancesResponse": {
+					"properties": {
+						"instances": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.Instance"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.ListMaintenancesRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"starts_at_asc",
+						"starts_at_desc",
+						"stops_at_asc",
+						"stops_at_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.ListMaintenancesResponse": {
+					"properties": {
+						"maintenances": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.Maintenance"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.ListNodeTypesResponse": {
+					"properties": {
+						"node_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.NodeType"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.ListSnapshotsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"name_asc",
+						"name_desc",
+						"expires_at_asc",
+						"expires_at_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.ListSnapshotsResponse": {
+					"properties": {
+						"snapshots": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.Snapshot"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.ListUsersRequest.OrderBy": {
+					"default": "name_asc",
+					"enum": ["name_asc", "name_desc"],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.ListUsersResponse": {
+					"properties": {
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"users": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.User"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.ListVersionsResponse": {
+					"properties": {
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"versions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.Version"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Maintenance": {
+					"properties": {
+						"applied_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"applied_by": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.Maintenance.AppliedBy"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"forced_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"instance_id": {
+							"type": "string"
+						},
+						"reason": {
+							"type": "string"
+						},
+						"starts_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.Maintenance.Status"
+						},
+						"stops_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"workflow": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.Workflow"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Maintenance.AppliedBy": {
+					"default": "unknown_applied_by",
+					"enum": ["unknown_applied_by", "user", "admin"],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.Maintenance.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "planned", "done", "cancelled", "ongoing"],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.NodeType": {
+					"properties": {
+						"available_volume_types": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.NodeType.VolumeType"
+							},
+							"type": "array"
+						},
+						"beta": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"disabled": {
+							"type": "boolean"
+						},
+						"instance_range": {
+							"type": "string"
+						},
+						"memory_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"stock_status": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.NodeType.Stock"
+						},
+						"vcpus": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.NodeType.Stock": {
+					"default": "unknown_stock",
+					"enum": ["unknown_stock", "low_stock", "out_of_stock", "available"],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.NodeType.VolumeType": {
+					"properties": {
+						"chunk_size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"description": {
+							"type": "string"
+						},
+						"max_size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"min_size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.Volume.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.ServiceUpdate": {
+					"properties": {
+						"service_name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Snapshot": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"instance_id": {
+							"type": ["string", "null"]
+						},
+						"instance_name": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"node_type": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.Snapshot.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"volume_type": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.Volume.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Snapshot.Status": {
+					"default": "unknown_status",
+					"enum": [
+						"unknown_status",
+						"creating",
+						"ready",
+						"restoring",
+						"deleting",
+						"error",
+						"locked"
+					],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.User": {
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"roles": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.UserRole"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.UserRole": {
+					"properties": {
+						"any_database": {
+							"type": ["boolean", "null"]
+						},
+						"database_name": {
+							"type": ["string", "null"]
+						},
+						"role": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.UserRole.Role"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.UserRole.Role": {
+					"default": "unknown_role",
+					"enum": ["unknown_role", "read", "read_write", "db_admin", "sync"],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.Version": {
+					"properties": {
+						"end_of_life_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"released_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"version": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Volume": {
+					"properties": {
+						"size_bytes": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.mongodb.v1.Volume.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mongodb.v1.Volume.Type": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "sbs_5k", "sbs_15k"],
+					"type": "string"
+				},
+				"scaleway.mongodb.v1.Workflow": {
+					"properties": {
+						"engine_upgrade": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.mongodb.v1.EngineUpgrade"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"service_update": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.mongodb.v1.ServiceUpdate"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/mongodb/v1/regions/{region}/endpoints": {
+				"post": {
+					"operationId": "CreateEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"endpoint": {
+											"$ref": "#/components/schemas/scaleway.mongodb.v1.EndpointSpec"
+										},
+										"instance_id": {
+											"type": "string"
+										}
+									},
+									"required": ["instance_id", "endpoint"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Endpoint"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instance Endpoints"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/endpoints/{endpoint_id}": {
+				"delete": {
+					"operationId": "DeleteEndpoint",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "endpoint_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Instance Endpoints"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/instances": {
+				"get": {
+					"operationId": "ListInstances",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.ListInstancesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "has_maintenance",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.ListInstancesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				},
+				"post": {
+					"operationId": "CreateInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"endpoints": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.mongodb.v1.EndpointSpec"
+											},
+											"type": "array"
+										},
+										"name": {
+											"type": "string"
+										},
+										"node_amount": {
+											"format": "uint32",
+											"type": "integer"
+										},
+										"node_type": {
+											"type": "string"
+										},
+										"password": {
+											"type": "string"
+										},
+										"project_id": {
+											"type": "string"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"user_name": {
+											"type": "string"
+										},
+										"version": {
+											"type": "string"
+										},
+										"volume": {
+											"$ref": "#/components/schemas/scaleway.mongodb.v1.Volume"
+										}
+									},
+									"required": ["version", "node_amount", "node_type", "user_name", "password"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/instances/{instance_id}": {
+				"delete": {
+					"operationId": "DeleteInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				},
+				"get": {
+					"operationId": "GetInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				},
+				"patch": {
+					"operationId": "UpdateInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"is_snapshot_schedule_enabled": {
+											"type": ["boolean", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"snapshot_schedule_frequency_hours": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"snapshot_schedule_retention_days": {
+											"format": "uint32",
+											"type": ["integer", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/instances/{instance_id}/certificate": {
+				"get": {
+					"operationId": "GetInstanceCertificate",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.std.File"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/instances/{instance_id}/databases": {
+				"get": {
+					"operationId": "ListDatabases",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.ListDatabasesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.ListDatabasesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Databases"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/instances/{instance_id}/set-user-roles": {
+				"put": {
+					"operationId": "SetUserRole",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"roles": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.mongodb.v1.UserRole"
+											},
+											"type": "array"
+										},
+										"user_name": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/instances/{instance_id}/upgrade": {
+				"post": {
+					"operationId": "UpgradeInstance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"version": {
+											"type": ["string", "null"]
+										},
+										"volume_size_bytes": {
+											"format": "uint64",
+											"type": ["integer", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Database Instances"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/instances/{instance_id}/users": {
+				"get": {
+					"operationId": "ListUsers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.ListUsersRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.ListUsersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				},
+				"post": {
+					"operationId": "CreateUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"password": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/instances/{instance_id}/users/{name}": {
+				"delete": {
+					"operationId": "DeleteUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				},
+				"patch": {
+					"operationId": "UpdateUser",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "name",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"password": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.User"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Users"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/maintenances": {
+				"get": {
+					"operationId": "ListMaintenances",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "instance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.ListMaintenancesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.ListMaintenancesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Maintenance Operations"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/maintenances/{maintenance_id}": {
+				"get": {
+					"operationId": "GetMaintenance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "maintenance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Maintenance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Maintenance Operations"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/maintenances/{maintenance_id}/apply": {
+				"post": {
+					"operationId": "ApplyMaintenance",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "maintenance_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Maintenance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Maintenance Operations"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/node-types": {
+				"get": {
+					"operationId": "ListNodeTypes",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "include_disabled",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.ListNodeTypesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Node Types"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/snapshots": {
+				"get": {
+					"operationId": "ListSnapshots",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "instance_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.mongodb.v1.ListSnapshotsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.ListSnapshotsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				},
+				"post": {
+					"operationId": "CreateSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"expires_at": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"instance_id": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										}
+									},
+									"required": ["instance_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Snapshot"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/snapshots/{snapshot_id}": {
+				"delete": {
+					"operationId": "DeleteSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Snapshot"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				},
+				"get": {
+					"operationId": "GetSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Snapshot"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				},
+				"patch": {
+					"operationId": "UpdateSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"expires_at": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Snapshot"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/snapshots/{snapshot_id}/restore": {
+				"post": {
+					"operationId": "RestoreSnapshot",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "snapshot_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"instance_name": {
+											"type": "string"
+										},
+										"node_amount": {
+											"format": "uint32",
+											"type": "integer"
+										},
+										"node_type": {
+											"type": "string"
+										},
+										"volume_type": {
+											"$ref": "#/components/schemas/scaleway.mongodb.v1.Volume.Type"
+										}
+									},
+									"required": ["instance_name", "node_type", "node_amount", "volume_type"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.Instance"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Snapshots"]
+				}
+			},
+			"/mongodb/v1/regions/{region}/versions": {
+				"get": {
+					"operationId": "ListVersions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "version",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mongodb.v1.ListVersionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["MongoDB® Versions"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

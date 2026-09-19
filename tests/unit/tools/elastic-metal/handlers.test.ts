@@ -859,8 +859,7 @@ describe("Elastic Metal handlers", () => {
 				new Errors.ResourceNotFoundError(
 					404,
 					{ message: "resource is not found", resource: "server", resource_id: SERVER_ID },
-					"server",
-					SERVER_ID,
+					{ resource: "server", resourceId: SERVER_ID },
 				),
 			);
 			const result = (await handleGetServer({

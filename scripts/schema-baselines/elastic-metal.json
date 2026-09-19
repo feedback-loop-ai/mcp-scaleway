@@ -1,0 +1,2899 @@
+{
+	"sha256": "62fd3167e1c20c2554f81271593e76bebeae5501cd94a3eb1b72241962ea76ab",
+	"schema": {
+		"components": {
+			"schemas": {
+				"google.protobuf.BytesValue": {
+					"properties": {
+						"value": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"google.protobuf.StringValue": {
+					"type": ["string", "null"]
+				},
+				"google.type.Money": {
+					"properties": {
+						"currency_code": {
+							"type": "string"
+						},
+						"nanos": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"units": {
+							"format": "int64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.BatchCreateServersRequest.ServerConfig": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"hostname": {
+							"type": "string"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.BatchCreateServersResponse": {
+					"properties": {
+						"servers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.BMCAccess": {
+					"properties": {
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"login": {
+							"type": "string"
+						},
+						"password": {
+							"type": "string"
+						},
+						"url": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.CertificationOption": {
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.CPU": {
+					"properties": {
+						"benchmark": {
+							"type": "string"
+						},
+						"core_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"frequency": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"thread_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.CreateServerRequest": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"install": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.CreateServerRequest.Install"
+						},
+						"name": {
+							"type": "string"
+						},
+						"offer_id": {
+							"type": "string"
+						},
+						"option_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"organization_id": {
+							"deprecated": true,
+							"type": ["string", "null"]
+						},
+						"project_id": {
+							"type": ["string", "null"]
+						},
+						"protected": {
+							"type": "boolean"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"user_data": {
+							"$ref": "#/components/schemas/google.protobuf.BytesValue"
+						},
+						"zone": {
+							"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+							"type": ["string", "null"]
+						}
+					},
+					"required": ["zone", "offer_id", "name", "description"],
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.CreateServerRequest.Install": {
+					"properties": {
+						"hostname": {
+							"type": "string"
+						},
+						"os_id": {
+							"type": "string"
+						},
+						"partitioning_schema": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema"
+						},
+						"password": {
+							"type": ["string", "null"]
+						},
+						"service_password": {
+							"type": ["string", "null"]
+						},
+						"service_user": {
+							"type": ["string", "null"]
+						},
+						"ssh_key_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"user": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Disk": {
+					"properties": {
+						"capacity": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.GetServerMetricsResponse": {
+					"properties": {
+						"pings": {
+							"$ref": "#/components/schemas/scaleway.std.TimeSeries"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.GPU": {
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"vram": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.IP": {
+					"properties": {
+						"address": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"reverse": {
+							"type": "string"
+						},
+						"reverse_status": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.IP.ReverseStatus"
+						},
+						"reverse_status_message": {
+							"type": "string"
+						},
+						"version": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.IP.Version"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.IP.ReverseStatus": {
+					"default": "unknown",
+					"enum": ["unknown", "pending", "active", "error"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.IP.Version": {
+					"default": "IPv4",
+					"enum": ["IPv4", "IPv6"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.LicenseOption": {
+					"properties": {
+						"os_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.ListOffersResponse": {
+					"properties": {
+						"offers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Offer"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.ListOptionsResponse": {
+					"properties": {
+						"options": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Option"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.ListOSResponse": {
+					"properties": {
+						"os": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.OS"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.ListServerEventsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.ListServerEventsResponse": {
+					"properties": {
+						"events": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.ServerEvent"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.ListServersRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.ListServersResponse": {
+					"properties": {
+						"servers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.ListSettingsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.ListSettingsResponse": {
+					"properties": {
+						"settings": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Setting"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Memory": {
+					"properties": {
+						"capacity": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"ecc_type": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Memory.EccType"
+						},
+						"frequency": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"is_ecc": {
+							"type": "boolean"
+						},
+						"type": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Memory.EccType": {
+					"default": "unknown_ecc_type",
+					"enum": ["unknown_ecc_type", "none", "standard", "on_die"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Offer": {
+					"properties": {
+						"bandwidth": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"commercial_range": {
+							"type": "string"
+						},
+						"cpus": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.CPU"
+							},
+							"type": "array"
+						},
+						"disks": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Disk"
+							},
+							"type": "array"
+						},
+						"enable": {
+							"type": "boolean"
+						},
+						"fee": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"gpus": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.GPU"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"incompatible_os_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"max_bandwidth": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"memories": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Memory"
+							},
+							"type": "array"
+						},
+						"monthly_offer_id": {
+							"type": ["string", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"operation_path": {
+							"type": "string"
+						},
+						"options": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Offer.OptionOffer"
+							},
+							"type": "array"
+						},
+						"persistent_memories": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.PersistentMemory"
+							},
+							"type": "array"
+						},
+						"price_per_hour": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"price_per_month": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"private_bandwidth": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"quota_name": {
+							"type": "string"
+						},
+						"raid_controllers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.RaidController"
+							},
+							"type": "array"
+						},
+						"shared_bandwidth": {
+							"type": "boolean"
+						},
+						"stock": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Offer.Stock"
+						},
+						"subscription_period": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Offer.SubscriptionPeriod"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Offer.OptionOffer": {
+					"properties": {
+						"certification": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.CertificationOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"enabled": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"license": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.LicenseOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"manageable": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"os_id": {
+							"deprecated": true,
+							"type": ["string", "null"]
+						},
+						"price": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.PrivateNetworkOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_bandwidth": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.PublicBandwidthOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"remote_access": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.RemoteAccessOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"subscription_period": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Offer.SubscriptionPeriod"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Offer.Stock": {
+					"default": "empty",
+					"enum": ["empty", "low", "available"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Offer.SubscriptionPeriod": {
+					"default": "unknown_subscription_period",
+					"enum": ["unknown_subscription_period", "hourly", "monthly"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Option": {
+					"properties": {
+						"certification": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.CertificationOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"id": {
+							"type": "string"
+						},
+						"license": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.LicenseOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"manageable": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.PrivateNetworkOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_bandwidth": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.PublicBandwidthOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"remote_access": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.RemoteAccessOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.OS": {
+					"properties": {
+						"allowed": {
+							"type": "boolean"
+						},
+						"cloud_init_supported": {
+							"type": "boolean"
+						},
+						"cloud_init_version": {
+							"type": ["string", "null"]
+						},
+						"custom_partitioning_supported": {
+							"type": "boolean"
+						},
+						"enabled": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"license_required": {
+							"type": "boolean"
+						},
+						"logo_url": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"password": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.OS.OSField"
+						},
+						"service_password": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.OS.OSField"
+						},
+						"service_user": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.OS.OSField"
+						},
+						"ssh": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.OS.OSField"
+						},
+						"user": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.OS.OSField"
+						},
+						"version": {
+							"type": "string"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.OS.OSField": {
+					"properties": {
+						"default_value": {
+							"$ref": "#/components/schemas/google.protobuf.StringValue"
+						},
+						"editable": {
+							"type": "boolean"
+						},
+						"required": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.PersistentMemory": {
+					"properties": {
+						"capacity": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"frequency": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"type": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.PrivateNetworkOption": {
+					"properties": {
+						"bandwidth_in_bps": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.PublicBandwidthOption": {
+					"properties": {
+						"bandwidth_in_bps": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.RaidController": {
+					"properties": {
+						"model": {
+							"type": "string"
+						},
+						"raid_level": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.RemoteAccessOption": {
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Schema": {
+					"properties": {
+						"disks": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema.Disk"
+							},
+							"type": "array"
+						},
+						"filesystems": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema.Filesystem"
+							},
+							"type": "array"
+						},
+						"raids": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema.RAID"
+							},
+							"type": "array"
+						},
+						"zfs": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema.ZFS"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Schema.Disk": {
+					"properties": {
+						"device": {
+							"type": "string"
+						},
+						"partitions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema.Partition"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Schema.Filesystem": {
+					"properties": {
+						"device": {
+							"type": "string"
+						},
+						"format": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema.Filesystem.Format"
+						},
+						"mountpoint": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Schema.Filesystem.Format": {
+					"default": "unknown_format",
+					"enum": ["unknown_format", "fat32", "ext4", "swap", "zfs", "xfs"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Schema.Partition": {
+					"properties": {
+						"label": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema.Partition.Label"
+						},
+						"number": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"use_all_available_space": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Schema.Partition.Label": {
+					"default": "unknown_partition_label",
+					"enum": [
+						"unknown_partition_label",
+						"uefi",
+						"legacy",
+						"root",
+						"boot",
+						"swap",
+						"data",
+						"home",
+						"raid",
+						"zfs"
+					],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Schema.Pool": {
+					"properties": {
+						"devices": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"filesystem_options": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"name": {
+							"type": "string"
+						},
+						"options": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema.Pool.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Schema.Pool.Type": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "no_raid", "mirror", "raidz1", "raidz2"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Schema.RAID": {
+					"properties": {
+						"devices": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"level": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema.RAID.Level"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Schema.RAID.Level": {
+					"default": "unknown_raid_level",
+					"enum": [
+						"unknown_raid_level",
+						"raid_level_0",
+						"raid_level_1",
+						"raid_level_5",
+						"raid_level_6",
+						"raid_level_10"
+					],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Schema.ZFS": {
+					"properties": {
+						"pools": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema.Pool"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Server": {
+					"properties": {
+						"boot_type": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Server.BootType"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"description": {
+							"type": "string"
+						},
+						"domain": {
+							"type": "string"
+						},
+						"id": {
+							"type": "string"
+						},
+						"install": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Server.Install"
+						},
+						"ips": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.IP"
+							},
+							"type": "array"
+						},
+						"name": {
+							"type": "string"
+						},
+						"offer_id": {
+							"type": "string"
+						},
+						"offer_name": {
+							"type": "string"
+						},
+						"options": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Server.Option"
+							},
+							"type": "array"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"ping_status": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Server.PingStatus"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"protected": {
+							"type": "boolean"
+						},
+						"rescue_server": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Server.RescueServer"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Server.Status"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"user_data": {
+							"$ref": "#/components/schemas/google.protobuf.BytesValue"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Server.BootType": {
+					"default": "unknown_boot_type",
+					"enum": ["unknown_boot_type", "normal", "rescue"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Server.Install": {
+					"properties": {
+						"hostname": {
+							"type": "string"
+						},
+						"os_id": {
+							"type": "string"
+						},
+						"partitioning_schema": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema"
+						},
+						"service_url": {
+							"type": "string"
+						},
+						"service_user": {
+							"type": "string"
+						},
+						"ssh_key_ids": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Server.Install.Status"
+						},
+						"user": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Server.Install.Status": {
+					"default": "unknown",
+					"enum": ["unknown", "to_install", "installing", "completed", "error"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Server.Option": {
+					"properties": {
+						"certification": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.CertificationOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"license": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.LicenseOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"manageable": {
+							"type": "boolean"
+						},
+						"name": {
+							"type": "string"
+						},
+						"private_network": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.PrivateNetworkOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"public_bandwidth": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.PublicBandwidthOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"remote_access": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.baremetal.v1.RemoteAccessOption"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Server.Option.OptionStatus"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Server.Option.OptionStatus": {
+					"default": "option_status_unknown",
+					"enum": [
+						"option_status_unknown",
+						"option_status_enable",
+						"option_status_enabling",
+						"option_status_disabling",
+						"option_status_error"
+					],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Server.PingStatus": {
+					"default": "ping_status_unknown",
+					"enum": ["ping_status_unknown", "ping_status_up", "ping_status_down"],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.Server.RescueServer": {
+					"properties": {
+						"password": {
+							"type": "string"
+						},
+						"user": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Server.Status": {
+					"default": "unknown",
+					"enum": [
+						"unknown",
+						"delivering",
+						"ready",
+						"stopping",
+						"stopped",
+						"starting",
+						"error",
+						"deleting",
+						"locked",
+						"out_of_stock",
+						"ordered",
+						"resetting",
+						"migrating"
+					],
+					"type": "string"
+				},
+				"scaleway.baremetal.v1.ServerEvent": {
+					"properties": {
+						"action": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Setting": {
+					"properties": {
+						"enabled": {
+							"type": "boolean"
+						},
+						"id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.baremetal.v1.Setting.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.baremetal.v1.Setting.Type": {
+					"default": "unknown",
+					"enum": ["unknown", "smtp"],
+					"type": "string"
+				},
+				"scaleway.std.File": {
+					"properties": {
+						"content": {
+							"type": "string"
+						},
+						"content_type": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.TimeSeries": {
+					"properties": {
+						"metadata": {
+							"additionalProperties": true,
+							"properties": {
+								"<metadataKey>": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"name": {
+							"type": "string"
+						},
+						"points": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.std.TimeSeries.Point"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.std.TimeSeries.Point": {
+					"items": {
+						"oneOf": [
+							{
+								"format": "date-time",
+								"type": "string"
+							},
+							{
+								"type": "number"
+							}
+						]
+					},
+					"type": "array"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/baremetal/v1/zones/{zone}/batch-create-servers": {
+				"post": {
+					"operationId": "BatchCreateServers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"common_configuration": {
+											"$ref": "#/components/schemas/scaleway.baremetal.v1.CreateServerRequest"
+										},
+										"servers": {
+											"items": {
+												"$ref": "#/components/schemas/scaleway.baremetal.v1.BatchCreateServersRequest.ServerConfig"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.BatchCreateServersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/offers": {
+				"get": {
+					"operationId": "ListOffers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "subscription_period",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.Offer.SubscriptionPeriod"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.ListOffersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Offers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/offers/{offer_id}": {
+				"get": {
+					"operationId": "GetOffer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "offer_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Offer"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Offers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/options": {
+				"get": {
+					"operationId": "ListOptions",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "offer_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.ListOptionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Options"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/options/{option_id}": {
+				"get": {
+					"operationId": "GetOption",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "option_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Option"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Options"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/os": {
+				"get": {
+					"operationId": "ListOS",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "offer_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.ListOSResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["OS"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/os/{os_id}": {
+				"get": {
+					"operationId": "GetOS",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "os_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.OS"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["OS"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/partitioning-schemas/default": {
+				"get": {
+					"operationId": "GetDefaultPartitioningSchema",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "offer_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "os_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Partitioning-schemas"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/partitioning-schemas/validate": {
+				"post": {
+					"operationId": "ValidatePartitioningSchema",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"offer_id": {
+											"type": "string"
+										},
+										"os_id": {
+											"type": "string"
+										},
+										"partitioning_schema": {
+											"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Partitioning-schemas"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers": {
+				"get": {
+					"operationId": "ListServers",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.ListServersRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "tags",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "status",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "option_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.ListServersResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				},
+				"post": {
+					"operationId": "CreateServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": "string"
+										},
+										"install": {
+											"$ref": "#/components/schemas/scaleway.baremetal.v1.CreateServerRequest.Install"
+										},
+										"name": {
+											"type": "string"
+										},
+										"offer_id": {
+											"type": "string"
+										},
+										"option_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"organization_id": {
+											"deprecated": true,
+											"type": ["string", "null"]
+										},
+										"project_id": {
+											"type": ["string", "null"]
+										},
+										"protected": {
+											"type": "boolean"
+										},
+										"tags": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"user_data": {
+											"$ref": "#/components/schemas/google.protobuf.BytesValue"
+										}
+									},
+									"required": ["offer_id", "name", "description"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}": {
+				"delete": {
+					"operationId": "DeleteServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				},
+				"get": {
+					"operationId": "GetServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				},
+				"patch": {
+					"operationId": "UpdateServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"description": {
+											"type": ["string", "null"]
+										},
+										"name": {
+											"type": ["string", "null"]
+										},
+										"protected": {
+											"type": ["boolean", "null"]
+										},
+										"tags": {
+											"type": ["array", "null"]
+										},
+										"user_data": {
+											"$ref": "#/components/schemas/google.protobuf.BytesValue"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access": {
+				"delete": {
+					"operationId": "StopBMCAccess",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["BMC Access"]
+				},
+				"get": {
+					"operationId": "GetBMCAccess",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.BMCAccess"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["BMC Access"]
+				},
+				"post": {
+					"operationId": "StartBMCAccess",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"ip": {
+											"type": "string"
+										}
+									},
+									"required": ["ip"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.BMCAccess"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["BMC Access"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}/events": {
+				"get": {
+					"operationId": "ListServerEvents",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.ListServerEventsRequest.OrderBy"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.ListServerEventsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}/install": {
+				"post": {
+					"operationId": "InstallServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"hostname": {
+											"type": "string"
+										},
+										"os_id": {
+											"type": "string"
+										},
+										"partitioning_schema": {
+											"$ref": "#/components/schemas/scaleway.baremetal.v1.Schema"
+										},
+										"password": {
+											"type": ["string", "null"]
+										},
+										"service_password": {
+											"type": ["string", "null"]
+										},
+										"service_user": {
+											"type": ["string", "null"]
+										},
+										"ssh_key_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										},
+										"user": {
+											"type": ["string", "null"]
+										},
+										"user_data": {
+											"$ref": "#/components/schemas/scaleway.std.File",
+											"deprecated": true
+										}
+									},
+									"required": ["os_id", "hostname", "ssh_key_ids"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}/ips/{ip_id}": {
+				"patch": {
+					"operationId": "UpdateIP",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "ip_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"reverse": {
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.IP"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}/metrics": {
+				"get": {
+					"operationId": "GetServerMetrics",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.GetServerMetricsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}/migrate-offer-monthly": {
+				"post": {
+					"operationId": "MigrateServerToMonthlyOffer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}/options/{option_id}": {
+				"delete": {
+					"operationId": "DeleteOptionServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "option_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				},
+				"post": {
+					"operationId": "AddOptionServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "option_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"expires_at": {
+											"format": "date-time",
+											"type": ["string", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Servers"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}/reboot": {
+				"post": {
+					"operationId": "RebootServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"boot_type": {
+											"$ref": "#/components/schemas/scaleway.baremetal.v1.Server.BootType"
+										},
+										"ssh_key_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Server Actions"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}/start": {
+				"post": {
+					"operationId": "StartServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"boot_type": {
+											"$ref": "#/components/schemas/scaleway.baremetal.v1.Server.BootType"
+										},
+										"ssh_key_ids": {
+											"items": {
+												"type": "string"
+											},
+											"type": "array"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Server Actions"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/servers/{server_id}/stop": {
+				"post": {
+					"operationId": "StopServer",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "server_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Server"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Server Actions"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/settings": {
+				"get": {
+					"operationId": "ListSettings",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.baremetal.v1.ListSettingsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.ListSettingsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Options"]
+				}
+			},
+			"/baremetal/v1/zones/{zone}/settings/{setting_id}": {
+				"patch": {
+					"operationId": "UpdateSetting",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1", "nl-ams-2", "pl-waw-2", "pl-waw-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "setting_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"enabled": {
+											"type": ["boolean", "null"]
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.baremetal.v1.Setting"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Options"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

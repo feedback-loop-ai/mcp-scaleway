@@ -603,11 +603,15 @@ export async function handleCreateSnapshot(input: CreateSnapshotInput) {
 		const { config, client } = getConfig();
 		const region = input.region ?? config.defaultRegion;
 		const body: Record<string, unknown> = {
-			instance_id: input.instance_id,
 			name: input.name,
 		};
 		if (input.expires_at) body.expires_at = input.expires_at;
-		const data = await apiRequest(client, "POST", `${basePath(region)}/snapshots`, { body });
+		const data = await apiRequest(
+			client,
+			"POST",
+			`${basePath(region)}/instances/${input.instance_id}/snapshots`,
+			{ body },
+		);
 		return successResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -623,10 +627,12 @@ export async function handleRestoreSnapshot(input: RestoreSnapshotInput) {
 		};
 		if (input.node_type) body.node_type = input.node_type;
 		if (input.is_ha_cluster !== undefined) body.is_ha_cluster = input.is_ha_cluster;
+		if (input.high_availability_mode !== undefined)
+			body.high_availability_mode = input.high_availability_mode;
 		const data = await apiRequest(
 			client,
 			"POST",
-			`${basePath(region)}/snapshots/${input.snapshot_id}/create-instance-from-snapshot`,
+			`${basePath(region)}/snapshots/${input.snapshot_id}/create-instance`,
 			{ body },
 		);
 		return successResponse(data);

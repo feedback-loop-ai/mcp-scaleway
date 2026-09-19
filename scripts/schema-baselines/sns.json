@@ -1,0 +1,513 @@
+{
+	"sha256": "104258b9564962bab6550752e5611d204b24e8a6889aaf6dacb529a821db39a7",
+	"schema": {
+		"components": {
+			"schemas": {
+				"scaleway.mnq.v1beta1.ListSnsCredentialsRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"name_asc",
+						"name_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.mnq.v1beta1.ListSnsCredentialsResponse": {
+					"properties": {
+						"sns_credentials": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsCredentials"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mnq.v1beta1.SnsCredentials": {
+					"properties": {
+						"access_key": {
+							"type": "string"
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"permissions": {
+							"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsPermissions"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"secret_checksum": {
+							"type": "string"
+						},
+						"secret_key": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mnq.v1beta1.SnsInfo": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"sns_endpoint_url": {
+							"type": "string"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsInfo.Status"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.mnq.v1beta1.SnsInfo.Status": {
+					"default": "unknown_status",
+					"enum": ["unknown_status", "enabled", "disabled"],
+					"type": "string"
+				},
+				"scaleway.mnq.v1beta1.SnsPermissions": {
+					"properties": {
+						"can_manage": {
+							"type": ["boolean", "null"]
+						},
+						"can_publish": {
+							"type": ["boolean", "null"]
+						},
+						"can_receive": {
+							"type": ["boolean", "null"]
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		},
+		"paths": {
+			"/mnq/v1beta1/regions/{region}/activate-sns": {
+				"post": {
+					"operationId": "ActivateSns",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"project_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsInfo"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Topics and Events"]
+				}
+			},
+			"/mnq/v1beta1/regions/{region}/deactivate-sns": {
+				"post": {
+					"operationId": "DeactivateSns",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"project_id": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsInfo"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Topics and Events"]
+				}
+			},
+			"/mnq/v1beta1/regions/{region}/sns-credentials": {
+				"get": {
+					"operationId": "ListSnsCredentials",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.mnq.v1beta1.ListSnsCredentialsRequest.OrderBy"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.ListSnsCredentialsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Topics and Events credentials"]
+				},
+				"post": {
+					"operationId": "CreateSnsCredentials",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"permissions": {
+											"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsPermissions"
+										},
+										"project_id": {
+											"type": "string"
+										}
+									},
+									"required": ["project_id"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsCredentials"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Topics and Events credentials"]
+				}
+			},
+			"/mnq/v1beta1/regions/{region}/sns-credentials/{sns_credentials_id}": {
+				"delete": {
+					"operationId": "DeleteSnsCredentials",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "sns_credentials_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"204": {}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Topics and Events credentials"]
+				},
+				"get": {
+					"operationId": "GetSnsCredentials",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "sns_credentials_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsCredentials"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Topics and Events credentials"]
+				},
+				"patch": {
+					"operationId": "UpdateSnsCredentials",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "sns_credentials_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"name": {
+											"type": ["string", "null"]
+										},
+										"permissions": {
+											"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsPermissions"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsCredentials"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Topics and Events credentials"]
+				}
+			},
+			"/mnq/v1beta1/regions/{region}/sns-info": {
+				"get": {
+					"operationId": "GetSnsInfo",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.mnq.v1beta1.SnsInfo"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Topics and Events"]
+				}
+			}
+		},
+		"servers": [
+			{
+				"url": "https://api.scaleway.com"
+			}
+		]
+	}
+}

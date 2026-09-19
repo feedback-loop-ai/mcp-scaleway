@@ -152,6 +152,9 @@ export async function handleGetClusterKubeconfig(input: GetClusterKubeconfigInpu
 		const response = await client.fetch<unknown>({
 			method: "GET",
 			path: buildPath(input.region, `/clusters/${input.cluster_id}/kubeconfig`),
+			urlParams: new URLSearchParams(
+				input.endpoint === undefined ? {} : { endpoint: input.endpoint },
+			),
 		});
 		return formatSuccess(response);
 	} catch (error) {

@@ -5,6 +5,7 @@ import {
 	handleListAuditTrailEvents,
 	handleListAuditTrailExportJobs,
 	handleListAuditTrailProducts,
+	handleTestAuditTrailCustomAlertRule,
 } from "./handlers.js";
 import {
 	CreateAuditTrailExportJobParams,
@@ -12,9 +13,17 @@ import {
 	ListAuditTrailEventsParams,
 	ListAuditTrailExportJobsParams,
 	ListAuditTrailProductsParams,
+	TestAuditTrailCustomAlertRuleParams,
 } from "./types.js";
 
 export function registerAuditTrailTools(server: McpServer): void {
+	server.tool(
+		"scaleway_audit_trail_test_custom_alert_rule",
+		"Evaluate whether a custom Audit Trail alert condition is currently satisfied without creating or enabling a rule",
+		TestAuditTrailCustomAlertRuleParams.shape,
+		async (params) =>
+			handleTestAuditTrailCustomAlertRule(TestAuditTrailCustomAlertRuleParams.parse(params)),
+	);
 	server.tool(
 		"scaleway_audit_trail_list_events",
 		"List Scaleway Audit Trail events for an organization, with rich filters (resource type, method, HTTP status, date ranges, principal, product/service, source IP). Cursor-paginated.",

@@ -7,11 +7,13 @@ import type {
 	CreateKeyInput,
 	DecryptInput,
 	DeleteKeyInput,
+	DeleteKeyMaterialInput,
 	DisableKeyInput,
 	EnableKeyInput,
 	EncryptInput,
 	GenerateDataKeyInput,
 	GetKeyInput,
+	ListKeyRotationsInput,
 	ListKeysInput,
 	ProtectKeyInput,
 	RotateKeyInput,
@@ -27,6 +29,32 @@ function formatSuccess(data: unknown) {
 	return {
 		content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }],
 	};
+}
+
+export async function handleListKeyRotations(
+	client: Client,
+	input: z.infer<typeof ListKeyRotationsInput>,
+) {
+	try {
+		const response = await createApi(client).listKeyRotations(input);
+		return formatSuccess(
+			buildPaginatedResponse(response.rotations, response.totalCount, input.page, input.pageSize),
+		);
+	} catch (error) {
+		return formatErrorResponse(mapScalewayError(error));
+	}
+}
+
+export async function handleDeleteKeyMaterial(
+	client: Client,
+	input: z.infer<typeof DeleteKeyMaterialInput>,
+) {
+	try {
+		await createApi(client).deleteKeyMaterial(input);
+		return formatSuccess({ message: "Imported key material deleted", keyId: input.keyId });
+	} catch (error) {
+		return formatErrorResponse(mapScalewayError(error));
+	}
 }
 
 export async function handleListKeys(client: Client, input: z.infer<typeof ListKeysInput>) {
