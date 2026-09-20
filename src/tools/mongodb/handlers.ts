@@ -300,7 +300,7 @@ export async function handleRestoreSnapshot(params: RestoreSnapshotParams) {
 			node_type: params.node_type,
 			node_amount: params.node_amount,
 		};
-		if (params.volume_type) body.volume_type = params.volume_type;
+		body.volume_type = params.volume_type;
 
 		const data = await client.fetch<unknown>({
 			method: "POST",

@@ -274,7 +274,7 @@ describe("contract: marketplace request shapes", () => {
 				local_images: [FIXTURE_LOCAL_IMAGE],
 				total_count: 5,
 			});
-			const input = ListLocalImagesInput.parse({});
+			const input = ListLocalImagesInput.parse({ zone: "fr-par-1" });
 			const result = await handleListLocalImages(client, input);
 
 			const data = JSON.parse(result.content[0].text);

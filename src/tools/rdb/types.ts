@@ -210,8 +210,8 @@ export const CreateInstanceInput = z.object({
 	disable_backup: z.boolean().optional().describe("Disable automatic backups"),
 	volume_type: z.enum(["lssd", "bssd"]).optional().describe("Volume type"),
 	volume_size: z.number().int().optional().describe("Volume size in bytes"),
-	user_name: z.string().optional().describe("Initial admin username"),
-	password: z.string().optional().describe("Initial admin password"),
+	user_name: z.string().describe("Initial admin username"),
+	password: z.string().describe("Initial admin password"),
 	tags: z.array(z.string()).optional().describe("Tags"),
 	backup_same_region: z.boolean().optional().describe("Store backups in the same region"),
 	init_endpoints: z
@@ -348,7 +348,7 @@ export const CreateBackupInput = z.object({
 	region: ScalewayRegion.optional().describe("Region of the instance"),
 	instance_id: z.string().describe("Instance UUID"),
 	name: z.string().describe("Backup name"),
-	database_name: z.string().optional().describe("Database name to backup"),
+	database_name: z.string().describe("Database name to backup"),
 	expires_at: z.string().optional().describe("Expiration date (RFC 3339)"),
 });
 export type CreateBackupInput = z.infer<typeof CreateBackupInput>;

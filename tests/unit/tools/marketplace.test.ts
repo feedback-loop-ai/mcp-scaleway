@@ -424,7 +424,7 @@ describe("marketplace handlers", () => {
 			const fetchCall = (client.fetch as Mock).mock.calls[0][0];
 			const params = fetchCall.urlParams as URLSearchParams;
 			expect(params.has("order_by")).toBe(false);
-			expect(params.has("zone")).toBe(false);
+			expect(params.get("zone")).toBe("fr-par-1");
 			expect(params.has("arch")).toBe(false);
 			expect(params.has("image_id")).toBe(false);
 			expect(params.has("version_id")).toBe(false);

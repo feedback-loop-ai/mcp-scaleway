@@ -128,8 +128,8 @@ export async function handleListDataSources(input: ListDataSourcesInput) {
 		};
 		return formatSuccess(
 			buildPaginatedResponse(
-				response.data_sources ?? [],
-				response.total_count ?? 0,
+				response.data_sources,
+				response.total_count,
 				input.page,
 				input.pageSize,
 			),
@@ -148,9 +148,7 @@ export async function handleCreateDataSource(input: CreateDataSourceInput) {
 			project_id: input.project_id,
 			name: input.name,
 		};
-		if (input.type) {
-			body.type = input.type;
-		}
+		body.type = input.type;
 		const response = await client.fetch({
 			method: "POST",
 			path: `/${COCKPIT_API_PREFIX}/regions/${region}/data-sources`,
@@ -203,12 +201,7 @@ export async function handleListTokens(input: ListTokensInput) {
 			total_count: number;
 		};
 		return formatSuccess(
-			buildPaginatedResponse(
-				response.tokens ?? [],
-				response.total_count ?? 0,
-				input.page,
-				input.pageSize,
-			),
+			buildPaginatedResponse(response.tokens, response.total_count, input.page, input.pageSize),
 		);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -279,8 +272,8 @@ export async function handleListGrafanaUsers(input: ListGrafanaUsersInput) {
 		};
 		return formatSuccess(
 			buildPaginatedResponse(
-				response.grafana_users ?? [],
-				response.total_count ?? 0,
+				response.grafana_users,
+				response.total_count,
 				input.page,
 				input.pageSize,
 			),
@@ -422,8 +415,8 @@ export async function handleListContactPoints(input: ListContactPointsInput) {
 		};
 		return formatSuccess(
 			buildPaginatedResponse(
-				response.contact_points ?? [],
-				response.total_count ?? 0,
+				response.contact_points,
+				response.total_count,
 				input.page,
 				input.pageSize,
 			),
@@ -459,8 +452,8 @@ export async function handleDeleteContactPoint(input: DeleteContactPointInput) {
 		const client = createScalewayClient(config);
 		const region = resolveRegion(input.region);
 		await client.fetch({
-			method: "DELETE",
-			path: `/${COCKPIT_API_PREFIX}/regions/${region}/alert-manager/contact-points`,
+			method: "POST",
+			path: `/${COCKPIT_API_PREFIX}/regions/${region}/alert-manager/contact-points/delete`,
 			body: JSON.stringify({
 				project_id: input.project_id,
 				email: { to: input.email },
@@ -478,38 +471,11 @@ export async function handleDeleteContactPoint(input: DeleteContactPointInput) {
 
 // --- Managed Alerts ---
 
+/** Compatibility alias: managed alerts use the default receiver's contact points. */
 export async function handleListManagedAlertsContactPoints(
 	input: ListManagedAlertsContactPointsInput,
 ) {
-	try {
-		const config = loadAuthConfig();
-		const client = createScalewayClient(config);
-		const region = resolveRegion(input.region);
-		const pagination = paginationToQuery(input.page, input.pageSize);
-		const params = new URLSearchParams({
-			project_id: input.project_id,
-			page: String(pagination.page),
-			page_size: String(pagination.page_size),
-		});
-		const response = (await client.fetch({
-			method: "GET",
-			path: `/${COCKPIT_API_PREFIX}/regions/${region}/alert-manager/managed-alerts-contact-points`,
-			urlParams: params,
-		})) as {
-			contact_points: unknown[];
-			total_count: number;
-		};
-		return formatSuccess(
-			buildPaginatedResponse(
-				response.contact_points ?? [],
-				response.total_count ?? 0,
-				input.page,
-				input.pageSize,
-			),
-		);
-	} catch (error) {
-		return formatErrorResponse(mapScalewayError(error));
-	}
+	return handleListContactPoints(input);
 }
 
 export async function handleEnableManagedAlerts(input: EnableManagedAlertsInput) {

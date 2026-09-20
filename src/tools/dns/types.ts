@@ -100,10 +100,7 @@ export const ListDnsRecordsParams = PaginationParams.extend({
 	type: RecordType.optional().describe("Filter by record type"),
 	id: z.string().optional().describe("Filter by record ID"),
 	project_id: z.string().uuid().optional().describe("Filter by project ID"),
-	order_by: z
-		.enum(["name_asc", "name_desc", "type_asc", "type_desc"])
-		.optional()
-		.describe("Sort order"),
+	order_by: z.enum(["name_asc", "name_desc"]).optional().describe("Sort order"),
 });
 export type ListDnsRecordsParams = z.infer<typeof ListDnsRecordsParams>;
 

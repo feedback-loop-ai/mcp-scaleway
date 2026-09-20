@@ -1,8 +1,10 @@
 import type { Client } from "@scaleway/sdk-client";
+import { z } from "zod";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
 import { buildPaginatedResponse, paginationToQuery } from "../../shared/pagination.js";
+import { UpstreamResponseError } from "../../shared/response-validation.js";
 import type {
 	AddAclRulesInput,
 	CreateBackupInput,
@@ -161,8 +163,8 @@ export async function handleCreateInstance(input: CreateInstanceInput) {
 		if (input.disable_backup !== undefined) body.disable_backup = input.disable_backup;
 		if (input.volume_type) body.volume_type = input.volume_type;
 		if (input.volume_size !== undefined) body.volume_size = input.volume_size;
-		if (input.user_name) body.user_name = input.user_name;
-		if (input.password) body.password = input.password;
+		body.user_name = input.user_name;
+		body.password = input.password;
 		if (input.tags) body.tags = input.tags;
 		if (input.backup_same_region !== undefined) body.backup_same_region = input.backup_same_region;
 		if (input.init_endpoints) body.init_endpoints = input.init_endpoints;
@@ -429,7 +431,7 @@ export async function handleCreateBackup(input: CreateBackupInput) {
 			instance_id: input.instance_id,
 			name: input.name,
 		};
-		if (input.database_name) body.database_name = input.database_name;
+		body.database_name = input.database_name;
 		if (input.expires_at) body.expires_at = input.expires_at;
 		const data = await apiRequest(client, "POST", `${basePath(region)}/backups`, { body });
 		return successResponse(data);
@@ -469,7 +471,9 @@ export async function handleListEndpoints(input: ListEndpointsInput) {
 			"GET",
 			`${basePath(region)}/instances/${input.instance_id}`,
 		)) as { endpoints?: unknown[] };
-		return successResponse({ endpoints: data.endpoints ?? [] });
+		if (!z.array(z.unknown()).safeParse(data.endpoints).success)
+			throw new UpstreamResponseError("invalid_schema");
+		return successResponse({ endpoints: data.endpoints });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
@@ -648,8 +652,7 @@ export async function handleListNodeTypes(input: ListNodeTypesInput) {
 		const { config, client } = getConfig();
 		const region = input.region ?? config.defaultRegion;
 		const params = new URLSearchParams();
-		if (input.include_disabled_types !== undefined)
-			params.set("include_disabled_types", String(input.include_disabled_types));
+		params.set("include_disabled_types", String(input.include_disabled_types ?? false));
 		const data = (await apiRequest(client, "GET", `${basePath(region)}/node-types`, {
 			urlParams: params,
 		})) as {

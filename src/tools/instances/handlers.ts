@@ -64,7 +64,7 @@ export async function handleListServers(input: ListServersInput) {
 		const client = getClient();
 		const params = buildParams({
 			page: input.page,
-			page_size: input.page_size,
+			per_page: input.page_size,
 			project: input.project,
 			name: input.name,
 			tags: input.tags,
@@ -154,7 +154,7 @@ export async function handleListVolumes(input: ListVolumesInput) {
 		const client = getClient();
 		const params = buildParams({
 			page: input.page,
-			page_size: input.page_size,
+			per_page: input.page_size,
 			name: input.name,
 			volume_type: input.volume_type,
 			project: input.project,
@@ -226,7 +226,7 @@ export async function handleListSecurityGroups(input: ListSecurityGroupsInput) {
 		const client = getClient();
 		const params = buildParams({
 			page: input.page,
-			page_size: input.page_size,
+			per_page: input.page_size,
 			name: input.name,
 			project: input.project,
 		});
@@ -301,7 +301,7 @@ export async function handleListIps(input: ListIpsInput) {
 		const client = getClient();
 		const params = buildParams({
 			page: input.page,
-			page_size: input.page_size,
+			per_page: input.page_size,
 			name: input.name,
 			project: input.project,
 			type: input.type,
@@ -374,7 +374,7 @@ export async function handleListSnapshots(input: ListSnapshotsInput) {
 		const client = getClient();
 		const params = buildParams({
 			page: input.page,
-			page_size: input.page_size,
+			per_page: input.page_size,
 			name: input.name,
 			project: input.project,
 		});

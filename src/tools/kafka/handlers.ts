@@ -177,13 +177,13 @@ export async function handleRenewClusterCertificateAuthority(
 ) {
 	try {
 		const client = getClient();
-		const response = await client.fetch<unknown>({
+		await client.fetch<void>({
 			method: "POST",
 			path: `${KAFKA_API_PREFIX}/${params.region}/clusters/${params.clusterId}/renew-certificate-authority`,
 			body: JSON.stringify({}),
 			headers: { "Content-Type": "application/json" },
 		});
-		return jsonResponse(response);
+		return jsonResponse({ success: true });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}

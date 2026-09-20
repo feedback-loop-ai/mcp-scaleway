@@ -46,7 +46,8 @@ export async function handleListDnsZones(params: ListDnsZonesParams) {
 		const pq = paginationToQuery(params.page, params.pageSize);
 		query.set("page", String(pq.page));
 		query.set("page_size", String(pq.page_size));
-		if (params.domain) query.set("domain", params.domain);
+		query.set("domain", params.domain ?? "");
+		query.set("dns_zone", "");
 		if (params.project_id) query.set("project_id", params.project_id);
 		if (params.order_by) query.set("order_by", params.order_by);
 		if (params.dns_zones) query.set("dns_zones", params.dns_zones);
@@ -95,9 +96,10 @@ export async function handleCreateDnsZone(params: CreateDnsZoneParams) {
 export async function handleUpdateDnsZone(params: UpdateDnsZoneParams) {
 	try {
 		const client = getClient();
-		const body: Record<string, unknown> = {};
-		if (params.new_dns_zone !== undefined) body.new_dns_zone = params.new_dns_zone;
-		if (params.project_id !== undefined) body.project_id = params.project_id;
+		const body: Record<string, unknown> = {
+			new_dns_zone: params.new_dns_zone ?? null,
+			project_id: params.project_id ?? loadAuthConfig().defaultProjectId,
+		};
 
 		const response = await client.fetch<unknown>({
 			method: "PATCH",
@@ -176,7 +178,7 @@ export async function handleListDnsRecords(params: ListDnsRecordsParams) {
 		const pq = paginationToQuery(params.page, params.pageSize);
 		query.set("page", String(pq.page));
 		query.set("page_size", String(pq.page_size));
-		if (params.name) query.set("name", params.name);
+		query.set("name", params.name ?? "");
 		if (params.type) query.set("type", params.type);
 		if (params.id) query.set("id", params.id);
 		if (params.project_id) query.set("project_id", params.project_id);

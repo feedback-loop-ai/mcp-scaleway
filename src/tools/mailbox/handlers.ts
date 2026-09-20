@@ -128,6 +128,8 @@ export async function handleValidateDomainRecords(params: ValidateDomainRecordsP
 		await client.fetch<void>({
 			method: "POST",
 			path: `${MAILBOX_API_PREFIX}/domains/${params.domainId}/validate-records`,
+			body: "{}",
+			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse({ validated: true, domainId: params.domainId });
 	} catch (error) {
@@ -246,6 +248,8 @@ export async function handleRestoreMailbox(params: RestoreMailboxParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${MAILBOX_API_PREFIX}/mailboxes/${params.mailboxId}/restore`,
+			body: "{}",
+			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse(response);
 	} catch (error) {
@@ -290,7 +294,7 @@ export async function handleListAliases(params: ListAliasesParams) {
 				["page", params.page],
 				["page_size", params.pageSize],
 				["mailbox_id", params.mailboxId],
-				["project_id", params.projectId],
+				["project_id", params.projectId ?? loadAuthConfig().defaultProjectId],
 				["status", params.status],
 				["order_by", params.orderBy],
 			),

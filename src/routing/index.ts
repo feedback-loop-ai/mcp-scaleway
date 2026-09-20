@@ -3,7 +3,10 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { Tool } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import type { Operation, OperationRegistry } from "../gateway/registry.js";
+import { operationAvailability } from "../shared/availability.js";
 import { inputSchemaFor } from "../shared/catalog.js";
+import { dispatch } from "../shared/observability.js";
+import { StructuredOutput, outputSchema } from "../shared/output.js";
 import { localCandidates } from "./fallback.js";
 import { type Decision, type DecisionProvider, MAX_CHOICES, validateDecision } from "./provider.js";
 
@@ -51,7 +54,12 @@ export interface RouteResult {
 	providerCalls: number;
 	model?: string;
 	usage?: Decision["usage"];
-	reason?: "provider_unavailable" | "provider_not_configured" | "catalog_capacity" | "cancelled";
+	reason?:
+		| "provider_unavailable"
+		| "provider_not_configured"
+		| "catalog_capacity"
+		| "cancelled"
+		| "no_available_operations";
 }
 
 const SENTINELS = {
@@ -80,11 +88,13 @@ function candidateDetails(op: Operation): Omit<RouteCandidate, "probability"> {
 
 export function createIntentRouter(registry: OperationRegistry, options: RouterOptions) {
 	const policy = RoutingPolicy.parse(options);
-	const operations = registry.operations.map(candidateDetails);
+	const availableOperations = registry.operations.filter((op) => !operationAvailability(op.tool));
+	const availableRegistry = { ...registry, operations: availableOperations };
+	const operations = availableOperations.map(candidateDetails);
 	const catalogVersion = createHash("sha256")
 		.update(
 			JSON.stringify(
-				registry.operations.map(({ op, area, api, description, readOnly, inputSchema }) => ({
+				availableOperations.map(({ op, area, api, description, readOnly, inputSchema }) => ({
 					op,
 					area,
 					api,
@@ -118,9 +128,12 @@ export function createIntentRouter(registry: OperationRegistry, options: RouterO
 			providerCalls: 0,
 		};
 		const fallback = (reason: RouteResult["reason"]): RouteResult => {
-			const candidates = localCandidates(registry, parsed.intent, parsed.context, parsed.limit).map(
-				candidateDetails,
-			);
+			const candidates = localCandidates(
+				availableRegistry,
+				parsed.intent,
+				parsed.context,
+				parsed.limit,
+			).map(candidateDetails);
 			return {
 				...base,
 				model: undefined,
@@ -132,6 +145,7 @@ export function createIntentRouter(registry: OperationRegistry, options: RouterO
 			};
 		};
 		if (signal?.aborted) return { ...base, reason: "cancelled" };
+		if (operations.length === 0) return fallback("no_available_operations");
 		const provider = options.provider;
 		if (!provider) return fallback("provider_not_configured");
 		const controller = new AbortController();
@@ -252,10 +266,22 @@ export function registerRoutingTool(
 	};
 	server.registerTool(
 		name,
-		{ description, inputSchema: RouteInput.shape, annotations },
-		async (input, extra) => ({
-			content: [{ type: "text", text: JSON.stringify(await router.route(input, extra.signal)) }],
-		}),
+		{
+			description,
+			inputSchema: RouteInput.shape,
+			outputSchema: StructuredOutput.shape,
+			annotations,
+		},
+		(input, extra) =>
+			dispatch(name, async () => ({
+				content: [{ type: "text", text: JSON.stringify(await router.route(input, extra.signal)) }],
+			})),
 	);
-	return { name, description, inputSchema: inputSchemaFor(RouteInput.shape), annotations };
+	return {
+		name,
+		description,
+		inputSchema: inputSchemaFor(RouteInput.shape),
+		outputSchema,
+		annotations,
+	};
 }

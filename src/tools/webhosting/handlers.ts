@@ -172,7 +172,9 @@ export async function handleRestoreHosting(input: RestoreHostingInput) {
 
 		const response = await client.fetch<unknown>({
 			method: "POST",
-			path: `${API_PREFIX}/regions/${region}/hostings/${input.hosting_id}/restore`,
+			path: `${API_PREFIX}/regions/${region}/hostings/${encodeURIComponent(input.hosting_id)}/backups/${encodeURIComponent(input.backup_id)}/restore`,
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({}),
 		});
 
 		return formatSuccess(response);
@@ -188,7 +190,7 @@ export async function handleGetDnsRecords(input: GetDnsRecordsInput) {
 
 		const response = await client.fetch<unknown>({
 			method: "GET",
-			path: `${API_PREFIX}/regions/${region}/hostings/${input.hosting_id}/dns-records`,
+			path: `${API_PREFIX}/regions/${region}/domains/${encodeURIComponent(input.domain)}/dns-records`,
 		});
 
 		return formatSuccess(response);
@@ -205,9 +207,6 @@ export async function handleListOffers(input: ListOffersInput) {
 
 		if (input.order_by) params.set("order_by", input.order_by);
 		if (input.hosting_id) params.set("hosting_id", input.hosting_id);
-		if (input.without_options !== undefined)
-			params.set("without_options", String(input.without_options));
-		if (input.only_options !== undefined) params.set("only_options", String(input.only_options));
 		if (input.control_panels) {
 			for (const cp of input.control_panels) params.append("control_panels", cp);
 		}

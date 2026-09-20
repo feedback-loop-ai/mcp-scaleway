@@ -93,7 +93,7 @@ describe("instances handlers", () => {
 			const call = mockFetch.mock.calls[0][0];
 			const params: URLSearchParams = call.urlParams;
 			expect(params.get("page")).toBe("2");
-			expect(params.get("page_size")).toBe("10");
+			expect(params.get("per_page")).toBe("10");
 			expect(params.get("project")).toBe(UUID);
 			expect(params.get("name")).toBe("test");
 			expect(params.getAll("tags")).toEqual(["web", "prod"]);

@@ -416,6 +416,7 @@ describe("lb types schemas", () => {
 	it("validates CreateBackendParams required fields", () => {
 		const result = CreateBackendParams.parse({
 			lb_id: UUID,
+			health_check: { port: 80 },
 			name: "be",
 			forward_protocol: "http",
 			forward_port: 8080,

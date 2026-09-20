@@ -104,6 +104,12 @@ jobs:
           key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
           restore-keys: bun-${{ runner.os }}-
       - run: bun install --frozen-lockfile
+      - name: Verify generated operation contracts and examples
+        run: |
+          bun run gen:operations
+          bun run gen:contracts
+          bun run gen:examples
+          git diff --exit-code -- src/gateway/operations.json src/gateway/examples.json src/shared/response-contracts.json tests/contract-evidence.json
       - run: bun run test:parity
 
   build:

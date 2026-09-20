@@ -300,12 +300,18 @@ describe("contract: DeleteHosting request shape", () => {
 });
 
 /**
- * API: POST /webhosting/v1/regions/{region}/hostings/{hosting_id}/restore
+ * API: POST /webhosting/v1/regions/{region}/hostings/{hosting_id}/backups/{backup_id}/restore
  * Spec: specs/scaleway-api/webhosting/api-reference.md#restore-hosting
  */
 describe("contract: RestoreHosting request shape", () => {
+	it("rejects legacy requests without an explicitly selected backup", () => {
+		expect(() => RestoreHostingInput.parse({ hosting_id: VALID_UUID })).toThrow();
+	});
+
 	it("validates a restore request", () => {
-		expect(() => RestoreHostingInput.parse({ hosting_id: VALID_UUID })).not.toThrow();
+		expect(() =>
+			RestoreHostingInput.parse({ hosting_id: VALID_UUID, backup_id: "backup-1" }),
+		).not.toThrow();
 	});
 
 	it("rejects a restore missing the hosting_id", () => {
@@ -314,12 +320,16 @@ describe("contract: RestoreHosting request shape", () => {
 });
 
 /**
- * API: GET /webhosting/v1/regions/{region}/hostings/{hosting_id}/dns-records
+ * API: GET /webhosting/v1/regions/{region}/domains/{domain}/dns-records
  * Spec: specs/scaleway-api/webhosting/api-reference.md#get-dns-records
  */
 describe("contract: GetDnsRecords request shape", () => {
+	it("requires the actual domain instead of an unrelated hosting ID", () => {
+		expect(() => GetDnsRecordsInput.parse({ hosting_id: VALID_UUID })).toThrow();
+	});
+
 	it("validates a get-dns-records request", () => {
-		expect(() => GetDnsRecordsInput.parse({ hosting_id: VALID_UUID })).not.toThrow();
+		expect(() => GetDnsRecordsInput.parse({ domain: "example.com" })).not.toThrow();
 	});
 
 	it("rejects a request missing the hosting_id", () => {
@@ -342,10 +352,12 @@ describe("contract: ListOffers request shape", () => {
 			order_by: "price_asc",
 			hosting_id: VALID_UUID,
 			control_panels: ["cpanel"],
-			without_options: true,
-			only_options: false,
 		};
 		expect(() => ListOffersInput.parse(input)).not.toThrow();
+	});
+
+	it.each(["without_options", "only_options"])("rejects unsupported filter %s", (field) => {
+		expect(() => ListOffersInput.parse({ [field]: true })).toThrow();
 	});
 
 	it("rejects an invalid order-by value", () => {

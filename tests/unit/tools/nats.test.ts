@@ -103,7 +103,6 @@ describe("nats handlers", () => {
 				page: 1,
 				pageSize: 10,
 				projectId: "00000000-0000-0000-0000-000000000001",
-				name: "test",
 				orderBy: "name_asc",
 			});
 
@@ -112,7 +111,7 @@ describe("nats handlers", () => {
 			expect(callArgs.urlParams.get("page")).toBe("1");
 			expect(callArgs.urlParams.get("page_size")).toBe("10");
 			expect(callArgs.urlParams.get("project_id")).toBe("00000000-0000-0000-0000-000000000001");
-			expect(callArgs.urlParams.get("name")).toBe("test");
+			expect(callArgs.urlParams.has("name")).toBe(false);
 			expect(callArgs.urlParams.get("order_by")).toBe("name_asc");
 		});
 

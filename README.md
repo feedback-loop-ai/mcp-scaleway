@@ -1432,6 +1432,85 @@ Finally, call `scaleway_read` with the required instance ID:
 
 These are tool inputs, not shell commands. Descriptions preserve required fields, enum values, bounds, defaults, record value types and substantive warnings. The original Zod validators and callbacks still run. Search is bounded; follow `nextOffset` until absent rather than assuming the first page is exhaustive.
 
+### Examples and structured results
+
+`scaleway_describe` includes a synthetic `examples` entry for every operation. The same
+JSON arguments appear in flat/both tool descriptions. CI validates all examples against
+the registered strict Zod schemas; replace example IDs and values with your own resources
+before executing. Regenerate them after input-schema changes with `bun run gen:examples`.
+
+All gateway, flat and optional routing tools publish an MCP `outputSchema` and return
+`structuredContent` alongside their original text/content blocks:
+
+```json
+{"format":"json","data":{"items":[],"totalCount":0,"page":1,"pageSize":20}}
+```
+
+Read `structuredContent.data` for the original parsed JSON result. `format: "text"`
+retains a non-JSON text response; `format: "content"` contains the original MCP content
+array when there are multiple or non-text blocks. Error flags and legacy content remain
+available. The output schema describes this shared MCP envelope; upstream Scaleway
+resource validation is a separate transport contract. `scaleway_describe` exposes the
+MCP output schema before execution. Native SDK input-validation errors keep SDK behavior.
+
+The representative offline search-to-describe flow measures serialized tool results,
+including both text and structured content, against a 6,144-byte budget. Its measured
+size is 4,074 bytes; JSON-RPC framing is excluded. These are bytes, not token counts.
+
+Six legacy operations are temporarily unavailable because their current wire contracts
+could not be verified: Cockpit get/activate/deactivate and Inference standalone EULA
+acceptance, deployment events and endpoint listing. Search/describe expose an
+`availability` record with reasons, source links and migration guidance. Their identifiers
+remain callable for compatibility but return a local 501 before any cloud request;
+flat descriptions carry the same restriction. Jev and local routing exclude them from
+suggestions. This is a verification blocker, not evidence that Scaleway retired them.
+
+### Upstream contracts and 0.5.0 migration
+
+Successful upstream responses are checked before SDK unmarshalling or raw-response
+processing. The checked-in [wire catalog](src/shared/response-contracts.json) records
+public schema, official SDK and protocol sources with dates and hashes. Invalid JSON,
+wrong field types, unexpected success statuses and malformed S3 XML/headers produce
+sanitized errors. Validation retains unknown wire fields; existing SDK projections
+still determine their final representation. The bounded Generative tool-call nullable
+content exception is documented as a compatibility inference, not live verification.
+
+Version 0.5.0 corrects previously invalid signatures: Webhosting DNS requires `domain`,
+backup restore requires an explicit `backup_id`, and several creation/update operations
+now require the fields documented by Scaleway. NATS account `name` filtering and
+Webhosting offer `without_options`/`only_options` inputs are explicitly rejected pending
+verified support. Use `scaleway_describe` to regenerate calls before upgrading. Bucket
+information returns `null` for creation date, total size and total object count when
+these cannot be established by its requests. Full migration evidence is in the
+[remediation record](specs/064-remaining-remediation/endpoints.md) and
+[request reconciliation](specs/064-remaining-remediation/contracts/request-reconciliation.md).
+
+`bun run gen:contracts` regenerates the wire catalog and operation evidence offline.
+`bun run gen:contracts --refresh` fetches the recorded public schema URLs for review;
+SDK/compatibility overlays fail regeneration if their base source changed until reviewed.
+`bun run test:parity` executes the independent HTTP contract suite as well as the catalog
+traceability gate. Ignored local evidence files are not required by CI.
+
+### Local health and operation traces
+
+Run `bun run health` from source, or `mcp-scaleway --health` after installation. The
+command validates response schemas, configuration and tool registration, reports JSON
+on stdout and exits 0 on success or 1 on failure. It uses no credentials, opens no stdio
+transport and makes no cloud or model requests. It checks local readiness; it does not
+establish Scaleway availability. Jev can be absent or lack credentials.
+
+Each dispatched gateway, flat or routing callback emits one JSON line on stderr:
+
+```json
+{"event":"operation","op":"instances_list_servers","outcome":"success","durationMs":12.345}
+```
+
+Logs contain only registered operation/tool identifiers, outcome and elapsed milliseconds.
+They exclude inputs, resource contents, credentials and exception messages. SDK input
+validation can reject a request before callback dispatch; those requests emit no dispatch
+trace. Normal startup failures also use sanitized JSON on stderr. No health tool is added
+to the default four-tool MCP surface.
+
 ### Optional Jev intent routing
 
 Enable `scaleway_route` to ask [TypeSafe's Jev](https://docs.typesafe.ai/introduction)
@@ -1726,7 +1805,7 @@ If using Claude Desktop or Claude Code, check that the `env` block in your confi
 
 - Verify the server is running: `npx mcp-scaleway` should start without errors
 - Check that your MCP client config is correct
-- Ensure `node` (18+) is in your PATH
+- Ensure `node` (20.20.2+) is in your PATH
 
 **"Permission denied" errors from Scaleway API**
 

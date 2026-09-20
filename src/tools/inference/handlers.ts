@@ -54,8 +54,8 @@ export async function handleListDeployments(
 		const query = { ...paginationToQuery(page, pageSize), ...filters };
 		const data = await apiCall("GET", region, "/deployments", undefined, query);
 		const result = buildPaginatedResponse(
-			(data.deployments as unknown[]) ?? [],
-			(data.total_count as number) ?? 0,
+			data.deployments as unknown[],
+			data.total_count as number,
 			page,
 			pageSize,
 		);
@@ -76,11 +76,31 @@ export async function handleGetDeployment(
 	}
 }
 
+function endpointWire(input: {
+	is_public?: boolean;
+	private_network_id?: string;
+	disable_auth?: boolean;
+}) {
+	return {
+		...(input.disable_auth !== undefined ? { disable_auth: input.disable_auth } : {}),
+		...(input.is_public === true ? { public_network: {} } : {}),
+		...(input.private_network_id
+			? { private_network: { private_network_id: input.private_network_id } }
+			: {}),
+	};
+}
+
 export async function handleCreateDeployment(
 	input: z.infer<typeof import("./types.js").CreateDeploymentInput>,
 ) {
 	try {
-		const { region, ...body } = input;
+		const { region, node_type, endpoints, ...fields } = input;
+		const body = {
+			...fields,
+			project_id: fields.project_id ?? loadAuthConfig().defaultProjectId,
+			node_type_name: node_type,
+			endpoints: (endpoints ?? []).map(endpointWire),
+		};
 		const data = await apiCall("POST", region, "/deployments", body);
 		return jsonResponse(data);
 	} catch (error) {
@@ -125,8 +145,8 @@ export async function handleListDeploymentEvents(
 			query,
 		);
 		const result = buildPaginatedResponse(
-			(data.events as unknown[]) ?? [],
-			(data.total_count as number) ?? 0,
+			data.events as unknown[],
+			data.total_count as number,
 			page,
 			pageSize,
 		);
@@ -146,8 +166,8 @@ export async function handleListEndpoints(
 		const query = { ...paginationToQuery(page, pageSize), ...filters };
 		const data = await apiCall("GET", region, "/endpoints", undefined, query);
 		const result = buildPaginatedResponse(
-			(data.endpoints as unknown[]) ?? [],
-			(data.total_count as number) ?? 0,
+			data.endpoints as unknown[],
+			data.total_count as number,
 			page,
 			pageSize,
 		);
@@ -161,7 +181,8 @@ export async function handleCreateEndpoint(
 	input: z.infer<typeof import("./types.js").CreateEndpointInput>,
 ) {
 	try {
-		const { region, ...body } = input;
+		const { region, deployment_id, ...endpoint } = input;
+		const body = { deployment_id, endpoint: endpointWire(endpoint) };
 		const data = await apiCall("POST", region, "/endpoints", body);
 		return jsonResponse(data);
 	} catch (error) {
@@ -202,8 +223,8 @@ export async function handleListModels(
 		const query = { ...paginationToQuery(page, pageSize), ...filters };
 		const data = await apiCall("GET", region, "/models", undefined, query);
 		const result = buildPaginatedResponse(
-			(data.models as unknown[]) ?? [],
-			(data.total_count as number) ?? 0,
+			data.models as unknown[],
+			data.total_count as number,
 			page,
 			pageSize,
 		);
@@ -229,11 +250,11 @@ export async function handleListNodeTypes(
 ) {
 	try {
 		const { region, page, pageSize } = input;
-		const query = paginationToQuery(page, pageSize);
+		const query = { ...paginationToQuery(page, pageSize), include_disabled_types: false };
 		const data = await apiCall("GET", region, "/node-types", undefined, query);
 		const result = buildPaginatedResponse(
-			(data.node_types as unknown[]) ?? [],
-			(data.total_count as number) ?? 0,
+			data.node_types as unknown[],
+			data.total_count as number,
 			page,
 			pageSize,
 		);

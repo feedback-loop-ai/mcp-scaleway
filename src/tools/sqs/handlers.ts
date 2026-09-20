@@ -155,19 +155,14 @@ export async function handleListSqsCredentials(input: ListSqsCredentialsInput) {
 			order_by: input.order_by,
 		});
 
-		const data = await client.fetch<{ sqs_credentials?: unknown[]; total_count?: number }>({
+		const data = await client.fetch<{ sqs_credentials: unknown[]; total_count: number }>({
 			method: "GET",
 			path: `${SQS_API_PREFIX}/${region}/sqs-credentials`,
 			urlParams,
 		});
 
 		return formatResponse(
-			buildPaginatedResponse(
-				data.sqs_credentials ?? [],
-				data.total_count ?? 0,
-				input.page,
-				input.page_size,
-			),
+			buildPaginatedResponse(data.sqs_credentials, data.total_count, input.page, input.page_size),
 		);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));

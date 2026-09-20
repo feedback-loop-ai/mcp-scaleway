@@ -387,7 +387,7 @@ describe("XML parsing helpers", () => {
 			const result = parseListBucketsXml(xml, "fr-par");
 			expect(result).toHaveLength(1);
 			expect(result[0].name).toBe("no-date");
-			expect(result[0].creationDate).toBe("");
+			expect(result[0].creationDate).toBeUndefined();
 		});
 
 		it("returns empty array for no buckets", () => {
@@ -475,26 +475,32 @@ describe("XML parsing helpers", () => {
 			);
 		});
 
-		it("returns Disabled for empty string", () => {
-			expect(parseVersioningXml("")).toBe("Disabled");
+		it("rejects an empty response", () => {
+			expect(() => parseVersioningXml("")).toThrow("invalid_xml");
 		});
 
-		it("returns Disabled for unknown status", () => {
-			expect(
+		it("rejects an unknown status", () => {
+			expect(() =>
 				parseVersioningXml(
 					"<VersioningConfiguration><Status>Unknown</Status></VersioningConfiguration>",
 				),
-			).toBe("Disabled");
+			).toThrow("invalid_schema");
 		});
 	});
 
 	describe("parseKeyCount", () => {
 		it("extracts key count", () => {
-			expect(parseKeyCount("<KeyCount>42</KeyCount>")).toBe(42);
+			expect(
+				parseKeyCount(
+					"<ListBucketResult><IsTruncated>false</IsTruncated><KeyCount>42</KeyCount></ListBucketResult>",
+				),
+			).toBe(42);
 		});
 
 		it("returns 0 when missing", () => {
-			expect(parseKeyCount("<Result></Result>")).toBe(0);
+			expect(
+				parseKeyCount("<ListBucketResult><IsTruncated>false</IsTruncated></ListBucketResult>"),
+			).toBe(0);
 		});
 	});
 
@@ -546,13 +552,11 @@ describe("XML parsing helpers", () => {
 			expect(rules[0].Expiration).toBeUndefined();
 		});
 
-		it("defaults Status to Disabled when Status element is missing", () => {
+		it("rejects a rule with missing Status", () => {
 			const xml = `<LifecycleConfiguration>
 				<Rule><Prefix>test/</Prefix></Rule>
 			</LifecycleConfiguration>`;
-			const rules = parseLifecycleXml(xml);
-			expect(rules[0].Status).toBe("Disabled");
-			expect(rules[0].Prefix).toBe("test/");
+			expect(() => parseLifecycleXml(xml)).toThrow("invalid_schema");
 		});
 	});
 
@@ -801,14 +805,19 @@ describe("object-storage handlers", () => {
 					ok: true,
 					text: "<VersioningConfiguration><Status>Enabled</Status></VersioningConfiguration>",
 				},
-				{ ok: true, text: "<ListBucketResult><KeyCount>5</KeyCount></ListBucketResult>" },
+				{
+					ok: true,
+					text: "<ListBucketResult><IsTruncated>false</IsTruncated><KeyCount>5</KeyCount></ListBucketResult>",
+				},
 			]);
 
 			const result = await handleGetBucketInfo({ name: "mybucket" });
 			const data = JSON.parse(result.content[0].text);
 			expect(data.name).toBe("mybucket");
 			expect(data.versioning).toBe("Enabled");
-			expect(data.objectCount).toBe(5);
+			expect(data.objectCount).toBeNull();
+			expect(data.creationDate).toBeNull();
+			expect(data.size).toBeNull();
 		});
 
 		it("returns error when bucket not found", async () => {
@@ -821,12 +830,16 @@ describe("object-storage handlers", () => {
 			mockFetchSequence([
 				{ ok: true, headers: { date: "2024-01-01T00:00:00Z" } },
 				{ ok: false, status: 500, text: "" },
-				{ ok: true, text: "<ListBucketResult><KeyCount>0</KeyCount></ListBucketResult>" },
+				{
+					ok: true,
+					text: "<ListBucketResult><IsTruncated>false</IsTruncated><KeyCount>0</KeyCount></ListBucketResult>",
+				},
 			]);
 
 			const result = await handleGetBucketInfo({ name: "b" });
 			const data = JSON.parse(result.content[0].text);
-			expect(data.versioning).toBe("Disabled");
+			expect(result.isError).toBe(true);
+			expect(data.error.statusCode).toBe(500);
 		});
 
 		it("handles list fetch failure gracefully", async () => {
@@ -841,19 +854,23 @@ describe("object-storage handlers", () => {
 
 			const result = await handleGetBucketInfo({ name: "b" });
 			const data = JSON.parse(result.content[0].text);
-			expect(data.objectCount).toBe(0);
+			expect(result.isError).toBe(true);
+			expect(data.error.statusCode).toBe(500);
 		});
 
-		it("uses fallback date when header missing", async () => {
+		it("reports unknown creation date when header missing", async () => {
 			mockFetchSequence([
 				{ ok: true },
 				{ ok: true, text: "<VersioningConfiguration></VersioningConfiguration>" },
-				{ ok: true, text: "<KeyCount>0</KeyCount>" },
+				{
+					ok: true,
+					text: "<ListBucketResult><IsTruncated>false</IsTruncated><KeyCount>0</KeyCount></ListBucketResult>",
+				},
 			]);
 
 			const result = await handleGetBucketInfo({ name: "b" });
 			const data = JSON.parse(result.content[0].text);
-			expect(data.creationDate).toBeTruthy();
+			expect(data.creationDate).toBeNull();
 		});
 
 		it("handles network exception", async () => {

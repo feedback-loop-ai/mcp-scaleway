@@ -103,8 +103,10 @@ describe("environmental-footprint handlers", () => {
 				}),
 			);
 			const callArgs = mockFetch.mock.calls[0][0];
-			// No filters -> empty query string
-			expect(callArgs.urlParams.toString()).toBe("");
+			// Required organization scoping uses the configured default.
+			expect(callArgs.urlParams.get("organization_id")).toBe(
+				"00000000-0000-0000-0000-0000000000aa",
+			);
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.total_impact.kg_co2_equivalent).toBe(12.5);
 			expect(parsed.projects).toHaveLength(1);
@@ -174,7 +176,9 @@ describe("environmental-footprint handlers", () => {
 					urlParams: expect.any(URLSearchParams),
 				}),
 			);
-			expect(mockFetch.mock.calls[0][0].urlParams.toString()).toBe("");
+			expect(mockFetch.mock.calls[0][0].urlParams.get("organization_id")).toBe(
+				"00000000-0000-0000-0000-0000000000aa",
+			);
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.month_summary_reports).toHaveLength(1);
 		});
@@ -243,7 +247,7 @@ describe("environmental-footprint handlers", () => {
 			expect(parsed.name).toBe("report.pdf");
 		});
 
-		it("downloads a report without optional organization id", async () => {
+		it("downloads a report using the configured organization", async () => {
 			const { handleDownloadImpactReport } = await import(
 				"../../../src/tools/environmental-footprint/handlers.js"
 			);
@@ -260,6 +264,7 @@ describe("environmental-footprint handlers", () => {
 				body: JSON.stringify({
 					date: "2025-01-01T00:00:00Z",
 					type: "yearly",
+					organization_id: ORG_ID,
 				}),
 				headers: { "Content-Type": "application/json" },
 			});

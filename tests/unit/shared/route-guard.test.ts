@@ -177,6 +177,12 @@ describe("assertRouteAllowed", () => {
 			"HEAD",
 		);
 	});
+	it("matches dynamic query selectors with actual values and rejects duplicates or missing values", () => {
+		const api = "GET /domain/v2beta1/tlds?tlds={tld_name}";
+		ok("tld", api, "https://api.scaleway.com/domain/v2beta1/tlds?tlds=com", "GET");
+		for (const suffix of ["", "?tlds=", "?tlds=com&tlds=net"])
+			blocked("tld", api, `https://api.scaleway.com/domain/v2beta1/tlds${suffix}`, "GET");
+	});
 	it("accepts any leg of a composite operation", () => {
 		const composite =
 			"GET /iam/v1alpha1/rules + PUT /iam/v1alpha1/rules (SetRules read+set: no per-rule endpoint)";
@@ -197,14 +203,16 @@ describe("assertRouteAllowed", () => {
 });
 
 describe("guardedFetch", () => {
-	const api = "GET https://api.scaleway.ai/{region}/v1/models";
+	const api = "GET https://api.scaleway.ai/v1/models";
 	it("forwards string, URL and Request inputs unchanged when allowed", async () => {
-		const spy = vi.fn(async (..._args: Parameters<typeof fetch>) => new Response("{}"));
+		const spy = vi.fn(async (..._args: Parameters<typeof fetch>) =>
+			Response.json({ data: [], object: "list" }),
+		);
 		vi.stubGlobal("fetch", spy);
-		await withRouteContext("gen", api, async () => {
-			await guardedFetch("https://api.scaleway.ai/fr-par/v1/models", { method: "GET" });
-			await guardedFetch(new URL("https://api.scaleway.ai/fr-par/v1/models"));
-			await guardedFetch(new Request("https://api.scaleway.ai/fr-par/v1/models"));
+		await withRouteContext("scaleway_generative_apis_list_models", api, async () => {
+			await guardedFetch("https://api.scaleway.ai/v1/models", { method: "GET" });
+			await guardedFetch(new URL("https://api.scaleway.ai/v1/models"));
+			await guardedFetch(new Request("https://api.scaleway.ai/v1/models"));
 		});
 		expect(spy).toHaveBeenCalledTimes(3);
 		expect(spy.mock.calls[0][1]).toEqual({ method: "GET" });
@@ -213,8 +221,8 @@ describe("guardedFetch", () => {
 		const spy = vi.fn();
 		vi.stubGlobal("fetch", spy);
 		await expect(
-			withRouteContext("gen", api, () =>
-				guardedFetch("https://api.scaleway.ai/fr-par/v1/models", { method: "POST" }),
+			withRouteContext("scaleway_generative_apis_list_models", api, () =>
+				guardedFetch("https://api.scaleway.ai/v1/models", { method: "POST" }),
 			),
 		).rejects.toThrow("endpoint confinement");
 		expect(spy).not.toHaveBeenCalled();

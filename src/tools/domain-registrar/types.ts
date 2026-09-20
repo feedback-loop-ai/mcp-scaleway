@@ -123,10 +123,7 @@ export const ListDomainsInput = z.object({
 	page_size: z.number().int().min(1).max(100).optional().default(50).describe("Items per page"),
 	project_id: z.string().optional().describe("Filter by project ID"),
 	organization_id: z.string().optional().describe("Filter by organization ID"),
-	order_by: z
-		.enum(["domain_asc", "domain_desc", "expired_at_asc", "expired_at_desc"])
-		.optional()
-		.describe("Sort order"),
+	order_by: z.enum(["domain_asc", "domain_desc"]).optional().describe("Sort order"),
 });
 export type ListDomainsInput = z.infer<typeof ListDomainsInput>;
 

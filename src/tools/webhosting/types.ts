@@ -174,13 +174,20 @@ export type DeleteHostingInput = z.infer<typeof DeleteHostingInput>;
 
 export const RestoreHostingInput = z.object({
 	region: ScalewayRegion.optional().describe("Region of the hosting"),
-	hosting_id: z.string().describe("ID of the hosting to restore"),
+	hosting_id: z.string().min(1).describe("ID of the hosting to restore"),
+	backup_id: z
+		.string()
+		.min(1)
+		.describe("ID of the backup to restore in full; existing data is overwritten"),
 });
 export type RestoreHostingInput = z.infer<typeof RestoreHostingInput>;
 
 export const GetDnsRecordsInput = z.object({
 	region: ScalewayRegion.optional().describe("Region of the hosting"),
-	hosting_id: z.string().describe("ID of the hosting"),
+	domain: z
+		.string()
+		.min(1)
+		.describe("Domain associated with the Web Hosting plan, e.g. example.com"),
 });
 export type GetDnsRecordsInput = z.infer<typeof GetDnsRecordsInput>;
 
@@ -189,8 +196,8 @@ export const ListOffersInput = z.object({
 	order_by: z.enum(["price_asc"]).optional().describe("Sort order"),
 	hosting_id: z.string().optional().describe("Filter by hosting ID"),
 	control_panels: z.array(z.string()).optional().describe("Filter by control panel names"),
-	without_options: z.boolean().optional().describe("Exclude option offers"),
-	only_options: z.boolean().optional().describe("Only include option offers"),
+	without_options: z.never().optional().describe("Unsupported filter: omit without_options"),
+	only_options: z.never().optional().describe("Unsupported filter: omit only_options"),
 });
 export type ListOffersInput = z.infer<typeof ListOffersInput>;
 

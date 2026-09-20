@@ -1,7 +1,7 @@
 /**
  * Constitution I: tool descriptions MUST include usage examples.
- * Enforced for every area whose descriptions were (re)authored in feature 060;
- * extending this list is how the repo-wide follow-up (059 T058) gets tracked.
+ * These legacy inline examples are retained and validated. Whole-catalog generated
+ * examples (issue #59) are independently gated by tests/unit/shared/examples.test.ts.
  */
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { describe, expect, it } from "vitest";

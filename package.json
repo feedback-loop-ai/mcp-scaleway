@@ -1,6 +1,6 @@
 {
 	"name": "mcp-scaleway",
-	"version": "0.4.1",
+	"version": "0.5.0",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -23,7 +23,7 @@
 		"lint:fix": "biome check --write .",
 		"test": "vitest run --config tests/vitest.config.ts",
 		"test:watch": "vitest --config tests/vitest.config.ts",
-		"test:parity": "vitest run --config tests/vitest.config.ts tests/unit/parity.test.ts",
+		"test:parity": "vitest run --config tests/vitest.config.ts tests/unit/parity.test.ts tests/contract/transport/catalog-evidence.contract.test.ts",
 		"test:drift": "bun run scripts/drift-report.ts",
 		"probe:webhosting": "bun run scripts/probe-webhosting-404.ts",
 		"build": "bun run bun.build.ts",
@@ -31,7 +31,10 @@
 		"measure:discovery": "bun run scripts/measure-discovery.ts",
 		"fetch:schemas": "bun run scripts/fetch-schemas.ts",
 		"typecheck": "tsc --noEmit",
-		"eval:routing": "bun run scripts/evaluate-routing.ts"
+		"eval:routing": "bun run scripts/evaluate-routing.ts",
+		"health": "bun run src/main.ts --health",
+		"gen:examples": "bun run scripts/gen-examples.ts",
+		"gen:contracts": "bun run scripts/gen-response-contracts.ts"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.30.0",
@@ -41,6 +44,9 @@
 		"@scaleway/sdk-key-manager": "^2.16.1",
 		"@scaleway/sdk-mnq": "^2.12.1",
 		"@scaleway/sdk-secret": "^2.12.1",
+		"ajv": "^8.20.0",
+		"ajv-formats": "^3.0.1",
+		"fast-xml-parser": "^5.11.1",
 		"zod": "^3.25.0",
 		"zod-to-json-schema": "3.25.1"
 	},

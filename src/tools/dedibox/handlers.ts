@@ -97,13 +97,13 @@ export async function handleUpdateServer(params: UpdateServerParams) {
 export async function handleRebootServer(params: RebootServerParams) {
 	try {
 		const client = getClient();
-		const response = await client.fetch<unknown>({
+		await client.fetch<void>({
 			method: "POST",
 			path: `${DEDIBOX_API_PREFIX}/${params.zone}/servers/${params.serverId}/reboot`,
 			body: "{}",
 			headers: { "Content-Type": "application/json" },
 		});
-		return jsonResponse(response);
+		return jsonResponse({ success: true });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
@@ -112,13 +112,13 @@ export async function handleRebootServer(params: RebootServerParams) {
 export async function handleStartServer(params: StartServerParams) {
 	try {
 		const client = getClient();
-		const response = await client.fetch<unknown>({
+		await client.fetch<void>({
 			method: "POST",
 			path: `${DEDIBOX_API_PREFIX}/${params.zone}/servers/${params.serverId}/start`,
 			body: "{}",
 			headers: { "Content-Type": "application/json" },
 		});
-		return jsonResponse(response);
+		return jsonResponse({ success: true });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
@@ -127,13 +127,13 @@ export async function handleStartServer(params: StartServerParams) {
 export async function handleStopServer(params: StopServerParams) {
 	try {
 		const client = getClient();
-		const response = await client.fetch<unknown>({
+		await client.fetch<void>({
 			method: "POST",
 			path: `${DEDIBOX_API_PREFIX}/${params.zone}/servers/${params.serverId}/stop`,
 			body: "{}",
 			headers: { "Content-Type": "application/json" },
 		});
-		return jsonResponse(response);
+		return jsonResponse({ success: true });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
@@ -202,13 +202,11 @@ export async function handleGetServerInstall(params: GetServerInstallParams) {
 export async function handleCancelServerInstall(params: CancelServerInstallParams) {
 	try {
 		const client = getClient();
-		const response = await client.fetch<unknown>({
+		await client.fetch<void>({
 			method: "POST",
 			path: `${DEDIBOX_API_PREFIX}/${params.zone}/servers/${params.serverId}/cancel-install`,
-			body: "{}",
-			headers: { "Content-Type": "application/json" },
 		});
-		return jsonResponse(response);
+		return jsonResponse({ success: true });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
@@ -317,13 +315,13 @@ export async function handleGetBmcAccess(params: GetBmcAccessParams) {
 export async function handleStartBmcAccess(params: StartBmcAccessParams) {
 	try {
 		const client = getClient();
-		const response = await client.fetch<unknown>({
+		await client.fetch<void>({
 			method: "POST",
 			path: `${DEDIBOX_API_PREFIX}/${params.zone}/servers/${params.serverId}/bmc-access`,
 			body: JSON.stringify({ ip: params.ip }),
 			headers: { "Content-Type": "application/json" },
 		});
-		return jsonResponse(response);
+		return jsonResponse({ success: true });
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}

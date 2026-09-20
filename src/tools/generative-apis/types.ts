@@ -137,18 +137,29 @@ export type EmbeddingResponse = z.infer<typeof EmbeddingResponseSchema>;
 
 // --- Tool Input Schemas ---
 export const ListModelsInputSchema = z.object({
-	region: ScalewayRegion.optional().default("fr-par").describe("Scaleway region (e.g., fr-par)"),
+	region: ScalewayRegion.optional()
+		.default("fr-par")
+		.describe("Deprecated compatibility input; serverless Generative APIs use a global endpoint"),
 });
 export type ListModelsInput = z.infer<typeof ListModelsInputSchema>;
 
 export const GetModelInputSchema = z.object({
-	region: ScalewayRegion.optional().default("fr-par").describe("Scaleway region (e.g., fr-par)"),
+	region: ScalewayRegion.optional()
+		.default("fr-par")
+		.describe("Deprecated compatibility input; serverless Generative APIs use a global endpoint"),
 	model_id: z.string().describe("Model identifier to retrieve"),
 });
 export type GetModelInput = z.infer<typeof GetModelInputSchema>;
 
 export const ChatCompletionInputSchema = z.object({
-	region: ScalewayRegion.optional().default("fr-par").describe("Scaleway region (e.g., fr-par)"),
+	project_id: z
+		.string()
+		.uuid()
+		.optional()
+		.describe("Project to bill; defaults to SCW_DEFAULT_PROJECT_ID"),
+	region: ScalewayRegion.optional()
+		.default("fr-par")
+		.describe("Deprecated compatibility input; serverless Generative APIs use a global endpoint"),
 	model: z.string().describe("Model ID (e.g., 'meta/llama-3.1-8b-instruct:fp8')"),
 	messages: z.array(ChatMessageSchema).min(1).describe("Array of messages in the conversation"),
 	temperature: z
@@ -199,7 +210,14 @@ export const ChatCompletionInputSchema = z.object({
 export type ChatCompletionInput = z.infer<typeof ChatCompletionInputSchema>;
 
 export const CreateEmbeddingInputSchema = z.object({
-	region: ScalewayRegion.optional().default("fr-par").describe("Scaleway region (e.g., fr-par)"),
+	project_id: z
+		.string()
+		.uuid()
+		.optional()
+		.describe("Project to bill; defaults to SCW_DEFAULT_PROJECT_ID"),
+	region: ScalewayRegion.optional()
+		.default("fr-par")
+		.describe("Deprecated compatibility input; serverless Generative APIs use a global endpoint"),
 	model: z.string().describe("Model ID for embeddings"),
 	input: z.union([z.string(), z.array(z.string())]).describe("Text or array of texts to embed"),
 });

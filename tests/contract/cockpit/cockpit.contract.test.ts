@@ -187,7 +187,7 @@ describe("contract: Data sources", () => {
 		expect(() =>
 			CreateDataSourceInput.parse({ project_id: VALID_UUID, name: "ds", type: "logs" }),
 		).not.toThrow();
-		expect(() => CreateDataSourceInput.parse({ project_id: VALID_UUID, name: "ds" })).not.toThrow();
+		expect(() => CreateDataSourceInput.parse({ project_id: VALID_UUID, name: "ds" })).toThrow();
 	});
 
 	it("rejects create without name", () => {
@@ -353,7 +353,7 @@ describe("contract: Alert manager", () => {
 });
 
 /**
- * API: GET/POST/DELETE /cockpit/v1/regions/{region}/alert-manager/contact-points
+ * API: GET/POST /cockpit/v1/regions/{region}/alert-manager/contact-points; delete is POST /contact-points/delete
  * Spec: specs/scaleway-api/cockpit/api-reference.md#contact-points
  */
 describe("contract: Contact points", () => {

@@ -4,13 +4,16 @@ Official reference: https://www.scaleway.com/en/developers/api/generative-apis/
 
 Base URL: `https://api.scaleway.ai`
 
-The tools in `src/tools/generative-apis/` call the OpenAI-compatible Generative
-APIs endpoint directly with `fetch` (not the Scaleway client). The
-implementation targets the **regional** form of the base URL:
-`https://api.scaleway.ai/{region}/v1/...` (default region `fr-par`). The
-official reference documents `https://api.scaleway.ai/v1/...`; the region
-segment is optional ("optional while there is only one region") and the regional
-form is accepted.
+The model catalog is global at `https://api.scaleway.ai/v1/models`. Chat and
+embedding requests use `https://api.scaleway.ai/{project_id}/v1/...`; `project_id`
+comes from the optional tool input, otherwise `SCW_DEFAULT_PROJECT_ID`. The old
+`region` input remains accepted for compatibility but does not select an inference
+region. The serverless product does not provide that regional routing guarantee.
+This replaces the previously unverified regional URL construction.
+
+Sources checked 2026-09-19: [current OpenAPI](https://www.scaleway.com/en/developers/api/generative-apis/v1/schema.yml),
+[project scoping and authentication](https://www.scaleway.com/en/docs/generative-apis/api-cli/using-generative-apis/).
+Authenticated `GET /v1/models` succeeded with HTTP 200; no generation was performed.
 
 ## Authentication
 
@@ -20,19 +23,19 @@ form is accepted.
 ## Endpoints
 
 ### List Models — `scaleway_generative_apis_list_models`
-`GET /{region}/v1/models`
+`GET /v1/models`
 - Response: `{ object: "list", data: Model[] }`
 - `Model`: `{ id, object: "model", created: number, owned_by }`
 
 ### Get Model — `scaleway_generative_apis_get_model`
-`GET /{region}/v1/models` (client-side filter by `id`)
+`GET /v1/models` (client-side filter by `id`)
 - There is no dedicated `GET /v1/models/{id}` in the OpenAI-compatible surface
   used here; the handler lists models and selects the one whose `id` matches
   `model_id`, returning `404`-style `not_found` if absent.
 - Response: a single `Model`.
 
 ### Chat Completion — `scaleway_generative_apis_chat_completion`
-`POST /{region}/v1/chat/completions`
+`POST /{project_id}/v1/chat/completions`
 - Body: `{ model, messages, temperature?, max_tokens?, max_completion_tokens?, top_p?, tools?, tool_choice?, parallel_tool_calls?, response_format?, reasoning_effort?, stream: false }`
   - System/user messages have string `content`.
   - Assistant messages have string content (optionally with an empty or nonempty
@@ -73,7 +76,7 @@ and https://www.scaleway.com/en/developers/api/generative-apis/v1/schema.yml on
 specify the current `strict` and parallel-call limitations.
 
 ### Create Embedding — `scaleway_generative_apis_create_embedding`
-`POST /{region}/v1/embeddings`
+`POST /{project_id}/v1/embeddings`
 - Body: `{ model, input: string | string[] }`
 - Response: `{ object: "list", data: { object: "embedding", embedding: number[], index }[], model, usage: { prompt_tokens, total_tokens } }`
 

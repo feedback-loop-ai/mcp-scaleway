@@ -1,6 +1,7 @@
 import { loadAuthConfig } from "../../shared/auth.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
 import { guardedFetch } from "../../shared/route-guard.js";
+import { parseS3Xml } from "../../shared/s3-response.js";
 import { signS3Request } from "../../shared/s3-signer.js";
 import type {
 	CreateBucketInput,
@@ -203,7 +204,11 @@ export async function handleGetBucketInfo(input: {
 			method: "GET",
 			headers: versioningHeaders,
 		});
-		const versioningXml = versioningResponse.ok ? await versioningResponse.text() : "";
+		if (!versioningResponse.ok)
+			throw Object.assign(new Error("Could not read bucket versioning"), {
+				status: versioningResponse.status,
+			});
+		const versioningXml = await versioningResponse.text();
 		const versioning = parseVersioningXml(versioningXml);
 
 		// Get object count via listing
@@ -219,15 +224,18 @@ export async function handleGetBucketInfo(input: {
 			method: "GET",
 			headers: listHeaders,
 		});
-		const listXml = listResponse.ok ? await listResponse.text() : "";
-		const objectCount = parseKeyCount(listXml);
+		if (!listResponse.ok)
+			throw Object.assign(new Error("Could not inspect bucket listing"), {
+				status: listResponse.status,
+			});
+		parseKeyCount(await listResponse.text());
 
 		const bucketInfo = {
 			name: input.name,
 			region,
-			creationDate: headResponse.headers.get("date") ?? new Date().toISOString(),
-			objectCount,
-			size: 0, // S3 API does not expose total size in a single call
+			creationDate: null,
+			objectCount: null,
+			size: null, // These requests do not measure bucket creation time, object total or bytes.
 			versioning,
 		};
 
@@ -665,137 +673,53 @@ export async function handleSetBucketVersioning(input: {
 
 // --- XML parsing helpers ---
 
-export function parseListBucketsXml(
-	xml: string,
-	region: string,
-): Array<{ name: string; region: string; creationDate: string }> {
-	const buckets: Array<{ name: string; region: string; creationDate: string }> = [];
-	const bucketRegex = /<Bucket>([\s\S]*?)<\/Bucket>/g;
-	let match = bucketRegex.exec(xml);
-	while (match) {
-		const inner = match[1];
-		const name = /<Name>([^<]+)<\/Name>/.exec(inner)?.[1];
-		const creationDate = /<CreationDate>([^<]+)<\/CreationDate>/.exec(inner)?.[1];
-		if (name) {
-			buckets.push({ name, region, creationDate: creationDate ?? "" });
-		}
-		match = bucketRegex.exec(xml);
-	}
-	return buckets;
+export function parseListBucketsXml(xml: string, region: string) {
+	const result = parseS3Xml("ListAllMyBucketsResult", xml);
+	return (result.Buckets?.Bucket ?? []).map(({ Name, CreationDate, ...extra }) => ({
+		...extra,
+		name: Name,
+		region,
+		creationDate: CreationDate,
+	}));
 }
 
-export function parseListObjectsV2Xml(xml: string): {
-	objects: Array<{
-		key: string;
-		size: number;
-		lastModified: string;
-		storageClass: string | undefined;
-		etag: string;
-	}>;
-	isTruncated: boolean;
-	nextContinuationToken: string | undefined;
-	keyCount: number;
-} {
-	const objects: Array<{
-		key: string;
-		size: number;
-		lastModified: string;
-		storageClass: string | undefined;
-		etag: string;
-	}> = [];
-	const contentRegex =
-		/<Contents>\s*<Key>([^<]+)<\/Key>\s*<LastModified>([^<]+)<\/LastModified>\s*<ETag>"?([^<"]+)"?<\/ETag>\s*<Size>(\d+)<\/Size>(?:\s*<StorageClass>([^<]+)<\/StorageClass>)?\s*<\/Contents>/g;
-	let match = contentRegex.exec(xml);
-	while (match) {
-		objects.push({
-			key: match[1],
-			lastModified: match[2],
-			etag: match[3],
-			size: Number(match[4]),
-			storageClass: match[5] ?? undefined,
-		});
-		match = contentRegex.exec(xml);
-	}
-
-	const isTruncated = /<IsTruncated>true<\/IsTruncated>/i.test(xml);
-	const tokenMatch = /<NextContinuationToken>([^<]+)<\/NextContinuationToken>/.exec(xml);
-	const keyCountMatch = /<KeyCount>(\d+)<\/KeyCount>/.exec(xml);
-
+export function parseListObjectsV2Xml(xml: string) {
+	const result = parseS3Xml("ListBucketResult", xml);
+	const { Contents, IsTruncated, NextContinuationToken, KeyCount, ...extra } = result;
+	const objects = (Contents ?? []).map(
+		({ Key, Size, LastModified, StorageClass, ETag, ...fields }) => ({
+			...fields,
+			key: Key,
+			size: Size,
+			lastModified: LastModified,
+			storageClass: StorageClass,
+			etag: ETag.replace(/^"|"$/g, ""),
+		}),
+	);
 	return {
+		...extra,
 		objects,
-		isTruncated,
-		nextContinuationToken: tokenMatch?.[1],
-		keyCount: keyCountMatch ? Number(keyCountMatch[1]) : objects.length,
+		isTruncated: IsTruncated === "true",
+		nextContinuationToken: NextContinuationToken,
+		keyCount: KeyCount ?? objects.length,
 	};
 }
 
 export function parseVersioningXml(xml: string): "Enabled" | "Suspended" | "Disabled" {
-	const statusMatch = /<Status>([^<]+)<\/Status>/.exec(xml);
-	if (!statusMatch) return "Disabled";
-	const status = statusMatch[1];
-	if (status === "Enabled" || status === "Suspended") return status;
-	return "Disabled";
+	return parseS3Xml("VersioningConfiguration", xml).Status ?? "Disabled";
 }
 
 export function parseKeyCount(xml: string): number {
-	const match = /<KeyCount>(\d+)<\/KeyCount>/.exec(xml);
-	return match ? Number(match[1]) : 0;
+	return parseS3Xml("ListBucketResult", xml).KeyCount ?? 0;
 }
 
-export function parseLifecycleXml(xml: string): Array<{
-	ID: string | undefined;
-	Status: string;
-	Prefix: string | undefined;
-	Expiration: { Days?: number; Date?: string } | undefined;
-	Transition: { Days?: number; StorageClass?: string } | undefined;
-}> {
-	const rules: Array<{
-		ID: string | undefined;
-		Status: string;
-		Prefix: string | undefined;
-		Expiration: { Days?: number; Date?: string } | undefined;
-		Transition: { Days?: number; StorageClass?: string } | undefined;
-	}> = [];
-
-	const ruleRegex = /<Rule>([\s\S]*?)<\/Rule>/g;
-	let ruleMatch = ruleRegex.exec(xml);
-	while (ruleMatch) {
-		const ruleXml = ruleMatch[1];
-		const id = /<ID>([^<]+)<\/ID>/.exec(ruleXml)?.[1];
-		const status = /<Status>([^<]+)<\/Status>/.exec(ruleXml)?.[1] ?? "Disabled";
-		const prefix = /<Prefix>([^<]*)<\/Prefix>/.exec(ruleXml)?.[1];
-
-		let expiration: { Days?: number; Date?: string } | undefined;
-		const expMatch = /<Expiration>([\s\S]*?)<\/Expiration>/.exec(ruleXml);
-		if (expMatch) {
-			expiration = {};
-			const days = /<Days>(\d+)<\/Days>/.exec(expMatch[1]);
-			const date = /<Date>([^<]+)<\/Date>/.exec(expMatch[1]);
-			if (days) expiration.Days = Number(days[1]);
-			if (date) expiration.Date = date[1];
-		}
-
-		let transition: { Days?: number; StorageClass?: string } | undefined;
-		const transMatch = /<Transition>([\s\S]*?)<\/Transition>/.exec(ruleXml);
-		if (transMatch) {
-			transition = {};
-			const days = /<Days>(\d+)<\/Days>/.exec(transMatch[1]);
-			const sc = /<StorageClass>([^<]+)<\/StorageClass>/.exec(transMatch[1]);
-			if (days) transition.Days = Number(days[1]);
-			if (sc) transition.StorageClass = sc[1];
-		}
-
-		rules.push({
-			ID: id,
-			Status: status,
-			Prefix: prefix,
-			Expiration: expiration,
-			Transition: transition,
-		});
-		ruleMatch = ruleRegex.exec(xml);
-	}
-
-	return rules;
+export function parseLifecycleXml(xml: string) {
+	return (parseS3Xml("LifecycleConfiguration", xml).Rule ?? []).map((rule) => ({
+		...rule,
+		// Preserve the legacy first-transition field; expose all transitions without data loss.
+		Transition: rule.Transition?.[0],
+		Transitions: rule.Transition,
+	}));
 }
 
 export function buildLifecycleXml(

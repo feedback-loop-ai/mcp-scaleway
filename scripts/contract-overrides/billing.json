@@ -1,0 +1,177 @@
+{
+	"source": {
+		"id": "billing-sdk",
+		"url": "https://unpkg.com/@scaleway/sdk-billing@2.16.1/dist/v2beta1/api.gen.js",
+		"sha256": "4786fb12236bcefc8a3951df9e228b679ef97c449015b945f40aed5e04178fd3",
+		"fetchedAt": "2026-09-19T21:18:04.127059+00:00",
+		"kind": "official-js-sdk-augmented-openapi",
+		"baseSource": "billing",
+		"baseSha256": "ada4004c54d882eae93025ae05cd4c4f6e81e4395fdc8b90ace9f4f4693a171a"
+	},
+	"document": {
+		"paths": {
+			"/billing/v2beta1/consumptions": {
+				"get": {
+					"operationId": "ListConsumptions",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListConsumptionsRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "category_name",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "billing_period",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListConsumptionsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Consumption"]
+				}
+			}
+		},
+		"components": {
+			"schemas": {
+				"scaleway.billing.v2beta1.ListConsumptionsRequest.OrderBy": {
+					"default": "updated_at_desc",
+					"enum": ["updated_at_desc", "updated_at_asc", "category_name_desc", "category_name_asc"],
+					"type": "string"
+				},
+				"scaleway.billing.v2beta1.ListConsumptionsResponse": {
+					"properties": {
+						"consumptions": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.billing.v2beta1.ListConsumptionsResponse.Consumption"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"total_discount_untaxed_value": {
+							"format": "double",
+							"type": "number"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.billing.v2beta1.ListConsumptionsResponse.Consumption": {
+					"properties": {
+						"billed_quantity": {
+							"type": "string"
+						},
+						"category_name": {
+							"type": "string"
+						},
+						"consumer_id": {
+							"type": "string"
+						},
+						"organization_name": {
+							"type": "string"
+						},
+						"product_name": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"project_name": {
+							"type": "string"
+						},
+						"resource_name": {
+							"type": "string"
+						},
+						"sku": {
+							"type": "string"
+						},
+						"unit": {
+							"type": "string"
+						},
+						"value": {
+							"$ref": "#/components/schemas/google.type.Money"
+						}
+					},
+					"type": "object"
+				},
+				"google.type.Money": {
+					"properties": {
+						"currency_code": {
+							"type": "string"
+						},
+						"nanos": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"units": {
+							"format": "int64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				}
+			}
+		}
+	},
+	"projectionNotes": "The pinned official SDK serializes these one-of query parameters omitted from public OpenAPI. Types are independently checked against adjacent published types.gen.d.ts. Keep all original method/path/response/other parameter contracts from the recorded base; preserve input scoping."
+}

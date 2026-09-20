@@ -1,4 +1,11 @@
+import { z } from "zod";
+import { UpstreamResponseError } from "./response-validation.js";
 import type { PaginatedResponse } from "./types.js";
+
+const ConsumedPagination = z.object({
+	items: z.array(z.unknown()),
+	totalCount: z.number().int().nonnegative(),
+});
 
 /**
  * The MCP envelope boundary (Decision 1): this shape — `{ items, totalCount,
@@ -13,6 +20,8 @@ export function buildPaginatedResponse<T>(
 	page: number,
 	pageSize: number,
 ): PaginatedResponse<T> {
+	if (!ConsumedPagination.safeParse({ items, totalCount }).success)
+		throw new UpstreamResponseError("invalid_schema");
 	return { items, totalCount, page, pageSize };
 }
 

@@ -1,0 +1,50 @@
+{
+	"scaleway_cockpit_get_cockpit": {
+		"reason": "No authoritative current contract was found for the legacy regional Cockpit lifecycle route. This does not establish provider retirement.",
+		"migration": "Use cockpit_list_data_sources to inspect project data sources and cockpit_get_alert_manager for alert configuration.",
+		"sources": [
+			"https://www.scaleway.com/en/developers/api/cockpit/regional/v1/schema.yml",
+			"https://github.com/scaleway/terraform-provider-scaleway/blob/master/docs/resources/cockpit.md"
+		]
+	},
+	"scaleway_cockpit_activate_cockpit": {
+		"reason": "No authoritative current contract was found for explicit regional Cockpit activation. This does not establish provider retirement.",
+		"migration": "Current Cockpit provisions integrated resource data sources automatically. Create a custom data source with cockpit_create_data_source when required.",
+		"sources": [
+			"https://www.scaleway.com/en/developers/api/cockpit/regional/v1/schema.yml",
+			"https://www.scaleway.com/en/docs/cockpit/concepts/"
+		]
+	},
+	"scaleway_cockpit_deactivate_cockpit": {
+		"reason": "No authoritative current contract was found for explicit regional Cockpit deactivation. This does not establish provider retirement.",
+		"migration": "Manage individual custom data sources and alert configuration. Deleting a data source is destructive and is not an automatic replacement for deactivation.",
+		"sources": [
+			"https://www.scaleway.com/en/developers/api/cockpit/regional/v1/schema.yml",
+			"https://www.scaleway.com/en/docs/cockpit/concepts/"
+		]
+	},
+	"scaleway_inference_accept_eula": {
+		"reason": "The standalone EULA acceptance route has no verified current wire contract.",
+		"migration": "When creating a deployment, explicitly supply inference_create_deployment.accept_eula=true if you have accepted the applicable license. Read it first with inference_get_eula.",
+		"sources": [
+			"https://www.scaleway.com/en/developers/api/inference/v1/schema.yml",
+			"https://www.scaleway.com/en/developers/api/inference/"
+		]
+	},
+	"scaleway_inference_list_deployment_events": {
+		"reason": "The deployment events route has no verified current wire contract.",
+		"migration": "Use inference_get_deployment for the documented deployment state; it is not an event-history replacement.",
+		"sources": [
+			"https://www.scaleway.com/en/developers/api/inference/v1/schema.yml",
+			"https://github.com/scaleway/scaleway-sdk-go/blob/25895fc5ce562db9b94242f507ffbb553347a73f/api/inference/v1/inference_sdk.go"
+		]
+	},
+	"scaleway_inference_list_endpoints": {
+		"reason": "The standalone endpoint listing route has no verified current wire contract; a quickstart example alone does not define its request and response schema.",
+		"migration": "Inspect the endpoints returned by inference_get_deployment or inference_list_deployments for the selected deployment scope.",
+		"sources": [
+			"https://www.scaleway.com/en/developers/api/inference/v1/schema.yml",
+			"https://github.com/scaleway/scaleway-sdk-go/blob/25895fc5ce562db9b94242f507ffbb553347a73f/api/inference/v1/inference_sdk.go"
+		]
+	}
+}

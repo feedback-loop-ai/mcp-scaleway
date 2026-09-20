@@ -19,16 +19,24 @@ export type StorageClass = z.infer<typeof StorageClass>;
 export const Bucket = z.object({
 	name: z.string().describe("Bucket name"),
 	region: S3Region,
-	creationDate: z.string().describe("ISO 8601 creation date"),
+	creationDate: z.string().optional().describe("ISO 8601 creation date, when returned"),
 });
 export type Bucket = z.infer<typeof Bucket>;
 
 export const BucketInfo = z.object({
 	name: z.string().describe("Bucket name"),
 	region: S3Region,
-	creationDate: z.string().describe("ISO 8601 creation date"),
-	objectCount: z.number().int().nonnegative().describe("Number of objects in bucket"),
-	size: z.number().nonnegative().describe("Total bucket size in bytes"),
+	creationDate: z
+		.string()
+		.nullable()
+		.describe("Creation date; null when the API does not provide it"),
+	objectCount: z
+		.number()
+		.int()
+		.nonnegative()
+		.nullable()
+		.describe("Total object count; null when unmeasured"),
+	size: z.number().nonnegative().nullable().describe("Total bucket bytes; null when unmeasured"),
 	versioning: z.enum(["Enabled", "Suspended", "Disabled"]).describe("Versioning status"),
 });
 export type BucketInfo = z.infer<typeof BucketInfo>;

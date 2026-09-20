@@ -172,6 +172,8 @@ export async function handleReleaseIP(client: Client, input: ReleaseIPInput) {
 			{
 				method: "DELETE",
 				path: ipamUrl(region, `/ips/${ip_id}`),
+				body: "{}",
+				headers: { "Content-Type": "application/json" },
 			},
 			() => undefined,
 		);

@@ -9,10 +9,11 @@ import type { ServerMode } from "../src/shared/mode.js";
 /**
  * Upper bound (bytes) for the representative offline flow measured by measureDiscoveryFlow:
  * scaleway_search query "rdb list databases" followed by scaleway_describe of rdb_list_databases.
- * Measured 2026-09 at 310 B + 1051 B = 1361 B over the in-memory transport. Bytes are not tokens;
+ * Measured 2026-09-20 at 739 B + 3295 B = 4034 B for serialized tool results, including
+ * text and structured content (excluding JSON-RPC framing). Bytes are not tokens;
  * nothing is executed, so this says nothing about task or execution savings.
  */
-export const DISCOVERY_FLOW_BYTE_BUDGET = 2_048;
+export const DISCOVERY_FLOW_BYTE_BUDGET = 6_144;
 
 export interface DiscoveryFlowMeasurement {
 	query: string;
@@ -27,7 +28,7 @@ export interface DiscoveryFlowMeasurement {
 function textBytes(result: CallToolResult): { bytes: number; body: Record<string, unknown> } {
 	const first = result.content[0];
 	if (!first || first.type !== "text") throw new Error("Expected a text result");
-	return { bytes: Buffer.byteLength(first.text), body: JSON.parse(first.text) };
+	return { bytes: Buffer.byteLength(JSON.stringify(result)), body: JSON.parse(first.text) };
 }
 
 async function withClient<T>(mode: ServerMode, body: (client: Client) => Promise<T>): Promise<T> {

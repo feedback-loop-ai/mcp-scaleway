@@ -1,6 +1,13 @@
-import { startServer } from "./server.js";
+import { checkHealth, startServer } from "./server.js";
 
-startServer().catch((error) => {
-	console.error("Failed to start MCP server:", error);
+const health = process.argv.slice(2).includes("--health");
+const action = health
+	? checkHealth().then((status) => console.log(JSON.stringify(status)))
+	: startServer();
+
+action.catch(() => {
+	const status = JSON.stringify({ status: "error", check: health ? "local" : "startup" });
+	if (health) console.log(status);
+	else console.error(status);
 	process.exit(1);
 });

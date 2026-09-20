@@ -7,6 +7,7 @@ import { createOperationRegistry, registerFlatTools } from "./gateway/registry.j
 import { registerRoutingTool } from "./routing/index.js";
 import { installCatalogListing } from "./shared/catalog.js";
 import { type ServerOptions, resolveServerOptions } from "./shared/mode.js";
+import { initializeResponseSchemas } from "./shared/response-validation.js";
 
 export function createServer({
 	mode = "gateway",
@@ -24,7 +25,7 @@ export function createServer({
 		`Scaleway: ${registry.operations.length} allowed operations across ${areas.length} areas. Mode: ${mode}.`,
 		mode === "flat"
 			? "Use the listed tools directly; only configured operations are registered."
-			: "Use scaleway_search with product/resource/action keywords or area. Follow nextOffset for more results. Use scaleway_describe for exact input schemas, then scaleway_read or scaleway_call. Operation IDs omit the scaleway_ prefix of legacy tools.",
+			: "Use scaleway_search with product/resource/action keywords or area. Follow nextOffset for more results. Use scaleway_describe for exact input schemas, synthetic examples and output envelopes, then scaleway_read or scaleway_call. Operation IDs omit the scaleway_ prefix of legacy tools.",
 		"Filters apply to discovery and execution. Read may reveal sensitive data; approval is not automatic. Obtain authorization before changes. Scaleway IAM always applies.",
 		"Region/zone/project defaults apply only where the operation schema allows omission. Check required fields and units with describe. Credentials come from SCW_* environment variables, not operation parameters.",
 		`Enabled areas: ${areas.join(", ")}.`,
@@ -47,4 +48,12 @@ export async function startServer(): Promise<void> {
 	const server = createServer(resolveServerOptions(process.env));
 	const transport = new StdioServerTransport();
 	await server.connect(transport);
+}
+
+/** Local configuration and registration check only; no transport, auth or provider calls. */
+export async function checkHealth(): Promise<{ status: "ok"; check: "local"; version: string }> {
+	initializeResponseSchemas();
+	const server = createServer(resolveServerOptions(process.env));
+	await server.close();
+	return { status: "ok", check: "local", version: pkg.version };
 }

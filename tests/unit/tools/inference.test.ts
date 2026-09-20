@@ -96,8 +96,8 @@ describe("inference handlers", () => {
 			});
 
 			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.items).toEqual([]);
-			expect(parsed.totalCount).toBe(0);
+			expect(result).toMatchObject({ isError: true });
+			expect(parsed.error.statusCode).toBe(502);
 		});
 
 		it("returns error on failure", async () => {
@@ -144,6 +144,23 @@ describe("inference handlers", () => {
 	});
 
 	describe("handleCreateDeployment", () => {
+		it.each([true, false, undefined])(
+			"forwards explicit EULA acceptance without assuming consent: %s",
+			async (accept_eula) => {
+				mockFetch.mockResolvedValueOnce({ id: "00000000-0000-0000-0000-000000000010" });
+				const { CreateDeploymentInput } = await import("../../../src/tools/inference/types.js");
+				const input = CreateDeploymentInput.parse({
+					region: "fr-par",
+					name: "deploy",
+					model_id: "00000000-0000-0000-0000-000000000020",
+					node_type: "L4",
+					accept_eula,
+				});
+				await handlers.handleCreateDeployment(input);
+				expect(JSON.parse(mockFetch.mock.calls[0][0].body).accept_eula).toBe(accept_eula);
+			},
+		);
+
 		it("creates a deployment", async () => {
 			const created = { id: "00000000-0000-0000-0000-000000000010", status: "queued" };
 			mockFetch.mockResolvedValueOnce(created);
@@ -175,7 +192,10 @@ describe("inference handlers", () => {
 				node_type: "L4",
 				project_id: "00000000-0000-0000-0000-000000000001",
 				tags: ["test"],
-				endpoints: [{ is_public: true }],
+				endpoints: [
+					{ is_public: true, disable_auth: false },
+					{ private_network_id: "00000000-0000-0000-0000-000000000060", disable_auth: true },
+				],
 				min_size: 1,
 				max_size: 3,
 			});
@@ -183,6 +203,15 @@ describe("inference handlers", () => {
 			const call = mockFetch.mock.calls[0][0];
 			const body = JSON.parse(call.body);
 			expect(body.tags).toEqual(["test"]);
+			expect(body.node_type_name).toBe("L4");
+			expect(body).not.toHaveProperty("node_type");
+			expect(body.endpoints).toEqual([
+				{ public_network: {}, disable_auth: false },
+				{
+					private_network: { private_network_id: "00000000-0000-0000-0000-000000000060" },
+					disable_auth: true,
+				},
+			]);
 			expect(body.min_size).toBe(1);
 		});
 
@@ -290,7 +319,8 @@ describe("inference handlers", () => {
 			});
 
 			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.items).toEqual([]);
+			expect(result).toMatchObject({ isError: true });
+			expect(parsed.error.statusCode).toBe(502);
 		});
 
 		it("returns error on failure", async () => {
@@ -348,7 +378,8 @@ describe("inference handlers", () => {
 			});
 
 			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.items).toEqual([]);
+			expect(result).toMatchObject({ isError: true });
+			expect(parsed.error.statusCode).toBe(502);
 		});
 
 		it("returns error on failure", async () => {
@@ -504,7 +535,8 @@ describe("inference handlers", () => {
 			});
 
 			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.items).toEqual([]);
+			expect(result).toMatchObject({ isError: true });
+			expect(parsed.error.statusCode).toBe(502);
 		});
 
 		it("returns error on failure", async () => {
@@ -575,7 +607,8 @@ describe("inference handlers", () => {
 			});
 
 			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.items).toEqual([]);
+			expect(result).toMatchObject({ isError: true });
+			expect(parsed.error.statusCode).toBe(502);
 		});
 
 		it("returns error on failure", async () => {

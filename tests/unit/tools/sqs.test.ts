@@ -689,8 +689,8 @@ describe("sqs handlers", () => {
 				page_size: 50,
 				order_by: "created_at_asc",
 			});
-			expect(result.content[0].text).toContain('"items": []');
-			expect(result.content[0].text).toContain('"totalCount": 0');
+			expect(result).toMatchObject({ isError: true });
+			expect(JSON.parse(result.content[0].text).error.statusCode).toBe(502);
 		});
 
 		it("uses default order_by when not specified", async () => {

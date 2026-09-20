@@ -34,6 +34,7 @@ describe("createScalewayClient", () => {
 			defaultOrganizationId: mockConfig.defaultOrganizationId,
 			defaultRegion: mockConfig.defaultRegion,
 			defaultZone: mockConfig.defaultZone,
+			interceptors: [{ response: expect.any(Function) }],
 		});
 		expect(client).toBeDefined();
 	});

@@ -324,7 +324,7 @@
 			"tool": "scaleway_cockpit_deactivate_cockpit"
 		},
 		"DeleteContactPoint": {
-			"api": "DELETE /cockpit/v1/regions/{region}/alert-manager/contact-points",
+			"api": "POST /cockpit/v1/regions/{region}/alert-manager/contact-points/delete",
 			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
 			"tool": "scaleway_cockpit_delete_contact_point"
 		},
@@ -393,7 +393,7 @@
 			"tool": "scaleway_cockpit_list_grafana_users"
 		},
 		"ListManagedAlertsContactPoints": {
-			"api": "GET /cockpit/v1/regions/{region}/alert-manager/managed-alerts-contact-points",
+			"api": "GET /cockpit/v1/regions/{region}/alert-manager/contact-points",
 			"contract_test": "tests/contract/cockpit/cockpit.contract.test.ts",
 			"tool": "scaleway_cockpit_list_managed_alerts_contact_points"
 		},
@@ -1273,22 +1273,22 @@
 	},
 	"generative-apis": {
 		"chat_completion": {
-			"api": "POST https://api.scaleway.ai/{region}/v1/chat/completions",
+			"api": "POST https://api.scaleway.ai/{project_id}/v1/chat/completions",
 			"contract_test": "tests/contract/tools/generative-apis/generative-apis.contract.test.ts",
 			"tool": "scaleway_generative_apis_chat_completion"
 		},
 		"create_embedding": {
-			"api": "POST https://api.scaleway.ai/{region}/v1/embeddings",
+			"api": "POST https://api.scaleway.ai/{project_id}/v1/embeddings",
 			"contract_test": "tests/contract/tools/generative-apis/generative-apis.contract.test.ts",
 			"tool": "scaleway_generative_apis_create_embedding"
 		},
 		"get_model": {
-			"api": "GET https://api.scaleway.ai/{region}/v1/models (client-side filter by id)",
+			"api": "GET https://api.scaleway.ai/v1/models (client-side filter by id)",
 			"contract_test": "tests/contract/tools/generative-apis/generative-apis.contract.test.ts",
 			"tool": "scaleway_generative_apis_get_model"
 		},
 		"list_models": {
-			"api": "GET https://api.scaleway.ai/{region}/v1/models",
+			"api": "GET https://api.scaleway.ai/v1/models",
 			"contract_test": "tests/contract/tools/generative-apis/generative-apis.contract.test.ts",
 			"tool": "scaleway_generative_apis_list_models"
 		}
@@ -3705,7 +3705,7 @@
 			"tool": "scaleway_webhosting_delete_hosting"
 		},
 		"get_dns_records": {
-			"api": "GET /webhosting/v1/regions/{region}/hostings/{hosting_id}/dns-records",
+			"api": "GET /webhosting/v1/regions/{region}/domains/{domain}/dns-records",
 			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
 			"tool": "scaleway_webhosting_get_dns_records"
 		},
@@ -3730,7 +3730,7 @@
 			"tool": "scaleway_webhosting_list_offers"
 		},
 		"restore_hosting": {
-			"api": "POST /webhosting/v1/regions/{region}/hostings/{hosting_id}/restore",
+			"api": "POST /webhosting/v1/regions/{region}/hostings/{hosting_id}/backups/{backup_id}/restore",
 			"contract_test": "tests/contract/webhosting/webhosting.contract.test.ts",
 			"tool": "scaleway_webhosting_restore_hosting"
 		},

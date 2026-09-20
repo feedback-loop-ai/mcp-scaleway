@@ -151,3 +151,68 @@ describe("gateway traceability", () => {
 		}
 	});
 });
+
+describe("authoritative operation contract evidence", () => {
+	const catalog = JSON.parse(
+		readFileSync(resolve(repoRoot, "src/shared/response-contracts.json"), "utf8"),
+	);
+	const evidence = JSON.parse(
+		readFileSync(resolve(repoRoot, "tests/contract-evidence.json"), "utf8"),
+	);
+	const unavailable = JSON.parse(
+		readFileSync(resolve(repoRoot, "src/shared/unavailable-operations.json"), "utf8"),
+	);
+	it("accounts for every ID without counting unavailable capabilities as validated", () => {
+		expect(Object.keys(catalog.routes).sort()).toEqual([...registered].sort());
+		expect(Object.keys(evidence).sort()).toEqual([...registered].sort());
+		for (const tool of registered) {
+			const row = evidence[tool];
+			expect(row.test).toBe("tests/contract/transport/catalog-evidence.contract.test.ts");
+			expect(existsSync(resolve(repoRoot, row.test))).toBe(true);
+			if (tool in unavailable) {
+				expect(row.status).toBe("unavailable");
+				expect(row.dimensions).toEqual([]);
+				expect(catalog.routes[tool]).toEqual([]);
+				expect(unavailable[tool].reason.length).toBeGreaterThan(0);
+				expect(unavailable[tool].sources.length).toBeGreaterThan(0);
+			} else {
+				expect(row.status).toBe("supported");
+				expect(row.dimensions).toEqual(["request", "response", "pagination", "auth", "errors"]);
+				expect(row.sources.length, tool).toBeGreaterThan(0);
+				expect(row.sources).toEqual(
+					catalog.routes[tool].map(
+						(route: { area: string; method: string; sourcePath: string }) => ({
+							document: route.area,
+							method: route.method,
+							path: route.sourcePath,
+						}),
+					),
+				);
+			}
+		}
+		expect(Object.keys(unavailable).every((tool) => registered.includes(tool))).toBe(true);
+	});
+	it("resolves every supported method/path against independently recorded upstream sources", () => {
+		for (const [tool, routes] of Object.entries(catalog.routes)) {
+			for (const route of routes as Array<{ area: string; sourcePath: string; method: string }>) {
+				const source = catalog.sources[route.area];
+				expect(source.url, tool).toMatch(
+					/^https:\/\/(www\.scaleway\.com|raw\.githubusercontent\.com\/scaleway\/|unpkg\.com\/@scaleway\/)/,
+				);
+				expect(source.sha256, tool).toMatch(/^[a-f0-9]{64}$/);
+				if (route.area === "s3") {
+					expect(source.kind).toBe("s3-protocol");
+					expect(Object.keys(catalog.documents.s3.protocolReferences)).toHaveLength(14);
+				} else {
+					const upstream =
+						catalog.documents[route.area].paths[route.sourcePath][route.method.toLowerCase()];
+					expect(upstream, tool).toBeDefined();
+					expect(
+						Object.keys(upstream.responses).some((status) => status.startsWith("2")),
+						tool,
+					).toBe(true);
+				}
+			}
+		}
+	});
+});

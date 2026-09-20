@@ -366,7 +366,7 @@ describe("k8s handlers", () => {
 
 	describe("handleListPools", () => {
 		it("returns paginated pools", async () => {
-			mockFetch.mockResolvedValue({ nodes: [mockPool], total_count: 1 });
+			mockFetch.mockResolvedValue({ pools: [mockPool], total_count: 1 });
 
 			const result = await handleListPools({
 				region: "fr-par",
@@ -381,7 +381,7 @@ describe("k8s handlers", () => {
 		});
 
 		it("passes filter parameters", async () => {
-			mockFetch.mockResolvedValue({ nodes: [], total_count: 0 });
+			mockFetch.mockResolvedValue({ pools: [], total_count: 0 });
 
 			await handleListPools({
 				region: "fr-par",

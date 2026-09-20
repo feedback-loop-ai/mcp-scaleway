@@ -184,7 +184,7 @@ const CreateMainConfig = z.object({
 });
 
 const StorageConfig = z.object({
-	type: z.string().min(1).describe("Storage volume type"),
+	type: z.enum(["sbs_5k", "unknown_type"]).describe("Storage volume type"),
 	size: z.number().int().positive().describe("Storage size in bytes"),
 });
 

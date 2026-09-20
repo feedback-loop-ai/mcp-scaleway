@@ -11,6 +11,7 @@ describe("buildPaginatedResponse", () => {
 			page: 1,
 			pageSize: 50,
 		});
+		expect(result.items).toBe(items);
 	});
 
 	it("returns correct structure with empty items", () => {
@@ -30,6 +31,23 @@ describe("buildPaginatedResponse", () => {
 		expect(result.totalCount).toBe(3);
 		expect(result.page).toBe(2);
 		expect(result.pageSize).toBe(10);
+	});
+
+	it.each([
+		[undefined, 0],
+		[null, 0],
+		["private malformed list", 0],
+		[{}, 0],
+		[[], undefined],
+		[[], null],
+		[[], "12"],
+		[[], -1],
+		[[], 1.5],
+		[[], Number.POSITIVE_INFINITY],
+	])("rejects malformed consumed pagination %#", (items, totalCount) => {
+		expect(() => buildPaginatedResponse(items as unknown[], totalCount as number, 1, 50)).toThrow(
+			expect.objectContaining({ status: 502, reason: "invalid_schema" }),
+		);
 	});
 });
 

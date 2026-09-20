@@ -2,6 +2,9 @@ import type { McpServer, ToolCallback } from "@modelcontextprotocol/sdk/server/m
 import type { Tool } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import { inputSchemaFor } from "../shared/catalog.js";
+import { descriptionWithExample } from "../shared/examples.js";
+import { dispatch } from "../shared/observability.js";
+import { StructuredOutput, outputSchema } from "../shared/output.js";
 import { withRouteContext } from "../shared/route-guard.js";
 import { type ToolsetConfig, createToolFilter, operationId } from "../shared/toolsets.js";
 import { registerAllTools } from "../tools/index.js";
@@ -108,11 +111,13 @@ export function operationAnnotations(readOnly: boolean): NonNullable<Tool["annot
 export function registerFlatTools(server: McpServer, registry: OperationRegistry): Tool[] {
 	return registry.operations.map((op) => {
 		const annotations = operationAnnotations(op.readOnly);
+		const description = descriptionWithExample(op.tool, op.description);
 		server.registerTool(
 			op.tool,
-			{ description: op.description, inputSchema: op.shape, annotations },
-			(args, extra) => withRouteContext(op.tool, op.api, () => op.callback(args, extra)),
+			{ description, inputSchema: op.shape, outputSchema: StructuredOutput.shape, annotations },
+			(args, extra) =>
+				dispatch(op.op, () => withRouteContext(op.tool, op.api, () => op.callback(args, extra))),
 		);
-		return { name: op.tool, description: op.description, inputSchema: op.inputSchema, annotations };
+		return { name: op.tool, description, inputSchema: op.inputSchema, outputSchema, annotations };
 	});
 }

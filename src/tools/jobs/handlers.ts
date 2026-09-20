@@ -83,13 +83,14 @@ export async function handleCreateJobDefinition(input: CreateJobDefinitionInput)
 			cpu_limit: input.cpu_limit,
 			memory_limit: input.memory_limit,
 			image_uri: input.image_uri,
+			local_storage_capacity: input.local_storage_capacity,
 		};
 		if (input.command !== undefined) body.command = input.command;
 		if (input.description !== undefined) body.description = input.description;
 		if (input.environment_variables !== undefined)
 			body.environment_variables = input.environment_variables;
 		if (input.job_timeout !== undefined) body.job_timeout = input.job_timeout;
-		if (input.project_id !== undefined) body.project_id = input.project_id;
+		body.project_id = input.project_id ?? loadAuthConfig().defaultProjectId;
 		if (input.cron_schedule !== undefined) body.cron_schedule = input.cron_schedule;
 		const response = await client.fetch({
 			method: "POST",
@@ -229,6 +230,8 @@ export async function handleStopJobRun(input: StopJobRunInput) {
 		const response = await client.fetch({
 			method: "POST",
 			path: buildJobsUrl(region, `job-runs/${input.job_run_id}/stop`),
+			body: "{}",
+			headers: { "Content-Type": "application/json" },
 		});
 		return { content: [{ type: "text" as const, text: JSON.stringify(response, null, 2) }] };
 	} catch (error) {

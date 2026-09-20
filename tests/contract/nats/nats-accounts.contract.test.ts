@@ -73,13 +73,12 @@ describe("NATS Accounts contract", () => {
 			expect(result.pageSize).toBe(50);
 		});
 
-		it("parses with all optional fields", () => {
+		it("parses with documented optional fields", () => {
 			const result = ListNatsAccountsParams.parse({
 				region: "nl-ams",
 				page: 2,
 				pageSize: 25,
 				projectId: "00000000-0000-0000-0000-000000000001",
-				name: "test",
 				orderBy: "name_asc",
 			});
 			expect(result.projectId).toBe("00000000-0000-0000-0000-000000000001");
@@ -88,6 +87,10 @@ describe("NATS Accounts contract", () => {
 
 		it("rejects invalid region format", () => {
 			expect(() => ListNatsAccountsParams.parse({ region: "invalid" })).toThrow();
+		});
+
+		it("rejects the unsupported legacy name filter", () => {
+			expect(() => ListNatsAccountsParams.parse({ region: "fr-par", name: "test" })).toThrow();
 		});
 
 		it("rejects invalid orderBy", () => {

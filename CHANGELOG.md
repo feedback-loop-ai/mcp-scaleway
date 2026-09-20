@@ -1,6 +1,31 @@
 # Changelog
 
-## Unreleased
+## 0.5.0 — Unreleased
+
+- Breaking input corrections: Webhosting DNS now requires `domain`, backup restore
+  requires `backup_id`, and cloud creation/update inputs now enforce required fields
+  from the published API. Regenerate calls with `scaleway_describe` before upgrading.
+- Added upstream response validation from recorded official contracts, plus strict
+  S3 XML/header validation. Unsupported legacy Cockpit/Inference IDs remain visible
+  with migration guidance and fail locally with 501 before any cloud request.
+- Corrected Generative project URL scoping, Cockpit contact deletion, Instance
+  pagination, required query switches/default scope, and required request bodies.
+  Object Storage reports unknown bucket totals/size/creation date as `null`.
+- Corrected Kubernetes pool and VPN gateway list response fields. Normalized lists
+  reject missing arrays or counts with a sanitized upstream error.
+- IAM rule updates refuse incomplete or truncated policy reads and existing rule
+  scopes that cannot be preserved, before sending a policy replacement.
+
+- Added schema-validated synthetic examples for every operation, exposed through
+  `scaleway_describe` and flat/both tool descriptions. Added MCP output schemas and
+  `{format,data}` structured content while retaining legacy text and error flags;
+  this shared envelope is separate from upstream resource response validation.
+- Added credential-independent `--health` local readiness checks and one sanitized
+  JSON stderr trace per dispatched gateway, flat or routing callback. Traces contain
+  only registered identifiers, outcome and duration, never inputs or response bodies.
+- Corrected discovery measurement to count the complete tool result, including both
+  text and structured output. The measured search/describe flow is 4,074 bytes with
+  an explicit 6,144-byte budget; JSON-RPC framing and model token counts are excluded.
 
 - Added `bun run dev` with automatic source restart and documented MCP reconnect
   semantics. Corrected unit/contract-only test commands to select actual test files.

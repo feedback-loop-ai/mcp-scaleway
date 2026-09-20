@@ -1,0 +1,90 @@
+{
+	"at": "2026-09-19T21:42:08.338Z",
+	"mode": "real operation dispatch with runtime wire validation",
+	"httpMethods": ["GET"],
+	"httpResponses": [
+		{
+			"status": 200,
+			"contentType": "application/json"
+		},
+		{
+			"status": 200,
+			"contentType": "application/json"
+		},
+		{
+			"status": 200,
+			"contentType": "application/json"
+		},
+		{
+			"status": 200,
+			"contentType": "application/json"
+		},
+		{
+			"status": 200,
+			"contentType": "application/json"
+		},
+		{
+			"status": 200,
+			"contentType": "application/json"
+		},
+		{
+			"status": 200,
+			"contentType": "application/json"
+		},
+		{
+			"status": 200,
+			"contentType": "application/json"
+		},
+		{
+			"status": 200,
+			"contentType": "application/json"
+		}
+	],
+	"reports": [
+		{
+			"operation": "generative_apis_list_models",
+			"outcome": "success",
+			"durationMs": 325
+		},
+		{
+			"operation": "webhosting_list_offers",
+			"outcome": "success",
+			"durationMs": 333
+		},
+		{
+			"operation": "webhosting_list_control_panels",
+			"outcome": "success",
+			"durationMs": 231
+		},
+		{
+			"operation": "secret_manager_list_tags",
+			"outcome": "success",
+			"durationMs": 244
+		},
+		{
+			"operation": "autoscaling_list_instance_templates",
+			"outcome": "success",
+			"durationMs": 241
+		},
+		{
+			"operation": "elastic_metal_list_ips",
+			"outcome": "success",
+			"durationMs": 238
+		},
+		{
+			"operation": "apple_silicon_list_server_private_networks",
+			"outcome": "success",
+			"durationMs": 235
+		},
+		{
+			"operation": "elastic_metal_list_server_private_networks",
+			"outcome": "success",
+			"durationMs": 234
+		},
+		{
+			"operation": "cockpit_list_grafana_users",
+			"outcome": "success",
+			"durationMs": 232
+		}
+	]
+}

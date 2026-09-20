@@ -27,7 +27,7 @@ Requests and responses use **XML** (except bucket policy, which is JSON).
 `GET /`
 - Response XML: `<ListAllMyBucketsResult><Buckets><Bucket><Name>…</Name>
   <CreationDate>…</CreationDate></Bucket>…</Buckets></ListAllMyBucketsResult>`
-- Parsed to `{ buckets: [{ name, region, creationDate }] }`
+- Parsed to `{ buckets: [{ name, region, creationDate? }] }`; optional missing creation dates are omitted. Unknown returned bucket fields are retained.
 
 ### Create Bucket — `scaleway_object_storage_create_bucket`
 `PUT /{bucket}`
@@ -41,11 +41,12 @@ Requests and responses use **XML** (except bucket policy, which is JSON).
 
 ### Get Bucket Info — `scaleway_object_storage_get_bucket_info`
 Composite of three S3 calls:
-- `HEAD /{bucket}` — existence + `Date` header
+- `HEAD /{bucket}` — existence; its HTTP `Date` does not identify bucket creation time
 - `GET /{bucket}?versioning` — versioning status
-- `GET /{bucket}?list-type=2&max-keys=0` — `<KeyCount>` for object count
+- `GET /{bucket}?list-type=2&max-keys=0` — verifies a listing response; `<KeyCount>` is a page count, not the bucket total
 - Returns `{ name, region, creationDate, objectCount, size, versioning }`
-  (`size` is 0 — the S3 API does not expose total bucket size in one call)
+  (`creationDate`, `objectCount` and `size` are `null`: these calls do not measure them).
+  Secondary request failures return an error; they do not imply disabled versioning or an empty bucket.
 
 ## Object Operations
 
@@ -79,11 +80,13 @@ Composite of three S3 calls:
 
 ### Get Bucket Policy — `scaleway_object_storage_get_bucket_policy`
 `GET /{bucket}?policy`
-- Response: JSON policy `{ Version, Statement[] }`. 404 → `{ policy: null }`.
+- Response: JSON policy `{ Version?, Statement }` (one statement or an array).
+  Only HTTP 404 with XML code `NoSuchBucketPolicy` means `{ policy: null }`;
+  `NoSuchBucket` and malformed errors remain errors.
 
 ### Set Bucket Policy — `scaleway_object_storage_set_bucket_policy`
 `PUT /{bucket}?policy`
-- Body: JSON policy document (`Content-Type: application/json`)
+- Body: JSON policy document (`Content-Type: application/json`); success HTTP 204, empty body.
 
 ## Bucket Lifecycle (XML)
 
@@ -91,11 +94,14 @@ Composite of three S3 calls:
 `GET /{bucket}?lifecycle`
 - Response XML: `<LifecycleConfiguration><Rule><ID><Status><Prefix>
   <Expiration><Days|Date></Expiration><Transition><Days><StorageClass>
-  </Transition></Rule>…</LifecycleConfiguration>`. 404 → `{ rules: [] }`.
+  </Transition></Rule>…</LifecycleConfiguration>`. HTTP 404 with code
+  `NoSuchLifecycleConfiguration` means `{ rules: [] }`. Other 404 codes are errors.
+- Parsing preserves rule conditions and every transition. The first transition remains
+  in legacy `Transition`; `Transitions` contains the complete list.
 
 ### Set Bucket Lifecycle — `scaleway_object_storage_set_bucket_lifecycle`
 `PUT /{bucket}?lifecycle`
-- Body: `LifecycleConfiguration` XML (`Content-Type: application/xml`)
+- Body: `LifecycleConfiguration` XML (`Content-Type: application/xml`); success HTTP 200, empty body.
 - Rule: `{ ID?, Status (Enabled|Disabled), Prefix?, Expiration?: { Days?, Date? },
   Transition?: { Days?, StorageClass? } }`
 
@@ -109,7 +115,7 @@ Composite of three S3 calls:
 ### Set Bucket Versioning — `scaleway_object_storage_set_bucket_versioning`
 `PUT /{bucket}?versioning`
 - Body: `<VersioningConfiguration><Status>Enabled|Suspended</Status>
-  </VersioningConfiguration>` (`Content-Type: application/xml`)
+  </VersioningConfiguration>` (`Content-Type: application/xml`); success HTTP 200, empty body.
 
 ## Storage Classes
 
@@ -124,3 +130,19 @@ Scaleway-supported classes: `STANDARD`, `ONEZONE_IA`, `GLACIER`.
   NoSuchBucketPolicy (mapped to empty/`null` results where applicable)
 - 409: BucketNotEmpty / BucketAlreadyExists
 - 500: InternalError
+
+## Runtime response validation
+
+The transport validates success status, body semantics and S3 XML/JSON shape before
+handlers format results. XML parsing accepts namespaces and arbitrary element order,
+decodes escaped keys, preserves additional fields and rejects malformed entries,
+invalid numeric/timestamp values and DTD/entity declarations. List responses require
+IsTruncated; truncated pages require NextContinuationToken. Object PUT requires ETag. A malformed response
+produces a sanitized 502; it cannot become a fabricated empty list. Object HEAD
+requires valid Content-Length, ETag and Last-Modified headers. See
+[response validation](../../064-remaining-remediation/contracts/response-validation.md).
+
+Reviewed protocol references: [ListBuckets](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBuckets.html),
+[ListObjectsV2](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html),
+[GetBucketVersioning](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketVersioning.html),
+and [GetBucketLifecycleConfiguration](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketLifecycleConfiguration.html).

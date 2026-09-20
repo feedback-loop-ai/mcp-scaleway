@@ -276,6 +276,8 @@ describe("mailbox domain handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
 				path: `/mailbox/v1alpha1/domains/${DOMAIN_ID}/validate-records`,
+				body: "{}",
+				headers: { "Content-Type": "application/json" },
 			});
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.validated).toBe(true);
@@ -525,6 +527,8 @@ describe("mailbox mailbox handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
 				path: `/mailbox/v1alpha1/mailboxes/${MAILBOX_ID}/restore`,
+				body: "{}",
+				headers: { "Content-Type": "application/json" },
 			});
 			expect(JSON.parse(result.content[0].text).status).toBe("restoring");
 		});

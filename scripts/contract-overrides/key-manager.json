@@ -1,0 +1,172 @@
+{
+	"source": {
+		"id": "key-manager-sdk",
+		"url": "https://unpkg.com/@scaleway/sdk-key-manager@2.16.1/dist/v1alpha1/marshalling.gen.js",
+		"sha256": "bc2acb1ee62c47d94519fef796e26a3fb661882fc44d78dd38b5a8b62dc38fae",
+		"fetchedAt": "2026-09-19T21:20:35.010Z",
+		"kind": "official-js-sdk-augmented-openapi",
+		"baseSource": "key-manager",
+		"baseSha256": "9d7759d25ad3a46a9b2792faf3fb9d728cfcdb6768b977db54352c64739337e0",
+		"protocolSource": "https://protobuf.dev/reference/protobuf/google.protobuf/#bytesvalue"
+	},
+	"document": {
+		"openapi": "3.1.0",
+		"info": {
+			"title": "Key Manager encrypt/decrypt ProtoJSON BytesValue correction",
+			"version": "@scaleway/sdk-key-manager@2.16.1",
+			"description": "Only these two operations are projected. Request/response structures retain the public OpenAPI; associated_data uses the JSON string representation emitted by the pinned official SDK and specified for protobuf BytesValue. Optional remains optional; no object wrapping or credential transformation is introduced."
+		},
+		"paths": {
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/encrypt": {
+				"post": {
+					"operationId": "Encrypt",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"associated_data": {
+											"$ref": "#/components/schemas/google.protobuf.BytesValue"
+										},
+										"plaintext": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.EncryptResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			},
+			"/key-manager/v1alpha1/regions/{region}/keys/{key_id}/decrypt": {
+				"post": {
+					"operationId": "Decrypt",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par", "nl-ams", "pl-waw"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "key_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"associated_data": {
+											"$ref": "#/components/schemas/google.protobuf.BytesValue"
+										},
+										"ciphertext": {
+											"type": "string"
+										}
+									},
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.key_manager.v1alpha1.DecryptResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Keys"]
+				}
+			}
+		},
+		"components": {
+			"schemas": {
+				"google.protobuf.BytesValue": {
+					"type": "string"
+				},
+				"scaleway.key_manager.v1alpha1.EncryptResponse": {
+					"properties": {
+						"ciphertext": {
+							"type": "string"
+						},
+						"key_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.key_manager.v1alpha1.DecryptResponse": {
+					"properties": {
+						"ciphertext": {
+							"$ref": "#/components/schemas/google.protobuf.BytesValue"
+						},
+						"key_id": {
+							"type": "string"
+						},
+						"plaintext": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			}
+		}
+	}
+}
