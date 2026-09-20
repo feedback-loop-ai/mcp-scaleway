@@ -18,12 +18,12 @@ For unresolved contract-depth obligations see analysis.md and ../retrofit-compli
 | FR-011 | T025 T029 | See referenced tasks and contract tests. |
 | FR-012 | T036 T037 T038 | See referenced tasks and contract tests. |
 | FR-013 | T036 T039 | See referenced tasks and contract tests. |
-| FR-014 | T005 T006 T012 T022 T023 T032 T047 | PARTIAL: deep response/error coverage is not established for every repaired area; R-VIII remains open. |
+| FR-014 | T005 T006 T012 T022 T023 T032 T047 | Completed for supported operations by #63 / PR #82 (2026-09-20): independent transport contracts include response/error handling. See [064 closure map](../064-remaining-remediation/closure-map.md); six unverified operations remain locally blocked. |
 | FR-015 | T030 T031 T033 T035 T040 T041 T048 | See referenced tasks and contract tests. |
 | FR-016 | T002 T031 T044 | See referenced tasks and contract tests. |
 | SC-001 | T005 | See referenced tasks and contract tests. |
 | SC-002 | T049 | See referenced tasks and contract tests. |
-| SC-003 | T005 T006 T012 T022 T023 T032 T047 | PARTIAL: deep response/error coverage is not established for every repaired area; R-VIII remains open. |
+| SC-003 | T005 T006 T012 T022 T023 T032 T047 | Completed for supported operations by #63 / PR #82 (2026-09-20): independent transport contracts include response/error handling. See [064 closure map](../064-remaining-remediation/closure-map.md); six unverified operations remain locally blocked. |
 | SC-004 | T004 T006 | See referenced tasks and contract tests. |
 | SC-005 | T036 T038 | See referenced tasks and contract tests. |
 | SC-006 | T030 T040 T048 | See referenced tasks and contract tests. |

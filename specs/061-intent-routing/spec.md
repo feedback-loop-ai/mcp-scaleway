@@ -62,3 +62,17 @@ No autonomous workflow executor, provider-generated URLs, automatic cloud mutati
 vector database or multi-tenant credential system is introduced. Optional routing
 can make documented external inference requests when explicitly invoked with a
 provider configured.
+
+## SDD closeout clarification — 2026-09-20
+
+All eleven listed requirements are required acceptance scope with equal priority
+within this feature; routing remains optional for operators. This is a dated
+clarification, not evidence of prior product approval.
+
+Delivered together with the separate Scaleway refresh in
+[PR #80](https://github.com/feedback-loop-ai/mcp-scaleway/pull/80) (`844cb8e`).
+The [plan](plan.md), [data model](data-model.md), [routing contract](contracts/route.md),
+[checkpoints](tasks.md) and [validation](validation.md) retain the WHAT/HOW/VALIDATION
+record. [Feature 064](../064-remaining-remediation/closeout.md) subsequently adds
+availability filtering and structured MCP envelopes. The original Jev development
+evaluation remains historical and does not become a held-out accuracy benchmark.

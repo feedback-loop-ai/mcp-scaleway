@@ -44,3 +44,18 @@ checks for this change does not close those broader issues or authorize a releas
 See [validation.md](validation.md) for current command results and acceptance
 evidence, and [upstream-review.md](upstream-review.md) for disposition of the
 remaining public schema changes.
+
+## SDD closeout clarification — 2026-09-20
+
+Requirements 1–7 are required acceptance scope with equal priority within this
+refresh. This records priority at closeout and does not establish earlier approval
+or spec-first sequencing.
+
+The refresh and separate [Jev feature 061](../061-intent-routing/spec.md) merged in
+[PR #80](https://github.com/feedback-loop-ai/mcp-scaleway/pull/80) (`844cb8e`).
+The HOW record is completed by [plan.md](plan.md), [data-model.md](data-model.md)
+and [contracts/refresh.md](contracts/refresh.md); [tasks.md](tasks.md) maps the
+delivery to its dated [validation](validation.md). Those model/contract additions
+are explicitly retrospective. Later package-install checks belong to
+[feature 063](../063-remediation-closeout/validation.md), and subsequent response,
+endpoint and MCP remediation belongs to [feature 064](../064-remaining-remediation/closure-map.md).

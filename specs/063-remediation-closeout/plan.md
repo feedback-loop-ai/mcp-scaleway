@@ -17,3 +17,27 @@
 
 The route reporter and diagnostic remain review aids rather than proof of live
 contract compatibility. Full endpoint schema validation is still tracked by #62/#63.
+
+## Design links and constitution check — 2026-09-20
+
+The preceding plan records the original PR #81 checkpoint; its open-issue statements
+are historical. [Feature 064](../064-remaining-remediation/closure-map.md) records
+the later response-validation work and remaining blockers.
+
+For [requirements 1–5](spec.md#requirements), the retrospectively consolidated
+[data model](data-model.md) defines comparator, diagnostic and package-check records,
+while [maintenance contracts](contracts/maintenance.md) specify their behavior.
+The [task evidence](tasks.md) and [original validation](validation.md) retain the
+2026-09-19 results from [PR #81](https://github.com/feedback-loop-ai/mcp-scaleway/pull/81).
+
+| Constitution concern | Design/evidence disposition |
+| --- | --- |
+| I/III: explicit boundaries | Diagnostic conclusions, exact route matching and installed-package behavior have [maintenance contracts](contracts/maintenance.md). No new MCP/cloud endpoint is introduced. |
+| II: separate roles | Spec, plan, model, contracts and task/validation records separate WHAT/HOW/VALIDATION. Retrospective authorship remains explicit; see the [governance ledger](../retrofit-compliance.md). |
+| IV/VII: safe failure handling | Bounded GET-only diagnostic, sanitized failures and credential-free package children; [diagnostic regressions](../../tests/unit/scripts/probe-webhosting.test.ts) verify the cases. |
+| V/VI: reuse and feedback | Reuse Bun watch and MCP initialization; the [isolated restart and unit timing](validation.md#development-reload-61) establish their bounded behavior. |
+| VIII: evidence before closure | [Validation](validation.md) distinguishes source/query proof, offline diagnostics, packaged discovery and coverage; later full endpoint depth belongs to [064](../064-remaining-remediation/closeout.md). |
+
+The source-investigation receipts already live in [validation.md](validation.md);
+the [README](../../README.md) maintains the restart/packed-check usage. This
+stateless maintenance change needs no duplicate research or quickstart narrative.

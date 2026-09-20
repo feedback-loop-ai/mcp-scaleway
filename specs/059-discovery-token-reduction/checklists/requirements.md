@@ -25,5 +25,8 @@
 
 ## Notes
 
-Document choices are resolved. Constitutional violations remain OPEN or HISTORICAL in
-[retrofit-compliance.md](../../retrofit-compliance.md); a checklist tick cannot waive them.
+Document choices are resolved. The original audit's OPEN/HISTORICAL labels are
+preserved in its dated analysis. Current implementation remediation and remaining
+historical findings are recorded in the [compliance ledger](../../retrofit-compliance.md)
+and [feature 064 closure map](../../064-remaining-remediation/closure-map.md).
+Checklist ticks do not waive constitutional requirements or alter historical ordering.

@@ -1,4 +1,28 @@
-/** Contract: specs/064-remaining-remediation/contracts/pagination-consumption.md. */
+/**
+ * Contract: specs/064-remaining-remediation/contracts/pagination-consumption.md.
+ * API Reference entries below identify each table-driven operation. All endpoints are GET;
+ * paths shown relative to a reference's stated base URL use that same published prefix.
+ * - specs/scaleway-api/rdb/api-reference.md#endpoints: rdb_list_endpoints reads the
+ *   endpoints field from /rdb/v1/regions/{region}/instances/{instance_id} (Get Instance).
+ * - specs/scaleway-api/vpc/api-reference.md#vpcs and #private-networks: List VPCs and
+ *   List Private Networks, /vpc/v2/regions/{region}/{vpcs|private-networks}.
+ * - specs/scaleway-api/sqs/api-reference.md#list-sqs-credentials:
+ *   /mnq/v1beta1/regions/{region}/sqs-credentials.
+ * - specs/scaleway-api/cockpit/api-reference.md: Data Sources (regional), Tokens
+ *   (regional), Grafana Users (global), Contact Points (regional), and Managed Alerts.
+ *   Paths: /cockpit/v1/regions/{region}/data-sources, /tokens and
+ *   /alert-manager/contact-points under that regional prefix; global
+ *   /cockpit/v1/grafana/users. The managed-alerts list ID aliases List Contact Points.
+ * - specs/scaleway-api/inference/api-reference.md#deployments, #models and #node-types:
+ *   List Deployments, List Models and List Node Types, respectively
+ *   /inference/v1/regions/{region}/{deployments|models|node-types}.
+ * - specs/scaleway-api/k8s/api-reference.md#list-clusters and #list-pools:
+ *   /k8s/v1/regions/{region}/clusters and /clusters/{cluster_id}/pools under that prefix.
+ * - specs/scaleway-api/vpn/api-reference.md#list-vpn-gateways and #list-customer-gateways:
+ *   /s2s-vpn/v1alpha1/regions/{region}/{vpn-gateways|customer-gateways}.
+ * Full method/path mappings and source response schemas: tests/contract-evidence.json
+ * and src/shared/response-contracts.json, keyed by each case's scaleway_${op} ID.
+ */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import examplesJson from "../../src/gateway/examples.json";
 import { createServer } from "../../src/server.js";

@@ -1,4 +1,11 @@
-/** A complete policy read is required before SetRules can replace existing access. */
+/**
+ * API Reference: specs/scaleway-api/iam/api-reference.md#rules, especially List Rules,
+ * Set Rules, Create Rule, Update Rule and Delete Rule.
+ * Endpoints: GET /iam/v1alpha1/rules?policy_id={policy_id}&page=1&page_size=100,
+ * followed by PUT /iam/v1alpha1/rules (SetRules replaces the entire policy rule set).
+ * Consumption contract: specs/064-remaining-remediation/contracts/pagination-consumption.md.
+ * A complete, representable policy read is required before the replacement PUT.
+ */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import examplesJson from "../../src/gateway/examples.json";
 import { executeOperation } from "../../src/gateway/index.js";

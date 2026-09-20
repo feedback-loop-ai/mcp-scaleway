@@ -7,10 +7,13 @@
 
 ## Final findings
 
-This is the 2026-09-06 analysis snapshot. R-VI was subsequently remediated on
-2026-09-19; see [current compliance status](../retrofit-compliance.md) and
-[closure evidence](../063-remediation-closeout/validation.md). Other open and
-historical findings below retain their original disposition.
+This is the preserved 2026-09-06 analysis snapshot, including its original findings
+and measurements. Current status as of 2026-09-20: R-VI was remediated in feature
+063; R-I/R-IV/R-VII/R-VIII were remediated for the supported surface in feature 064
+and their issues closed by PR #82. See the [current compliance ledger](../retrofit-compliance.md)
+and [issue-to-evidence closure map](../064-remaining-remediation/closure-map.md).
+R-II/R-III remain historical breaches. The table and verdict below describe the
+original audit, not today's implementation status; no historical clearance is invented.
 
 | ID | Category | Severity | Evidence | Required resolution |
 | --- | --- | --- | --- | --- |

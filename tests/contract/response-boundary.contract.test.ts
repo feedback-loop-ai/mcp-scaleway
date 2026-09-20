@@ -1,7 +1,17 @@
 /**
  * Wire contract: specs/064-remaining-remediation/contracts/response-validation.md.
- * Real Scaleway SDK request/parser/unmarshaller; only HTTP is replaced. Validate
- * documented /instance/v1/zones/{zone}/servers success before SDK transformations.
+ * API Reference entries and tested endpoints:
+ * - specs/scaleway-api/instances/api-reference.md#list-servers:
+ *   GET /instance/v1/zones/{zone}/servers (including the Pagination header contract).
+ * - specs/scaleway-api/domain-registrar/api-reference.md#tlds, Get TLD:
+ *   GET /domain/v2beta1/tlds?tlds={tld_name}.
+ * - specs/scaleway-api/nats/api-reference.md#list-nats-credentials:
+ *   GET /mnq/v1beta1/regions/{region}/nats-credentials?nats_account_id={id}.
+ * - specs/scaleway-api/cockpit/api-reference.md#cockpit-regional-legacy-and-unverified:
+ *   the activate-cockpit ID is locally unavailable. The final test's supplied legacy
+ *   path is a preflight fixture, not an asserted or contacted Scaleway endpoint; see
+ *   specs/064-remaining-remediation/contracts/unverified-operations.md.
+ * Real Scaleway SDK request/parser/unmarshaller; only HTTP is replaced.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createScalewayClient, resetClient } from "../../src/shared/client.js";

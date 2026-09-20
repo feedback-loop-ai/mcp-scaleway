@@ -1,5 +1,23 @@
+/**
+ * Every supported operation crosses the real SDK/raw HTTP boundary against independent contracts.
+ * API Reference traceability for each generated case (all paths are repository-relative):
+ * - op.tool identifies its entry in tests/parity-matrix.json and tests/contract-evidence.json.
+ * - op.area selects specs/scaleway-api/${op.area}/api-reference.md; cite that document's
+ *   entry for op.tool or its method/path, expanding relative paths against its stated base URL.
+ * - Each wireCatalog.routes[op.tool] leg identifies the exact endpoint by method, host,
+ *   sourcePath and query. Its source schema is documents[leg.area].paths[leg.sourcePath]
+ *   [leg.method.toLowerCase()] in src/shared/response-contracts.json. The source-document ID
+ *   leg.area can differ from the product op.area; it must not select the narrative file.
+ * - specs/scaleway-api/README.md#current-executable-contracts incorporates those recorded
+ *   contracts as the executable supplement to the product's API Reference entry.
+ * S3 legs instead cite specs/scaleway-api/object-storage/api-reference.md, matching the
+ * tool's Bucket/Object operation entry and its method/path/subresource query.
+ * Composite cases cite every recorded leg; unavailable cases cite the legacy restriction
+ * entries in specs/scaleway-api/{cockpit,inference}/api-reference.md and
+ * specs/064-remaining-remediation/contracts/unverified-operations.md, not verified endpoints.
+ * Methodology: specs/064-remaining-remediation/contracts/wire-evidence.md.
+ */
 import { writeFileSync } from "node:fs";
-/** Every supported operation crosses the real SDK/raw HTTP boundary against independent wire contracts. */
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import Ajv from "ajv";
 import { fullFormats } from "ajv-formats/dist/formats.js";

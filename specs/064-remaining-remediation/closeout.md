@@ -64,3 +64,20 @@ all regions, tenant permissions, populated resource variants, or production writ
 
 The delivery PR records CI, merge and issue-closure outcomes. No tag or npm
 publication is part of this source delivery.
+
+## Recorded delivery and SDD handoff — 2026-09-20
+
+[PR #82](https://github.com/feedback-loop-ai/mcp-scaleway/pull/82) merged as
+`7b1fad29a319cbe34c927db7e074c38c46efb5fc`, closing #59, #60, #62, #63, #65,
+#68, #69, #70, #71, #72, #73 and #76. Both
+[PR CI](https://github.com/feedback-loop-ai/mcp-scaleway/actions/runs/35501757988)
+and [merged-main CI](https://github.com/feedback-loop-ai/mcp-scaleway/actions/runs/35501832089)
+passed all five jobs. #66/#67 remain open for the six unverified contracts.
+
+A subsequent SDD audit found that older compliance/task records had not been
+reconciled and that maintenance data-model/task traceability needed consolidation.
+The [closure map](closure-map.md), [data model](data-model.md), updated [tasks](tasks.md)
+and [remediation SDD index](../remediation-sdd-index.md) document that correction.
+These are dated additions after the implementation merge. They do not establish
+historical pre-code approval or erase the R-II/R-III findings in the
+[compliance record](../retrofit-compliance.md).
