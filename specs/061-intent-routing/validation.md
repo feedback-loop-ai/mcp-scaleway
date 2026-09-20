@@ -1,5 +1,12 @@
 # Jev routing validation
 
+Historical evidence for [PR #80](https://github.com/feedback-loop-ai/mcp-scaleway/pull/80)
+(`844cb8e`), merged 2026-09-19. Added at SDD closeout on 2026-09-20: the measurements
+below retain their original dates and development-set limitations.
+[Feature 064](../064-remaining-remediation/closeout.md) records later availability
+filtering and structured MCP output changes; it does not replace this live evaluation
+with a held-out benchmark.
+
 Verified on 2026-09-19 with Bun 1.3.14 and Node 22.23.2. Scaleway service updates
 are a separate signed commit (`dbebf66`), recorded in
 [062-scaleway-refresh](../062-scaleway-refresh/validation.md).

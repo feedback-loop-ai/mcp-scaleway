@@ -24,3 +24,18 @@ all 727 operations, waive historical governance findings or publish a package re
 
 The regression and evidence requirements follow Constitution VIII; development
 restart addresses the open Principle VI implementation requirement.
+
+## SDD closeout clarification — 2026-09-20
+
+Requirements 1–5 are required acceptance scope with equal priority within this
+maintenance delivery. This dated clarification does not establish earlier product
+approval or reverse the recorded retrospective authorship.
+
+Delivered in [PR #81](https://github.com/feedback-loop-ai/mcp-scaleway/pull/81)
+(`4f4027c`). The [plan](plan.md), [data model](data-model.md),
+[maintenance contracts](contracts/maintenance.md), [checkpoints](tasks.md) and
+[validation](validation.md) separate design from recorded evidence. The model and
+contract documents were consolidated retrospectively on 2026-09-20. Historical
+open findings are subsequently dispositioned in
+[feature 064's closure map](../064-remaining-remediation/closure-map.md); this
+feature's original test counts and limits remain unchanged.

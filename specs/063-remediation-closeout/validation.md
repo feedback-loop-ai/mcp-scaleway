@@ -1,5 +1,12 @@
 # Remediation closure evidence
 
+Historical evidence for [PR #81](https://github.com/feedback-loop-ai/mcp-scaleway/pull/81)
+(`4f4027c`), merged 2026-09-19. SDD closeout note added 2026-09-20: "remains open"
+and other unresolved statements below describe that original checkpoint, not the
+current issue inventory. Later closure evidence and the six remaining unverified
+operations are recorded in [feature 064](../064-remaining-remediation/closure-map.md).
+Original test counts, versions, dates and limits below are unchanged.
+
 Recorded 2026-09-19. This evidence addresses four bounded issues and repairs the
 Webhosting diagnostic; it does not establish full live API correctness.
 

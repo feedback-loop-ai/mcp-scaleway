@@ -1,4 +1,15 @@
-/** Local MCP envelope and trace contracts: specs/064-remaining-remediation/mcp-contracts.md. */
+/**
+ * Local MCP contracts (these meta-tools are not Scaleway HTTP endpoints):
+ * - specs/064-remaining-remediation/mcp-contracts.md#structured-output and #dispatch-traces.
+ * - specs/059-discovery-token-reduction/contracts/gateway-tools.md: scaleway_read,
+ *   discovery/registration, filtering, and gateway/flat compatibility.
+ * - specs/061-intent-routing/contracts/route.md: optional scaleway_route local fallback.
+ * The instances_list_servers fixture identifies the API Reference entry at
+ * specs/scaleway-api/instances/api-reference.md#list-servers and endpoint
+ * GET /instance/v1/zones/{zone}/servers. Its callback is synthetic: this file validates
+ * MCP envelopes and traces, while transport/catalog-evidence.contract.test.ts validates
+ * that endpoint's wire contract. No cloud or model request occurs here.
+ */
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { registerGatewayTools } from "../../src/gateway/index.js";

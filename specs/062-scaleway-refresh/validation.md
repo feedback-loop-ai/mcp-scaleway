@@ -1,5 +1,13 @@
 # Validation record
 
+Historical evidence for the refresh portion of
+[PR #80](https://github.com/feedback-loop-ai/mcp-scaleway/pull/80) (`844cb8e`).
+SDD closeout note added 2026-09-20: references below to "pending" routing describe
+the original isolated-checkout checkpoint. Jev subsequently merged in the same PR;
+its independent [validation](../061-intent-routing/validation.md) retains the live
+model evidence. Original counts and dates below are unchanged. Later outstanding
+findings are dispositioned in [feature 064](../064-remaining-remediation/closure-map.md).
+
 Verified on 2026-09-19. This record covers the standalone non-Jev change and its
 integration with the pending optional routing work.
 

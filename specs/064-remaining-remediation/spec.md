@@ -63,3 +63,30 @@ alternative to the unverified standalone accept-EULA operation.
 The corrected signatures and explicit support restrictions are staged as package
 version 0.5.0 (unreleased). Existing IDs remain; describe provides updated required
 inputs. This source delivery does not tag or publish an npm release.
+
+## SDD closeout correction — 2026-09-20
+
+**Priority recorded at closeout:** requirements 1–7 form one P1 remediation scope;
+none is an optional substitute for another. This priority statement is a later
+documentation clarification, not a claim of separately recorded pre-code approval.
+
+The user requested verification that issue closure includes proper SDD artifacts.
+PR #82 has merged, but the older compliance ledger and task records still show
+remediated findings as open. Before editing those records, this documentation-only
+follow-up requires:
+
+1. Link each of the twelve closed issues to its specification/contract, implementation
+   evidence and validation, including the merged PR and successful CI runs.
+2. Reconcile current compliance states and original task checkboxes with that evidence.
+   Preserve historical R-II/R-III breaches, the blocked provider-token measurement,
+   and the six unverified contracts in #66/#67; none becomes a verified capability.
+3. Consolidate the data model and task-level traceability of feature 064. Label these
+   additions as post-implementation documentation, without backdating approval or
+   claiming that a shared commit proves spec-before-code ordering.
+4. Verify document links and recorded issue/CI states, then deliver the correction
+   through a signed commit, reviewed PR and merge. Runtime behavior is unchanged.
+
+The user's subsequent instruction to cover all fixes includes feature 061 (Jev),
+062 (Scaleway refresh) and 063 (earlier remediation). Audit their essential SDD
+artifacts and add missing maintenance data models/contracts with explicit reuse
+links. Retain their existing retrospective authorship and original validation dates.

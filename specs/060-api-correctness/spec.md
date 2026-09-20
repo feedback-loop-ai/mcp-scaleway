@@ -131,7 +131,7 @@ Glossary (spec term → implementation name): Operation → tool; Shared Transpo
 
 - **SC-001**: 100% of registered operations construct a well-formed, authenticated request to an allowed host when exercised through the real client with injected HTTP, verified by an automated whole-catalog test on every change.
 - **SC-002**: No versioned endpoint uses a pair outside the committed supported-version inventory or within its superseded set. The automated test verifies source consistency, not live liveness. Any future live validation is separately dated and scoped.
-- **SC-003**: For every repaired area, at least one automated test MUST exercise the real transport through response parsing and error mapping. Current evidence is PARTIAL: the all-operation smoke proves host/path/auth dispatch only; deeper parsing/error assertions cover selected migrated and representative operations. Remaining coverage is R-VIII, not claimed complete.
+- **SC-003**: For every repaired area, at least one automated test MUST exercise the real transport through response parsing and error mapping. Evidence at the 2026-09-06 retrofit was PARTIAL. Feature 064 subsequently completed independent transport/response/error evidence for supported operations and closed R-VIII in PR #82; see [closure map](../064-remaining-remediation/closure-map.md). This does not turn the original minimal-input smoke into deeper evidence or validate the six blocked operations.
 - **SC-004**: Upstream 4xx statuses are reported with their original status in 100% of tested cases.
 - **SC-005**: The server starts and lists its catalog with zero credentials configured.
 - **SC-006**: The operation parity record, generated runtime metadata, user documentation and user-facing counts agree on the set of supported operations (724 after this change), enforced by an automated cross-check on every change.
@@ -146,5 +146,5 @@ Glossary (spec term → implementation name): Operation → tool; Shared Transpo
 ## Out of Scope
 
 - Adopting official per-product client packages for the 45 areas that hand-roll requests (tracked as a future improvement).
-- Comprehensive runtime response validation is not implemented by this retrofit. It remains an OPEN Constitution VII requirement (R-VII), not an exemption or waived scope item.
+- Comprehensive runtime response validation was not implemented by this retrofit and remained an OPEN Constitution VII requirement at that time. Feature 064 subsequently remediated R-VII for supported operations in PR #82; see [closure map](../064-remaining-remediation/closure-map.md). No exemption was granted.
 - Changes to the discovery surface (separate feature 059).

@@ -23,6 +23,13 @@ Repair request construction across 33 product areas so operations reach Scaleway
 
 ## Constitution Check
 
+**Historical assessment (2026-09-06):** the table below preserves the original
+retrofit findings. R-VI was later remediated in feature 063; R-I/R-IV/R-VII/R-VIII
+were remediated for the supported surface in feature 064. See the
+[current compliance ledger](../retrofit-compliance.md) and
+[closure map](../064-remaining-remediation/closure-map.md) for current evidence.
+R-II/R-III remain historical breaches; these later fixes do not backdate approval.
+
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 | Principle | Status | Evidence / gap |
