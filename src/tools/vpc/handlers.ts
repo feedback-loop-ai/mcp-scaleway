@@ -59,9 +59,7 @@ export async function handleListVpcs(input: ListVpcsInput) {
 			path: `${VPC_API_V2}/${region}/vpcs`,
 			urlParams,
 		});
-		return formatSuccess(
-			buildPaginatedResponse(body.vpcs ?? [], body.total_count ?? 0, page, pageSize),
-		);
+		return formatSuccess(buildPaginatedResponse(body.vpcs, body.total_count, page, pageSize));
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
 	}
@@ -154,7 +152,7 @@ export async function handleListPrivateNetworks(input: ListPrivateNetworksInput)
 			urlParams,
 		});
 		return formatSuccess(
-			buildPaginatedResponse(body.private_networks ?? [], body.total_count ?? 0, page, pageSize),
+			buildPaginatedResponse(body.private_networks, body.total_count, page, pageSize),
 		);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));

@@ -43,7 +43,6 @@ export async function handleListNatsAccounts(params: ListNatsAccountsParams) {
 				["page", params.page],
 				["page_size", params.pageSize],
 				["project_id", params.projectId],
-				["name", params.name],
 				["order_by", params.orderBy],
 			),
 		});

@@ -60,14 +60,14 @@ export function registerWebhostingTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_webhosting_restore_hosting",
-		"Restore a previously deleted web hosting by ID.",
+		"Restore a selected backup to a web hosting. Requires hosting_id and backup_id; overwrites existing data.",
 		RestoreHostingInput.shape,
 		async (params) => handleRestoreHosting(RestoreHostingInput.parse(params)),
 	);
 
 	server.tool(
 		"scaleway_webhosting_get_dns_records",
-		"Get DNS records for a web hosting, showing expected DNS configuration.",
+		"Get DNS records for a domain associated with a web hosting, showing expected DNS configuration.",
 		GetDnsRecordsInput.shape,
 		async (params) => handleGetDnsRecords(GetDnsRecordsInput.parse(params)),
 	);

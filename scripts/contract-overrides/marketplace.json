@@ -1,0 +1,161 @@
+{
+	"source": {
+		"id": "marketplace-sdk",
+		"url": "https://unpkg.com/@scaleway/sdk-marketplace@2.10.1/dist/v2/api.gen.js",
+		"sha256": "e4bf1af9068dc497a807a679b158095f691552c5884a65ebdf4861debbf3d3ee",
+		"fetchedAt": "2026-09-19T21:18:04.112426+00:00",
+		"kind": "official-js-sdk-augmented-openapi",
+		"baseSource": "marketplace",
+		"baseSha256": "30179eca9c1fb6c60aa39810d809335a56c6401d387e04b2dcbb24f72b3a885c"
+	},
+	"document": {
+		"paths": {
+			"/marketplace/v2/local-images": {
+				"get": {
+					"operationId": "ListLocalImages",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.marketplace.v2.ListLocalImagesRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "arch",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.marketplace.v2.LocalImage.Type"
+							}
+						},
+						{
+							"in": "query",
+							"name": "image_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "version_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "image_label",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.marketplace.v2.ListLocalImagesResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Marketplace Local Images"]
+				}
+			}
+		},
+		"components": {
+			"schemas": {
+				"scaleway.marketplace.v2.ListLocalImagesRequest.OrderBy": {
+					"default": "type_asc",
+					"enum": ["type_asc", "type_desc", "created_at_asc", "created_at_desc"],
+					"type": "string"
+				},
+				"scaleway.marketplace.v2.LocalImage.Type": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "instance_local", "instance_sbs"],
+					"type": "string"
+				},
+				"scaleway.marketplace.v2.ListLocalImagesResponse": {
+					"properties": {
+						"local_images": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.marketplace.v2.LocalImage"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.marketplace.v2.LocalImage": {
+					"properties": {
+						"arch": {
+							"type": "string"
+						},
+						"compatible_commercial_types": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"id": {
+							"type": "string"
+						},
+						"label": {
+							"type": "string"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.marketplace.v2.LocalImage.Type"
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			}
+		}
+	},
+	"projectionNotes": "The pinned official SDK serializes these one-of query parameters omitted from public OpenAPI. Types are independently checked against adjacent published types.gen.d.ts. Keep all original method/path/response/other parameter contracts from the recorded base; preserve input scoping."
+}

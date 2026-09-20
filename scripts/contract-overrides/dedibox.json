@@ -1,0 +1,698 @@
+{
+	"source": {
+		"id": "dedibox-sdk",
+		"url": "https://unpkg.com/@scaleway/sdk-dedibox@2.15.1/dist/v1/api.gen.js",
+		"sha256": "e9d07ce53601f964253754c9351cf0a635f6f53c173877cfa73f9bfee0a04925",
+		"fetchedAt": "2026-09-19T21:18:04.089941+00:00",
+		"kind": "official-js-sdk-augmented-openapi",
+		"baseSource": "dedibox",
+		"baseSha256": "bc58fe8ea1321ca025f93794770969d500b5d99c2eb22b6870636c8c72f108b5"
+	},
+	"document": {
+		"paths": {
+			"/dedibox/v1/zones/{zone}/os": {
+				"get": {
+					"operationId": "ListOS",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "nl-ams-1"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.ListOSRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.OS.Type"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "server_id",
+							"schema": {
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "offer_id",
+							"schema": {
+								"type": "integer"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.dedibox.v1.ListOSResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Operating System"]
+				}
+			}
+		},
+		"components": {
+			"schemas": {
+				"scaleway.dedibox.v1.ListOSRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": ["created_at_asc", "created_at_desc", "released_at_asc", "released_at_desc"],
+					"type": "string"
+				},
+				"scaleway.dedibox.v1.OS.Type": {
+					"default": "unknown_type",
+					"enum": ["unknown_type", "server", "virtu", "panel", "desktop", "custom", "rescue"],
+					"type": "string"
+				},
+				"scaleway.dedibox.v1.ListOSResponse": {
+					"properties": {
+						"os": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.OS"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.OS": {
+					"properties": {
+						"allow_custom_partitioning": {
+							"type": "boolean"
+						},
+						"allow_ssh_keys": {
+							"type": "boolean"
+						},
+						"allowed_filesystems": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.Partition.FileSystem"
+							},
+							"type": "array"
+						},
+						"arch": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.OS.Arch"
+						},
+						"display_name": {
+							"type": "string"
+						},
+						"hostname_max_length": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"hostname_regex": {
+							"type": ["string", "null"]
+						},
+						"id": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"license_offers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer"
+							},
+							"type": "array"
+						},
+						"max_partitions": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"name": {
+							"type": "string"
+						},
+						"panel_password_regex": {
+							"type": ["string", "null"]
+						},
+						"password_regex": {
+							"type": "string"
+						},
+						"released_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"requires_admin_password": {
+							"type": "boolean"
+						},
+						"requires_license": {
+							"type": "boolean"
+						},
+						"requires_panel_password": {
+							"type": "boolean"
+						},
+						"requires_user": {
+							"type": "boolean"
+						},
+						"requires_valid_hostname": {
+							"type": ["boolean", "null"]
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.OS.Type"
+						},
+						"version": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Partition.FileSystem": {
+					"default": "unknown",
+					"enum": ["unknown", "efi", "swap", "ext4", "ext3", "ext2", "xfs", "ntfs", "fat32", "ufs"],
+					"type": "string"
+				},
+				"scaleway.dedibox.v1.OS.Arch": {
+					"default": "unknown_arch",
+					"enum": ["unknown_arch", "amd64", "x86", "arm", "arm64"],
+					"type": "string"
+				},
+				"scaleway.dedibox.v1.Offer": {
+					"properties": {
+						"antidos_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.AntiDosInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"backup_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.BackupInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"bandwidth_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.BandwidthInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"catalog": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.Catalog"
+						},
+						"failover_block_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.FailoverBlockInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"failover_ip_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.FailoverIpInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"id": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"license_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.LicenseInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"name": {
+							"type": "string"
+						},
+						"offer_id": {
+							"format": "uint64",
+							"type": ["integer", "null"]
+						},
+						"payment_frequency": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.PaymentFrequency"
+						},
+						"pricing": {
+							"$ref": "#/components/schemas/google.type.Money"
+						},
+						"rpn_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.RPNInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"san_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.SANInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"server_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.ServerInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"service_level_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.ServiceLevelInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"storage_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.StorageInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"usb_storage_info": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.StorageInfo"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.AntiDosInfo": {
+					"properties": {
+						"type": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.AntiDosInfo.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.AntiDosInfo.Type": {
+					"default": "minimal",
+					"enum": ["minimal", "preventive", "curative"],
+					"type": "string"
+				},
+				"scaleway.dedibox.v1.Offer.BackupInfo": {
+					"properties": {
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.BandwidthInfo": {
+					"properties": {
+						"speed": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.Catalog": {
+					"default": "all",
+					"enum": ["all", "default", "beta", "reseller", "premium", "volume", "admin", "inactive"],
+					"type": "string"
+				},
+				"scaleway.dedibox.v1.Offer.FailoverBlockInfo": {
+					"properties": {
+						"onetime_fees": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.FailoverIpInfo": {
+					"properties": {
+						"onetime_fees": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.LicenseInfo": {
+					"properties": {
+						"bound_to_ip": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.PaymentFrequency": {
+					"default": "monthly",
+					"enum": ["monthly", "oneshot"],
+					"type": "string"
+				},
+				"google.type.Money": {
+					"properties": {
+						"currency_code": {
+							"type": "string"
+						},
+						"nanos": {
+							"format": "int32",
+							"type": "integer"
+						},
+						"units": {
+							"format": "int64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.RPNInfo": {
+					"properties": {
+						"speed": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.SANInfo": {
+					"properties": {
+						"device_type": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.SANInfo.Type"
+						},
+						"ha": {
+							"type": "boolean"
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.SANInfo.Type": {
+					"default": "hdd",
+					"enum": ["hdd", "ssd"],
+					"type": "string"
+				},
+				"scaleway.dedibox.v1.Offer.ServerInfo": {
+					"properties": {
+						"available_options": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer"
+							},
+							"type": "array"
+						},
+						"bandwidth": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"commercial_range": {
+							"type": "string"
+						},
+						"connectivity": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"cpus": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.CPU"
+							},
+							"type": "array"
+						},
+						"disks": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.Disk"
+							},
+							"type": "array"
+						},
+						"memories": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.Memory"
+							},
+							"type": "array"
+						},
+						"onetime_fees": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer"
+						},
+						"persistent_memories": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.PersistentMemory"
+							},
+							"type": "array"
+						},
+						"raid_controllers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.RaidController"
+							},
+							"type": "array"
+						},
+						"rpn_version": {
+							"$ref": "#/components/schemas/google.protobuf.UInt32Value"
+						},
+						"stock": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.ServerInfo.Stock"
+						},
+						"stock_by_datacenter": {
+							"additionalProperties": true,
+							"properties": {
+								"<stock_by_datacenterKey>": {
+									"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer.ServerInfo.Stock"
+								}
+							},
+							"type": "object"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.CPU": {
+					"properties": {
+						"core_count": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"frequency": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"thread_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Disk": {
+					"properties": {
+						"capacity": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.Server.Disk.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Server.Disk.Type": {
+					"default": "sata",
+					"enum": ["sata", "ssd", "sas", "sshd", "usb", "nvme"],
+					"type": "string"
+				},
+				"scaleway.dedibox.v1.Memory": {
+					"properties": {
+						"capacity": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"frequency": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"is_ecc": {
+							"type": "boolean"
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.dedibox.v1.Memory.Type"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Memory.Type": {
+					"default": "ddr2",
+					"enum": ["ddr2", "ddr3", "ddr4", "ddr5"],
+					"type": "string"
+				},
+				"scaleway.dedibox.v1.PersistentMemory": {
+					"properties": {
+						"capacity": {
+							"format": "uint64",
+							"type": "integer"
+						},
+						"frequency": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"model": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.RaidController": {
+					"properties": {
+						"model": {
+							"type": "string"
+						},
+						"raid_level": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"google.protobuf.UInt32Value": {
+					"format": "uint32",
+					"type": ["integer", "null"]
+				},
+				"scaleway.dedibox.v1.Offer.ServerInfo.Stock": {
+					"default": "empty",
+					"enum": ["empty", "low", "available"],
+					"type": "string"
+				},
+				"scaleway.dedibox.v1.Offer.ServiceLevelInfo": {
+					"properties": {
+						"antidos": {
+							"type": "boolean"
+						},
+						"available_options": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.dedibox.v1.Offer"
+							},
+							"type": "array"
+						},
+						"customization": {
+							"type": "boolean"
+						},
+						"extra_failover_quota": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"git": {
+							"type": "string"
+						},
+						"high_rpn_bandwidth": {
+							"type": "boolean"
+						},
+						"priority_support": {
+							"type": "boolean"
+						},
+						"sales_support": {
+							"type": "boolean"
+						},
+						"sla": {
+							"format": "float",
+							"type": "number"
+						},
+						"support_phone": {
+							"type": "boolean"
+						},
+						"support_ticket": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.dedibox.v1.Offer.StorageInfo": {
+					"properties": {
+						"max_quota": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"size": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				}
+			}
+		}
+	},
+	"projectionNotes": "The pinned official SDK serializes these one-of query parameters omitted from public OpenAPI. Types are independently checked against adjacent published types.gen.d.ts. Keep all original method/path/response/other parameter contracts from the recorded base; preserve input scoping."
+}

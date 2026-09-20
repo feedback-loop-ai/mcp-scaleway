@@ -28,7 +28,7 @@ function successResponse(data: unknown) {
 }
 
 function buildUrlParams(
-	query?: Record<string, string | number | undefined>,
+	query?: Record<string, string | number | boolean | undefined>,
 ): URLSearchParams | undefined {
 	if (!query) return undefined;
 	const params = new URLSearchParams();
@@ -44,7 +44,7 @@ async function apiRequest(
 	method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
 	path: string,
 	body?: unknown,
-	query?: Record<string, string | number | undefined>,
+	query?: Record<string, string | number | boolean | undefined>,
 ): Promise<unknown> {
 	const config = loadAuthConfig();
 	const client = createScalewayClient(config);
@@ -150,7 +150,7 @@ export async function handleUpdateDomain(input: UpdateDomainInput) {
 
 export async function handleEnableAutoRenew(input: EnableAutoRenewInput) {
 	try {
-		const result = await apiRequest("POST", `/domains/${input.domain}/enable-auto-renew`);
+		const result = await apiRequest("POST", `/domains/${input.domain}/enable-auto-renew`, {});
 		return successResponse(result);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -159,7 +159,7 @@ export async function handleEnableAutoRenew(input: EnableAutoRenewInput) {
 
 export async function handleDisableAutoRenew(input: DisableAutoRenewInput) {
 	try {
-		const result = await apiRequest("POST", `/domains/${input.domain}/disable-auto-renew`);
+		const result = await apiRequest("POST", `/domains/${input.domain}/disable-auto-renew`, {});
 		return successResponse(result);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -170,6 +170,8 @@ export async function handleCheckDomainAvailability(input: CheckDomainAvailabili
 	try {
 		const result = await apiRequest("GET", "/search-domains", undefined, {
 			domains: input.domain,
+			strict_search: true,
+			include_exact_match: true,
 		});
 		return successResponse(result);
 	} catch (error) {

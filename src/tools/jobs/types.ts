@@ -47,6 +47,7 @@ export type GetJobDefinitionInput = z.infer<typeof GetJobDefinitionInput>;
 
 export const CreateJobDefinitionInput = z.object({
 	region: ScalewayRegion.optional().describe("Scaleway region (e.g. fr-par)"),
+	local_storage_capacity: z.number().int().min(0).describe("Local storage capacity in MiB"),
 	name: z.string().min(1).describe("Job definition name"),
 	cpu_limit: z.number().int().positive().describe("CPU limit in millicores (e.g. 1000 = 1 vCPU)"),
 	memory_limit: z.number().int().positive().describe("Memory limit in MiB (e.g. 256)"),

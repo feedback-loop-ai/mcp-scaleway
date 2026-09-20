@@ -194,8 +194,12 @@ original endpoints and body text is not restricted or rewritten.
 - Implementation: `GET /rules?policy_id=` → remove the matching rule → `PUT /rules`.
   Errors if the `rule_id` is not present in the policy.
 
-> Limitation: rules scoped to an account root user (`account_root_user_id`) cannot be
-> represented as `RuleSpecs` and are preserved only by their project/organization scope.
+> Rule mutations require a complete list response: explicit `rules` and `total_count`
+> with equal lengths, and existing rules with complete permission, condition and scope
+> details. Partial pages, missing fields and nonnull `account_root_user_id` scopes stop
+> locally with a sanitized 502 before the replacement PUT. Policies spanning more than
+> the requested 100-rule page are not automatically paginated. Explicit nullable project
+> and organization scopes are preserved; no missing access details are invented.
 > A policy is assumed to have at most 100 rules (a single list page).
 
 ## Groups

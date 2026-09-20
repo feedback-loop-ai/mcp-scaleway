@@ -233,6 +233,7 @@ export async function handleDeleteTag(client: Client, input: z.infer<typeof Dele
 		const response = await client.fetch<unknown>({
 			method: "DELETE",
 			path: buildPath(input.region, `/tags/${input.tag_id}`),
+			urlParams: new URLSearchParams({ force: "false" }),
 		});
 		return successResponse(response);
 	} catch (error) {

@@ -112,7 +112,7 @@ describe("scaleway_search contract", () => {
 		expect(Buffer.byteLength(listings[1])).toBeLessThan(12_000);
 	});
 	it("keeps the representative offline search->describe flow inside its byte budget", async () => {
-		// Measured 2026-09: search 310 B + describe 1051 B = 1361 B over the in-memory transport.
+		// Measured 2026-09-20: search 739 B + describe 3295 B = 4034 B, including structured output.
 		// Bytes are not tokens and no operation is executed; this guards discovery payload drift only.
 		const flow = await measureDiscoveryFlow("rdb list databases", "rdb_list_databases");
 		expect(flow.searchHits).toContain("rdb_list_databases");
@@ -121,7 +121,7 @@ describe("scaleway_search contract", () => {
 		expect(flow.describeBytes).toBeGreaterThan(flow.searchBytes);
 		expect(flow.totalBytes).toBe(flow.searchBytes + flow.describeBytes);
 		expect(flow.totalBytes).toBeLessThanOrEqual(DISCOVERY_FLOW_BYTE_BUDGET);
-		expect(DISCOVERY_FLOW_BYTE_BUDGET).toBe(2_048);
+		expect(DISCOVERY_FLOW_BYTE_BUDGET).toBe(6_144);
 		expect(fetch).not.toHaveBeenCalled();
 	});
 });

@@ -1,0 +1,3273 @@
+{
+	"scaleway_account_create_project": {
+		"description": "example"
+	},
+	"scaleway_account_delete_project": {
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_account_get_project": {
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_account_list_projects": {
+		"order_by": "created_at_asc",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_account_update_project": {
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_apple_silicon_add_server_private_network": {
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"private_network_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_apple_silicon_create_server": {
+		"type": "example",
+		"enable_vpc": false,
+		"enable_kext": false,
+		"zone": "fr-par-3"
+	},
+	"scaleway_apple_silicon_delete_server": {
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-3"
+	},
+	"scaleway_apple_silicon_delete_server_private_network": {
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"private_network_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_apple_silicon_get_server": {
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-3"
+	},
+	"scaleway_apple_silicon_get_server_private_network": {
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"private_network_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_apple_silicon_list_os": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-3"
+	},
+	"scaleway_apple_silicon_list_server_private_networks": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_apple_silicon_list_server_types": {
+		"zone": "fr-par-3"
+	},
+	"scaleway_apple_silicon_list_servers": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-3"
+	},
+	"scaleway_apple_silicon_reboot_server": {
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-3"
+	},
+	"scaleway_apple_silicon_reinstall_server": {
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"enable_kext": false,
+		"zone": "fr-par-3"
+	},
+	"scaleway_apple_silicon_set_server_private_networks": {
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"per_private_network_ipam_ip_ids": {},
+		"zone": "fr-par-1"
+	},
+	"scaleway_audit_trail_create_export_job": {
+		"region": "fr-par",
+		"organizationId": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"s3Bucket": "example",
+		"s3Region": "fr-par"
+	},
+	"scaleway_audit_trail_delete_export_job": {
+		"region": "fr-par",
+		"exportJobId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_audit_trail_list_events": {
+		"region": "fr-par",
+		"organizationId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_audit_trail_list_export_jobs": {
+		"region": "fr-par",
+		"organizationId": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_audit_trail_list_products": {
+		"region": "fr-par",
+		"organizationId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_audit_trail_test_custom_alert_rule": {
+		"region": "fr-par",
+		"organizationId": "00000000-0000-4000-8000-000000000001",
+		"query": "example",
+		"occurrences": 1
+	},
+	"scaleway_autoscaling_create_instance_group": {
+		"zone": "fr-par-1",
+		"name": "example",
+		"templateId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_autoscaling_create_instance_template": {
+		"zone": "fr-par-1",
+		"name": "example",
+		"serverType": "example"
+	},
+	"scaleway_autoscaling_delete_instance_group": {
+		"zone": "fr-par-1",
+		"instanceGroupId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_autoscaling_delete_instance_template": {
+		"zone": "fr-par-1",
+		"instanceTemplateId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_autoscaling_get_instance_group": {
+		"zone": "fr-par-1",
+		"instanceGroupId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_autoscaling_get_instance_template": {
+		"zone": "fr-par-1",
+		"instanceTemplateId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_autoscaling_get_instance_template_cloud_init": {
+		"zone": "fr-par-1",
+		"instanceTemplateId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_autoscaling_list_instance_group_alerts": {
+		"zone": "fr-par-1"
+	},
+	"scaleway_autoscaling_list_instance_group_events": {
+		"zone": "fr-par-1",
+		"instanceGroupId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_autoscaling_list_instance_group_servers": {
+		"zone": "fr-par-1",
+		"instanceGroupId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_autoscaling_list_instance_groups": {
+		"zone": "fr-par-1"
+	},
+	"scaleway_autoscaling_list_instance_templates": {
+		"zone": "fr-par-1"
+	},
+	"scaleway_autoscaling_set_instance_template_cloud_init": {
+		"zone": "fr-par-1",
+		"instanceTemplateId": "00000000-0000-4000-8000-000000000001",
+		"content": "example"
+	},
+	"scaleway_autoscaling_update_instance_group": {
+		"zone": "fr-par-1",
+		"instanceGroupId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_autoscaling_update_instance_template": {
+		"zone": "fr-par-1",
+		"instanceTemplateId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_billing_download_invoice": {
+		"invoice_id": "00000000-0000-4000-8000-000000000001",
+		"file_type": "pdf"
+	},
+	"scaleway_billing_get_invoice": {
+		"invoice_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_billing_list_charges": {
+		"organization_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_billing_list_consumptions": {
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_billing_list_discounts": {
+		"page": 1,
+		"pageSize": 50,
+		"organization_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_billing_list_invoices": {
+		"page": 1,
+		"pageSize": 50,
+		"organization_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_block_storage_create_snapshot": {
+		"name": "example",
+		"volumeId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_block_storage_create_volume": {
+		"name": "example",
+		"zone": "fr-par-1"
+	},
+	"scaleway_block_storage_delete_snapshot": {
+		"snapshotId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_block_storage_delete_volume": {
+		"volumeId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_block_storage_get_snapshot": {
+		"snapshotId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_block_storage_get_volume": {
+		"volumeId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_block_storage_list_snapshots": {
+		"page": 1,
+		"pageSize": 50,
+		"includeDeleted": false,
+		"zone": "fr-par-1"
+	},
+	"scaleway_block_storage_list_volume_types": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_block_storage_list_volumes": {
+		"page": 1,
+		"pageSize": 50,
+		"includeDeleted": false,
+		"zone": "fr-par-1"
+	},
+	"scaleway_block_storage_update_snapshot": {
+		"snapshotId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_block_storage_update_volume": {
+		"volumeId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_cockpit_activate_cockpit": {
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_cockpit_create_contact_point": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"email": "example@example.com",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_create_data_source": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"type": "unknown_type",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_create_grafana_user": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"login": "example"
+	},
+	"scaleway_cockpit_create_token": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_deactivate_cockpit": {
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_cockpit_delete_contact_point": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"email": "example@example.com",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_delete_data_source": {
+		"data_source_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_delete_grafana_user": {
+		"grafana_user_id": 1,
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_cockpit_delete_token": {
+		"token_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_disable_alert_manager": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_disable_managed_alerts": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_enable_alert_manager": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_enable_managed_alerts": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_get_alert_manager": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_get_cockpit": {
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_cockpit_list_contact_points": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_list_data_sources": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_list_grafana_users": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_cockpit_list_managed_alerts_contact_points": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_list_tokens": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_cockpit_reset_grafana_user_password": {
+		"grafana_user_id": 1,
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_containers_create_container": {
+		"namespaceId": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"registryImage": "example",
+		"region": "fr-par"
+	},
+	"scaleway_containers_create_cron": {
+		"containerId": "00000000-0000-4000-8000-000000000001",
+		"schedule": "example",
+		"region": "fr-par"
+	},
+	"scaleway_containers_create_domain": {
+		"containerId": "00000000-0000-4000-8000-000000000001",
+		"hostname": "example",
+		"region": "fr-par"
+	},
+	"scaleway_containers_create_namespace": {
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_containers_delete_container": {
+		"containerId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_delete_cron": {
+		"cronId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_delete_domain": {
+		"domainId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_delete_namespace": {
+		"namespaceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_get_container": {
+		"containerId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_get_namespace": {
+		"namespaceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_list_containers": {
+		"page": 1,
+		"pageSize": 50,
+		"namespaceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_list_crons": {
+		"page": 1,
+		"pageSize": 50,
+		"containerId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_list_domains": {
+		"page": 1,
+		"pageSize": 50,
+		"containerId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_list_namespaces": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_containers_update_container": {
+		"containerId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_update_cron": {
+		"cronId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_containers_update_namespace": {
+		"namespaceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_data_lab_create_cluster": {
+		"region": "fr-par",
+		"name": "example",
+		"sparkVersion": "example",
+		"worker": {
+			"nodeType": "example",
+			"nodeCount": 1
+		}
+	},
+	"scaleway_data_lab_delete_cluster": {
+		"region": "fr-par",
+		"datalabId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_lab_get_cluster": {
+		"region": "fr-par",
+		"datalabId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_lab_list_cluster_versions": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_data_lab_list_clusters": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_data_lab_list_node_types": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_data_lab_list_notebook_versions": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_data_lab_update_cluster": {
+		"region": "fr-par",
+		"datalabId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_create_database": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001",
+		"name": "example"
+	},
+	"scaleway_data_warehouse_create_deployment": {
+		"region": "fr-par",
+		"name": "example"
+	},
+	"scaleway_data_warehouse_create_endpoint": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_create_user": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"password": "Example-only-password-42!"
+	},
+	"scaleway_data_warehouse_delete_database": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001",
+		"name": "example"
+	},
+	"scaleway_data_warehouse_delete_deployment": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_delete_endpoint": {
+		"region": "fr-par",
+		"endpointId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_delete_user": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001",
+		"name": "example"
+	},
+	"scaleway_data_warehouse_get_deployment": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_get_deployment_certificate": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_list_databases": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_list_deployments": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_data_warehouse_list_presets": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_data_warehouse_list_users": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_list_versions": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_data_warehouse_start_deployment": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_stop_deployment": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_update_deployment": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_data_warehouse_update_user": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001",
+		"name": "example"
+	},
+	"scaleway_dedibox_cancel_server_install": {
+		"zone": "fr-par-1",
+		"serverId": 1
+	},
+	"scaleway_dedibox_delete_server": {
+		"zone": "fr-par-1",
+		"serverId": 1
+	},
+	"scaleway_dedibox_get_bmc_access": {
+		"zone": "fr-par-1",
+		"serverId": 1
+	},
+	"scaleway_dedibox_get_offer": {
+		"zone": "fr-par-1",
+		"offerId": 1
+	},
+	"scaleway_dedibox_get_os": {
+		"zone": "fr-par-1",
+		"osId": 1,
+		"serverId": 1
+	},
+	"scaleway_dedibox_get_server": {
+		"zone": "fr-par-1",
+		"serverId": 1
+	},
+	"scaleway_dedibox_get_server_install": {
+		"zone": "fr-par-1",
+		"serverId": 1
+	},
+	"scaleway_dedibox_install_server": {
+		"zone": "fr-par-1",
+		"serverId": 1,
+		"osId": 1,
+		"hostname": "example"
+	},
+	"scaleway_dedibox_list_offers": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_dedibox_list_os": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_dedibox_list_servers": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_dedibox_reboot_server": {
+		"zone": "fr-par-1",
+		"serverId": 1
+	},
+	"scaleway_dedibox_start_bmc_access": {
+		"zone": "fr-par-1",
+		"serverId": 1,
+		"ip": "example"
+	},
+	"scaleway_dedibox_start_server": {
+		"zone": "fr-par-1",
+		"serverId": 1
+	},
+	"scaleway_dedibox_stop_bmc_access": {
+		"zone": "fr-par-1",
+		"serverId": 1
+	},
+	"scaleway_dedibox_stop_server": {
+		"zone": "fr-par-1",
+		"serverId": 1
+	},
+	"scaleway_dedibox_update_server": {
+		"zone": "fr-par-1",
+		"serverId": 1
+	},
+	"scaleway_dns_clear_records": {
+		"dns_zone": "example"
+	},
+	"scaleway_dns_clone_zone": {
+		"dns_zone": "example",
+		"dest_dns_zone": "example",
+		"overwrite": false
+	},
+	"scaleway_dns_create_ssl_certificate": {
+		"dns_zone": "example",
+		"alternative_dns_zones": []
+	},
+	"scaleway_dns_create_zone": {
+		"domain": "example.com",
+		"subdomain": "",
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_dns_delete_ssl_certificate": {
+		"dns_zone": "example"
+	},
+	"scaleway_dns_delete_tsig_key": {
+		"dns_zone": "example"
+	},
+	"scaleway_dns_delete_zone": {
+		"dns_zone": "example",
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_dns_export_raw_zone": {
+		"dns_zone": "example",
+		"format": "bind"
+	},
+	"scaleway_dns_get_ssl_certificate": {
+		"dns_zone": "example"
+	},
+	"scaleway_dns_get_tsig_key": {
+		"dns_zone": "example"
+	},
+	"scaleway_dns_import_raw_zone": {
+		"dns_zone": "example",
+		"content": "example"
+	},
+	"scaleway_dns_list_nameservers": {
+		"dns_zone": "example"
+	},
+	"scaleway_dns_list_records": {
+		"page": 1,
+		"pageSize": 50,
+		"dns_zone": "example"
+	},
+	"scaleway_dns_list_zones": {
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_dns_refresh_zone": {
+		"dns_zone": "example",
+		"recreate_dns_zone": false,
+		"recreate_sub_dns_zone": false
+	},
+	"scaleway_dns_update_nameservers": {
+		"dns_zone": "example",
+		"ns": [
+			{
+				"name": "example"
+			}
+		]
+	},
+	"scaleway_dns_update_records": {
+		"dns_zone": "example",
+		"changes": [
+			{
+				"add": {
+					"records": [
+						{
+							"name": "example",
+							"type": "A",
+							"data": "example",
+							"ttl": 60
+						}
+					]
+				}
+			}
+		],
+		"disallow_new_zone_creation": false,
+		"return_all_records": false
+	},
+	"scaleway_dns_update_zone": {
+		"dns_zone": "example"
+	},
+	"scaleway_domain_registrar_check_domain_availability": {
+		"domain": "example.com"
+	},
+	"scaleway_domain_registrar_disable_auto_renew": {
+		"domain": "example.com"
+	},
+	"scaleway_domain_registrar_enable_auto_renew": {
+		"domain": "example.com"
+	},
+	"scaleway_domain_registrar_get_contact": {
+		"contact_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_domain_registrar_get_domain": {
+		"domain": "example.com"
+	},
+	"scaleway_domain_registrar_get_tld": {
+		"tld_name": "example"
+	},
+	"scaleway_domain_registrar_list_contacts": {
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_domain_registrar_list_domains": {
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_domain_registrar_list_tlds": {
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_domain_registrar_register_domain": {
+		"domain": "example.com",
+		"duration_in_years": 1,
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"owner_contact_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_domain_registrar_renew_domain": {
+		"domain": "example.com",
+		"duration_in_years": 1
+	},
+	"scaleway_domain_registrar_transfer_domain": {
+		"domain": "example.com",
+		"auth_code": "example",
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"owner_contact_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_domain_registrar_update_contact": {
+		"contact_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_domain_registrar_update_domain": {
+		"domain": "example.com"
+	},
+	"scaleway_edge_services_create_backend_stage": {
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_create_cache_stage": {
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_create_dns_stage": {
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_create_pipeline": {
+		"name": "example",
+		"description": "example"
+	},
+	"scaleway_edge_services_create_tls_stage": {
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_delete_backend_stage": {
+		"backendStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_delete_cache_stage": {
+		"cacheStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_delete_dns_stage": {
+		"dnsStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_delete_pipeline": {
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_delete_tls_stage": {
+		"tlsStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_get_backend_stage": {
+		"backendStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_get_cache_stage": {
+		"cacheStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_get_dns_stage": {
+		"dnsStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_get_pipeline": {
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_get_purge_request": {
+		"purgeRequestId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_get_tls_stage": {
+		"tlsStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_list_backend_stages": {
+		"page": 1,
+		"pageSize": 50,
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_list_cache_stages": {
+		"page": 1,
+		"pageSize": 50,
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_list_dns_stages": {
+		"page": 1,
+		"pageSize": 50,
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_list_pipelines": {
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_edge_services_list_purge_requests": {
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_edge_services_list_tls_stages": {
+		"page": 1,
+		"pageSize": 50,
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_purge_cache": {
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_update_backend_stage": {
+		"backendStageId": "00000000-0000-4000-8000-000000000001",
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_update_cache_stage": {
+		"cacheStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_update_dns_stage": {
+		"dnsStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_update_pipeline": {
+		"pipelineId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_edge_services_update_tls_stage": {
+		"tlsStageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_elastic_metal_add_server_private_network": {
+		"zone": "fr-par-2",
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"private_network_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_elastic_metal_create_ip": {
+		"zone": "fr-par-1",
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"description": "",
+		"tags": []
+	},
+	"scaleway_elastic_metal_create_server": {
+		"zone": "fr-par-1",
+		"offer_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"description": "",
+		"tags": []
+	},
+	"scaleway_elastic_metal_delete_ip": {
+		"zone": "fr-par-1",
+		"ip_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_elastic_metal_delete_server": {
+		"zone": "fr-par-1",
+		"server_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_elastic_metal_delete_server_private_network": {
+		"zone": "fr-par-2",
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"private_network_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_elastic_metal_get_bmc_access": {
+		"zone": "fr-par-1",
+		"server_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_elastic_metal_get_server": {
+		"zone": "fr-par-1",
+		"server_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_elastic_metal_install_server": {
+		"zone": "fr-par-1",
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"os_id": "00000000-0000-4000-8000-000000000001",
+		"hostname": "example",
+		"ssh_key_ids": ["00000000-0000-4000-8000-000000000001"]
+	},
+	"scaleway_elastic_metal_list_ips": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_elastic_metal_list_offers": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_elastic_metal_list_oss": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_elastic_metal_list_server_private_networks": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-2"
+	},
+	"scaleway_elastic_metal_list_servers": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_elastic_metal_reboot_server": {
+		"zone": "fr-par-1",
+		"server_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_elastic_metal_set_server_private_networks": {
+		"zone": "fr-par-2",
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"private_network_ids": ["00000000-0000-4000-8000-000000000001"]
+	},
+	"scaleway_elastic_metal_start_server": {
+		"zone": "fr-par-1",
+		"server_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_elastic_metal_stop_server": {
+		"zone": "fr-par-1",
+		"server_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_environmental_footprint_download_impact_report": {
+		"date": "2026-01-01T00:00:00Z",
+		"type": "monthly"
+	},
+	"scaleway_environmental_footprint_get_impact_data": {},
+	"scaleway_environmental_footprint_get_report_availability": {},
+	"scaleway_file_storage_create_filesystem": {
+		"region": "fr-par",
+		"name": "example",
+		"size": 1
+	},
+	"scaleway_file_storage_delete_filesystem": {
+		"region": "fr-par",
+		"filesystemId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_file_storage_get_filesystem": {
+		"region": "fr-par",
+		"filesystemId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_file_storage_list_attachments": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_file_storage_list_filesystems": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_file_storage_update_filesystem": {
+		"region": "fr-par",
+		"filesystemId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_create_cron": {
+		"region": "fr-par",
+		"function_id": "00000000-0000-4000-8000-000000000001",
+		"schedule": "example"
+	},
+	"scaleway_functions_create_domain": {
+		"region": "fr-par",
+		"function_id": "00000000-0000-4000-8000-000000000001",
+		"hostname": "example"
+	},
+	"scaleway_functions_create_function": {
+		"region": "fr-par",
+		"namespace_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"runtime": "node22",
+		"handler": "example",
+		"privacy": "public"
+	},
+	"scaleway_functions_create_namespace": {
+		"region": "fr-par",
+		"name": "example"
+	},
+	"scaleway_functions_create_token": {
+		"region": "fr-par",
+		"function_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_delete_cron": {
+		"region": "fr-par",
+		"cron_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_delete_domain": {
+		"region": "fr-par",
+		"domain_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_delete_function": {
+		"region": "fr-par",
+		"function_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_delete_namespace": {
+		"region": "fr-par",
+		"namespace_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_delete_token": {
+		"region": "fr-par",
+		"token_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_deploy_function": {
+		"region": "fr-par",
+		"function_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_get_function": {
+		"region": "fr-par",
+		"function_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_get_namespace": {
+		"region": "fr-par",
+		"namespace_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_list_crons": {
+		"region": "fr-par",
+		"function_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_functions_list_domains": {
+		"region": "fr-par",
+		"function_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_functions_list_functions": {
+		"region": "fr-par",
+		"namespace_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_functions_list_namespaces": {
+		"region": "fr-par",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_functions_update_cron": {
+		"region": "fr-par",
+		"cron_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_update_function": {
+		"region": "fr-par",
+		"function_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_functions_update_namespace": {
+		"region": "fr-par",
+		"namespace_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_generative_apis_chat_completion": {
+		"region": "fr-par",
+		"model": "example",
+		"messages": [
+			{
+				"role": "system",
+				"content": "example"
+			}
+		],
+		"temperature": 0.7,
+		"max_tokens": 512,
+		"top_p": 1
+	},
+	"scaleway_generative_apis_create_embedding": {
+		"region": "fr-par",
+		"model": "example",
+		"input": "example"
+	},
+	"scaleway_generative_apis_get_model": {
+		"region": "fr-par",
+		"model_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_generative_apis_list_models": {
+		"region": "fr-par"
+	},
+	"scaleway_iam_add_group_member": {
+		"group_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_create_api_key": {
+		"description": ""
+	},
+	"scaleway_iam_create_application": {
+		"name": "example",
+		"description": ""
+	},
+	"scaleway_iam_create_group": {
+		"name": "example",
+		"description": ""
+	},
+	"scaleway_iam_create_policy": {
+		"name": "example",
+		"description": ""
+	},
+	"scaleway_iam_create_rule": {
+		"policy_id": "00000000-0000-4000-8000-000000000001",
+		"permission_set_names": ["example"]
+	},
+	"scaleway_iam_create_user": {
+		"organization_id": "00000000-0000-4000-8000-000000000001",
+		"email": "example@example.com"
+	},
+	"scaleway_iam_delete_api_key": {
+		"access_key": "example"
+	},
+	"scaleway_iam_delete_application": {
+		"application_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_delete_group": {
+		"group_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_delete_policy": {
+		"policy_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_delete_rule": {
+		"policy_id": "00000000-0000-4000-8000-000000000001",
+		"rule_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_delete_user": {
+		"user_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_get_api_key": {
+		"access_key": "example"
+	},
+	"scaleway_iam_get_application": {
+		"application_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_get_group": {
+		"group_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_get_policy": {
+		"policy_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_get_user": {
+		"user_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_list_api_keys": {
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_iam_list_applications": {
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_iam_list_groups": {
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_iam_list_permission_sets": {
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_iam_list_policies": {
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_iam_list_rules": {
+		"policy_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_iam_list_users": {
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_iam_remove_group_member": {
+		"group_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_update_api_key": {
+		"access_key": "example"
+	},
+	"scaleway_iam_update_application": {
+		"application_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_update_group": {
+		"group_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_update_policy": {
+		"policy_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_update_rule": {
+		"policy_id": "00000000-0000-4000-8000-000000000001",
+		"rule_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iam_update_user": {
+		"user_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_inference_accept_eula": {
+		"region": "fr-par",
+		"model_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_inference_create_deployment": {
+		"region": "fr-par",
+		"name": "example",
+		"model_id": "00000000-0000-4000-8000-000000000001",
+		"node_type": "example"
+	},
+	"scaleway_inference_create_endpoint": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_inference_delete_deployment": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_inference_delete_endpoint": {
+		"region": "fr-par",
+		"endpoint_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_inference_get_deployment": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_inference_get_eula": {
+		"region": "fr-par",
+		"model_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_inference_get_model": {
+		"region": "fr-par",
+		"model_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_inference_list_deployment_events": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_inference_list_deployments": {
+		"region": "fr-par",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_inference_list_endpoints": {
+		"region": "fr-par",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_inference_list_models": {
+		"region": "fr-par",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_inference_list_node_types": {
+		"region": "fr-par",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_inference_update_deployment": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_inference_update_endpoint": {
+		"region": "fr-par",
+		"endpoint_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_attach_ip": {
+		"zone": "fr-par-1",
+		"ip_id": "00000000-0000-4000-8000-000000000001",
+		"server_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_create_ip": {
+		"zone": "fr-par-1",
+		"type": "routed_ipv4"
+	},
+	"scaleway_instances_create_security_group": {
+		"zone": "fr-par-1",
+		"name": "example",
+		"inbound_default_policy": "accept",
+		"outbound_default_policy": "accept",
+		"stateful": true
+	},
+	"scaleway_instances_create_server": {
+		"zone": "fr-par-1",
+		"name": "example",
+		"commercial_type": "example",
+		"image": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_create_snapshot": {
+		"zone": "fr-par-1",
+		"name": "example",
+		"volume_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_create_volume": {
+		"zone": "fr-par-1",
+		"name": "example",
+		"size": 1,
+		"volume_type": "l_ssd"
+	},
+	"scaleway_instances_delete_ip": {
+		"zone": "fr-par-1",
+		"ip_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_delete_security_group": {
+		"zone": "fr-par-1",
+		"security_group_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_delete_server": {
+		"zone": "fr-par-1",
+		"server_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_delete_snapshot": {
+		"zone": "fr-par-1",
+		"snapshot_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_delete_volume": {
+		"zone": "fr-par-1",
+		"volume_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_get_security_group": {
+		"zone": "fr-par-1",
+		"security_group_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_get_server": {
+		"zone": "fr-par-1",
+		"server_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_get_volume": {
+		"zone": "fr-par-1",
+		"volume_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_instances_list_ips": {
+		"zone": "fr-par-1",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_instances_list_security_groups": {
+		"zone": "fr-par-1",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_instances_list_servers": {
+		"zone": "fr-par-1",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_instances_list_snapshots": {
+		"zone": "fr-par-1",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_instances_list_volumes": {
+		"zone": "fr-par-1",
+		"page": 1,
+		"page_size": 50
+	},
+	"scaleway_instances_server_action": {
+		"zone": "fr-par-1",
+		"server_id": "00000000-0000-4000-8000-000000000001",
+		"action": "poweron"
+	},
+	"scaleway_interlink_attach_routing_policy": {
+		"region": "fr-par",
+		"linkId": "00000000-0000-4000-8000-000000000001",
+		"routingPolicyId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_attach_vpc": {
+		"region": "fr-par",
+		"linkId": "00000000-0000-4000-8000-000000000001",
+		"vpcId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_create_link": {
+		"region": "fr-par",
+		"name": "example",
+		"popId": "00000000-0000-4000-8000-000000000001",
+		"bandwidthMbps": 1
+	},
+	"scaleway_interlink_create_routing_policy": {
+		"region": "fr-par",
+		"name": "example",
+		"isIpv6": false
+	},
+	"scaleway_interlink_delete_link": {
+		"region": "fr-par",
+		"linkId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_delete_routing_policy": {
+		"region": "fr-par",
+		"routingPolicyId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_detach_routing_policy": {
+		"region": "fr-par",
+		"linkId": "00000000-0000-4000-8000-000000000001",
+		"routingPolicyId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_detach_vpc": {
+		"region": "fr-par",
+		"linkId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_disable_route_propagation": {
+		"region": "fr-par",
+		"linkId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_enable_route_propagation": {
+		"region": "fr-par",
+		"linkId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_get_dedicated_connection": {
+		"region": "fr-par",
+		"connectionId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_get_link": {
+		"region": "fr-par",
+		"linkId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_get_partner": {
+		"region": "fr-par",
+		"partnerId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_get_pop": {
+		"region": "fr-par",
+		"popId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_get_routing_policy": {
+		"region": "fr-par",
+		"routingPolicyId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_list_dedicated_connections": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_interlink_list_links": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_interlink_list_partners": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_interlink_list_pops": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_interlink_list_routing_policies": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_interlink_set_routing_policy": {
+		"region": "fr-par",
+		"linkId": "00000000-0000-4000-8000-000000000001",
+		"routingPolicyId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_update_link": {
+		"region": "fr-par",
+		"linkId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_interlink_update_routing_policy": {
+		"region": "fr-par",
+		"routingPolicyId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_iot_create_device": {
+		"hubId": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_iot_create_hub": {
+		"name": "example",
+		"productPlan": "plan_shared",
+		"region": "fr-par"
+	},
+	"scaleway_iot_create_network": {
+		"hubId": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"type": "unknown",
+		"topicPrefix": "example",
+		"region": "fr-par"
+	},
+	"scaleway_iot_create_route": {
+		"hubId": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"topic": "example",
+		"region": "fr-par"
+	},
+	"scaleway_iot_delete_device": {
+		"deviceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_delete_hub": {
+		"hubId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_delete_network": {
+		"networkId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_delete_route": {
+		"routeId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_disable_device": {
+		"deviceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_disable_hub": {
+		"hubId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_enable_device": {
+		"deviceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_enable_hub": {
+		"hubId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_get_device": {
+		"deviceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_get_device_certificate": {
+		"deviceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_get_device_metrics": {
+		"deviceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_get_hub": {
+		"hubId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_get_hub_ca": {
+		"hubId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_get_network": {
+		"networkId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_get_route": {
+		"routeId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_list_devices": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_iot_list_hubs": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_iot_list_networks": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_iot_list_routes": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_iot_renew_device_certificate": {
+		"deviceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_set_device_certificate": {
+		"deviceId": "00000000-0000-4000-8000-000000000001",
+		"certificatePem": "example",
+		"region": "fr-par"
+	},
+	"scaleway_iot_set_hub_ca": {
+		"hubId": "00000000-0000-4000-8000-000000000001",
+		"caCertPem": "example",
+		"challengeCertPem": "example",
+		"region": "fr-par"
+	},
+	"scaleway_iot_update_device": {
+		"deviceId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_update_hub": {
+		"hubId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_iot_update_route": {
+		"routeId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_ipam_book_ip": {
+		"region": "fr-par",
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"source": {},
+		"is_ipv6": false,
+		"tags": []
+	},
+	"scaleway_ipam_get_ip": {
+		"region": "fr-par",
+		"ip_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_ipam_list_ips": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par",
+		"order_by": "created_at_desc"
+	},
+	"scaleway_ipam_release_ip": {
+		"region": "fr-par",
+		"ip_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_ipam_update_ip": {
+		"region": "fr-par",
+		"ip_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_jobs_create_definition": {
+		"local_storage_capacity": 1,
+		"name": "example",
+		"cpu_limit": 1,
+		"memory_limit": 1,
+		"image_uri": "example",
+		"region": "fr-par"
+	},
+	"scaleway_jobs_delete_definition": {
+		"job_definition_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_jobs_get_definition": {
+		"job_definition_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_jobs_get_run": {
+		"job_run_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_jobs_list_definitions": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_jobs_list_runs": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_jobs_start": {
+		"job_definition_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_jobs_stop_run": {
+		"job_run_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_jobs_update_definition": {
+		"job_definition_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_k8s_create_cluster": {
+		"region": "fr-par",
+		"name": "example",
+		"version": "example",
+		"cni": "unknown_cni"
+	},
+	"scaleway_k8s_create_pool": {
+		"region": "fr-par",
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"node_type": "example",
+		"size": 1
+	},
+	"scaleway_k8s_delete_cluster": {
+		"region": "fr-par",
+		"cluster_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_k8s_delete_pool": {
+		"region": "fr-par",
+		"pool_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_k8s_get_cluster": {
+		"region": "fr-par",
+		"cluster_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_k8s_get_cluster_kubeconfig": {
+		"region": "fr-par",
+		"cluster_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_k8s_get_pool": {
+		"region": "fr-par",
+		"pool_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_k8s_list_cluster_available_versions": {
+		"region": "fr-par",
+		"cluster_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_k8s_list_clusters": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_k8s_list_pools": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par",
+		"cluster_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_k8s_update_pool": {
+		"region": "fr-par",
+		"pool_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_k8s_upgrade_cluster": {
+		"region": "fr-par",
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"version": "example"
+	},
+	"scaleway_k8s_upgrade_pool": {
+		"region": "fr-par",
+		"pool_id": "00000000-0000-4000-8000-000000000001",
+		"version": "example"
+	},
+	"scaleway_kafka_create_cluster": {
+		"region": "fr-par",
+		"name": "example",
+		"version": "example",
+		"nodeType": "example",
+		"nodeAmount": 1,
+		"volumeSizeBytes": 1,
+		"volumeType": "unknown_type"
+	},
+	"scaleway_kafka_create_endpoint": {
+		"region": "fr-par",
+		"clusterId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_kafka_delete_cluster": {
+		"region": "fr-par",
+		"clusterId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_kafka_delete_endpoint": {
+		"region": "fr-par",
+		"endpointId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_kafka_get_cluster": {
+		"region": "fr-par",
+		"clusterId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_kafka_get_cluster_certificate_authority": {
+		"region": "fr-par",
+		"clusterId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_kafka_list_clusters": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_kafka_list_node_types": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_kafka_list_users": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par",
+		"clusterId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_kafka_list_versions": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_kafka_renew_cluster_certificate_authority": {
+		"region": "fr-par",
+		"clusterId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_kafka_update_cluster": {
+		"region": "fr-par",
+		"clusterId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_kafka_update_user": {
+		"region": "fr-par",
+		"clusterId": "00000000-0000-4000-8000-000000000001",
+		"username": "example"
+	},
+	"scaleway_key_manager_create_key": {
+		"unprotected": false,
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_decrypt": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"ciphertext": "example",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_delete_key": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_delete_key_material": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_disable_key": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_enable_key": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_encrypt": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"plaintext": "example",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_generate_data_key": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"withoutPlaintext": false,
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_get_key": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_list_key_rotations": {
+		"page": 1,
+		"pageSize": 50,
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_list_keys": {
+		"scheduledForDeletion": false,
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_protect_key": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_rotate_key": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_unprotect_key": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_key_manager_update_key": {
+		"keyId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_lb_add_backend_servers": {
+		"backend_id": "00000000-0000-4000-8000-000000000001",
+		"server_ip": ["example"],
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_create_backend": {
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"forward_protocol": "tcp",
+		"forward_port": 1,
+		"health_check": {
+			"port": 1
+		},
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_create_certificate": {
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_create_frontend": {
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"inbound_port": 1,
+		"backend_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_create_lb": {
+		"name": "example",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_create_route": {
+		"frontend_id": "00000000-0000-4000-8000-000000000001",
+		"backend_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_delete_backend": {
+		"backend_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_delete_certificate": {
+		"certificate_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_delete_frontend": {
+		"frontend_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_delete_lb": {
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_delete_route": {
+		"route_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_get_backend": {
+		"backend_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_get_certificate": {
+		"certificate_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_get_frontend": {
+		"frontend_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_get_lb": {
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_get_lb_stats": {
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_get_route": {
+		"route_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_list_backends": {
+		"page": 1,
+		"pageSize": 50,
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_list_certificates": {
+		"page": 1,
+		"pageSize": 50,
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_list_frontends": {
+		"page": 1,
+		"pageSize": 50,
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_list_lb_types": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_list_lbs": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_list_routes": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_migrate_lb": {
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"type": "example",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_remove_backend_servers": {
+		"backend_id": "00000000-0000-4000-8000-000000000001",
+		"server_ip": ["example"],
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_set_backend_servers": {
+		"backend_id": "00000000-0000-4000-8000-000000000001",
+		"server_ip": ["example"],
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_update_backend": {
+		"backend_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"forward_protocol": "tcp",
+		"forward_port": 1,
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_update_certificate": {
+		"certificate_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_update_frontend": {
+		"frontend_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"inbound_port": 1,
+		"backend_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_update_lb": {
+		"lb_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"description": "example",
+		"zone": "fr-par-1"
+	},
+	"scaleway_lb_update_route": {
+		"route_id": "00000000-0000-4000-8000-000000000001",
+		"backend_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_mailbox_create_alias": {
+		"mailboxId": "00000000-0000-4000-8000-000000000001",
+		"localPart": "example"
+	},
+	"scaleway_mailbox_create_domain": {
+		"name": "example"
+	},
+	"scaleway_mailbox_create_mailboxes": {
+		"domainId": "00000000-0000-4000-8000-000000000001",
+		"subscriptionPeriod": "monthly",
+		"mailboxes": [
+			{
+				"localPart": "example",
+				"password": "Example-only-password-42!"
+			}
+		]
+	},
+	"scaleway_mailbox_delete_alias": {
+		"aliasId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_mailbox_delete_domain": {
+		"domainId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_mailbox_delete_mailbox": {
+		"mailboxId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_mailbox_get_alias": {
+		"aliasId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_mailbox_get_domain": {
+		"domainId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_mailbox_get_domain_records": {
+		"domainId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_mailbox_get_mailbox": {
+		"mailboxId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_mailbox_list_aliases": {
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_mailbox_list_domains": {
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_mailbox_list_mailboxes": {
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_mailbox_restore_mailbox": {
+		"mailboxId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_mailbox_update_mailbox": {
+		"mailboxId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_mailbox_validate_domain_records": {
+		"domainId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_marketplace_get_category": {
+		"categoryId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_marketplace_get_image": {
+		"imageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_marketplace_get_local_image": {
+		"localImageId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_marketplace_get_version": {
+		"versionId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_marketplace_list_categories": {
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_marketplace_list_images": {
+		"page": 1,
+		"pageSize": 50,
+		"includeEol": false
+	},
+	"scaleway_marketplace_list_local_images": {
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_marketplace_list_versions": {
+		"imageId": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_mongodb_create_instance": {
+		"name": "example",
+		"version": "example",
+		"node_type": "example",
+		"node_amount": 1,
+		"user_name": "example",
+		"password": "Example-only-password-42!",
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_create_snapshot": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_create_user": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"password": "Example-only-password-42!",
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_delete_instance": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_delete_snapshot": {
+		"snapshot_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_delete_user": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_get_instance": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_list_instances": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_list_node_types": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_list_snapshots": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_list_users": {
+		"page": 1,
+		"pageSize": 50,
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_list_versions": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_restore_snapshot": {
+		"snapshot_id": "00000000-0000-4000-8000-000000000001",
+		"instance_name": "example",
+		"node_type": "example",
+		"node_amount": 1,
+		"volume_type": "sbs_5k",
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_update_instance": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_mongodb_update_user": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_nats_create_account": {
+		"region": "fr-par",
+		"name": "example"
+	},
+	"scaleway_nats_create_credentials": {
+		"region": "fr-par",
+		"natsAccountId": "00000000-0000-4000-8000-000000000001",
+		"name": "example"
+	},
+	"scaleway_nats_delete_account": {
+		"region": "fr-par",
+		"natsAccountId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_nats_delete_credentials": {
+		"region": "fr-par",
+		"natsCredentialsId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_nats_get_account": {
+		"region": "fr-par",
+		"natsAccountId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_nats_get_credentials": {
+		"region": "fr-par",
+		"natsCredentialsId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_nats_list_accounts": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_nats_list_credentials": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par",
+		"natsAccountId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_nats_update_account": {
+		"region": "fr-par",
+		"natsAccountId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_object_storage_create_bucket": {
+		"name": "example"
+	},
+	"scaleway_object_storage_delete_bucket": {
+		"name": "example"
+	},
+	"scaleway_object_storage_delete_object": {
+		"bucket": "example",
+		"key": "example"
+	},
+	"scaleway_object_storage_get_bucket_info": {
+		"name": "example"
+	},
+	"scaleway_object_storage_get_bucket_lifecycle": {
+		"bucket": "example"
+	},
+	"scaleway_object_storage_get_bucket_policy": {
+		"bucket": "example"
+	},
+	"scaleway_object_storage_get_bucket_versioning": {
+		"bucket": "example"
+	},
+	"scaleway_object_storage_get_object_info": {
+		"bucket": "example",
+		"key": "example"
+	},
+	"scaleway_object_storage_list_buckets": {},
+	"scaleway_object_storage_list_objects": {
+		"bucket": "example",
+		"maxKeys": 100
+	},
+	"scaleway_object_storage_put_object": {
+		"bucket": "example",
+		"key": "example"
+	},
+	"scaleway_object_storage_set_bucket_lifecycle": {
+		"bucket": "example",
+		"rules": [
+			{
+				"Status": "Enabled"
+			}
+		]
+	},
+	"scaleway_object_storage_set_bucket_policy": {
+		"bucket": "example",
+		"policy": "example"
+	},
+	"scaleway_object_storage_set_bucket_versioning": {
+		"bucket": "example",
+		"status": "Enabled"
+	},
+	"scaleway_opensearch_create_deployment": {
+		"region": "fr-par",
+		"name": "example",
+		"nodeType": "example",
+		"version": "example"
+	},
+	"scaleway_opensearch_create_endpoint": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_opensearch_create_user": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001",
+		"username": "example",
+		"password": "Example-only-password-42!"
+	},
+	"scaleway_opensearch_delete_deployment": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_opensearch_delete_endpoint": {
+		"region": "fr-par",
+		"endpointId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_opensearch_delete_user": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001",
+		"username": "example"
+	},
+	"scaleway_opensearch_get_certificate_authority": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_opensearch_get_deployment": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_opensearch_list_deployments": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_opensearch_list_node_types": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_opensearch_list_users": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_opensearch_list_versions": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_opensearch_update_deployment": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_opensearch_update_user": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001",
+		"username": "example"
+	},
+	"scaleway_opensearch_upgrade_deployment": {
+		"region": "fr-par",
+		"deploymentId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_product_catalog_list_categories": {},
+	"scaleway_product_catalog_list_products": {
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_public_gateway_create_gateway": {
+		"type": "example",
+		"enableSmtp": false,
+		"enableBastion": false,
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_create_gateway_network": {
+		"gatewayId": "00000000-0000-4000-8000-000000000001",
+		"privateNetworkId": "00000000-0000-4000-8000-000000000001",
+		"enableMasquerade": false,
+		"pushDefaultRoute": false,
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_create_ip": {
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_create_pat_rule": {
+		"gatewayId": "00000000-0000-4000-8000-000000000001",
+		"publicPort": 1,
+		"privateIp": "example",
+		"privatePort": 1,
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_delete_gateway": {
+		"gatewayId": "00000000-0000-4000-8000-000000000001",
+		"deleteIp": false,
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_delete_gateway_network": {
+		"gatewayNetworkId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_delete_ip": {
+		"ipId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_delete_pat_rule": {
+		"patRuleId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_get_gateway": {
+		"gatewayId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_get_gateway_network": {
+		"gatewayNetworkId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_get_ip": {
+		"ipId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_get_pat_rule": {
+		"patRuleId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_list_gateway_networks": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_list_gateway_types": {
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_list_gateways": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_list_ips": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_list_pat_rules": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_update_gateway": {
+		"gatewayId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_update_gateway_network": {
+		"gatewayNetworkId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_update_ip": {
+		"ipId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_public_gateway_update_pat_rule": {
+		"patRuleId": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_rabbitmq_create_deployment": {
+		"region": "fr-par",
+		"name": "example",
+		"node_type": "example",
+		"node_count": 1,
+		"version": "example"
+	},
+	"scaleway_rabbitmq_create_endpoint": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_rabbitmq_create_user": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001",
+		"username": "example",
+		"password": "Example-only-password-42!"
+	},
+	"scaleway_rabbitmq_delete_deployment": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_rabbitmq_delete_endpoint": {
+		"region": "fr-par",
+		"endpoint_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_rabbitmq_delete_user": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001",
+		"username": "example"
+	},
+	"scaleway_rabbitmq_get_deployment": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_rabbitmq_get_deployment_certificate": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_rabbitmq_list_deployments": {
+		"region": "fr-par",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_rabbitmq_list_node_types": {
+		"region": "fr-par",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_rabbitmq_list_users": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_rabbitmq_list_versions": {
+		"region": "fr-par",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_rabbitmq_update_deployment": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_rabbitmq_update_user": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001",
+		"username": "example"
+	},
+	"scaleway_rabbitmq_upgrade_deployment": {
+		"region": "fr-par",
+		"deployment_id": "00000000-0000-4000-8000-000000000001",
+		"node_count": 3
+	},
+	"scaleway_rdb_add_acl_rules": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"rules": [
+			{
+				"ip": "example"
+			}
+		],
+		"region": "fr-par"
+	},
+	"scaleway_rdb_create_backup": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"database_name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_create_database": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_create_endpoint": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"endpoint_spec": {},
+		"region": "fr-par"
+	},
+	"scaleway_rdb_create_instance": {
+		"name": "example",
+		"engine": "example",
+		"node_type": "example",
+		"user_name": "example",
+		"password": "Example-only-password-42!",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_create_snapshot": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_create_user": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"password": "Example-only-password-42!",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_delete_acl_rules": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"acl_rule_ips": ["example"],
+		"region": "fr-par"
+	},
+	"scaleway_rdb_delete_database": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_delete_endpoint": {
+		"endpoint_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_delete_instance": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_delete_user": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_get_instance": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_list_acl_rules": {
+		"page": 1,
+		"pageSize": 50,
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_list_backups": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_rdb_list_database_engines": {
+		"region": "fr-par"
+	},
+	"scaleway_rdb_list_databases": {
+		"page": 1,
+		"pageSize": 50,
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_list_endpoints": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_list_instances": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_rdb_list_node_types": {
+		"region": "fr-par"
+	},
+	"scaleway_rdb_list_snapshots": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_rdb_list_users": {
+		"page": 1,
+		"pageSize": 50,
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_restore_backup": {
+		"backup_id": "00000000-0000-4000-8000-000000000001",
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_restore_snapshot": {
+		"snapshot_id": "00000000-0000-4000-8000-000000000001",
+		"instance_name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_update_instance": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_update_user": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_rdb_upgrade_instance": {
+		"instance_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_redis_add_acl_rules": {
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"acl_rules": [
+			{
+				"ip_cidr": "00000000-0000-4000-8000-000000000001",
+				"description": "example"
+			}
+		],
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_add_endpoints": {
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"endpoints": [{}],
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_create_cluster": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"name": "example",
+		"version": "example",
+		"node_type": "example",
+		"cluster_size": 1,
+		"user_name": "example",
+		"password": "Example-only-password-42!",
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_delete_acl_rules": {
+		"acl_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_delete_cluster": {
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_delete_endpoints": {
+		"endpoint_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_get_cluster": {
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_get_cluster_certificate": {
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_list_cluster_metrics": {
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_list_cluster_versions": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_list_clusters": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_list_node_types": {
+		"page": 1,
+		"pageSize": 50,
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_renew_cluster_certificate": {
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_set_acl_rules": {
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"acl_rules": [
+			{
+				"ip_cidr": "00000000-0000-4000-8000-000000000001",
+				"description": "example"
+			}
+		],
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_set_endpoints": {
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"endpoints": [{}],
+		"zone": "fr-par-1"
+	},
+	"scaleway_redis_update_cluster": {
+		"cluster_id": "00000000-0000-4000-8000-000000000001",
+		"zone": "fr-par-1"
+	},
+	"scaleway_registry_create_namespace": {
+		"region": "fr-par",
+		"name": "example"
+	},
+	"scaleway_registry_delete_image": {
+		"region": "fr-par",
+		"image_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_registry_delete_namespace": {
+		"region": "fr-par",
+		"namespace_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_registry_delete_tag": {
+		"region": "fr-par",
+		"tag_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_registry_get_image": {
+		"region": "fr-par",
+		"image_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_registry_get_namespace": {
+		"region": "fr-par",
+		"namespace_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_registry_get_tag": {
+		"region": "fr-par",
+		"tag_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_registry_list_images": {
+		"region": "fr-par"
+	},
+	"scaleway_registry_list_namespaces": {
+		"region": "fr-par"
+	},
+	"scaleway_registry_list_tags": {
+		"region": "fr-par",
+		"image_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_registry_update_image": {
+		"region": "fr-par",
+		"image_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_registry_update_namespace": {
+		"region": "fr-par",
+		"namespace_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_secret_manager_access_secret_version": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"revision": "1",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_add_secret_owner": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_create_secret": {
+		"name": "example",
+		"isProtected": false,
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_create_secret_version": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"data": "example",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_delete_secret": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_destroy_secret_version": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"revision": "1",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_disable_secret_version": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"revision": "1",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_enable_secret_version": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"revision": "1",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_get_secret": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_get_secret_version": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"revision": "1",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_list_secret_versions": {
+		"page": 1,
+		"pageSize": 50,
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_list_secrets": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_list_tags": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_protect_secret": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_unprotect_secret": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_secret_manager_update_secret": {
+		"secretId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_serverless_sqldb_create_database": {
+		"name": "example",
+		"cpu_min": 1,
+		"cpu_max": 1,
+		"region": "fr-par"
+	},
+	"scaleway_serverless_sqldb_delete_database": {
+		"database_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_serverless_sqldb_export_database_backup": {
+		"backup_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_serverless_sqldb_get_database": {
+		"database_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_serverless_sqldb_get_database_backup": {
+		"backup_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_serverless_sqldb_list_database_backups": {
+		"page": 1,
+		"pageSize": 50,
+		"database_id": "00000000-0000-4000-8000-000000000001",
+		"order_by": "created_at_asc",
+		"region": "fr-par"
+	},
+	"scaleway_serverless_sqldb_list_databases": {
+		"page": 1,
+		"pageSize": 50,
+		"order_by": "created_at_asc",
+		"region": "fr-par"
+	},
+	"scaleway_serverless_sqldb_restore_database": {
+		"database_id": "00000000-0000-4000-8000-000000000001",
+		"backup_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_serverless_sqldb_update_database": {
+		"database_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_sns_activate": {
+		"region": "fr-par"
+	},
+	"scaleway_sns_create_credentials": {
+		"region": "fr-par"
+	},
+	"scaleway_sns_deactivate": {
+		"region": "fr-par"
+	},
+	"scaleway_sns_delete_credentials": {
+		"snsCredentialsId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_sns_get_credentials": {
+		"snsCredentialsId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_sns_get_info": {
+		"region": "fr-par"
+	},
+	"scaleway_sns_list_credentials": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_sns_update_credentials": {
+		"snsCredentialsId": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_sqs_activate": {
+		"region": "fr-par"
+	},
+	"scaleway_sqs_create_credentials": {
+		"name": "example",
+		"region": "fr-par"
+	},
+	"scaleway_sqs_deactivate": {
+		"region": "fr-par"
+	},
+	"scaleway_sqs_delete_credentials": {
+		"credential_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_sqs_get_credentials": {
+		"credential_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_sqs_get_info": {
+		"region": "fr-par"
+	},
+	"scaleway_sqs_list_credentials": {
+		"page": 1,
+		"page_size": 50,
+		"order_by": "created_at_asc",
+		"region": "fr-par"
+	},
+	"scaleway_sqs_update_credentials": {
+		"credential_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_tem_cancel_email": {
+		"email_id": "example@example.com",
+		"region": "fr-par"
+	},
+	"scaleway_tem_check_domain": {
+		"domain_id": "example.com",
+		"region": "fr-par"
+	},
+	"scaleway_tem_create_domain": {
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"domain_name": "example.com",
+		"accept_tos": false,
+		"region": "fr-par"
+	},
+	"scaleway_tem_create_email": {
+		"from": {
+			"email": "example@example.com"
+		},
+		"to": [
+			{
+				"email": "example@example.com"
+			}
+		],
+		"subject": "example",
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_tem_create_webhook": {
+		"domain_id": "example.com",
+		"name": "example",
+		"event_types": ["unknown_type"],
+		"sns_arn": "example",
+		"region": "fr-par"
+	},
+	"scaleway_tem_delete_webhook": {
+		"webhook_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_tem_get_domain": {
+		"domain_id": "example.com",
+		"region": "fr-par"
+	},
+	"scaleway_tem_get_domain_last_status": {
+		"domain_id": "example.com",
+		"region": "fr-par"
+	},
+	"scaleway_tem_get_email": {
+		"email_id": "example@example.com",
+		"region": "fr-par"
+	},
+	"scaleway_tem_get_statistics": {
+		"region": "fr-par"
+	},
+	"scaleway_tem_list_domains": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_tem_list_emails": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_tem_list_webhooks": {
+		"page": 1,
+		"pageSize": 50,
+		"domain_id": "example.com",
+		"region": "fr-par"
+	},
+	"scaleway_tem_revoke_domain": {
+		"domain_id": "example.com",
+		"region": "fr-par"
+	},
+	"scaleway_tem_update_webhook": {
+		"webhook_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_vpc_create_private_network": {
+		"region": "fr-par",
+		"name": "example",
+		"project_id": "00000000-0000-4000-8000-000000000001",
+		"vpc_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpc_create_vpc": {
+		"region": "fr-par",
+		"name": "example",
+		"project_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpc_delete_private_network": {
+		"region": "fr-par",
+		"private_network_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpc_delete_vpc": {
+		"region": "fr-par",
+		"vpc_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpc_get_private_network": {
+		"region": "fr-par",
+		"private_network_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpc_get_vpc": {
+		"region": "fr-par",
+		"vpc_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpc_list_private_networks": {
+		"region": "fr-par",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_vpc_list_vpcs": {
+		"region": "fr-par",
+		"page": 1,
+		"pageSize": 50
+	},
+	"scaleway_vpc_update_private_network": {
+		"region": "fr-par",
+		"private_network_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpc_update_vpc": {
+		"region": "fr-par",
+		"vpc_id": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_change_connection_psk": {
+		"region": "fr-par",
+		"connectionId": "00000000-0000-4000-8000-000000000001",
+		"secretId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_create_connection": {
+		"region": "fr-par",
+		"name": "example",
+		"initiationPolicy": "unknown_initiation_policy",
+		"ikev2Ciphers": [
+			{
+				"encryption": "unknown_encryption"
+			}
+		],
+		"espCiphers": [
+			{
+				"encryption": "unknown_encryption"
+			}
+		],
+		"vpnGatewayId": "00000000-0000-4000-8000-000000000001",
+		"customerGatewayId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_create_customer_gateway": {
+		"region": "fr-par",
+		"name": "example",
+		"asn": 1
+	},
+	"scaleway_vpn_create_gateway": {
+		"region": "fr-par",
+		"name": "example",
+		"gatewayType": "example",
+		"privateNetworkId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_create_routing_policy": {
+		"region": "fr-par",
+		"name": "example",
+		"isIpv6": false,
+		"prefixFilterIn": ["example"],
+		"prefixFilterOut": ["example"]
+	},
+	"scaleway_vpn_delete_connection": {
+		"region": "fr-par",
+		"connectionId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_delete_customer_gateway": {
+		"region": "fr-par",
+		"customerGatewayId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_delete_gateway": {
+		"region": "fr-par",
+		"gatewayId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_delete_routing_policy": {
+		"region": "fr-par",
+		"routingPolicyId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_detach_connection_routing_policy": {
+		"region": "fr-par",
+		"connectionId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_disable_route_propagation": {
+		"region": "fr-par",
+		"connectionId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_enable_route_propagation": {
+		"region": "fr-par",
+		"connectionId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_get_connection": {
+		"region": "fr-par",
+		"connectionId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_get_customer_gateway": {
+		"region": "fr-par",
+		"customerGatewayId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_get_gateway": {
+		"region": "fr-par",
+		"gatewayId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_get_routing_policy": {
+		"region": "fr-par",
+		"routingPolicyId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_list_connections": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_vpn_list_customer_gateways": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_vpn_list_gateway_types": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_vpn_list_gateways": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_vpn_list_routing_policies": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_vpn_renew_connection_psk": {
+		"region": "fr-par",
+		"connectionId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_set_connection_routing_policy": {
+		"region": "fr-par",
+		"connectionId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_update_connection": {
+		"region": "fr-par",
+		"connectionId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_update_customer_gateway": {
+		"region": "fr-par",
+		"customerGatewayId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_update_gateway": {
+		"region": "fr-par",
+		"gatewayId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_vpn_update_routing_policy": {
+		"region": "fr-par",
+		"routingPolicyId": "00000000-0000-4000-8000-000000000001"
+	},
+	"scaleway_webhosting_create_hosting": {
+		"offer_id": "00000000-0000-4000-8000-000000000001",
+		"domain": "example.com",
+		"region": "fr-par"
+	},
+	"scaleway_webhosting_delete_hosting": {
+		"hosting_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_webhosting_get_dns_records": {
+		"domain": "example.com",
+		"region": "fr-par"
+	},
+	"scaleway_webhosting_get_hosting": {
+		"hosting_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_webhosting_list_control_panels": {
+		"region": "fr-par"
+	},
+	"scaleway_webhosting_list_hostings": {
+		"page": 1,
+		"pageSize": 50,
+		"region": "fr-par"
+	},
+	"scaleway_webhosting_list_offers": {
+		"region": "fr-par"
+	},
+	"scaleway_webhosting_restore_hosting": {
+		"hosting_id": "00000000-0000-4000-8000-000000000001",
+		"backup_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	},
+	"scaleway_webhosting_update_hosting": {
+		"hosting_id": "00000000-0000-4000-8000-000000000001",
+		"region": "fr-par"
+	}
+}

@@ -429,6 +429,8 @@ describe("RDB input schemas", () => {
 				name: "mydb",
 				engine: "PostgreSQL-15",
 				node_type: "db-dev-s",
+				user_name: "admin",
+				password: "synthetic-test-password",
 			};
 			expect(CreateInstanceInput.parse(input)).toMatchObject(input);
 		});
@@ -652,8 +654,10 @@ describe("RDB input schemas", () => {
 
 	// Spec: POST /rdb/v1/regions/{region}/backups
 	describe("CreateBackupInput", () => {
-		it("requires instance_id and name", () => {
-			expect(CreateBackupInput.parse({ instance_id: "inst-1", name: "backup-1" })).toMatchObject({
+		it("requires instance_id, name and database_name", () => {
+			expect(
+				CreateBackupInput.parse({ instance_id: "inst-1", name: "backup-1", database_name: "mydb" }),
+			).toMatchObject({
 				instance_id: "inst-1",
 			});
 		});

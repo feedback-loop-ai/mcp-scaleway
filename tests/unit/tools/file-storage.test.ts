@@ -229,7 +229,7 @@ describe("file-storage handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
 				path: "/file/v1alpha1/regions/fr-par/filesystems",
-				body: JSON.stringify({ name: "my-fs", size: 100000000000 }),
+				body: JSON.stringify({ name: "my-fs", size: 100000000000, project_id: PROJECT_ID }),
 				headers: { "Content-Type": "application/json" },
 			});
 		});

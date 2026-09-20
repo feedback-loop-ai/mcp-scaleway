@@ -1,4 +1,5 @@
 import type { Client } from "@scaleway/sdk-client";
+import { loadAuthConfig } from "../../shared/auth.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
 import { buildPaginatedResponse, paginationToQuery } from "../../shared/pagination.js";
 import type {
@@ -64,7 +65,7 @@ export async function handleListLocalImages(client: Client, input: ListLocalImag
 		params.set("page", String(page));
 		params.set("page_size", String(page_size));
 		if (input.orderBy) params.set("order_by", input.orderBy);
-		if (input.zone) params.set("zone", input.zone);
+		params.set("zone", input.zone ?? loadAuthConfig().defaultZone);
 		if (input.arch) params.set("arch", input.arch);
 		if (input.imageId) params.set("image_id", input.imageId);
 		if (input.versionId) params.set("version_id", input.versionId);

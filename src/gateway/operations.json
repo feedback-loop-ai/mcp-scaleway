@@ -373,7 +373,7 @@
 	},
 	{
 		"tool": "scaleway_cockpit_delete_contact_point",
-		"api": "DELETE /cockpit/v1/regions/{region}/alert-manager/contact-points",
+		"api": "POST /cockpit/v1/regions/{region}/alert-manager/contact-points/delete",
 		"area": "cockpit",
 		"readOnly": false
 	},
@@ -451,7 +451,7 @@
 	},
 	{
 		"tool": "scaleway_cockpit_list_managed_alerts_contact_points",
-		"api": "GET /cockpit/v1/regions/{region}/alert-manager/managed-alerts-contact-points",
+		"api": "GET /cockpit/v1/regions/{region}/alert-manager/contact-points",
 		"area": "cockpit",
 		"readOnly": true
 	},
@@ -1477,25 +1477,25 @@
 	},
 	{
 		"tool": "scaleway_generative_apis_chat_completion",
-		"api": "POST https://api.scaleway.ai/{region}/v1/chat/completions",
+		"api": "POST https://api.scaleway.ai/{project_id}/v1/chat/completions",
 		"area": "generative-apis",
 		"readOnly": false
 	},
 	{
 		"tool": "scaleway_generative_apis_create_embedding",
-		"api": "POST https://api.scaleway.ai/{region}/v1/embeddings",
+		"api": "POST https://api.scaleway.ai/{project_id}/v1/embeddings",
 		"area": "generative-apis",
 		"readOnly": false
 	},
 	{
 		"tool": "scaleway_generative_apis_get_model",
-		"api": "GET https://api.scaleway.ai/{region}/v1/models (client-side filter by id)",
+		"api": "GET https://api.scaleway.ai/v1/models (client-side filter by id)",
 		"area": "generative-apis",
 		"readOnly": true
 	},
 	{
 		"tool": "scaleway_generative_apis_list_models",
-		"api": "GET https://api.scaleway.ai/{region}/v1/models",
+		"api": "GET https://api.scaleway.ai/v1/models",
 		"area": "generative-apis",
 		"readOnly": true
 	},
@@ -4321,7 +4321,7 @@
 	},
 	{
 		"tool": "scaleway_webhosting_get_dns_records",
-		"api": "GET /webhosting/v1/regions/{region}/hostings/{hosting_id}/dns-records",
+		"api": "GET /webhosting/v1/regions/{region}/domains/{domain}/dns-records",
 		"area": "webhosting",
 		"readOnly": true
 	},
@@ -4351,7 +4351,7 @@
 	},
 	{
 		"tool": "scaleway_webhosting_restore_hosting",
-		"api": "POST /webhosting/v1/regions/{region}/hostings/{hosting_id}/restore",
+		"api": "POST /webhosting/v1/regions/{region}/hostings/{hosting_id}/backups/{backup_id}/restore",
 		"area": "webhosting",
 		"readOnly": false
 	},

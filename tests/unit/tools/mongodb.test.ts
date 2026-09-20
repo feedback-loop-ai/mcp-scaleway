@@ -218,6 +218,7 @@ describe("mongodb types", () => {
 	it("validates RestoreSnapshotParams", async () => {
 		const { RestoreSnapshotParams } = await import("../../../src/tools/mongodb/types.js");
 		const result = RestoreSnapshotParams.parse({
+			volume_type: "sbs_5k",
 			snapshot_id: "11111111-1111-1111-1111-111111111111",
 			instance_name: "restored-db",
 			node_type: "MGDB-PLAY2-NANO",
@@ -813,6 +814,7 @@ describe("mongodb handlers", () => {
 			});
 
 			const result = await handleRestoreSnapshot({
+				volume_type: "sbs_5k",
 				snapshot_id: "11111111-1111-1111-1111-111111111111",
 				instance_name: "restored-db",
 				node_type: "MGDB-PLAY2-NANO",
@@ -826,7 +828,7 @@ describe("mongodb handlers", () => {
 			expect(req.path).toContain("/snapshots/11111111-1111-1111-1111-111111111111/restore");
 			expect(req.method).toBe("POST");
 			expect(body.node_amount).toBe(1);
-			expect(body.volume_type).toBeUndefined();
+			expect(body.volume_type).toBe("sbs_5k");
 		});
 
 		it("restores with volume_type", async () => {
@@ -851,6 +853,7 @@ describe("mongodb handlers", () => {
 			mockFetch.mockRejectedValue(new Error("fail"));
 
 			const result = await handleRestoreSnapshot({
+				volume_type: "sbs_5k",
 				snapshot_id: "11111111-1111-1111-1111-111111111111",
 				instance_name: "restored-db",
 				node_type: "MGDB-PLAY2-NANO",

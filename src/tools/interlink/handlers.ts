@@ -317,7 +317,7 @@ export async function handleCreateRoutingPolicy(params: CreateRoutingPolicyParam
 		const body = {
 			name: params.name,
 			is_ipv6: params.isIpv6,
-			project_id: params.projectId,
+			project_id: params.projectId ?? loadAuthConfig().defaultProjectId,
 			tags: params.tags,
 			prefix_filter_in: params.prefixFilterIn,
 			prefix_filter_out: params.prefixFilterOut,

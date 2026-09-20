@@ -3,7 +3,7 @@ import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import pkg from "../../package.json";
-import { createServer, startServer } from "../../src/server.js";
+import { checkHealth, createServer, startServer } from "../../src/server.js";
 import type { ServerOptions } from "../../src/shared/mode.js";
 
 const connections: Array<{ client: Client; server: McpServer }> = [];
@@ -82,5 +82,29 @@ describe("server surface modes", () => {
 		const spy = vi.spyOn(McpServer.prototype, "connect").mockResolvedValue(undefined);
 		await startServer();
 		expect(spy).toHaveBeenCalledOnce();
+	});
+});
+
+describe("local health self-check", () => {
+	it("builds registration without credentials, stdio or network", async () => {
+		for (const name of [
+			"SCW_ACCESS_KEY",
+			"SCW_SECRET_KEY",
+			"SCW_DEFAULT_PROJECT_ID",
+			"TYPESAFE_API_KEY",
+		])
+			vi.stubEnv(name, undefined);
+		vi.stubEnv("SCW_ROUTER", "jev");
+		const connect = vi.spyOn(McpServer.prototype, "connect");
+		const close = vi.spyOn(McpServer.prototype, "close");
+		const fetch = vi.spyOn(globalThis, "fetch");
+		expect(await checkHealth()).toEqual({ status: "ok", check: "local", version: pkg.version });
+		expect(connect).not.toHaveBeenCalled();
+		expect(fetch).not.toHaveBeenCalled();
+		expect(close).toHaveBeenCalledOnce();
+	});
+	it("rejects invalid configured filters", async () => {
+		vi.stubEnv("SCW_TOOLSETS", "not-a-real-area");
+		await expect(checkHealth()).rejects.toThrow("Unknown toolset");
 	});
 });

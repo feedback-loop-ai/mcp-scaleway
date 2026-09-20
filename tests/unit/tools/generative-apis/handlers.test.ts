@@ -55,7 +55,7 @@ describe("generative-apis/handlers", () => {
 			expect(parsed.data).toHaveLength(1);
 			expect(parsed.data[0].id).toBe("meta/llama-3.1-8b-instruct:fp8");
 
-			expect(mockFetch).toHaveBeenCalledWith("https://api.scaleway.ai/fr-par/v1/models", {
+			expect(mockFetch).toHaveBeenCalledWith("https://api.scaleway.ai/v1/models", {
 				method: "GET",
 				headers: {
 					Authorization: "Bearer SCW-SECRET-KEY",
@@ -115,7 +115,7 @@ describe("generative-apis/handlers", () => {
 			expect(parsed.error.message).toBe("string error");
 		});
 
-		it("should use correct base URL for different regions", async () => {
+		it("uses the global model catalog regardless of the deprecated region input", async () => {
 			mockFetch.mockResolvedValueOnce({
 				ok: true,
 				json: async () => ({ object: "list", data: [] }),
@@ -124,7 +124,7 @@ describe("generative-apis/handlers", () => {
 			await handleListModels({ region: "nl-ams" });
 
 			expect(mockFetch).toHaveBeenCalledWith(
-				"https://api.scaleway.ai/nl-ams/v1/models",
+				"https://api.scaleway.ai/v1/models",
 				expect.any(Object),
 			);
 		});
@@ -254,21 +254,24 @@ describe("generative-apis/handlers", () => {
 			expect(parsed.id).toBe("chatcmpl-123");
 			expect(parsed.choices[0].message.content).toBe("Hello! How can I help?");
 
-			expect(mockFetch).toHaveBeenCalledWith("https://api.scaleway.ai/fr-par/v1/chat/completions", {
-				method: "POST",
-				headers: {
-					Authorization: "Bearer SCW-SECRET-KEY",
-					"Content-Type": "application/json",
+			expect(mockFetch).toHaveBeenCalledWith(
+				"https://api.scaleway.ai/project-123/v1/chat/completions",
+				{
+					method: "POST",
+					headers: {
+						Authorization: "Bearer SCW-SECRET-KEY",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						model: "meta/llama-3.1-8b-instruct:fp8",
+						messages: [{ role: "user", content: "Hello" }],
+						temperature: 0.7,
+						max_tokens: 512,
+						top_p: 1,
+						stream: false,
+					}),
 				},
-				body: JSON.stringify({
-					model: "meta/llama-3.1-8b-instruct:fp8",
-					messages: [{ role: "user", content: "Hello" }],
-					temperature: 0.7,
-					max_tokens: 512,
-					top_p: 1,
-					stream: false,
-				}),
-			});
+			);
 		});
 
 		it("should return error on API failure", async () => {
@@ -330,6 +333,24 @@ describe("generative-apis/handlers", () => {
 	});
 
 	describe("handleCreateEmbedding", () => {
+		it("uses an explicit project override for inference and excludes it from the body", async () => {
+			mockFetch.mockResolvedValueOnce({
+				ok: true,
+				json: async () => ({ object: "list", data: [] }),
+			});
+			await handleCreateEmbedding({
+				region: "nl-ams",
+				project_id: "11111111-1111-4111-8111-111111111111",
+				model: "embedding",
+				input: "text",
+			});
+			const [url, request] = mockFetch.mock.calls[0];
+			expect(url).toBe(
+				"https://api.scaleway.ai/11111111-1111-4111-8111-111111111111/v1/embeddings",
+			);
+			expect(JSON.parse(request.body)).toEqual({ model: "embedding", input: "text" });
+		});
+
 		it("should return embeddings on success", async () => {
 			const embeddingResponse = {
 				object: "list",
@@ -352,7 +373,7 @@ describe("generative-apis/handlers", () => {
 			const parsed = JSON.parse(result.content[0].text);
 			expect(parsed.data[0].embedding).toEqual([0.1, 0.2, 0.3]);
 
-			expect(mockFetch).toHaveBeenCalledWith("https://api.scaleway.ai/fr-par/v1/embeddings", {
+			expect(mockFetch).toHaveBeenCalledWith("https://api.scaleway.ai/project-123/v1/embeddings", {
 				method: "POST",
 				headers: {
 					Authorization: "Bearer SCW-SECRET-KEY",

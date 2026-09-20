@@ -1,0 +1,610 @@
+{
+	"source": {
+		"id": "autoscaling-sdk",
+		"url": "https://unpkg.com/@scaleway/sdk-autoscaling@2.13.1/dist/v1alpha2/api.gen.js",
+		"sha256": "3ff822ebe58c3e311500335f465edf017f76ef9a7f34f4a86225d2707cbec20d",
+		"fetchedAt": "2026-09-19T21:12:57.121834+00:00",
+		"kind": "official-js-sdk-augmented-openapi",
+		"baseSource": "autoscaling",
+		"baseSha256": "c8c07616aed5bd043fe5370a9791806ab2e0fe2dbcfc238bb056a31e5bc0a76e"
+	},
+	"document": {
+		"paths": {
+			"/autoscaling/v1alpha2/zones/{zone}/alerts": {
+				"get": {
+					"operationId": "ListAlerts",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "zone",
+							"required": true,
+							"schema": {
+								"enum": ["fr-par-1", "fr-par-2", "fr-par-3"],
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_token",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "group_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.ListAlertsResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["Alerts"]
+				}
+			}
+		},
+		"components": {
+			"schemas": {
+				"scaleway.autoscaling.v1alpha2.Alert": {
+					"properties": {
+						"closed_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"failing_quotas": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"group_id": {
+							"type": "string"
+						},
+						"opened_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"type": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Alert.AlertType"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Alert.AlertType": {
+					"default": "unknown_alert_type",
+					"enum": [
+						"unknown_alert_type",
+						"quotas_exceeded",
+						"out_of_stock",
+						"invalid_template",
+						"template_not_found",
+						"invalid_instance",
+						"template_permissions_denied",
+						"load_balancer_not_found",
+						"load_balancer_permissions_denied",
+						"backend_not_found",
+						"backend_permissions_denied"
+					],
+					"type": "string"
+				},
+				"scaleway.autoscaling.v1alpha2.Group": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"current_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"id": {
+							"type": "string"
+						},
+						"last_scale_in_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"last_scale_out_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"load_balancer_configuration": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.LoadBalancerConfiguration"
+						},
+						"name": {
+							"type": "string"
+						},
+						"open_alerts": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Alert"
+							},
+							"type": "array"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"scaling_policy": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.ScalingPolicy"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.GroupStatus"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"target_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"template_id": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Group.GroupStatus": {
+					"default": "unknown_group_status",
+					"enum": [
+						"unknown_group_status",
+						"active",
+						"scaling_out",
+						"scaling_in",
+						"refreshing",
+						"healing",
+						"scaling_failure",
+						"deleting"
+					],
+					"type": "string"
+				},
+				"scaleway.autoscaling.v1alpha2.Group.LoadBalancerConfiguration": {
+					"properties": {
+						"auto_healing": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.LoadBalancerConfiguration.AutoHealing"
+						},
+						"backends": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.LoadBalancerConfiguration.Backend"
+							},
+							"type": "array"
+						},
+						"load_balancer_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Group.LoadBalancerConfiguration.AutoHealing": {
+					"properties": {
+						"enabled": {
+							"type": "boolean"
+						},
+						"grace_period": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Group.LoadBalancerConfiguration.Backend": {
+					"properties": {
+						"address_family": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.LoadBalancerConfiguration.Backend.AddressFamily"
+						},
+						"backend_id": {
+							"type": "string"
+						},
+						"private_network_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Group.LoadBalancerConfiguration.Backend.AddressFamily": {
+					"default": "unknown_address_family",
+					"enum": ["unknown_address_family", "ipv4", "ipv6"],
+					"type": "string"
+				},
+				"scaleway.autoscaling.v1alpha2.Group.ScalingPolicy": {
+					"properties": {
+						"cpu_target": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.ScalingPolicy.ScalingPolicyCpuTarget"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"fixed_size": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.ScalingPolicy.ScalingPolicyFixedSize"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"maximum_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"memory_target": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.ScalingPolicy.ScalingPolicyMemoryTarget"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"minimum_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"scale_in_cooldown": {
+							"type": ["string", "null"]
+						},
+						"scale_in_step": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"scale_out_cooldown": {
+							"type": ["string", "null"]
+						},
+						"scale_out_step": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Group.ScalingPolicy.ScalingPolicyCpuTarget": {
+					"properties": {
+						"target_avg_percent": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Group.ScalingPolicy.ScalingPolicyFixedSize": {
+					"properties": {
+						"size": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Group.ScalingPolicy.ScalingPolicyMemoryTarget": {
+					"properties": {
+						"target_avg_percent": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.GroupSummary": {
+					"properties": {
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"current_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"id": {
+							"type": "string"
+						},
+						"latest_open_alert": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Alert"
+						},
+						"load_balancer_id": {
+							"type": ["string", "null"]
+						},
+						"maximum_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"minimum_size": {
+							"format": "uint32",
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"scaling_policy_target_type": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.GroupSummary.ScalingPolicyTargetType"
+						},
+						"status": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.GroupStatus"
+						},
+						"tags": {
+							"items": {
+								"type": "string"
+							},
+							"type": "array"
+						},
+						"template_id": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"zone": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.GroupSummary.ScalingPolicyTargetType": {
+					"default": "unknown_scaling_policy_target_type",
+					"enum": [
+						"unknown_scaling_policy_target_type",
+						"fixed_size",
+						"cpu_target",
+						"memory_target"
+					],
+					"type": "string"
+				},
+				"scaleway.autoscaling.v1alpha2.ListAlertsResponse": {
+					"properties": {
+						"alerts": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Alert"
+							},
+							"type": "array"
+						},
+						"next_page_token": {
+							"type": ["string", "null"]
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.ListGroupsRequest.OrderBy": {
+					"default": "created_at_desc",
+					"enum": ["created_at_desc", "created_at_asc"],
+					"type": "string"
+				},
+				"scaleway.autoscaling.v1alpha2.ListGroupsResponse": {
+					"properties": {
+						"group_summaries": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.GroupSummary"
+							},
+							"type": "array"
+						},
+						"next_page_token": {
+							"type": ["string", "null"]
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.ListLogsResponse": {
+					"properties": {
+						"logs": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Log"
+							},
+							"type": "array"
+						},
+						"next_page_token": {
+							"type": ["string", "null"]
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.ListServersResponse": {
+					"properties": {
+						"next_page_token": {
+							"type": ["string", "null"]
+						},
+						"servers": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Server"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint64",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.LoadBalancerConfigurationSpec": {
+					"properties": {
+						"auto_healing": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.LoadBalancerConfigurationSpec.AutoHealing"
+						},
+						"backends": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.LoadBalancerConfigurationSpec.Backend"
+							},
+							"type": "array"
+						},
+						"load_balancer_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.LoadBalancerConfigurationSpec.AutoHealing": {
+					"properties": {
+						"enabled": {
+							"type": ["boolean", "null"]
+						},
+						"grace_period": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.LoadBalancerConfigurationSpec.Backend": {
+					"properties": {
+						"address_family": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.LoadBalancerConfiguration.Backend.AddressFamily"
+						},
+						"backend_id": {
+							"type": "string"
+						},
+						"private_network_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Log": {
+					"properties": {
+						"level": {
+							"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Log.LogLevel"
+						},
+						"message": {
+							"type": "string"
+						},
+						"timestamp": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Log.LogLevel": {
+					"default": "unknown_log_level",
+					"enum": ["unknown_log_level", "info", "warning", "error"],
+					"type": "string"
+				},
+				"scaleway.autoscaling.v1alpha2.ScalingPolicySpec": {
+					"properties": {
+						"cpu_target": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.ScalingPolicy.ScalingPolicyCpuTarget"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"fixed_size": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.ScalingPolicy.ScalingPolicyFixedSize"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"maximum_size": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"memory_target": {
+							"oneOf": [
+								{
+									"$ref": "#/components/schemas/scaleway.autoscaling.v1alpha2.Group.ScalingPolicy.ScalingPolicyMemoryTarget"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"minimum_size": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"scale_in_cooldown": {
+							"type": ["string", "null"]
+						},
+						"scale_in_step": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						},
+						"scale_out_cooldown": {
+							"type": ["string", "null"]
+						},
+						"scale_out_step": {
+							"format": "uint32",
+							"type": ["integer", "null"]
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.autoscaling.v1alpha2.Server": {
+					"properties": {
+						"server_id": {
+							"type": "string"
+						}
+					},
+					"type": "object"
+				}
+			},
+			"securitySchemes": {
+				"scaleway": {
+					"in": "header",
+					"name": "X-Auth-Token",
+					"type": "apiKey"
+				}
+			}
+		}
+	},
+	"projectionNotes": "The official JS SDK2.13.1 listAlerts serializes the one-of group_id/project_id scope missing from the public OpenAPI parameter list. Preserve configured project fallback and group precedence. Method/path/responses and other parameters come from recorded source autoscaling; added query fields from pinned generated API lines48-59. No scope is silently discarded."
+}

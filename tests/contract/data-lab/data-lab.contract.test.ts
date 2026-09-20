@@ -209,7 +209,7 @@ describe("contract: CreateCluster request shape", () => {
 				description: "d",
 				tags: ["t"],
 				hasNotebook: true,
-				totalStorage: { type: "sbs", size: 107374182400 },
+				totalStorage: { type: "sbs_5k", size: 107374182400 },
 				privateNetworkId: VALID_UUID,
 				projectId: VALID_UUID,
 			}),

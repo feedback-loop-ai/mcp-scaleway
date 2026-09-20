@@ -1,0 +1,680 @@
+{
+	"source": {
+		"id": "serverless-sqldb-sdk",
+		"url": "https://raw.githubusercontent.com/scaleway/scaleway-sdk-go/25895fc5ce562db9b94242f507ffbb553347a73f/api/serverless_sqldb/v1alpha1/serverless_sqldb_sdk.go",
+		"sha256": "a697404c3ed617a34b7ca1f75fbc20309d0cdf456f1d8b9ab911a166dd2df895",
+		"fetchedAt": "2026-09-19T21:03:40.961360+00:00",
+		"kind": "official-go-sdk-projection"
+	},
+	"document": {
+		"openapi": "3.0.3",
+		"paths": {
+			"/serverless-sqldb/v1alpha1/regions/{region}/databases": {
+				"get": {
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": false,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"required": false,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"required": false,
+							"schema": {
+								"type": "integer",
+								"minimum": 0
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"required": false,
+							"schema": {
+								"type": "integer",
+								"minimum": 0
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"required": false,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "name",
+							"required": false,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"2XX": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/ListDatabasesResponse"
+									}
+								}
+							}
+						}
+					}
+				},
+				"post": {
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"2XX": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/Database"
+									}
+								}
+							}
+						}
+					},
+					"requestBody": {
+						"required": true,
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateDatabaseRequest"
+								}
+							}
+						}
+					}
+				}
+			},
+			"/serverless-sqldb/v1alpha1/regions/{region}/databases/{database_id}": {
+				"get": {
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "database_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"2XX": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/Database"
+									}
+								}
+							}
+						}
+					}
+				},
+				"patch": {
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "database_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"2XX": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/Database"
+									}
+								}
+							}
+						}
+					},
+					"requestBody": {
+						"required": true,
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateDatabaseRequest"
+								}
+							}
+						}
+					}
+				},
+				"delete": {
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "database_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"2XX": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/Database"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"/serverless-sqldb/v1alpha1/regions/{region}/databases/{database_id}/restore": {
+				"post": {
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "database_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"2XX": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/Database"
+									}
+								}
+							}
+						}
+					},
+					"requestBody": {
+						"required": true,
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RestoreDatabaseFromBackupRequest"
+								}
+							}
+						}
+					}
+				}
+			},
+			"/serverless-sqldb/v1alpha1/regions/{region}/backups": {
+				"get": {
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"required": false,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "project_id",
+							"required": false,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"required": false,
+							"schema": {
+								"type": "integer",
+								"minimum": 0
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"required": false,
+							"schema": {
+								"type": "integer",
+								"minimum": 0
+							}
+						},
+						{
+							"in": "query",
+							"name": "order_by",
+							"required": false,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "database_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"2XX": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/ListDatabaseBackupsResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"/serverless-sqldb/v1alpha1/regions/{region}/backups/{backup_id}": {
+				"get": {
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "backup_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"2XX": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/DatabaseBackup"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"/serverless-sqldb/v1alpha1/regions/{region}/backups/{backup_id}/export": {
+				"post": {
+					"parameters": [
+						{
+							"in": "path",
+							"name": "region",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "path",
+							"name": "backup_id",
+							"required": true,
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"2XX": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/DatabaseBackup"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"components": {
+			"schemas": {
+				"Database": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"status": {
+							"type": "string",
+							"enum": [
+								"unknown_status",
+								"error",
+								"creating",
+								"ready",
+								"deleting",
+								"restoring",
+								"locked"
+							]
+						},
+						"endpoint": {
+							"type": "string"
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						},
+						"created_at": {
+							"anyOf": [
+								{
+									"type": "string",
+									"format": "date-time"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"cpu_min": {
+							"type": "integer",
+							"minimum": 0
+						},
+						"cpu_max": {
+							"type": "integer",
+							"minimum": 0
+						},
+						"cpu_current": {
+							"type": "integer",
+							"minimum": 0
+						},
+						"started": {
+							"type": "boolean"
+						},
+						"engine_major_version": {
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				},
+				"DatabaseBackup": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"status": {
+							"type": "string",
+							"enum": ["unknown_status", "error", "ready", "locked"]
+						},
+						"organization_id": {
+							"type": "string"
+						},
+						"project_id": {
+							"type": "string"
+						},
+						"database_id": {
+							"type": "string"
+						},
+						"created_at": {
+							"anyOf": [
+								{
+									"type": "string",
+									"format": "date-time"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"expires_at": {
+							"anyOf": [
+								{
+									"type": "string",
+									"format": "date-time"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"size": {
+							"anyOf": [
+								{
+									"type": "integer",
+									"minimum": 0
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"db_size": {
+							"anyOf": [
+								{
+									"type": "integer",
+									"minimum": 0
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"download_url": {
+							"anyOf": [
+								{
+									"type": "string"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"download_url_expires_at": {
+							"anyOf": [
+								{
+									"type": "string",
+									"format": "date-time"
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"region": {
+							"type": "string"
+						}
+					}
+				},
+				"ListDatabasesResponse": {
+					"type": "object",
+					"properties": {
+						"databases": {
+							"type": "array",
+							"items": {
+								"anyOf": [
+									{
+										"$ref": "#/components/schemas/Database"
+									},
+									{
+										"type": "null"
+									}
+								]
+							}
+						},
+						"total_count": {
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				},
+				"ListDatabaseBackupsResponse": {
+					"type": "object",
+					"properties": {
+						"backups": {
+							"type": "array",
+							"items": {
+								"anyOf": [
+									{
+										"$ref": "#/components/schemas/DatabaseBackup"
+									},
+									{
+										"type": "null"
+									}
+								]
+							}
+						},
+						"total_count": {
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				},
+				"CreateDatabaseRequest": {
+					"type": "object",
+					"properties": {
+						"project_id": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"cpu_min": {
+							"type": "integer",
+							"minimum": 0
+						},
+						"cpu_max": {
+							"type": "integer",
+							"minimum": 0
+						},
+						"from_backup_id": {
+							"anyOf": [
+								{
+									"type": "string"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"required": ["project_id", "name", "cpu_min", "cpu_max"]
+				},
+				"UpdateDatabaseRequest": {
+					"type": "object",
+					"properties": {
+						"cpu_min": {
+							"anyOf": [
+								{
+									"type": "integer",
+									"minimum": 0
+								},
+								{
+									"type": "null"
+								}
+							]
+						},
+						"cpu_max": {
+							"anyOf": [
+								{
+									"type": "integer",
+									"minimum": 0
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					}
+				},
+				"RestoreDatabaseFromBackupRequest": {
+					"type": "object",
+					"properties": {
+						"backup_id": {
+							"type": "string"
+						}
+					},
+					"required": ["backup_id"]
+				}
+			}
+		}
+	},
+	"projectionNotes": "JSON tags, nullable pointers, enums and query mappings projected from pinned official Go SDK structs and methods. SDK accepts successful 2xx responses; it does not mandate an exact status. Response fields are not made required because Go JSON decoding permits omissions. This is source-backed validation, not proof of service availability."
+}

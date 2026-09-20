@@ -1,4 +1,5 @@
 import { AsyncLocalStorage } from "node:async_hooks";
+import { assertOperationAvailable, validateUpstreamResponse } from "./response-validation.js";
 
 interface RouteMatcher {
 	method: string;
@@ -13,6 +14,10 @@ interface RouteContext {
 	matchers: readonly RouteMatcher[];
 }
 const storage = new AsyncLocalStorage<RouteContext>();
+
+export function currentOperation(): string | undefined {
+	return storage.getStore()?.label;
+}
 const SUBRESOURCES = new Set([
 	"policy",
 	"lifecycle",
@@ -137,8 +142,11 @@ function matches(route: RouteMatcher, url: URL, method: string): boolean {
 	)
 		return false;
 	for (const [name, value] of route.query) {
-		if (url.searchParams.getAll(name).length !== 1 || url.searchParams.get(name) !== value)
-			return false;
+		const actual = url.searchParams.get(name);
+		const correctValue = /^\{[a-z_]+\}$/i.test(value)
+			? actual !== null && actual !== ""
+			: actual === value;
+		if (url.searchParams.getAll(name).length !== 1 || !correctValue) return false;
 	}
 	// S3 routes distinguish operations by subresource query as well as method and path.
 	if (route.s3) {
@@ -176,6 +184,10 @@ export async function guardedFetch(
 	init?: RequestInit,
 ): Promise<Response> {
 	const raw = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
-	assertRouteAllowed(raw, init?.method ?? (input instanceof Request ? input.method : "GET"));
-	return fetch(input, init);
+	const method = init?.method ?? (input instanceof Request ? input.method : "GET");
+	assertOperationAvailable(currentOperation());
+	assertRouteAllowed(raw, method);
+	const response = await fetch(input, init);
+	const operation = currentOperation();
+	return operation ? validateUpstreamResponse(operation, raw, method, response) : response;
 }

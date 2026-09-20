@@ -79,9 +79,7 @@ export async function handleCreateFileSystem(params: CreateFileSystemParams) {
 			name: params.name,
 			size: params.size,
 		};
-		if (params.projectId) {
-			body.project_id = params.projectId;
-		}
+		body.project_id = params.projectId ?? loadAuthConfig().defaultProjectId;
 		if (params.tags) {
 			body.tags = params.tags;
 		}

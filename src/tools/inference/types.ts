@@ -113,6 +113,12 @@ export const GetDeploymentInput = z.object({
 });
 
 export const CreateDeploymentInput = z.object({
+	accept_eula: z
+		.boolean()
+		.optional()
+		.describe(
+			"Explicitly accept the selected model's license for this deployment; read it first with inference_get_eula",
+		),
 	region: ScalewayRegion.describe("Scaleway region (e.g., fr-par)"),
 	name: z.string().describe("Deployment name"),
 	model_id: z.string().uuid().describe("Model ID to deploy"),

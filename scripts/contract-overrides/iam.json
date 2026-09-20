@@ -1,0 +1,225 @@
+{
+	"source": {
+		"id": "iam-sdk",
+		"url": "https://unpkg.com/@scaleway/sdk-iam@2.17.0/dist/v1alpha1/api.gen.js",
+		"sha256": "1a30e256f5c8298b22262f1a9d4f93f8211701746ae607df87faffe7e0cea8ad",
+		"fetchedAt": "2026-09-19T21:18:04.134480+00:00",
+		"kind": "official-js-sdk-augmented-openapi",
+		"baseSource": "iam",
+		"baseSha256": "8c580a07030db0a67c3f07eabdfe19e60abc564346a7673a1664f14f5d35c00d"
+	},
+	"document": {
+		"paths": {
+			"/iam/v1alpha1/api-keys": {
+				"get": {
+					"operationId": "ListAPIKeys",
+					"parameters": [
+						{
+							"in": "query",
+							"name": "order_by",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListAPIKeysRequest.OrderBy"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page",
+							"schema": {
+								"format": "int32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "page_size",
+							"schema": {
+								"format": "uint32",
+								"type": "integer"
+							}
+						},
+						{
+							"in": "query",
+							"name": "organization_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "editable",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "expired",
+							"schema": {
+								"type": "boolean"
+							}
+						},
+						{
+							"in": "query",
+							"name": "access_key",
+							"schema": {
+								"deprecated": true,
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "description",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "bearer_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "bearer_type",
+							"schema": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.BearerType"
+							}
+						},
+						{
+							"in": "query",
+							"name": "access_keys",
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						},
+						{
+							"in": "query",
+							"name": "application_id",
+							"schema": {
+								"type": "string"
+							}
+						},
+						{
+							"in": "query",
+							"name": "user_id",
+							"schema": {
+								"type": "string"
+							}
+						}
+					],
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/scaleway.iam.v1alpha1.ListAPIKeysResponse"
+									}
+								}
+							}
+						}
+					},
+					"security": [
+						{
+							"scaleway": []
+						}
+					],
+					"tags": ["API Keys"]
+				}
+			}
+		},
+		"components": {
+			"schemas": {
+				"scaleway.iam.v1alpha1.ListAPIKeysRequest.OrderBy": {
+					"default": "created_at_asc",
+					"enum": [
+						"created_at_asc",
+						"created_at_desc",
+						"updated_at_asc",
+						"updated_at_desc",
+						"expires_at_asc",
+						"expires_at_desc",
+						"access_key_asc",
+						"access_key_desc"
+					],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.BearerType": {
+					"default": "unknown_bearer_type",
+					"enum": ["unknown_bearer_type", "user", "application"],
+					"type": "string"
+				},
+				"scaleway.iam.v1alpha1.ListAPIKeysResponse": {
+					"properties": {
+						"api_keys": {
+							"items": {
+								"$ref": "#/components/schemas/scaleway.iam.v1alpha1.APIKey"
+							},
+							"type": "array"
+						},
+						"total_count": {
+							"format": "uint32",
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"scaleway.iam.v1alpha1.APIKey": {
+					"properties": {
+						"access_key": {
+							"type": "string"
+						},
+						"application_id": {
+							"type": ["string", "null"]
+						},
+						"created_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"creation_ip": {
+							"type": "string"
+						},
+						"default_project_id": {
+							"type": "string"
+						},
+						"deletable": {
+							"type": "boolean"
+						},
+						"description": {
+							"type": "string"
+						},
+						"editable": {
+							"type": "boolean"
+						},
+						"expires_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"managed": {
+							"type": "boolean"
+						},
+						"secret_key": {
+							"type": ["string", "null"]
+						},
+						"srn": {
+							"type": "string"
+						},
+						"updated_at": {
+							"format": "date-time",
+							"type": ["string", "null"]
+						},
+						"user_id": {
+							"type": ["string", "null"]
+						}
+					},
+					"type": "object"
+				}
+			}
+		}
+	},
+	"projectionNotes": "The pinned official SDK serializes these one-of query parameters omitted from public OpenAPI. Types are independently checked against adjacent published types.gen.d.ts. Keep all original method/path/response/other parameter contracts from the recorded base; preserve input scoping."
+}

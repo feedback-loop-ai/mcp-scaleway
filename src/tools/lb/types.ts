@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Milliseconds } from "../../shared/milliseconds.js";
 import { PaginationParams, ScalewayZone } from "../../shared/types.js";
 
 // ─── Common enums ───────────────────────────────────────────────────────────
@@ -46,8 +47,12 @@ export const HttpsHealthCheck = z.object({
 
 export const HealthCheckConfig = z.object({
 	port: z.number().int().describe("Health check port"),
-	check_delay: z.string().optional().describe("Time between checks (e.g. 3000ms)"),
-	check_timeout: z.string().optional().describe("Check timeout (e.g. 1000ms)"),
+	check_delay: Milliseconds.optional().describe(
+		"Milliseconds, or an explicit legacy duration such as 3000ms or 3s",
+	),
+	check_timeout: Milliseconds.optional().describe(
+		"Milliseconds, or an explicit legacy duration such as 3000ms or 3s",
+	),
 	check_max_retries: z.number().int().optional().describe("Max retries before marking unhealthy"),
 	tcp_config: TcpHealthCheck.optional().describe("TCP health check configuration"),
 	http_config: HttpHealthCheck.optional().describe("HTTP health check configuration"),
@@ -87,7 +92,7 @@ export const CreateLbParams = z.object({
 			"ssl_compatibility_level_unknown",
 			"ssl_compatibility_level_intermediate",
 			"ssl_compatibility_level_modern",
-			"ssl_compatibility_level_old_backward",
+			"ssl_compatibility_level_old",
 		])
 		.optional()
 		.describe("SSL compatibility level"),
@@ -104,7 +109,7 @@ export const UpdateLbParams = z.object({
 			"ssl_compatibility_level_unknown",
 			"ssl_compatibility_level_intermediate",
 			"ssl_compatibility_level_modern",
-			"ssl_compatibility_level_old_backward",
+			"ssl_compatibility_level_old",
 		])
 		.optional()
 		.describe("SSL compatibility level"),
@@ -145,7 +150,9 @@ export const CreateFrontendParams = z.object({
 	name: z.string().describe("Frontend name"),
 	inbound_port: z.number().int().min(1).max(65535).describe("Inbound port"),
 	backend_id: z.string().uuid().describe("Backend ID to forward to"),
-	timeout_client: z.string().optional().describe("Client timeout (e.g. 30000ms)"),
+	timeout_client: Milliseconds.optional().describe(
+		"Milliseconds, or an explicit legacy duration such as 3000ms or 3s",
+	),
 	certificate_id: z.string().uuid().optional().describe("Certificate ID for HTTPS"),
 	certificate_ids: z.array(z.string().uuid()).optional().describe("Certificate IDs"),
 	enable_http3: z.boolean().optional().describe("Enable HTTP/3"),
@@ -157,7 +164,9 @@ export const UpdateFrontendParams = z.object({
 	name: z.string().describe("New name"),
 	inbound_port: z.number().int().min(1).max(65535).describe("New inbound port"),
 	backend_id: z.string().uuid().describe("Backend ID"),
-	timeout_client: z.string().optional().describe("Client timeout"),
+	timeout_client: Milliseconds.optional().describe(
+		"Milliseconds, or an explicit legacy duration such as 3000ms or 3s",
+	),
 	certificate_id: z.string().uuid().optional().describe("Certificate ID"),
 	certificate_ids: z.array(z.string().uuid()).optional().describe("Certificate IDs"),
 	enable_http3: z.boolean().optional().describe("Enable HTTP/3"),
@@ -197,11 +206,17 @@ export const CreateBackendParams = z.object({
 		.describe("Load balancing algorithm"),
 	sticky_sessions: StickySessionsType.optional().describe("Sticky sessions type"),
 	sticky_sessions_cookie_name: z.string().optional().describe("Cookie name for sticky sessions"),
-	health_check: HealthCheckConfig.optional().describe("Health check configuration"),
+	health_check: HealthCheckConfig.describe("Health check configuration"),
 	server_ip: z.array(z.string()).optional().describe("Backend server IPs"),
-	timeout_server: z.string().optional().describe("Server timeout"),
-	timeout_connect: z.string().optional().describe("Connection timeout"),
-	timeout_tunnel: z.string().optional().describe("Tunnel timeout"),
+	timeout_server: Milliseconds.optional().describe(
+		"Milliseconds, or an explicit legacy duration such as 3000ms or 3s",
+	),
+	timeout_connect: Milliseconds.optional().describe(
+		"Milliseconds, or an explicit legacy duration such as 3000ms or 3s",
+	),
+	timeout_tunnel: Milliseconds.optional().describe(
+		"Milliseconds, or an explicit legacy duration such as 3000ms or 3s",
+	),
 	on_marked_down_action: z
 		.enum(["on_marked_down_action_none", "shutdown_sessions"])
 		.optional()
@@ -238,9 +253,15 @@ export const UpdateBackendParams = z.object({
 		.describe("Load balancing algorithm"),
 	sticky_sessions: StickySessionsType.optional().describe("Sticky sessions type"),
 	sticky_sessions_cookie_name: z.string().optional().describe("Cookie name for sticky sessions"),
-	timeout_server: z.string().optional().describe("Server timeout"),
-	timeout_connect: z.string().optional().describe("Connection timeout"),
-	timeout_tunnel: z.string().optional().describe("Tunnel timeout"),
+	timeout_server: Milliseconds.optional().describe(
+		"Milliseconds, or an explicit legacy duration such as 3000ms or 3s",
+	),
+	timeout_connect: Milliseconds.optional().describe(
+		"Milliseconds, or an explicit legacy duration such as 3000ms or 3s",
+	),
+	timeout_tunnel: Milliseconds.optional().describe(
+		"Milliseconds, or an explicit legacy duration such as 3000ms or 3s",
+	),
 	on_marked_down_action: z
 		.enum(["on_marked_down_action_none", "shutdown_sessions"])
 		.optional()

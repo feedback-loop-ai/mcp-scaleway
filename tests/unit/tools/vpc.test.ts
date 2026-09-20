@@ -200,7 +200,8 @@ describe("vpc module", () => {
 			const result = await handler({ region: "fr-par" });
 
 			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.items).toHaveLength(0);
+			expect(result.isError).toBe(true);
+			expect(parsed.error.statusCode).toBe(502);
 		});
 
 		it("handles null total_count in response", async () => {
@@ -211,8 +212,8 @@ describe("vpc module", () => {
 			const result = await handler({ region: "fr-par" });
 
 			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.items).toHaveLength(1);
-			expect(parsed.totalCount).toBe(0);
+			expect(result.isError).toBe(true);
+			expect(parsed.error.statusCode).toBe(502);
 		});
 	});
 
@@ -506,7 +507,8 @@ describe("vpc module", () => {
 			const result = await handler({ region: "fr-par" });
 
 			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.items).toHaveLength(0);
+			expect(result.isError).toBe(true);
+			expect(parsed.error.statusCode).toBe(502);
 		});
 
 		it("handles null total_count in response", async () => {
@@ -517,8 +519,8 @@ describe("vpc module", () => {
 			const result = await handler({ region: "fr-par" });
 
 			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.items).toHaveLength(1);
-			expect(parsed.totalCount).toBe(0);
+			expect(result.isError).toBe(true);
+			expect(parsed.error.statusCode).toBe(502);
 		});
 
 		it("handles API errors", async () => {

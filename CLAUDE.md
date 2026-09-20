@@ -36,7 +36,7 @@ bun x vitest run --config tests/vitest.config.ts tests/contract
 bun run test -- --coverage.enabled
 
 # Validate API parity matrix
-bun run test:parity  # checks tests/parity-matrix.json completeness
+bun run test:parity  # traceability plus independent per-operation HTTP contracts
 
 # Drift alarm (non-blocking, local): reads the matrix's api strings against the
 # fetched OpenAPI documents under .forge/scratch/ and re-hashes their provenance.
@@ -79,6 +79,20 @@ Test organization:
 - **Full API contract parity**: Every Scaleway API endpoint exposed by this server MUST have a contract test validating request shape, response shape, pagination, auth, and error codes
 - **Contract traceability**: Every contract test MUST reference its Scaleway API endpoint and the corresponding entry in `specs/scaleway-api/`
 - **No tool without tests**: MCP tools cannot merge without 100% contract test coverage
+
+## Current remediation evidence
+
+Feature 064 records the current executable wire contracts and SDK/protocol supplements
+in `src/shared/response-contracts.json`, with per-operation evidence in
+`tests/contract-evidence.json`. Regenerate with `bun run gen:contracts`; public refresh
+is explicit (`--refresh`) and source-dependent overlays require review after base changes.
+Run `bun run gen:examples` after input changes and use `bun run health` for offline
+startup validation. Current route findings and six explicitly unavailable legacy IDs
+are documented in `specs/064-remaining-remediation/endpoints.md`.
+
+The namespace approvals below are retained as historical governance evidence. Their
+intake-era route-availability/Tier-C conclusions do not supersede the later recorded
+source evidence, including official Serverless SQL SDK contracts and secondary schemas.
 
 ## Declared Namespaces (Decision 2, approved 2026-09-15)
 

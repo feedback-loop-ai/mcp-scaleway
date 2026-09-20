@@ -2,6 +2,7 @@ import { urlParams } from "@scaleway/sdk-client";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
+import { requiredOrganizationId } from "../../shared/request-defaults.js";
 import type {
 	DownloadImpactReportParams,
 	GetImpactDataParams,
@@ -28,7 +29,7 @@ export async function handleGetImpactData(params: GetImpactDataParams) {
 			method: "GET",
 			path: `${EF_API_PREFIX}/data/query`,
 			urlParams: urlParams(
-				["organization_id", params.organizationId],
+				["organization_id", requiredOrganizationId(params.organizationId)],
 				["start_date", params.startDate],
 				["end_date", params.endDate],
 				["regions", params.regions],
@@ -51,7 +52,7 @@ export async function handleGetReportAvailability(params: GetReportAvailabilityP
 			method: "GET",
 			path: `${EF_API_PREFIX}/reports/availability`,
 			urlParams: urlParams(
-				["organization_id", params.organizationId],
+				["organization_id", requiredOrganizationId(params.organizationId)],
 				["start_date", params.startDate],
 				["end_date", params.endDate],
 			),
@@ -69,9 +70,7 @@ export async function handleDownloadImpactReport(params: DownloadImpactReportPar
 			date: params.date,
 			type: params.type,
 		};
-		if (params.organizationId) {
-			body.organization_id = params.organizationId;
-		}
+		body.organization_id = requiredOrganizationId(params.organizationId);
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${EF_API_PREFIX}/reports/download`,

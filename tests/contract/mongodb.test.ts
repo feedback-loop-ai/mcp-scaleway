@@ -406,6 +406,7 @@ describe("MongoDB contract: Snapshot schemas", () => {
 		const validRestore = {
 			snapshot_id: "00000000-0000-0000-0000-000000000001",
 			instance_name: "restored-db",
+			volume_type: "sbs_5k",
 			node_type: "MGDB-PLAY2-NANO",
 			node_amount: 1,
 		};
@@ -416,7 +417,7 @@ describe("MongoDB contract: Snapshot schemas", () => {
 			expect(result.node_amount).toBe(1);
 		});
 
-		it("accepts optional volume_type", () => {
+		it("accepts alternate volume_type", () => {
 			const result = RestoreSnapshotParams.parse({
 				...validRestore,
 				volume_type: "sbs_15k",

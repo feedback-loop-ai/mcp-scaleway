@@ -1,0 +1,595 @@
+{
+	"source": {
+		"id": "generative-apis-compat",
+		"url": "https://www.scaleway.com/en/docs/generative-apis/how-to/use-function-calling/",
+		"sha256": "23953e126f749b01a01ccae0ddd0741ce8ed946cbcb9c333c878733afe7178ae",
+		"fetchedAt": "2026-09-19T21:19:29.518913Z",
+		"kind": "documented-compatibility-overlay",
+		"baseSource": "generative-apis-v1",
+		"baseSha256": "19ddcea3de98788810ffc788ff84b456d11b722635260fdc1036498e6d846fbe"
+	},
+	"document": {
+		"paths": {
+			"/{project_id}/v1/chat/completions": {
+				"post": {
+					"operationId": "createChatCompletion",
+					"parameters": [
+						{
+							"in": "path",
+							"name": "project_id",
+							"required": true,
+							"schema": {
+								"$ref": "#/components/schemas/ProjectId"
+							}
+						}
+					],
+					"requestBody": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"frequency_penalty": {
+											"maximum": 2,
+											"minimum": -2,
+											"nullable": true,
+											"type": "number"
+										},
+										"logit_bias": {
+											"additionalProperties": true,
+											"default": null,
+											"nullable": true,
+											"type": "object"
+										},
+										"logprobs": {
+											"default": false,
+											"nullable": true,
+											"type": "boolean"
+										},
+										"max_completion_tokens": {
+											"$ref": "#/components/schemas/MaxOutputTokens"
+										},
+										"max_tokens": {
+											"deprecated": true,
+											"nullable": true,
+											"type": "integer"
+										},
+										"messages": {
+											"items": {
+												"$ref": "#/components/schemas/ChatCompletionRequestMessage"
+											},
+											"minItems": 1,
+											"type": "array"
+										},
+										"model": {
+											"type": "string"
+										},
+										"n": {
+											"default": 1,
+											"maximum": 128,
+											"minimum": 1,
+											"nullable": true,
+											"type": "integer"
+										},
+										"parallel_tool_calls": {
+											"$ref": "#/components/schemas/ParallelToolCalls"
+										},
+										"presence_penalty": {
+											"maximum": 2,
+											"minimum": -2,
+											"nullable": true,
+											"type": "number"
+										},
+										"reasoning_effort": {
+											"default": "medium",
+											"enum": ["none", "low", "medium", "high"],
+											"type": "string"
+										},
+										"response_format": {
+											"$ref": "#/components/schemas/ResponseFormatChatCompletion"
+										},
+										"seed": {
+											"maximum": 9223372036854776000,
+											"minimum": -9223372036854776000,
+											"nullable": true,
+											"type": "integer"
+										},
+										"stop": {
+											"$ref": "#/components/schemas/StopConfiguration"
+										},
+										"stream": {
+											"nullable": true,
+											"type": "boolean"
+										},
+										"stream_options": {
+											"$ref": "#/components/schemas/ChatCompletionStreamOptions"
+										},
+										"temperature": {
+											"$ref": "#/components/schemas/Temperature"
+										},
+										"tool_choice": {
+											"$ref": "#/components/schemas/ChatCompletionToolChoiceOption"
+										},
+										"tools": {
+											"items": {
+												"$ref": "#/components/schemas/ChatCompletionTool"
+											},
+											"type": "array"
+										},
+										"top_logprobs": {
+											"maximum": 20,
+											"minimum": 0,
+											"nullable": true,
+											"type": "integer"
+										},
+										"top_p": {
+											"$ref": "#/components/schemas/TopP"
+										}
+									},
+									"required": ["model", "messages"],
+									"type": "object"
+								}
+							}
+						},
+						"required": true
+					},
+					"responses": {
+						"200": {
+							"content": {
+								"application/json": {
+									"schema": {
+										"$ref": "#/components/schemas/CreateChatCompletionResponse"
+									}
+								}
+							}
+						}
+					},
+					"tags": ["Chat Completions"]
+				}
+			}
+		},
+		"components": {
+			"schemas": {
+				"ChatCompletionMessageToolCall": {
+					"properties": {
+						"function": {
+							"properties": {
+								"arguments": {
+									"type": "string"
+								},
+								"name": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"id": {
+							"type": "string"
+						},
+						"type": {
+							"enum": ["function"],
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"ChatCompletionMessageToolCalls": {
+					"items": {
+						"$ref": "#/components/schemas/ChatCompletionMessageToolCall"
+					},
+					"type": "array"
+				},
+				"ChatCompletionRequestMessage": {
+					"properties": {
+						"content": {
+							"type": ["string", "null"]
+						},
+						"content\u200b": {
+							"items": {
+								"$ref": "#/components/schemas/ChatCompletionRequestMessageContentPart"
+							},
+							"type": "array"
+						},
+						"role": {
+							"enum": ["system", "user", "assistant", "tool"],
+							"type": "string"
+						},
+						"tool_call_id": {
+							"type": "string"
+						},
+						"tool_calls": {
+							"items": {
+								"$ref": "#/components/schemas/ChatCompletionMessageToolCall"
+							},
+							"type": "array"
+						}
+					},
+					"required": ["role"],
+					"type": "object",
+					"anyOf": [
+						{
+							"required": ["content"],
+							"properties": {
+								"content": {
+									"type": "string"
+								}
+							}
+						},
+						{
+							"required": ["tool_calls", "role"],
+							"properties": {
+								"tool_calls": {
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"allOf": [
+											{
+												"$ref": "#/components/schemas/ChatCompletionMessageToolCall"
+											},
+											{
+												"type": "object",
+												"required": ["id", "type", "function"],
+												"properties": {
+													"id": {
+														"type": "string",
+														"minLength": 1
+													},
+													"type": {
+														"const": "function"
+													},
+													"function": {
+														"type": "object",
+														"required": ["name", "arguments"],
+														"properties": {
+															"name": {
+																"type": "string",
+																"minLength": 1
+															},
+															"arguments": {
+																"type": "string"
+															}
+														}
+													}
+												}
+											}
+										]
+									}
+								},
+								"role": {
+									"const": "assistant"
+								}
+							}
+						}
+					]
+				},
+				"ChatCompletionRequestMessageContentPart": {
+					"properties": {
+						"image_url": {
+							"properties": {
+								"url": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"input_audio": {
+							"properties": {
+								"data": {
+									"type": "string"
+								},
+								"format": {
+									"type": "string"
+								}
+							},
+							"type": "object"
+						},
+						"text": {
+							"type": "string"
+						},
+						"type": {
+							"enum": ["text", "image_url", "input_audio"],
+							"type": "string"
+						}
+					},
+					"required": ["type"],
+					"type": "object"
+				},
+				"ChatCompletionResponseChoice": {
+					"properties": {
+						"finish_reason": {
+							"enum": ["stop", "length", "tool_calls"],
+							"type": "string"
+						},
+						"index": {
+							"type": "integer"
+						},
+						"logprobs": {
+							"nullable": true,
+							"properties": {
+								"content": {
+									"items": {
+										"$ref": "#/components/schemas/ChatCompletionTokenLogprob"
+									},
+									"nullable": true,
+									"type": "array"
+								},
+								"refusal": {
+									"items": {
+										"$ref": "#/components/schemas/ChatCompletionTokenLogprob"
+									},
+									"nullable": true,
+									"type": "array"
+								}
+							},
+							"type": "object"
+						},
+						"message": {
+							"$ref": "#/components/schemas/ChatCompletionResponseMessage"
+						}
+					},
+					"type": "object"
+				},
+				"ChatCompletionResponseMessage": {
+					"properties": {
+						"content": {
+							"type": ["string", "null"]
+						},
+						"reasoning_content": {
+							"type": "string"
+						},
+						"role": {
+							"enum": ["assistant"],
+							"type": "string"
+						},
+						"tool_calls": {
+							"$ref": "#/components/schemas/ChatCompletionMessageToolCalls"
+						}
+					},
+					"type": "object",
+					"anyOf": [
+						{
+							"required": ["content"],
+							"properties": {
+								"content": {
+									"type": "string"
+								}
+							}
+						},
+						{
+							"required": ["tool_calls"],
+							"properties": {
+								"tool_calls": {
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"allOf": [
+											{
+												"$ref": "#/components/schemas/ChatCompletionMessageToolCall"
+											},
+											{
+												"type": "object",
+												"required": ["id", "type", "function"],
+												"properties": {
+													"id": {
+														"type": "string",
+														"minLength": 1
+													},
+													"type": {
+														"const": "function"
+													},
+													"function": {
+														"type": "object",
+														"required": ["name", "arguments"],
+														"properties": {
+															"name": {
+																"type": "string",
+																"minLength": 1
+															},
+															"arguments": {
+																"type": "string"
+															}
+														}
+													}
+												}
+											}
+										]
+									}
+								}
+							}
+						}
+					]
+				},
+				"ChatCompletionStreamOptions": {
+					"default": null,
+					"nullable": true,
+					"properties": {
+						"include_usage": {
+							"type": "boolean"
+						}
+					},
+					"type": "object"
+				},
+				"ChatCompletionTokenLogprob": {
+					"properties": {
+						"bytes": {
+							"items": {
+								"type": "integer"
+							},
+							"nullable": true,
+							"type": "array"
+						},
+						"logprob": {
+							"type": "number"
+						},
+						"token": {
+							"type": "string"
+						},
+						"top_logprobs": {
+							"items": {
+								"properties": {
+									"bytes": {
+										"items": {
+											"type": "integer"
+										},
+										"nullable": true,
+										"type": "array"
+									},
+									"logprob": {
+										"type": "number"
+									},
+									"token": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							},
+							"type": "array"
+						}
+					},
+					"type": "object"
+				},
+				"ChatCompletionTool": {
+					"properties": {
+						"function": {
+							"$ref": "#/components/schemas/FunctionObject"
+						},
+						"type": {
+							"enum": ["function"],
+							"type": "string"
+						}
+					},
+					"required": ["type", "function"],
+					"type": "object"
+				},
+				"ChatCompletionToolChoiceOption": {
+					"enum": ["none", "auto", "required"],
+					"type": "string"
+				},
+				"ChatCompletionUsage": {
+					"properties": {
+						"completion_tokens": {
+							"type": "integer"
+						},
+						"completion_tokens_details": {
+							"nullable": true,
+							"properties": {
+								"reasoning_tokens": {
+									"type": "integer"
+								}
+							},
+							"type": "object"
+						},
+						"prompt_tokens": {
+							"type": "integer"
+						},
+						"prompt_tokens_details": {
+							"nullable": true,
+							"properties": {
+								"audio_tokens": {
+									"type": "integer"
+								},
+								"cached_tokens": {
+									"type": "integer"
+								}
+							},
+							"type": "object"
+						},
+						"total_tokens": {
+							"type": "integer"
+						}
+					},
+					"type": "object"
+				},
+				"CreateChatCompletionResponse": {
+					"properties": {
+						"choices": {
+							"items": {
+								"$ref": "#/components/schemas/ChatCompletionResponseChoice"
+							},
+							"type": "array"
+						},
+						"created": {
+							"type": "integer"
+						},
+						"id": {
+							"type": "string"
+						},
+						"model": {
+							"type": "string"
+						},
+						"object": {
+							"enum": ["chat.completion"],
+							"type": "string"
+						},
+						"usage": {
+							"$ref": "#/components/schemas/ChatCompletionUsage"
+						}
+					},
+					"type": "object"
+				},
+				"FunctionObject": {
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"name": {
+							"type": "string"
+						},
+						"parameters": {
+							"$ref": "#/components/schemas/FunctionParameters"
+						},
+						"strict": {
+							"nullable": true,
+							"type": "boolean"
+						}
+					},
+					"required": ["name"],
+					"type": "object"
+				},
+				"FunctionParameters": {
+					"additionalProperties": true,
+					"type": "object"
+				},
+				"MaxOutputTokens": {
+					"nullable": true,
+					"type": "integer"
+				},
+				"ParallelToolCalls": {
+					"type": "boolean"
+				},
+				"ProjectId": {
+					"type": "string"
+				},
+				"ResponseFormatChatCompletion": {
+					"properties": {
+						"json_schema": {
+							"type": "object"
+						},
+						"type": {
+							"enum": ["text", "json_schema", "json_object"],
+							"required": ["type"],
+							"type": "string"
+						}
+					},
+					"type": "object"
+				},
+				"StopConfiguration": {
+					"default": null,
+					"nullable": true,
+					"type": "string"
+				},
+				"Temperature": {
+					"maximum": 2,
+					"minimum": 0,
+					"nullable": true,
+					"type": "number"
+				},
+				"TopP": {
+					"maximum": 1,
+					"minimum": 0,
+					"nullable": true,
+					"type": "number"
+				}
+			}
+		}
+	}
+}

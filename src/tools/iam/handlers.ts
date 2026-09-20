@@ -1,5 +1,7 @@
 import type { Client } from "@scaleway/sdk-client";
+import { z } from "zod";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
+import { requiredOrganizationId } from "../../shared/request-defaults.js";
 import type {
 	AddGroupMemberInput,
 	CreateApiKeyInput,
@@ -391,49 +393,60 @@ export async function handleListRules(client: Client, input: ListRulesInput) {
 // create/update/delete endpoints. The tools below therefore implement those
 // operations on top of the documented read+set pattern: fetch the policy's
 // current rules, apply the requested change to the list, then PUT the whole list
-// back. Note: rules scoped to an account root user (account_root_user_id) cannot
-// be expressed as RuleSpecs and are preserved only by their project/organization
-// scope. A policy is assumed to have at most 100 rules (a single list page).
-
-interface IamRuleObject {
-	id?: string;
-	permission_set_names?: string[] | null;
-	condition?: string;
-	project_ids?: string[] | null;
-	organization_id?: string | null;
-}
-
-interface ListRulesData {
-	rules?: IamRuleObject[];
-}
+// back. Refuse incomplete pages and rules whose access scope cannot be faithfully
+// represented by SetRules; they must never be replaced with guessed empty values.
+const ConsumedPolicyRule = z
+	.object({
+		id: z.string().min(1),
+		permission_set_names: z.array(z.string()).nullable(),
+		condition: z.string(),
+		project_ids: z.array(z.string()).nullable().optional(),
+		organization_id: z.string().nullable().optional(),
+		account_root_user_id: z.null().optional(),
+	})
+	.passthrough()
+	.refine((rule) => Object.hasOwn(rule, "project_ids") || Object.hasOwn(rule, "organization_id"));
+const CompletePolicyRules = z
+	.object({ rules: z.array(ConsumedPolicyRule), total_count: z.number().int().nonnegative() })
+	.refine((data) => data.rules.length === data.total_count);
+type IamRuleObject = z.infer<typeof ConsumedPolicyRule>;
 
 interface RuleSpec {
 	permission_set_names: string[] | null;
 	condition: string;
-	project_ids?: string[];
-	organization_id?: string;
+	project_ids?: string[] | null;
+	organization_id?: string | null;
 }
 
 function toRuleSpec(rule: IamRuleObject): RuleSpec {
 	const spec: RuleSpec = {
-		permission_set_names: rule.permission_set_names ?? null,
-		condition: rule.condition ?? "",
+		permission_set_names: rule.permission_set_names,
+		condition: rule.condition,
 	};
-	if (rule.project_ids != null) {
+	if (Object.hasOwn(rule, "project_ids")) {
 		spec.project_ids = rule.project_ids;
-	} else if (rule.organization_id != null) {
+	}
+	if (Object.hasOwn(rule, "organization_id")) {
 		spec.organization_id = rule.organization_id;
 	}
 	return spec;
 }
 
 async function fetchPolicyRules(client: Client, policyId: string): Promise<IamRuleObject[]> {
-	const data = await client.fetch<ListRulesData>({
+	const data = await client.fetch<unknown>({
 		method: "GET",
 		path: `${IAM_API}/rules`,
 		urlParams: buildParams({ policy_id: policyId, page: 1, page_size: 100 }),
 	});
-	return data.rules ?? [];
+	const complete = CompletePolicyRules.safeParse(data);
+	if (!complete.success)
+		throw Object.assign(
+			new Error(
+				"Policy rules were not changed: obtain a complete policy read with representable project or organization scopes before retrying.",
+			),
+			{ status: 502 },
+		);
+	return complete.data.rules;
 }
 
 function setPolicyRules(client: Client, policyId: string, rules: RuleSpec[]) {
@@ -550,7 +563,7 @@ export async function handleCreateGroup(client: Client, input: CreateGroupInput)
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				name: input.name,
-				organization_id: input.organization_id,
+				organization_id: requiredOrganizationId(input.organization_id),
 				description: input.description,
 			}),
 		});
@@ -629,7 +642,7 @@ export async function handleListPermissionSets(client: Client, input: ListPermis
 			method: "GET",
 			path: `${IAM_API}/permission-sets`,
 			urlParams: buildParams({
-				organization_id: input.organization_id,
+				organization_id: requiredOrganizationId(input.organization_id),
 				page: input.page,
 				page_size: input.page_size,
 				order_by: input.order_by,

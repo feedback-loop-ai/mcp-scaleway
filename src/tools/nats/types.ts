@@ -27,7 +27,10 @@ export type NatsAccount = z.infer<typeof NatsAccount>;
 export const ListNatsAccountsParams = PaginationParams.extend({
 	region: ScalewayRegion.describe("Region to list accounts in (e.g. fr-par)"),
 	projectId: z.string().uuid().optional().describe("Filter by project ID"),
-	name: z.string().optional().describe("Filter by account name"),
+	name: z
+		.never()
+		.optional()
+		.describe("Unsupported filter: omit name; use projectId and name sorting"),
 	orderBy: z
 		.enum([
 			"created_at_asc",

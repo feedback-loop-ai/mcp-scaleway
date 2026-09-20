@@ -315,26 +315,26 @@ describe("webhosting handlers", () => {
 	// ── Restore Hosting ──────────────────────────────────────────────────
 
 	describe("handleRestoreHosting", () => {
-		it("restores hosting by ID", async () => {
+		it("restores the explicitly selected hosting backup", async () => {
 			const { handleRestoreHosting } = await getHandlers();
 			mockFetch.mockResolvedValueOnce({ id: "h1", status: "delivering" });
 
-			const result = await handleRestoreHosting({ hosting_id: "h1" });
+			const result = await handleRestoreHosting({ backup_id: "backup1", hosting_id: "h1" });
 			const data = JSON.parse(result.content[0].text);
 			expect(data.status).toBe("delivering");
 
 			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("POST");
-			expect(call.path).toBe("/webhosting/v1/regions/fr-par/hostings/h1/restore");
+			expect(call.path).toBe("/webhosting/v1/regions/fr-par/hostings/h1/backups/backup1/restore");
 		});
 
 		it("uses custom region", async () => {
 			const { handleRestoreHosting } = await getHandlers();
 			mockFetch.mockResolvedValueOnce({});
 
-			await handleRestoreHosting({ hosting_id: "h1", region: "nl-ams" });
+			await handleRestoreHosting({ backup_id: "backup1", hosting_id: "h1", region: "nl-ams" });
 			expect(mockFetch.mock.calls[0][0].path).toBe(
-				"/webhosting/v1/regions/nl-ams/hostings/h1/restore",
+				"/webhosting/v1/regions/nl-ams/hostings/h1/backups/backup1/restore",
 			);
 		});
 
@@ -342,7 +342,10 @@ describe("webhosting handlers", () => {
 			const { handleRestoreHosting } = await getHandlers();
 			mockFetch.mockRejectedValueOnce(new Error("Server error"));
 
-			const result: AnyResult = await handleRestoreHosting({ hosting_id: "h1" });
+			const result: AnyResult = await handleRestoreHosting({
+				backup_id: "backup1",
+				hosting_id: "h1",
+			});
 			expect(result.isError).toBe(true);
 			const data = JSON.parse(result.content[0].text);
 			expect(data.error.type).toBe("server_error");
@@ -361,14 +364,14 @@ describe("webhosting handlers", () => {
 				status: "valid",
 			});
 
-			const result = await handleGetDnsRecords({ hosting_id: "h1" });
+			const result = await handleGetDnsRecords({ domain: "example.com" });
 			const data = JSON.parse(result.content[0].text);
 			expect(data.records).toHaveLength(1);
 			expect(data.records[0].type).toBe("A");
 
 			const call = mockFetch.mock.calls[0][0];
 			expect(call.method).toBe("GET");
-			expect(call.path).toBe("/webhosting/v1/regions/fr-par/hostings/h1/dns-records");
+			expect(call.path).toBe("/webhosting/v1/regions/fr-par/domains/example.com/dns-records");
 		});
 
 		it("returns error on failure", async () => {
@@ -377,7 +380,7 @@ describe("webhosting handlers", () => {
 			(err as unknown as { statusCode: number }).statusCode = 404;
 			mockFetch.mockRejectedValueOnce(err);
 
-			const result: AnyResult = await handleGetDnsRecords({ hosting_id: "nonexistent" });
+			const result: AnyResult = await handleGetDnsRecords({ domain: "missing.example" });
 			expect(result.isError).toBe(true);
 		});
 	});
@@ -409,8 +412,6 @@ describe("webhosting handlers", () => {
 				order_by: "price_asc",
 				hosting_id: "h1",
 				control_panels: ["cpanel", "plesk"],
-				without_options: true,
-				only_options: false,
 			});
 
 			const call = mockFetch.mock.calls[0][0];
@@ -419,8 +420,8 @@ describe("webhosting handlers", () => {
 			expect(params.get("order_by")).toBe("price_asc");
 			expect(params.get("hosting_id")).toBe("h1");
 			expect(params.getAll("control_panels")).toEqual(["cpanel", "plesk"]);
-			expect(params.get("without_options")).toBe("true");
-			expect(params.get("only_options")).toBe("false");
+			expect(params.has("without_options")).toBe(false);
+			expect(params.has("only_options")).toBe(false);
 		});
 
 		it("returns error on failure", async () => {

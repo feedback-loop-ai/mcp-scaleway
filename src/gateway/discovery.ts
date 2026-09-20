@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { operationAvailability } from "../shared/availability.js";
+import { operationExamples } from "../shared/examples.js";
+import { outputSchema } from "../shared/output.js";
 import { operationId } from "../shared/toolsets.js";
 import type { ApiError } from "../shared/types.js";
 import type { Operation, OperationRegistry } from "./registry.js";
@@ -138,7 +141,9 @@ export function searchOperations(registry: OperationRegistry, input: z.input<typ
 	return {
 		operations: found.slice(offset, offset + limit).map((op) => {
 			const required = op.inputSchema.required ?? [];
+			const availability = operationAvailability(op.tool);
 			return {
+				...(availability ? { availability } : {}),
 				op: op.op,
 				description: op.description.split("\n")[0].slice(0, 180),
 				readOnly: op.readOnly,
@@ -171,6 +176,9 @@ export function describeOperations(
 			readOnly,
 			description,
 			inputSchema,
+			examples: operationExamples(tool),
+			outputSchema,
+			...(operationAvailability(tool) ? { availability: operationAvailability(tool) } : {}),
 		})),
 	};
 }

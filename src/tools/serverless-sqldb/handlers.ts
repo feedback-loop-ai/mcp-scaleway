@@ -89,7 +89,7 @@ export async function handleCreateDatabase(input: CreateDatabaseInput) {
 			cpu_min: input.cpu_min,
 			cpu_max: input.cpu_max,
 		};
-		if (input.project_id) body.project_id = input.project_id;
+		body.project_id = input.project_id ?? loadAuthConfig().defaultProjectId;
 		if (input.from_backup_id) body.from_backup_id = input.from_backup_id;
 
 		const response = await client.fetch<Database>({

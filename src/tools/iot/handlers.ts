@@ -121,7 +121,7 @@ export async function handleCreateHub(params: CreateHubParams) {
 			name: params.name,
 			product_plan: params.productPlan ?? "plan_shared",
 		};
-		if (params.projectId) body.project_id = params.projectId;
+		body.project_id = params.projectId ?? loadAuthConfig().defaultProjectId;
 		if (params.disableEvents !== undefined) body.disable_events = params.disableEvents;
 		if (params.eventsTopicPrefix) body.events_topic_prefix = params.eventsTopicPrefix;
 		if (params.twinsGraphiteConfig) {
@@ -176,7 +176,7 @@ export async function handleEnableHub(params: EnableHubParams) {
 	try {
 		const region = getRegion(params);
 		const url = `${getIotApiUrl(region)}/hubs/${params.hubId}/enable`;
-		const data = await scalewayFetch("POST", url);
+		const data = await scalewayFetch("POST", url, {});
 		return successResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -187,7 +187,7 @@ export async function handleDisableHub(params: DisableHubParams) {
 	try {
 		const region = getRegion(params);
 		const url = `${getIotApiUrl(region)}/hubs/${params.hubId}/disable`;
-		const data = await scalewayFetch("POST", url);
+		const data = await scalewayFetch("POST", url, {});
 		return successResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -352,7 +352,7 @@ export async function handleEnableDevice(params: EnableDeviceParams) {
 	try {
 		const region = getRegion(params);
 		const url = `${getIotApiUrl(region)}/devices/${params.deviceId}/enable`;
-		const data = await scalewayFetch("POST", url);
+		const data = await scalewayFetch("POST", url, {});
 		return successResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -363,7 +363,7 @@ export async function handleDisableDevice(params: DisableDeviceParams) {
 	try {
 		const region = getRegion(params);
 		const url = `${getIotApiUrl(region)}/devices/${params.deviceId}/disable`;
-		const data = await scalewayFetch("POST", url);
+		const data = await scalewayFetch("POST", url, {});
 		return successResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -385,7 +385,7 @@ export async function handleRenewDeviceCertificate(params: RenewDeviceCertificat
 	try {
 		const region = getRegion(params);
 		const url = `${getIotApiUrl(region)}/devices/${params.deviceId}/renew-certificate`;
-		const data = await scalewayFetch("POST", url);
+		const data = await scalewayFetch("POST", url, {});
 		return successResponse(data);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));

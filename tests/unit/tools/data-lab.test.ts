@@ -43,7 +43,7 @@ const sampleCluster = {
 	notebook_url: "https://notebook.example",
 	notebook_master_url: null,
 	spark_version: "3.5.2",
-	total_storage: { type: "sbs", size: 107374182400 },
+	total_storage: { type: "sbs_5k", size: 107374182400 },
 	private_network_id: PN_ID,
 };
 
@@ -181,7 +181,7 @@ describe("data-lab handlers", () => {
 				description: "analytics",
 				tags: ["prod"],
 				hasNotebook: true,
-				totalStorage: { type: "sbs", size: 107374182400 },
+				totalStorage: { type: "sbs_5k", size: 107374182400 },
 				privateNetworkId: PN_ID,
 				projectId: PROJECT_ID,
 			});
@@ -197,7 +197,7 @@ describe("data-lab handlers", () => {
 					description: "analytics",
 					tags: ["prod"],
 					has_notebook: true,
-					total_storage: { type: "sbs", size: 107374182400 },
+					total_storage: { type: "sbs_5k", size: 107374182400 },
 					private_network_id: PN_ID,
 					project_id: PROJECT_ID,
 				}),

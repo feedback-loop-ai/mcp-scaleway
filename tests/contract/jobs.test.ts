@@ -80,6 +80,7 @@ describe("jobs contract: request shapes", () => {
 	it("CreateJobDefinition sends POST with required body fields", async () => {
 		mockFetch.mockResolvedValueOnce({ id: TEST_UUID });
 		await handleCreateJobDefinition({
+			local_storage_capacity: 1024,
 			name: "test",
 			cpu_limit: 1000,
 			memory_limit: 256,
@@ -196,6 +197,7 @@ describe("jobs contract: response shapes", () => {
 	it("CreateJobDefinition returns created object", async () => {
 		mockFetch.mockResolvedValueOnce({ id: TEST_UUID, name: "new-job" });
 		const result = await handleCreateJobDefinition({
+			local_storage_capacity: 1024,
 			name: "new-job",
 			cpu_limit: 1000,
 			memory_limit: 256,
@@ -271,6 +273,7 @@ describe("jobs contract: auth and error codes", () => {
 		const err = Object.assign(new Error("forbidden"), { statusCode: 403 });
 		mockFetch.mockRejectedValueOnce(err);
 		const result = await handleCreateJobDefinition({
+			local_storage_capacity: 1024,
 			name: "t",
 			cpu_limit: 1000,
 			memory_limit: 256,

@@ -129,7 +129,7 @@ export type ListDataSourcesInput = z.infer<typeof ListDataSourcesInput>;
 export const CreateDataSourceInput = z.object({
 	project_id: z.string().describe("Project ID"),
 	name: z.string().describe("Data source name"),
-	type: DataSourceType.optional().describe("Data source type"),
+	type: DataSourceType.describe("Data source type"),
 	region: ScalewayRegion.optional().describe("Region (e.g., fr-par)"),
 });
 export type CreateDataSourceInput = z.infer<typeof CreateDataSourceInput>;

@@ -104,3 +104,15 @@ unknown, queued, allocating, deploying, ready, deleting, error, locked
 
 ## Node Type Stock Status Enum
 unknown, available, low_stock, out_of_stock
+
+## Verification restrictions and EULA acceptance — 2026-09-19
+
+The standalone accept-EULA, deployment-events and endpoint-list operations remain
+identified but unavailable until their complete current wire contracts are verified.
+Dispatch returns local `unsupported_operation` (501) before HTTP; this does not
+assert that Scaleway retired them. See [the explicit support decision](../../064-remaining-remediation/contracts/unverified-operations.md).
+
+Deployment creation supports optional `accept_eula`, forwarded unchanged to the
+[current CreateDeployment contract](https://www.scaleway.com/en/developers/api/inference/v1/schema.yml).
+It is never set to true automatically. Read the license with `inference_get_eula`
+and set this flag explicitly when creating a deployment only if you accept it.

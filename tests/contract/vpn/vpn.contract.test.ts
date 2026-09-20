@@ -135,12 +135,12 @@ const validRoutingPolicy = {
 describe("contract: ListVpnGateways", () => {
 	it("validates response shape", () => {
 		expect(() =>
-			ListVpnGatewaysResponse.parse({ vpn_gateways: [validVpnGateway], total_count: 1 }),
+			ListVpnGatewaysResponse.parse({ gateways: [validVpnGateway], total_count: 1 }),
 		).not.toThrow();
 	});
 
 	it("validates empty response", () => {
-		expect(() => ListVpnGatewaysResponse.parse({ vpn_gateways: [], total_count: 0 })).not.toThrow();
+		expect(() => ListVpnGatewaysResponse.parse({ gateways: [], total_count: 0 })).not.toThrow();
 	});
 
 	it("rejects missing array", () => {
@@ -285,7 +285,7 @@ describe("contract: ListCustomerGateways", () => {
 	it("validates response shape", () => {
 		expect(() =>
 			ListCustomerGatewaysResponse.parse({
-				customer_gateways: [validCustomerGateway],
+				gateways: [validCustomerGateway],
 				total_count: 1,
 			}),
 		).not.toThrow();

@@ -1,0 +1,29 @@
+{
+	"source": {
+		"id": "s3",
+		"url": "https://raw.githubusercontent.com/scaleway/docs-content/main/pages/object-storage/api-cli/using-api-call-list.mdx",
+		"sha256": "3f528928dc5f12782793af9c83ae3921c7802c72fb36543bb3a331efdef91090",
+		"fetchedAt": "2026-09-19T21:04:24.957527+00:00",
+		"kind": "s3-protocol"
+	},
+	"document": {
+		"paths": {},
+		"protocolReferences": {
+			"ListBuckets": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBuckets.html",
+			"CreateBucket": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html",
+			"DeleteBucket": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucket.html",
+			"HeadBucket": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html",
+			"GetBucketVersioning": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketVersioning.html",
+			"PutBucketVersioning": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketVersioning.html",
+			"GetBucketPolicy": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketPolicy.html",
+			"PutBucketPolicy": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketPolicy.html",
+			"GetBucketLifecycleConfiguration": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketLifecycleConfiguration.html",
+			"PutBucketLifecycleConfiguration": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketLifecycleConfiguration.html",
+			"ListObjectsV2": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html",
+			"PutObject": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html",
+			"DeleteObject": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObject.html",
+			"HeadObject": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html"
+		}
+	},
+	"projectionNotes": "Scaleway publishes supported S3 operations; XML/headers/status contracts use the linked Amazon S3 protocol reference. Runtime validation is the dedicated s3-response.ts protocol adapter. Composite get_bucket_info inspects HEAD, versioning and a zero-key list; it cannot determine creation date, total size or object count."
+}

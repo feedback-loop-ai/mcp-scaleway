@@ -268,6 +268,8 @@ describe("rdb handlers", () => {
 			const handlers = await importHandlers();
 			mockFetch.mockResolvedValueOnce({ id: "inst-new", name: "mydb", status: "provisioning" });
 			const result = await handlers.handleCreateInstance({
+				user_name: "admin",
+				password: "Synthetic-password-42!",
 				name: "mydb",
 				engine: "PostgreSQL-15",
 				node_type: "db-dev-s",
@@ -275,6 +277,8 @@ describe("rdb handlers", () => {
 			expect(result.content[0].text).toContain('"inst-new"');
 			expectJsonRequest("POST", `${BASE}/instances`);
 			expect(lastBody()).toEqual({
+				user_name: "admin",
+				password: "Synthetic-password-42!",
 				project_id: "project-123",
 				name: "mydb",
 				engine: "PostgreSQL-15",
@@ -326,6 +330,8 @@ describe("rdb handlers", () => {
 			const handlers = await importHandlers();
 			mockFetch.mockRejectedValueOnce(scwError(400, "Bad Request"));
 			const result = await handlers.handleCreateInstance({
+				user_name: "admin",
+				password: "Synthetic-password-42!",
 				name: "bad",
 				engine: "invalid",
 				node_type: "bad",
@@ -800,12 +806,17 @@ describe("rdb handlers", () => {
 			const handlers = await importHandlers();
 			mockFetch.mockResolvedValueOnce({ id: "bak-new", name: "my-backup", status: "creating" });
 			const result = await handlers.handleCreateBackup({
+				database_name: "example",
 				instance_id: "inst-1",
 				name: "my-backup",
 			});
 			expect(result.content[0].text).toContain('"bak-new"');
 			expectJsonRequest("POST", `${BASE}/backups`);
-			expect(lastBody()).toEqual({ instance_id: "inst-1", name: "my-backup" });
+			expect(lastBody()).toEqual({
+				instance_id: "inst-1",
+				name: "my-backup",
+				database_name: "example",
+			});
 		});
 
 		it("creates backup with all options", async () => {
@@ -829,6 +840,7 @@ describe("rdb handlers", () => {
 			const handlers = await importHandlers();
 			mockFetch.mockRejectedValueOnce(scwError(400, "Bad Request"));
 			const result = await handlers.handleCreateBackup({
+				database_name: "example",
 				instance_id: "inst-1",
 				name: "bad",
 			});
@@ -888,11 +900,15 @@ describe("rdb handlers", () => {
 			expectBodylessRequest("GET", `${BASE}/instances/inst-1`);
 		});
 
-		it("lists endpoints when field is missing", async () => {
+		it("rejects a missing endpoints field", async () => {
 			const handlers = await importHandlers();
 			mockFetch.mockResolvedValueOnce({});
 			const result = await handlers.handleListEndpoints({ instance_id: "inst-1" });
-			expect(result.content[0].text).toContain('"endpoints": []');
+			expect(result).toMatchObject({ isError: true });
+			expect(JSON.parse(result.content[0].text).error).toMatchObject({
+				statusCode: 502,
+				message: "Invalid upstream response (invalid_schema)",
+			});
 		});
 
 		it("handles list endpoints error", async () => {
@@ -1233,7 +1249,7 @@ describe("rdb handlers", () => {
 				total_count: 1,
 			});
 			expectBodylessRequest("GET", `${BASE}/node-types`);
-			expect(lastQuery().toString()).toBe("");
+			expect(lastQuery().get("include_disabled_types")).toBe("false");
 		});
 
 		it("lists node types including disabled", async () => {

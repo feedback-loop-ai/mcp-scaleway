@@ -48,7 +48,13 @@ Offset-based via `page` (1-indexed) and `page_size`. List responses return
 
 ## Endpoints
 
-### Cockpit (regional)
+### Cockpit (regional, legacy and unverified)
+
+These three paths have no verified current upstream contract. Their IDs remain
+exposed for compatibility, but dispatch returns a local `unsupported_operation`
+(501) before HTTP. This temporary support restriction does not establish provider
+retirement. They are not counted as validated wire operations. See [the endpoint evidence](../../064-remaining-remediation/endpoints.md).
+
 | Tool | Method/Path |
 |------|-------------|
 | `scaleway_cockpit_get_cockpit` | `GET /cockpit/v1/regions/{region}/cockpit?project_id=` |
@@ -102,7 +108,7 @@ Offset-based via `page` (1-indexed) and `page_size`. List responses return
 |------|-------------|
 | `scaleway_cockpit_list_contact_points` | `GET /cockpit/v1/regions/{region}/alert-manager/contact-points` |
 | `scaleway_cockpit_create_contact_point` | `POST /cockpit/v1/regions/{region}/alert-manager/contact-points` |
-| `scaleway_cockpit_delete_contact_point` | `DELETE /cockpit/v1/regions/{region}/alert-manager/contact-points` |
+| `scaleway_cockpit_delete_contact_point` | `POST /cockpit/v1/regions/{region}/alert-manager/contact-points/delete` |
 
 - Create/delete body: `{ project_id, email: { to: <email> } }`
 - List response: `{ contact_points: ContactPoint[], total_count }`
@@ -110,11 +116,11 @@ Offset-based via `page` (1-indexed) and `page_size`. List responses return
 ### Managed Alerts (regional)
 | Tool | Method/Path |
 |------|-------------|
-| `scaleway_cockpit_list_managed_alerts_contact_points` | `GET /cockpit/v1/regions/{region}/alert-manager/managed-alerts-contact-points` |
+| `scaleway_cockpit_list_managed_alerts_contact_points` | `GET /cockpit/v1/regions/{region}/alert-manager/contact-points` (compatibility alias) |
 | `scaleway_cockpit_enable_managed_alerts` | `POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/enable` — **deprecated upstream** |
 | `scaleway_cockpit_disable_managed_alerts` | `POST /cockpit/v1/regions/{region}/alert-manager/managed-alerts/disable` — **deprecated upstream** |
 
-> **Deprecation:** `EnableManagedAlerts` and `DisableManagedAlerts` are flagged `deprecated: true` in the official Cockpit Regional v1 OpenAPI schema; the replacement is the per-rule `POST /cockpit/v1/regions/{region}/alert-manager/enable-alert-rules` / `disable-alert-rules` pair (not exposed as tools). The two tools are kept for compatibility, carry " (deprecated upstream)" in their MCP descriptions, and are marked `deprecated_upstream: true` in `tests/parity-matrix.json`. `list_managed_alerts_contact_points` is not deprecated.
+> **Deprecation:** `EnableManagedAlerts` and `DisableManagedAlerts` are flagged `deprecated: true` in the official Cockpit Regional v1 OpenAPI schema; the replacement is the per-rule `POST /cockpit/v1/regions/{region}/alert-manager/enable-alert-rules` / `disable-alert-rules` pair (not exposed as tools). The two tools are kept for compatibility, carry " (deprecated upstream)" in their MCP descriptions, and are marked `deprecated_upstream: true` in `tests/parity-matrix.json`. `list_managed_alerts_contact_points` is a compatibility alias for `list_contact_points`; it returns default-receiver contacts, not a separate namespace.
 
 ## Implementation Notes / Verification / Deviations
 

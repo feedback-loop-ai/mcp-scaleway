@@ -57,7 +57,7 @@ export function registerObjectStorageTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_object_storage_get_bucket_info",
-		"Get detailed information about a bucket including versioning and object count",
+		"Inspect bucket existence and versioning; creation date, total object count and size are reported as unknown",
 		GetBucketInfoInput.shape,
 		async (params) => handleGetBucketInfo(params),
 	);

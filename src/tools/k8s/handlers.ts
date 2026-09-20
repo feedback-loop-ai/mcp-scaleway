@@ -109,7 +109,7 @@ export async function handleDeleteCluster(input: DeleteClusterInput) {
 		const response = await client.fetch<unknown>({
 			method: "DELETE",
 			path: buildPath(region, `/clusters/${cluster_id}`),
-			urlParams: buildParams({ with_additional_resources }),
+			urlParams: buildParams({ with_additional_resources: with_additional_resources ?? false }),
 		});
 		return formatSuccess(response);
 	} catch (error) {
@@ -171,7 +171,7 @@ export async function handleListPools(input: ListPoolsInput) {
 		const pagination = paginationToQuery(page, pageSize);
 
 		const response = (await client.fetch<{
-			nodes: unknown[];
+			pools: unknown[];
 			total_count: number;
 		}>({
 			method: "GET",
@@ -181,9 +181,9 @@ export async function handleListPools(input: ListPoolsInput) {
 				name: filters.name,
 				status: filters.status,
 			}),
-		})) as { nodes: unknown[]; total_count: number };
+		})) as { pools: unknown[]; total_count: number };
 
-		const result = buildPaginatedResponse(response.nodes, response.total_count, page, pageSize);
+		const result = buildPaginatedResponse(response.pools, response.total_count, page, pageSize);
 		return formatSuccess(result);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));

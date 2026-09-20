@@ -187,7 +187,7 @@ export const RestoreSnapshotParams = z.object({
 	instance_name: z.string().min(1).describe("Name for the restored instance"),
 	node_type: z.string().min(1).describe("Node type for restored instance"),
 	node_amount: z.number().int().min(1).describe("Number of nodes for restored instance"),
-	volume_type: VolumeType.optional().describe("Volume type for the restored instance"),
+	volume_type: VolumeType.describe("Volume type for the restored instance"),
 });
 export type RestoreSnapshotParams = z.infer<typeof RestoreSnapshotParams>;
 

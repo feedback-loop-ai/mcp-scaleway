@@ -1,16 +1,21 @@
 /**
- * POST /{region}/v1/chat/completions, through the gateway and real route guard.
+ * POST /{project_id}/v1/chat/completions, through the gateway and real route guard.
  * Spec: specs/scaleway-api/generative-apis/api-reference.md
  * Upstream: https://www.scaleway.com/en/docs/generative-apis/api-cli/using-chat-api/
  * All HTTP is intercepted; requesting a function never executes a cloud operation.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import chatCompatibility from "../../../../scripts/contract-overrides/generative-chat-compat.json";
 import { executeOperation } from "../../../../src/gateway/index.js";
 import { type OperationExtra, createOperationRegistry } from "../../../../src/gateway/registry.js";
+import { validateSchema } from "../../../../src/shared/response-validation.js";
 import { ChatCompletionResponseSchema } from "../../../../src/tools/generative-apis/types.js";
 
 vi.mock("../../../../src/shared/auth.js", () => ({
-	loadAuthConfig: () => ({ secretKey: "test-scaleway-key" }),
+	loadAuthConfig: () => ({
+		secretKey: "test-scaleway-key",
+		defaultProjectId: "11111111-1111-4111-8111-111111111111",
+	}),
 }));
 
 const registry = createOperationRegistry();
@@ -76,13 +81,15 @@ describe("Generative APIs function calling contract", () => {
 			tool_choice: "required",
 			parallel_tool_calls: false,
 		});
-		expect(first.isError).toBeUndefined();
+		expect(first.isError, JSON.stringify(first)).toBeUndefined();
 		const text = first.content[0];
 		if (text.type !== "text") throw new Error("Expected JSON content");
 		expect(ChatCompletionResponseSchema.parse(JSON.parse(text.text))).toEqual(response);
 		expect(http).toHaveBeenCalledTimes(1);
 		const [url, request] = http.mock.calls[0];
-		expect(url).toBe("https://api.scaleway.ai/fr-par/v1/chat/completions");
+		expect(url).toBe(
+			"https://api.scaleway.ai/11111111-1111-4111-8111-111111111111/v1/chat/completions",
+		);
 		expect(request.headers.Authorization).toBe("Bearer test-scaleway-key");
 		expect(JSON.parse(request.body)).toMatchObject({
 			tools: [tool],
@@ -103,7 +110,54 @@ describe("Generative APIs function calling contract", () => {
 		});
 		expect(second.isError).toBeUndefined();
 		expect(JSON.parse(http.mock.calls[1][1].body).messages).toEqual([user, assistant, toolResult]);
+		validateSchema(
+			"generative-apis-compat",
+			chatCompatibility.document.paths["/{project_id}/v1/chat/completions"].post.requestBody
+				.content["application/json"].schema,
+			JSON.parse(http.mock.calls[1][1].body),
+		);
 		expect(http).toHaveBeenCalledTimes(2);
+	});
+
+	it.each([null, undefined])(
+		"accepts assistant content %s only with a valid function call",
+		async (content) => {
+			const assistant = {
+				role: "assistant",
+				content,
+				tool_calls: [
+					{ id: "call_1", type: "function", function: { name: "list_servers", arguments: "{}" } },
+				],
+			};
+			const response = completion(assistant, "tool_calls");
+			http.mockResolvedValueOnce(Response.json(response));
+			const result = await call({ model, messages: [user] });
+			expect(result.isError).toBeUndefined();
+			const text = result.content[0];
+			if (text.type !== "text") throw new Error("Expected JSON content");
+			expect(JSON.parse(text.text)).toEqual(JSON.parse(JSON.stringify(response)));
+		},
+	);
+
+	it.each([
+		{ role: "assistant", content: null },
+		{ role: "assistant" },
+		{ role: "assistant", content: null, tool_calls: [] },
+		{ role: "assistant", content: null, tool_calls: [{}] },
+		{
+			role: "assistant",
+			content: null,
+			tool_calls: [
+				{ id: "call", type: "function", function: { name: "list_servers", arguments: {} } },
+			],
+		},
+	])("rejects null or missing assistant content without valid calls", async (message) => {
+		http.mockResolvedValueOnce(Response.json(completion(message, "tool_calls")));
+		const result = await call({ model, messages: [user] });
+		expect(result.isError).toBe(true);
+		const text = result.content[0];
+		if (text.type !== "text") throw new Error("Expected JSON content");
+		expect(JSON.parse(text.text)).toMatchObject({ error: { statusCode: 502 } });
 	});
 
 	it("preserves a named tool choice and assistant tool calls without content", async () => {

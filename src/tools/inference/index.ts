@@ -73,7 +73,7 @@ export function registerInferenceTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_inference_list_deployment_events",
-		"List events for an inference deployment",
+		"Unavailable: no verified current wire contract; returns a local unsupported_operation error. List events for an inference deployment",
 		ListDeploymentEventsInput.shape,
 		handleListDeploymentEvents,
 	);
@@ -81,7 +81,7 @@ export function registerInferenceTools(server: McpServer): void {
 	// --- Endpoints ---
 	server.tool(
 		"scaleway_inference_list_endpoints",
-		"List inference endpoints, optionally filtered by deployment",
+		"Unavailable: no verified current wire contract; returns a local unsupported_operation error. List inference endpoints, optionally filtered by deployment",
 		ListEndpointsInput.shape,
 		handleListEndpoints,
 	);
@@ -140,7 +140,7 @@ export function registerInferenceTools(server: McpServer): void {
 
 	server.tool(
 		"scaleway_inference_accept_eula",
-		"Accept the EULA for an inference model",
+		"Unavailable: no verified current wire contract; returns a local unsupported_operation error. Accept the EULA for an inference model",
 		AcceptEulaInput.shape,
 		handleAcceptEula,
 	);

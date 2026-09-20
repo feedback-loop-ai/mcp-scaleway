@@ -104,7 +104,7 @@ describe("vpn handlers", () => {
 	describe("handleListVpnGateways", () => {
 		it("returns paginated list with filters", async () => {
 			const { handleListVpnGateways } = await import("../../../src/tools/vpn/handlers.js");
-			mockFetch.mockResolvedValue({ vpn_gateways: [{ id: ID }], total_count: 1 });
+			mockFetch.mockResolvedValue({ gateways: [{ id: ID }], total_count: 1 });
 
 			const result = await handleListVpnGateways({
 				region: REGION,
@@ -205,6 +205,7 @@ describe("vpn handlers", () => {
 			});
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(JSON.parse(callArgs.body)).toEqual({
+				project_id: PROJECT,
 				name: "gw",
 				gateway_type: "VGW-S",
 				private_network_id: ID,
@@ -302,7 +303,7 @@ describe("vpn handlers", () => {
 	describe("handleListCustomerGateways", () => {
 		it("returns paginated list with filters", async () => {
 			const { handleListCustomerGateways } = await import("../../../src/tools/vpn/handlers.js");
-			mockFetch.mockResolvedValue({ customer_gateways: [{ id: ID }], total_count: 1 });
+			mockFetch.mockResolvedValue({ gateways: [{ id: ID }], total_count: 1 });
 			const result = await handleListCustomerGateways({
 				region: REGION,
 				page: 1,
@@ -380,7 +381,11 @@ describe("vpn handlers", () => {
 			const { handleCreateCustomerGateway } = await import("../../../src/tools/vpn/handlers.js");
 			mockFetch.mockResolvedValue({ id: ID });
 			await handleCreateCustomerGateway({ region: REGION, name: "cg", asn: 65000 });
-			expect(JSON.parse(mockFetch.mock.calls[0][0].body)).toEqual({ name: "cg", asn: 65000 });
+			expect(JSON.parse(mockFetch.mock.calls[0][0].body)).toEqual({
+				name: "cg",
+				asn: 65000,
+				project_id: PROJECT,
+			});
 		});
 
 		it("returns error on failure", async () => {
@@ -565,6 +570,7 @@ describe("vpn handlers", () => {
 				customerGatewayId: ID,
 			});
 			expect(JSON.parse(mockFetch.mock.calls[0][0].body)).toEqual({
+				project_id: PROJECT,
 				name: "conn",
 				initiation_policy: "customer_gateway",
 				ikev2_ciphers: [cipher],
@@ -843,7 +849,7 @@ describe("vpn handlers", () => {
 			});
 			const callArgs = mockFetch.mock.calls[0][0];
 			expect(callArgs.path).toBe("/s2s-vpn/v1alpha1/regions/fr-par/routing-policies");
-			expect(callArgs.urlParams.get("is_ipv6")).toBe("false");
+			expect(callArgs.urlParams.get("ipv6")).toBe("false");
 			expect(JSON.parse(result.content[0].text).totalCount).toBe(1);
 		});
 
@@ -916,6 +922,7 @@ describe("vpn handlers", () => {
 				prefixFilterOut: [],
 			});
 			expect(JSON.parse(mockFetch.mock.calls[0][0].body)).toEqual({
+				project_id: PROJECT,
 				name: "rp",
 				is_ipv6: true,
 				prefix_filter_in: [],

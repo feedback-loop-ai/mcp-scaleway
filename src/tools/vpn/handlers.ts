@@ -52,7 +52,7 @@ export async function handleListVpnGateways(params: ListVpnGatewaysParams) {
 	try {
 		const client = getClient();
 		const response = await client.fetch<{
-			vpn_gateways: unknown[];
+			gateways: unknown[];
 			total_count: number;
 		}>({
 			method: "GET",
@@ -66,12 +66,7 @@ export async function handleListVpnGateways(params: ListVpnGatewaysParams) {
 			),
 		});
 		return jsonResponse(
-			buildPaginatedResponse(
-				response.vpn_gateways,
-				response.total_count,
-				params.page,
-				params.pageSize,
-			),
+			buildPaginatedResponse(response.gateways, response.total_count, params.page, params.pageSize),
 		);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -99,9 +94,7 @@ export async function handleCreateVpnGateway(params: CreateVpnGatewayParams) {
 			gateway_type: params.gatewayType,
 			private_network_id: params.privateNetworkId,
 		};
-		if (params.projectId) {
-			body.project_id = params.projectId;
-		}
+		body.project_id = params.projectId ?? loadAuthConfig().defaultProjectId;
 		if (params.tags) {
 			body.tags = params.tags;
 		}
@@ -191,7 +184,7 @@ export async function handleListCustomerGateways(params: ListCustomerGatewaysPar
 	try {
 		const client = getClient();
 		const response = await client.fetch<{
-			customer_gateways: unknown[];
+			gateways: unknown[];
 			total_count: number;
 		}>({
 			method: "GET",
@@ -205,12 +198,7 @@ export async function handleListCustomerGateways(params: ListCustomerGatewaysPar
 			),
 		});
 		return jsonResponse(
-			buildPaginatedResponse(
-				response.customer_gateways,
-				response.total_count,
-				params.page,
-				params.pageSize,
-			),
+			buildPaginatedResponse(response.gateways, response.total_count, params.page, params.pageSize),
 		);
 	} catch (error) {
 		return formatErrorResponse(mapScalewayError(error));
@@ -237,9 +225,7 @@ export async function handleCreateCustomerGateway(params: CreateCustomerGatewayP
 			name: params.name,
 			asn: params.asn,
 		};
-		if (params.projectId) {
-			body.project_id = params.projectId;
-		}
+		body.project_id = params.projectId ?? loadAuthConfig().defaultProjectId;
 		if (params.tags) {
 			body.tags = params.tags;
 		}
@@ -364,9 +350,7 @@ export async function handleCreateConnection(params: CreateConnectionParams) {
 			vpn_gateway_id: params.vpnGatewayId,
 			customer_gateway_id: params.customerGatewayId,
 		};
-		if (params.projectId) {
-			body.project_id = params.projectId;
-		}
+		body.project_id = params.projectId ?? loadAuthConfig().defaultProjectId;
 		if (params.tags) {
 			body.tags = params.tags;
 		}
@@ -555,7 +539,7 @@ export async function handleListRoutingPolicies(params: ListRoutingPoliciesParam
 				["page_size", params.pageSize],
 				["project_id", params.projectId],
 				["name", params.name],
-				["is_ipv6", params.isIpv6],
+				["ipv6", params.isIpv6],
 			),
 		});
 		return jsonResponse(
@@ -593,9 +577,7 @@ export async function handleCreateRoutingPolicy(params: CreateRoutingPolicyParam
 			prefix_filter_in: params.prefixFilterIn,
 			prefix_filter_out: params.prefixFilterOut,
 		};
-		if (params.projectId) {
-			body.project_id = params.projectId;
-		}
+		body.project_id = params.projectId ?? loadAuthConfig().defaultProjectId;
 		if (params.tags) {
 			body.tags = params.tags;
 		}

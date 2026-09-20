@@ -515,17 +515,19 @@ describe("iam handlers", () => {
 
 	// The Scaleway IAM API has no per-rule endpoints; create/update/delete are
 	// implemented as read (GET /rules?policy_id=) + full-set replace (PUT /rules).
-	// Existing rules exercise every toRuleSpec branch: project-scoped, org-scoped,
-	// unscoped, and a rule with null permission_set_names.
+	// Existing rules are complete and exercise project, organization and explicit null scopes.
 	const existingRules = [
-		{ id: "r1", permission_set_names: ["ReadOnly"], project_ids: ["proj-1"] },
+		{ id: "r1", permission_set_names: ["ReadOnly"], condition: "", project_ids: ["proj-1"] },
 		{ id: "r2", permission_set_names: null, condition: "cond", organization_id: "org-1" },
-		{ id: "r3", permission_set_names: ["Other"] },
+		{ id: "r3", permission_set_names: ["Other"], condition: "", project_ids: null },
 	];
 
 	describe("handleCreateRule", () => {
 		it("appends a rule and PUTs the full set", async () => {
-			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			mockClient.fetch.mockResolvedValueOnce({
+				rules: existingRules,
+				total_count: existingRules.length,
+			});
 			mockClient.fetch.mockResolvedValueOnce({ rules: [...existingRules, { id: "rule-new" }] });
 			const result = await handlersModule.handleCreateRule(mockClient as never, {
 				policy_id: "pol-1",
@@ -554,7 +556,7 @@ describe("iam handlers", () => {
 		});
 
 		it("appends a minimal rule with defaults when no scope/condition given", async () => {
-			mockClient.fetch.mockResolvedValueOnce({});
+			mockClient.fetch.mockResolvedValueOnce({ rules: [], total_count: 0 });
 			mockClient.fetch.mockResolvedValueOnce({ rules: [{ id: "rule-min" }] });
 			const result = await handlersModule.handleCreateRule(mockClient as never, {
 				policy_id: "pol-1",
@@ -578,8 +580,14 @@ describe("iam handlers", () => {
 
 	describe("handleUpdateRule", () => {
 		it("replaces the matching rule and PUTs the full set", async () => {
-			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
-			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			mockClient.fetch.mockResolvedValueOnce({
+				rules: existingRules,
+				total_count: existingRules.length,
+			});
+			mockClient.fetch.mockResolvedValueOnce({
+				rules: existingRules,
+				total_count: existingRules.length,
+			});
 			const result = await handlersModule.handleUpdateRule(mockClient as never, {
 				policy_id: "pol-1",
 				rule_id: "r1",
@@ -599,8 +607,14 @@ describe("iam handlers", () => {
 		});
 
 		it("switches a rule to project scope and clears organization_id", async () => {
-			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
-			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			mockClient.fetch.mockResolvedValueOnce({
+				rules: existingRules,
+				total_count: existingRules.length,
+			});
+			mockClient.fetch.mockResolvedValueOnce({
+				rules: existingRules,
+				total_count: existingRules.length,
+			});
 			await handlersModule.handleUpdateRule(mockClient as never, {
 				policy_id: "pol-1",
 				rule_id: "r2",
@@ -612,7 +626,10 @@ describe("iam handlers", () => {
 		});
 
 		it("returns error when the rule is not found", async () => {
-			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			mockClient.fetch.mockResolvedValueOnce({
+				rules: existingRules,
+				total_count: existingRules.length,
+			});
 			const result = await handlersModule.handleUpdateRule(mockClient as never, {
 				policy_id: "pol-1",
 				rule_id: "missing",
@@ -633,7 +650,10 @@ describe("iam handlers", () => {
 
 	describe("handleDeleteRule", () => {
 		it("removes the rule and PUTs the remaining set", async () => {
-			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			mockClient.fetch.mockResolvedValueOnce({
+				rules: existingRules,
+				total_count: existingRules.length,
+			});
 			mockClient.fetch.mockResolvedValueOnce({ rules: [] });
 			const result = await handlersModule.handleDeleteRule(mockClient as never, {
 				policy_id: "pol-1",
@@ -646,7 +666,10 @@ describe("iam handlers", () => {
 		});
 
 		it("returns error when the rule is not found", async () => {
-			mockClient.fetch.mockResolvedValueOnce({ rules: existingRules });
+			mockClient.fetch.mockResolvedValueOnce({
+				rules: existingRules,
+				total_count: existingRules.length,
+			});
 			const result = await handlersModule.handleDeleteRule(mockClient as never, {
 				policy_id: "pol-1",
 				rule_id: "missing",

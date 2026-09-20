@@ -53,7 +53,7 @@ export const ListVpnGatewaysParams = PaginationParams.extend({
 export type ListVpnGatewaysParams = z.infer<typeof ListVpnGatewaysParams>;
 
 export const ListVpnGatewaysResponse = z.object({
-	vpn_gateways: z.array(VpnGateway),
+	gateways: z.array(VpnGateway),
 	total_count: z.number().int().nonnegative(),
 });
 export type ListVpnGatewaysResponse = z.infer<typeof ListVpnGatewaysResponse>;
@@ -151,7 +151,7 @@ export const ListCustomerGatewaysParams = PaginationParams.extend({
 export type ListCustomerGatewaysParams = z.infer<typeof ListCustomerGatewaysParams>;
 
 export const ListCustomerGatewaysResponse = z.object({
-	customer_gateways: z.array(CustomerGateway),
+	gateways: z.array(CustomerGateway),
 	total_count: z.number().int().nonnegative(),
 });
 export type ListCustomerGatewaysResponse = z.infer<typeof ListCustomerGatewaysResponse>;

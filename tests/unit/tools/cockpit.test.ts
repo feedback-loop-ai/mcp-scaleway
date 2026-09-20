@@ -273,10 +273,9 @@ describe("cockpit module", () => {
 		});
 
 		it("validates CreateDataSourceInput", () => {
-			expect(CreateDataSourceInput.parse({ project_id: "proj-123", name: "my-ds" })).toEqual({
-				project_id: "proj-123",
-				name: "my-ds",
-			});
+			expect(() =>
+				CreateDataSourceInput.parse({ project_id: "proj-123", name: "my-ds" }),
+			).toThrow();
 		});
 
 		it("validates CreateDataSourceInput with type", () => {
@@ -593,8 +592,8 @@ describe("cockpit module", () => {
 					pageSize: 50,
 				});
 				const parsed = JSON.parse(result.content[0].text);
-				expect(parsed.items).toEqual([]);
-				expect(parsed.totalCount).toBe(0);
+				expect(result).toMatchObject({ isError: true });
+				expect(parsed.error.statusCode).toBe(502);
 			});
 
 			it("returns error on failure", async () => {
@@ -613,6 +612,7 @@ describe("cockpit module", () => {
 				mockFetch.mockResolvedValueOnce({ id: "ds-new", name: "my-ds" });
 
 				const result = await handleCreateDataSource({
+					type: "metrics",
 					project_id: "proj-123",
 					name: "my-ds",
 				});
@@ -631,20 +631,22 @@ describe("cockpit module", () => {
 				expect(body.type).toBe("metrics");
 			});
 
-			it("omits type when not provided", async () => {
+			it("sends the explicitly selected data source type", async () => {
 				mockFetch.mockResolvedValueOnce({ id: "ds-new" });
 
 				await handleCreateDataSource({
+					type: "metrics",
 					project_id: "proj-123",
 					name: "my-ds",
 				});
 				const body = JSON.parse(mockFetch.mock.calls[0][0].body);
-				expect(body.type).toBeUndefined();
+				expect(body.type).toBe("metrics");
 			});
 
 			it("returns error on failure", async () => {
 				mockFetch.mockRejectedValueOnce(new Error("fail"));
 				const result = await handleCreateDataSource({
+					type: "metrics",
 					project_id: "proj-123",
 					name: "my-ds",
 				});
@@ -720,7 +722,8 @@ describe("cockpit module", () => {
 					pageSize: 50,
 				});
 				const parsed = JSON.parse(result.content[0].text);
-				expect(parsed.items).toEqual([]);
+				expect(result).toMatchObject({ isError: true });
+				expect(parsed.error.statusCode).toBe(502);
 			});
 
 			it("returns error on failure", async () => {
@@ -843,7 +846,8 @@ describe("cockpit module", () => {
 					pageSize: 50,
 				});
 				const parsed = JSON.parse(result.content[0].text);
-				expect(parsed.items).toEqual([]);
+				expect(result).toMatchObject({ isError: true });
+				expect(parsed.error.statusCode).toBe(502);
 			});
 
 			it("returns error on failure", async () => {
@@ -1060,7 +1064,8 @@ describe("cockpit module", () => {
 					pageSize: 50,
 				});
 				const parsed = JSON.parse(result.content[0].text);
-				expect(parsed.items).toEqual([]);
+				expect(result).toMatchObject({ isError: true });
+				expect(parsed.error.statusCode).toBe(502);
 			});
 
 			it("returns error on failure", async () => {
@@ -1129,7 +1134,7 @@ describe("cockpit module", () => {
 				});
 				expect(mockFetch).toHaveBeenCalledWith(
 					expect.objectContaining({
-						path: "/cockpit/v1/regions/pl-waw/alert-manager/contact-points",
+						path: "/cockpit/v1/regions/pl-waw/alert-manager/contact-points/delete",
 					}),
 				);
 			});
@@ -1146,7 +1151,7 @@ describe("cockpit module", () => {
 
 		// --- Managed Alerts ---
 		describe("handleListManagedAlertsContactPoints", () => {
-			it("returns managed alerts contact points", async () => {
+			it("uses the published default-receiver contact points route", async () => {
 				mockFetch.mockResolvedValueOnce({
 					contact_points: [{ email: "test@example.com" }],
 					total_count: 1,
@@ -1159,6 +1164,13 @@ describe("cockpit module", () => {
 				});
 				const parsed = JSON.parse(result.content[0].text);
 				expect(parsed.items).toHaveLength(1);
+				expect(mockFetch).toHaveBeenCalledWith(
+					expect.objectContaining({
+						method: "GET",
+						path: "/cockpit/v1/regions/fr-par/alert-manager/contact-points",
+					}),
+				);
+				expect(mockFetch.mock.calls[0][0].urlParams.get("project_id")).toBe("proj-123");
 			});
 
 			it("handles empty response", async () => {
@@ -1169,7 +1181,8 @@ describe("cockpit module", () => {
 					pageSize: 50,
 				});
 				const parsed = JSON.parse(result.content[0].text);
-				expect(parsed.items).toEqual([]);
+				expect(result).toMatchObject({ isError: true });
+				expect(parsed.error.statusCode).toBe(502);
 			});
 
 			it("returns error on failure", async () => {

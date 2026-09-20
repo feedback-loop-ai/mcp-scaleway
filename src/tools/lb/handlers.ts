@@ -2,6 +2,7 @@ import type { Client } from "@scaleway/sdk-client";
 import { loadAuthConfig } from "../../shared/auth.js";
 import { createScalewayClient } from "../../shared/client.js";
 import { formatErrorResponse, mapScalewayError } from "../../shared/errors.js";
+import { normalizeLbTimeouts } from "../../shared/milliseconds.js";
 import { paginationToQuery } from "../../shared/pagination.js";
 
 function getClient(): Client {
@@ -101,7 +102,7 @@ export async function handleCreateLb(args: {
 		const result = await client.fetch({
 			method: "POST",
 			path: `/lb/v1/zones/${zone}/lbs`,
-			body: JSON.stringify(body),
+			body: JSON.stringify(normalizeLbTimeouts(body)),
 			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse(result);
@@ -125,7 +126,7 @@ export async function handleUpdateLb(args: {
 		const result = await client.fetch({
 			method: "PUT",
 			path: `/lb/v1/zones/${zone}/lbs/${lb_id}`,
-			body: JSON.stringify(body),
+			body: JSON.stringify(normalizeLbTimeouts(body)),
 			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse(result);
@@ -142,7 +143,7 @@ export async function handleDeleteLb(args: {
 	try {
 		const client = getClient();
 		const zone = resolveZone(args.zone);
-		const urlParams = buildUrlParams({ release_ip: args.release_ip });
+		const urlParams = buildUrlParams({ release_ip: args.release_ip ?? false });
 		await client.fetch({
 			method: "DELETE",
 			path: `/lb/v1/zones/${zone}/lbs/${args.lb_id}`,
@@ -224,7 +225,7 @@ export async function handleCreateFrontend(args: {
 	name: string;
 	inbound_port: number;
 	backend_id: string;
-	timeout_client?: string;
+	timeout_client?: string | number;
 	certificate_id?: string;
 	certificate_ids?: string[];
 	enable_http3?: boolean;
@@ -236,7 +237,7 @@ export async function handleCreateFrontend(args: {
 		const result = await client.fetch({
 			method: "POST",
 			path: `/lb/v1/zones/${zone}/lbs/${lb_id}/frontends`,
-			body: JSON.stringify(body),
+			body: JSON.stringify(normalizeLbTimeouts(body)),
 			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse(result);
@@ -251,7 +252,7 @@ export async function handleUpdateFrontend(args: {
 	name: string;
 	inbound_port: number;
 	backend_id: string;
-	timeout_client?: string;
+	timeout_client?: string | number;
 	certificate_id?: string;
 	certificate_ids?: string[];
 	enable_http3?: boolean;
@@ -263,7 +264,7 @@ export async function handleUpdateFrontend(args: {
 		const result = await client.fetch({
 			method: "PUT",
 			path: `/lb/v1/zones/${zone}/frontends/${frontend_id}`,
-			body: JSON.stringify(body),
+			body: JSON.stringify(normalizeLbTimeouts(body)),
 			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse(result);
@@ -341,8 +342,8 @@ export async function handleCreateBackend(args: {
 	sticky_sessions_cookie_name?: string;
 	health_check?: {
 		port: number;
-		check_delay?: string;
-		check_timeout?: string;
+		check_delay?: string | number;
+		check_timeout?: string | number;
 		check_max_retries?: number;
 		tcp_config?: Record<string, never>;
 		http_config?: {
@@ -360,9 +361,9 @@ export async function handleCreateBackend(args: {
 		};
 	};
 	server_ip?: string[];
-	timeout_server?: string;
-	timeout_connect?: string;
-	timeout_tunnel?: string;
+	timeout_server?: string | number;
+	timeout_connect?: string | number;
+	timeout_tunnel?: string | number;
 	on_marked_down_action?: string;
 	proxy_protocol?: string;
 	failover_host?: string;
@@ -377,10 +378,13 @@ export async function handleCreateBackend(args: {
 		const client = getClient();
 		const zone = resolveZone(args.zone);
 		const { zone: _zone, lb_id, ...body } = args;
+		body.forward_port_algorithm ??= "roundrobin";
+		body.sticky_sessions ??= "none";
+		body.server_ip ??= [];
 		const result = await client.fetch({
 			method: "POST",
 			path: `/lb/v1/zones/${zone}/lbs/${lb_id}/backends`,
-			body: JSON.stringify(body),
+			body: JSON.stringify(normalizeLbTimeouts(body)),
 			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse(result);
@@ -398,9 +402,9 @@ export async function handleUpdateBackend(args: {
 	forward_port_algorithm?: string;
 	sticky_sessions?: string;
 	sticky_sessions_cookie_name?: string;
-	timeout_server?: string;
-	timeout_connect?: string;
-	timeout_tunnel?: string;
+	timeout_server?: string | number;
+	timeout_connect?: string | number;
+	timeout_tunnel?: string | number;
 	on_marked_down_action?: string;
 	proxy_protocol?: string;
 	failover_host?: string;
@@ -415,10 +419,12 @@ export async function handleUpdateBackend(args: {
 		const client = getClient();
 		const zone = resolveZone(args.zone);
 		const { zone: _zone, backend_id, ...body } = args;
+		body.forward_port_algorithm ??= "roundrobin";
+		body.sticky_sessions ??= "none";
 		const result = await client.fetch({
 			method: "PUT",
 			path: `/lb/v1/zones/${zone}/backends/${backend_id}`,
-			body: JSON.stringify(body),
+			body: JSON.stringify(normalizeLbTimeouts(body)),
 			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse(result);
@@ -558,7 +564,7 @@ export async function handleCreateRoute(args: {
 		const result = await client.fetch({
 			method: "POST",
 			path: `/lb/v1/zones/${zone}/routes`,
-			body: JSON.stringify(body),
+			body: JSON.stringify(normalizeLbTimeouts(body)),
 			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse(result);
@@ -581,7 +587,7 @@ export async function handleUpdateRoute(args: {
 		const result = await client.fetch({
 			method: "PUT",
 			path: `/lb/v1/zones/${zone}/routes/${route_id}`,
-			body: JSON.stringify(body),
+			body: JSON.stringify(normalizeLbTimeouts(body)),
 			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse(result);
@@ -667,7 +673,7 @@ export async function handleCreateCertificate(args: {
 		const result = await client.fetch({
 			method: "POST",
 			path: `/lb/v1/zones/${zone}/lbs/${lb_id}/certificates`,
-			body: JSON.stringify(body),
+			body: JSON.stringify(normalizeLbTimeouts(body)),
 			headers: { "Content-Type": "application/json" },
 		});
 		return jsonResponse(result);

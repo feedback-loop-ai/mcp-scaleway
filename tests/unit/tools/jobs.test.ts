@@ -129,6 +129,7 @@ describe("jobs types", () => {
 
 	describe("CreateJobDefinitionInput", () => {
 		const validInput = {
+			local_storage_capacity: 1024,
 			name: "my-job",
 			cpu_limit: 1000,
 			memory_limit: 256,
@@ -299,6 +300,7 @@ describe("jobs handlers", () => {
 			const created = { id: TEST_UUID, name: "new-job" };
 			mockFetch.mockResolvedValueOnce(created);
 			const result = await handleCreateJobDefinition({
+				local_storage_capacity: 1024,
 				name: "new-job",
 				cpu_limit: 1000,
 				memory_limit: 256,
@@ -312,6 +314,7 @@ describe("jobs handlers", () => {
 		it("sends all optional fields in body", async () => {
 			mockFetch.mockResolvedValueOnce({ id: TEST_UUID });
 			await handleCreateJobDefinition({
+				local_storage_capacity: 1024,
 				name: "full-job",
 				cpu_limit: 2000,
 				memory_limit: 512,
@@ -335,6 +338,7 @@ describe("jobs handlers", () => {
 		it("returns error on failure", async () => {
 			mockFetch.mockRejectedValueOnce(new Error("bad request"));
 			const result = await handleCreateJobDefinition({
+				local_storage_capacity: 1024,
 				name: "fail",
 				cpu_limit: 1000,
 				memory_limit: 256,

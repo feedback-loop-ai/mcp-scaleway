@@ -643,7 +643,7 @@ describe("interlink handlers", () => {
 			expect(mockFetch).toHaveBeenCalledWith({
 				method: "POST",
 				path: "/interlink/v1beta1/regions/fr-par/routing-policies",
-				body: JSON.stringify({ name: "rp", is_ipv6: false }),
+				body: JSON.stringify({ name: "rp", is_ipv6: false, project_id: PROJECT_ID }),
 				headers: { "Content-Type": "application/json" },
 			});
 		});

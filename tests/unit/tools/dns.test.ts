@@ -190,7 +190,7 @@ describe("dns handlers", () => {
 			);
 		});
 
-		it("sends only provided fields in body", async () => {
+		it("sends explicit nullable rename and default project", async () => {
 			mockFetch.mockResolvedValueOnce({ domain: "example.com" });
 
 			await handlers.handleUpdateDnsZone({
@@ -198,7 +198,10 @@ describe("dns handlers", () => {
 			});
 
 			const body = JSON.parse(mockFetch.mock.calls[0][0].body);
-			expect(body).toEqual({});
+			expect(body).toEqual({
+				new_dns_zone: null,
+				project_id: "11111111-1111-1111-1111-111111111111",
+			});
 		});
 
 		it("returns error on failure", async () => {

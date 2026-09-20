@@ -1,0 +1,77 @@
+{
+	"at": "2026-09-19T20:54:19.643Z",
+	"method": "GET",
+	"credentials": "local ignored config, never logged",
+	"reports": [
+		{
+			"id": "generative-models",
+			"status": 200,
+			"shape": "expected-array",
+			"durationMs": 446,
+			"conclusion": "successful-read"
+		},
+		{
+			"id": "webhosting-offers",
+			"status": 200,
+			"shape": "expected-array",
+			"durationMs": 405,
+			"conclusion": "successful-read"
+		},
+		{
+			"id": "webhosting-control-panels",
+			"status": 200,
+			"shape": "expected-array",
+			"durationMs": 312,
+			"conclusion": "successful-read"
+		},
+		{
+			"id": "secret-tags",
+			"status": 200,
+			"shape": "expected-array",
+			"durationMs": 360,
+			"conclusion": "successful-read"
+		},
+		{
+			"id": "instance-templates",
+			"status": 200,
+			"shape": "expected-array",
+			"durationMs": 345,
+			"conclusion": "successful-read"
+		},
+		{
+			"id": "elastic-metal-flexible-ips",
+			"status": 200,
+			"shape": "expected-array",
+			"durationMs": 317,
+			"conclusion": "successful-read"
+		},
+		{
+			"id": "apple-silicon-private-networks",
+			"status": 200,
+			"shape": "expected-array",
+			"durationMs": 311,
+			"conclusion": "successful-read"
+		},
+		{
+			"id": "elastic-metal-private-networks",
+			"status": 200,
+			"shape": "expected-array",
+			"durationMs": 323,
+			"conclusion": "successful-read"
+		},
+		{
+			"id": "cockpit-legacy-get",
+			"status": 404,
+			"shape": "uninspected",
+			"durationMs": 282,
+			"conclusion": "inconclusive-error"
+		},
+		{
+			"id": "cockpit-grafana-users",
+			"status": 200,
+			"shape": "expected-array",
+			"durationMs": 306,
+			"conclusion": "successful-read"
+		}
+	]
+}

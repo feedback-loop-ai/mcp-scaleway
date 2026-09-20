@@ -50,16 +50,22 @@ Verified against the official reference and `src/tools/webhosting/handlers.ts`.
 - Response: Hosting object (`status: deleting`)
 
 ### Restore Hosting — `scaleway_webhosting_restore_hosting`
-`POST /hostings/{hosting_id}/restore`
-- Response: Hosting object
-- Note: referenced in the official Web Hosting navigation but its exact request/response
-  shape is not fully enumerated in the public HTML reference (see flag below).
+`POST /hostings/{hosting_id}/backups/{backup_id}/restore`
+- Required inputs: `hosting_id`, `backup_id`; body `{}`.
+- Response: `{ progress_id: string }`, identifying the restoration progress.
+- Restores the selected backup in full and overwrites current hosting data.
+- The former `/hostings/{hosting_id}/restore` route was not source-backed. The
+  tool ID is preserved, but selecting `backup_id` is now mandatory. A backup is
+  never inferred or selected automatically.
+- Source: [Backup API](https://www.scaleway.com/en/developers/api/webhosting/backup/v1/schema.yml).
 
 ### Get DNS Records — `scaleway_webhosting_get_dns_records`
-`GET /hostings/{hosting_id}/dns-records`
-- Response: `{ records: DnsRecord[], name_servers?: NameServer[], ... }`
-- Note: the "Get DNS records" operation is referenced in the official navigation; the
-  full response schema is not enumerated in the public HTML reference (see flag below).
+`GET /domains/{domain}/dns-records`
+- Required input: `domain`, e.g. `example.com`, replacing the former `hosting_id`.
+- Response: the upstream `DnsRecords` object (status, records and nameservers).
+- DNS belongs to a domain; the hosting's optional legacy domain does not safely
+  identify a choice among system and custom domains. Callers select it explicitly.
+- Source: [DNS API](https://www.scaleway.com/en/developers/api/webhosting/dns/v1/schema.yml).
 
 ## Offers
 
@@ -140,10 +146,14 @@ Standard Scaleway REST errors, normalized by `mapScalewayError`:
 - `429` too_many_requests — rate limited
 - `500` internal_server_error
 
-## Verification flags
-- `restore` (`POST /hostings/{hosting_id}/restore`) and `dns-records`
-  (`GET /hostings/{hosting_id}/dns-records`): both operations are referenced in the
-  official Web Hosting API navigation, but the public HTML reference did not expose their
-  full method/path/schema in a machine-readable form during research. The paths above
-  match the implemented handlers and Scaleway path conventions; treat them as
-  implementation-verified pending confirmation from the downloadable OpenAPI schema.
+## Reconciliation — 2026-09-19
+
+Offers and control panels are published in separate schemas, so comparing them
+only against Hosting API was a false positive:
+[Offer API](https://www.scaleway.com/en/developers/api/webhosting/offer/v1/schema.yml),
+[Control Panel API](https://www.scaleway.com/en/developers/api/webhosting/control-panel/v1/schema.yml).
+Both list routes returned HTTP 200 and their expected arrays during authenticated
+read-only verification. Backup restore was not executed; DNS was verified against
+its authoritative schema rather than a placeholder-resource 404. The two required
+input changes above are intentional next-release migrations; this change does not
+publish a package release. See [endpoint evidence](../../064-remaining-remediation/endpoints.md).

@@ -1,7 +1,9 @@
-import type { McpServer, ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult, Tool } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import { inputSchemaFor } from "../shared/catalog.js";
+import { dispatch } from "../shared/observability.js";
+import { StructuredOutput, outputSchema } from "../shared/output.js";
 import { withRouteContext } from "../shared/route-guard.js";
 import {
 	DescribeInput,
@@ -14,6 +16,7 @@ import {
 } from "./discovery.js";
 import {
 	type Operation,
+	type OperationCallback,
 	type OperationExtra,
 	type OperationRegistry,
 	operationAnnotations,
@@ -98,16 +101,30 @@ export async function executeOperation(
 /** Returns our projected definitions; installCatalogListing can combine these with flat ones. */
 export function registerGatewayTools(server: McpServer, registry: OperationRegistry): Tool[] {
 	const tools: Tool[] = [];
-	function register<S extends z.ZodRawShape>(
+	function register(
 		name: string,
 		description: string,
-		shape: S,
+		shape: z.ZodRawShape,
 		readOnly: boolean,
-		callback: ToolCallback<S>,
+		callback: OperationCallback,
 	) {
 		const annotations = operationAnnotations(readOnly);
-		server.registerTool(name, { description, inputSchema: shape, annotations }, callback);
-		tools.push({ name, description, inputSchema: inputSchemaFor(shape), annotations });
+		server.registerTool(
+			name,
+			{ description, inputSchema: shape, outputSchema: StructuredOutput.shape, annotations },
+			(params, extra) => {
+				const candidate =
+					"op" in params && typeof params.op === "string" ? registry.get(params.op) : undefined;
+				return dispatch(candidate?.op ?? name, () => callback(params, extra));
+			},
+		);
+		tools.push({
+			name,
+			description,
+			inputSchema: inputSchemaFor(shape),
+			outputSchema,
+			annotations,
+		});
 	}
 	register(
 		"scaleway_search",
@@ -121,11 +138,11 @@ export function registerGatewayTools(server: McpServer, registry: OperationRegis
 	);
 	register(
 		"scaleway_describe",
-		"Get exact input schemas and endpoints for 1–10 allowed operation IDs, e.g. ops=['instances_list_servers']. Use scaleway_search to discover IDs.",
+		"Get exact input schemas, synthetic examples, MCP output envelopes and endpoints for 1–10 allowed operation IDs, e.g. ops=['instances_list_servers']. Use scaleway_search to discover IDs.",
 		DescribeInput.shape,
 		true,
 		(params) => {
-			const result = describeOperations(registry, params);
+			const result = describeOperations(registry, DescribeInput.parse(params));
 			return jsonResult(result, "error" in result);
 		},
 	);
@@ -134,14 +151,14 @@ export function registerGatewayTools(server: McpServer, registry: OperationRegis
 		"Run a permitted read, e.g. op='instances_list_servers', params={zone:'fr-par-1'}. Describe first. May return sensitive data; IAM applies and approval is not automatic.",
 		ExecuteInput.shape,
 		true,
-		(params, extra) => executeOperation(registry, params, extra, true),
+		(params, extra) => executeOperation(registry, ExecuteInput.parse(params), extra, true),
 	);
 	register(
 		"scaleway_call",
 		"Run any allowed operation, including destructive writes, e.g. op='instances_create_server' with described params. IAM and configured filters apply; obtain authorization for changes.",
 		ExecuteInput.shape,
 		false,
-		(params, extra) => executeOperation(registry, params, extra, false),
+		(params, extra) => executeOperation(registry, ExecuteInput.parse(params), extra, false),
 	);
 	return tools;
 }

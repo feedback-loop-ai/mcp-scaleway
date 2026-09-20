@@ -360,8 +360,7 @@ export async function handleListNodeTypes(input: ListNodeTypesInput) {
 		queryParams.set("page", String(pagination.page));
 		queryParams.set("page_size", String(pagination.page_size));
 
-		if (input.include_disabled_types !== undefined)
-			queryParams.set("include_disabled_types", String(input.include_disabled_types));
+		queryParams.set("include_disabled_types", String(input.include_disabled_types ?? false));
 
 		const data = await client.fetch<ListNodeTypesResponse>({
 			method: "GET",
@@ -386,12 +385,9 @@ export async function handleListClusterVersions(input: ListClusterVersionsInput)
 		queryParams.set("page", String(pagination.page));
 		queryParams.set("page_size", String(pagination.page_size));
 
-		if (input.include_disabled !== undefined)
-			queryParams.set("include_disabled", String(input.include_disabled));
-		if (input.include_beta !== undefined)
-			queryParams.set("include_beta", String(input.include_beta));
-		if (input.include_deprecated !== undefined)
-			queryParams.set("include_deprecated", String(input.include_deprecated));
+		queryParams.set("include_disabled", String(input.include_disabled ?? false));
+		queryParams.set("include_beta", String(input.include_beta ?? false));
+		queryParams.set("include_deprecated", String(input.include_deprecated ?? false));
 		if (input.version) queryParams.set("version", input.version);
 
 		const data = await client.fetch<ListVersionsResponse>({

@@ -121,6 +121,8 @@ export async function handleRevokeDomain(params: RevokeDomainParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${TEM_API_PREFIX}/regions/${region}/domains/${params.domain_id}/revoke`,
+			body: "{}",
+			headers: { "Content-Type": "application/json" },
 		});
 		return formatResponse(response);
 	} catch (error) {
@@ -135,6 +137,8 @@ export async function handleCheckDomain(params: CheckDomainParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${TEM_API_PREFIX}/regions/${region}/domains/${params.domain_id}/check`,
+			body: "{}",
+			headers: { "Content-Type": "application/json" },
 		});
 		return formatResponse(response);
 	} catch (error) {
@@ -174,7 +178,7 @@ export async function handleListEmails(params: ListEmailsParams) {
 				page_size: pageSize,
 				project_id: params.project_id,
 				domain_id: params.domain_id,
-				status: params.status,
+				statuses: params.status,
 				mail_from: params.mail_from,
 				mail_to: params.mail_to,
 				subject: params.subject,
@@ -237,6 +241,8 @@ export async function handleCancelEmail(params: CancelEmailParams) {
 		const response = await client.fetch<unknown>({
 			method: "POST",
 			path: `${TEM_API_PREFIX}/regions/${region}/emails/${params.email_id}/cancel`,
+			body: "{}",
+			headers: { "Content-Type": "application/json" },
 		});
 		return formatResponse(response);
 	} catch (error) {

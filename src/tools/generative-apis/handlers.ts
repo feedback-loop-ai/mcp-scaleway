@@ -21,13 +21,14 @@ function buildHeaders(): Record<string, string> {
 	};
 }
 
-function buildBaseUrl(region: string): string {
-	return `${GENERATIVE_APIS_BASE_URL}/${region}`;
+function buildInferenceUrl(projectId?: string): string {
+	const project = projectId ?? loadAuthConfig().defaultProjectId;
+	return `${GENERATIVE_APIS_BASE_URL}/${encodeURIComponent(project)}`;
 }
 
-export async function handleListModels(input: ListModelsInput) {
+export async function handleListModels(_input: ListModelsInput) {
 	try {
-		const baseUrl = buildBaseUrl(input.region);
+		const baseUrl = GENERATIVE_APIS_BASE_URL;
 		const response = await guardedFetch(`${baseUrl}/v1/models`, {
 			method: "GET",
 			headers: buildHeaders(),
@@ -51,7 +52,7 @@ export async function handleListModels(input: ListModelsInput) {
 
 export async function handleGetModel(input: GetModelInput) {
 	try {
-		const baseUrl = buildBaseUrl(input.region);
+		const baseUrl = GENERATIVE_APIS_BASE_URL;
 		const response = await guardedFetch(`${baseUrl}/v1/models`, {
 			method: "GET",
 			headers: buildHeaders(),
@@ -83,7 +84,7 @@ export async function handleGetModel(input: GetModelInput) {
 
 export async function handleChatCompletion(input: ChatCompletionInput) {
 	try {
-		const baseUrl = buildBaseUrl(input.region);
+		const baseUrl = buildInferenceUrl(input.project_id);
 		const body = {
 			model: input.model,
 			messages: input.messages,
@@ -123,7 +124,7 @@ export async function handleChatCompletion(input: ChatCompletionInput) {
 
 export async function handleCreateEmbedding(input: CreateEmbeddingInput) {
 	try {
-		const baseUrl = buildBaseUrl(input.region);
+		const baseUrl = buildInferenceUrl(input.project_id);
 		const body = {
 			model: input.model,
 			input: input.input,

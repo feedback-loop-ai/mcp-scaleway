@@ -451,7 +451,7 @@ describe("kafka handlers", () => {
 			const { handleRenewClusterCertificateAuthority } = await import(
 				"../../../src/tools/kafka/handlers.js"
 			);
-			mockFetch.mockResolvedValue({ content: "-----BEGIN CERTIFICATE-----" });
+			mockFetch.mockResolvedValue(undefined);
 
 			const result = await handleRenewClusterCertificateAuthority({
 				region: "fr-par",
@@ -465,7 +465,7 @@ describe("kafka handlers", () => {
 				headers: { "Content-Type": "application/json" },
 			});
 			const parsed = JSON.parse(result.content[0].text);
-			expect(parsed.content).toContain("BEGIN CERTIFICATE");
+			expect(parsed).toEqual({ success: true });
 		});
 
 		it("returns error on failure", async () => {

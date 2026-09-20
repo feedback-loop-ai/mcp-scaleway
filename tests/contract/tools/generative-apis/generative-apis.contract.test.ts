@@ -6,7 +6,7 @@
  *   - POST /v1/chat/completions    (chat completion)
  *   - POST /v1/embeddings          (create embedding)
  *
- * Base URL: https://api.scaleway.ai/{region}
+ * Base URL: https://api.scaleway.ai; inference uses /{project_id}/v1
  * Auth: Bearer token (SCW_SECRET_KEY)
  * Spec: OpenAI-compatible API with Scaleway model IDs
  */
@@ -105,7 +105,7 @@ describe("Generative APIs Contract Tests", () => {
 			await handleListModels({ region: "nl-ams" });
 
 			const [url] = mockFetch.mock.calls[0];
-			expect(url).toBe("https://api.scaleway.ai/nl-ams/v1/models");
+			expect(url).toBe("https://api.scaleway.ai/v1/models");
 		});
 
 		it("should return permission_denied error on 401", async () => {
@@ -252,7 +252,9 @@ describe("Generative APIs Contract Tests", () => {
 			});
 
 			const [url, options] = mockFetch.mock.calls[0];
-			expect(url).toBe("https://api.scaleway.ai/fr-par/v1/chat/completions");
+			expect(url).toBe(
+				"https://api.scaleway.ai/00000000-0000-0000-0000-000000000001/v1/chat/completions",
+			);
 			expect(options.method).toBe("POST");
 			const body = JSON.parse(options.body);
 			expect(body.model).toBe("meta/llama-3.1-8b-instruct:fp8");
@@ -357,7 +359,9 @@ describe("Generative APIs Contract Tests", () => {
 			});
 
 			const [url, options] = mockFetch.mock.calls[0];
-			expect(url).toBe("https://api.scaleway.ai/fr-par/v1/embeddings");
+			expect(url).toBe(
+				"https://api.scaleway.ai/00000000-0000-0000-0000-000000000001/v1/embeddings",
+			);
 			expect(options.method).toBe("POST");
 			const body = JSON.parse(options.body);
 			expect(body.model).toBe("sentence-transformers/all-MiniLM-L6-v2");

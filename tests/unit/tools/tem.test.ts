@@ -280,7 +280,7 @@ describe("tem handlers", () => {
 			expect(call.urlParams.get("page_size")).toBe("25");
 			expect(call.urlParams.get("project_id")).toBe("proj-1");
 			expect(call.urlParams.get("domain_id")).toBe("dom-1");
-			expect(call.urlParams.get("status")).toBe("sent");
+			expect(call.urlParams.get("statuses")).toBe("sent");
 			expect(call.urlParams.get("mail_from")).toBe("a@b.com");
 			expect(call.urlParams.get("mail_to")).toBe("c@d.com");
 			expect(call.urlParams.get("subject")).toBe("test");
